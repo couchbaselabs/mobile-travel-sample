@@ -1,0 +1,96 @@
+{
+  "interface":":4984",
+  "log": ["HTTP","Auth"],
+  "databases": {
+    "travel-sample": {
+      "import_docs": "continuous",
+      "unsupported": {
+        "enable_extended_attributes": true
+      },
+      "bucket":"travel-sample",
+      "server": "http://localhost:8091",
+      "username": "admin",
+      "password": "password",
+      "users":{
+          "admin": {"password": "password", "admin_channels": ["*"]}, 
+          "demo": {"password": "password"}
+      },
+      "sync": `
+function sync(doc, oldDoc) {
+
+
+  /* validation */
+   var username = getUserName();
+   // Verify the user making the request is the same as the one in doc's username
+   requireUser(doc.username);
+
+ 
+   if (!isDelete()) {
+      // Validate required fields.
+      validateNotEmpty("username", doc.username);
+
+
+      if (isCreate()) {
+
+        // Validate that the _id is prefixed by owner.
+        var expectedDocId = "user" + ":" + doc.username;
+
+        if (expectedDocId != doc._id) {
+            throw({forbidden: "user doc Id must be of form user:userId"});
+     
+        }
+      
+      } else {
+         // Validate that the username hasn't changed.
+        validateReadOnly("username", doc.username, oldDoc.username);
+      }
+
+    }
+
+
+  /* Routing */
+  // Add doc to the user's channel.
+  channel(username);
+
+  
+  // Give user read access to channel
+   if (!isDelete()) {
+       access(username,username)
+   }
+
+ 
+
+  function getUserName() {
+    return (isDelete() ? oldDoc.username : doc.username);
+  }
+
+  function isCreate() {
+    // Checking false for the Admin UI to work
+    return ((oldDoc == false) || (oldDoc == null || oldDoc._deleted) && !isDelete());
+  }
+
+  function isUpdate() {
+    return (!isCreate() && !isDelete());
+  }
+
+  function isDelete() {
+    return (doc._deleted == true);
+  }
+
+  function validateNotEmpty(key, value) {
+    if (!value) {
+      throw({forbidden: key + " is not provided."});
+    }
+  }
+
+  function validateReadOnly(name, value, oldValue) {
+    if (value != oldValue) {
+      throw({forbidden: name + " is read-only."});
+    }
+  }
+  
+}
+      `
+    }
+  }
+}
