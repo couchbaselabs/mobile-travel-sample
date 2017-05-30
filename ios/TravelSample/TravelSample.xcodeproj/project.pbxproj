@@ -13,7 +13,24 @@
 		5F2CD9251EDDB8EE0069F12C /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; };
 		5F2CD92F1EDDC4470069F12C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD92E1EDDC4470069F12C /* ViewController.swift */; };
 		5F2CD9331EDDC4F40069F12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9321EDDC4F40069F12C /* Assets.xcassets */; };
+		5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */; };
+		5F2CD9391EDE236A0069F12C /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; };
+		5F2CD93A1EDE236A0069F12C /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5F2CD93B1EDE236A0069F12C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5F2CD93A1EDE236A0069F12C /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5F2CD90C1EDDB5620069F12C /* TravelSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +41,7 @@
 		5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5F2CD92E1EDDC4470069F12C /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5F2CD9321EDDC4F40069F12C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2CD9391EDE236A0069F12C /* CouchbaseLiteSwift.framework in Frameworks */,
 				5F2CD9251EDDB8EE0069F12C /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +132,7 @@
 		5F2CD9351EDDC5330069F12C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -134,6 +154,7 @@
 				5F2CD9081EDDB5620069F12C /* Sources */,
 				5F2CD9091EDDB5620069F12C /* Frameworks */,
 				5F2CD90A1EDDB5620069F12C /* Resources */,
+				5F2CD93B1EDE236A0069F12C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -198,6 +219,7 @@
 			files = (
 				5F2CD92F1EDDC4470069F12C /* ViewController.swift in Sources */,
 				5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */,
+				5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
