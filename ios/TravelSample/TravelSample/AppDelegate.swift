@@ -13,11 +13,13 @@ import CouchbaseLiteSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let dbMgr:DatabaseManager = DatabaseManager.shared
+    fileprivate var loginViewController:LoginViewController?
+    fileprivate var flightBookingsViewController:UIViewController?
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        dbMgr.openOrCreateDatabaseForUser("demo", password: "password")
+ 
         return true
     }
 
@@ -43,7 +45,90 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
 }
 
+// MARK : Loading Root Views
+extension AppDelegate {
+    func loadLoginViewController() {
+        if let loginVC = loginViewController {
+            window?.rootViewController = loginVC
+        }
+        else {
+            let storyboard = UIStoryboard.getStoryboard(.Main)
+            loginViewController = storyboard.instantiateViewController() as? LoginViewController
+            
+            window!.rootViewController = loginViewController
+            
+        }
+        
+        self.registerNotificationObservers()
+    }
+    
+    
+    func loadMainMenuViewController() {
+        
+        if let flightVC = flightBookingsViewController {
+            window?.rootViewController = UIViewController()
+        }
+        else {
+            let storyboard = UIStoryboard.getStoryboard(.Main)
+            
+            if let navController = storyboard.instantiateViewController(withIdentifier: "MainMenuNVC") as? UINavigationController{
+                menuViewController = navController.topViewController
+                window?.rootViewController = navController
+            }
+        }
+        
+    }
+    
+    
+    func logout() {
+        self.deregisterNotificationObservers()
+        loadLoginViewController()
+    }
+    
+    
+    
+}
+
+// MARK: Observers
+extension AppDelegate {
+    
+    func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
+            
+            if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
+                if let email = userInfo[AppNotifications.loginInSuccess.userInfoKeys.userEmail.rawValue]{
+                    self.loadMainMenuViewController()
+                    
+                }
+            }
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
+            if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,String> {
+                if let user = userInfo[AppNotifications.loginInSuccess.userInfoKeys.userEmail.rawValue]{
+                    self.logout()
+                }
+                
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
+            self.logout()
+        }
+    }
+    
+    
+    func deregisterNotificationObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil)
+        
+        
+    }
+    
+    
+}
 

@@ -84,7 +84,7 @@ extension DatabaseManager {
 // MARK: Public
 extension DatabaseManager {
    
-    func openOrCreateDatabaseForUser(_ user:String, password:String) {
+    func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
             var options = DatabaseOptions()
             guard let defaultDBPath = _applicationSupportDirectory else {
@@ -96,9 +96,11 @@ extension DatabaseManager {
             options.directory = userFolderPath.absoluteString
             print("Database created at path \(userFolderPath)")
             _db = try Database(name: kDBName, options: options)
+            handler(nil)
         }catch {
             
             lastError = error
+            handler(lastError)
         }
     }
     

@@ -16,6 +16,10 @@
 		5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */; };
 		5F2CD9391EDE236A0069F12C /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; };
 		5F2CD93A1EDE236A0069F12C /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F2CD93D1EDE28630069F12C /* PresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */; };
+		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
+		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
+		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +46,10 @@
 		5F2CD92E1EDDC4470069F12C /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5F2CD9321EDDC4F40069F12C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterProtocols.swift; sourceTree = "<group>"; };
+		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				5F2CD92E1EDDC4470069F12C /* ViewController.swift */,
+				5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -125,6 +134,8 @@
 		5F2CD9341EDDC5090069F12C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				5F2CD9421EDE2CF50069F12C /* Notifications.swift */,
+				5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -140,6 +151,7 @@
 		5F2CD9361EDDC53E0069F12C /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -217,8 +229,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */,
+				5F2CD93D1EDE28630069F12C /* PresenterProtocols.swift in Sources */,
 				5F2CD92F1EDDC4470069F12C /* ViewController.swift in Sources */,
+				5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */,
 				5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */,
+				5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */,
 				5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +405,7 @@
 				5F2CD9201EDDB5620069F12C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
