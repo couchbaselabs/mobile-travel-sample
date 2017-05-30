@@ -8,6 +8,7 @@ Mobile Version of travel sample app corresponding to https://developer.couchbase
   - https://www.couchbase.com/downloads
 
 - Couchbase Lite 2.0
+ - https://developer.couchbase.com/documentation/mobile/2.0/whatsnew.html?language=ios
 
 ## Platform Specific
 - iOS (Swift)
