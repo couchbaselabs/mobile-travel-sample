@@ -11,7 +11,7 @@
 		5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9131EDDB5620069F12C /* Main.storyboard */; };
 		5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9181EDDB5620069F12C /* LaunchScreen.storyboard */; };
 		5F2CD9251EDDB8EE0069F12C /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; };
-		5F2CD92F1EDDC4470069F12C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD92E1EDDC4470069F12C /* ViewController.swift */; };
+		5F2CD92F1EDDC4470069F12C /* BookingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD92E1EDDC4470069F12C /* BookingTableViewController.swift */; };
 		5F2CD9331EDDC4F40069F12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9321EDDC4F40069F12C /* Assets.xcassets */; };
 		5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */; };
 		5F2CD9391EDE236A0069F12C /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */; };
@@ -43,7 +43,7 @@
 		5F2CD9191EDDB5620069F12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5F2CD91B1EDDB5620069F12C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F2CD9241EDDB8EE0069F12C /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
-		5F2CD92E1EDDC4470069F12C /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5F2CD92E1EDDC4470069F12C /* BookingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewController.swift; sourceTree = "<group>"; };
 		5F2CD9321EDDC4F40069F12C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterProtocols.swift; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		5F2CD92D1EDDC4100069F12C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5F2CD92E1EDDC4470069F12C /* ViewController.swift */,
+				5F2CD92E1EDDC4470069F12C /* BookingTableViewController.swift */,
 				5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
@@ -231,7 +231,7 @@
 			files = (
 				5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */,
 				5F2CD93D1EDE28630069F12C /* PresenterProtocols.swift in Sources */,
-				5F2CD92F1EDDC4470069F12C /* ViewController.swift in Sources */,
+				5F2CD92F1EDDC4470069F12C /* BookingTableViewController.swift in Sources */,
 				5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */,
 				5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */,
 				5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */,

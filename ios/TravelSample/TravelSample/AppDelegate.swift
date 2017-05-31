@@ -72,8 +72,6 @@ extension AppDelegate {
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
-            window?.rootViewController = UIViewController()
-            return
             if let navController = storyboard.instantiateViewController(withIdentifier: "FlightBookingNVC") as? UINavigationController{
                 flightBookingsViewController = navController.topViewController
                 window?.rootViewController = navController

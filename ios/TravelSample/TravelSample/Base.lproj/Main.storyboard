@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -109,15 +110,14 @@
                                                 </variation>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-On-WTK">
-                                                <rect key="frame" x="165.5" y="425" width="52" height="33"/>
-                                                <color key="backgroundColor" red="0.77268752553104569" green="0.92931602328431373" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="155.5" y="425" width="72" height="33"/>
                                                 <accessibility key="accessibilityConfiguration" label="loginButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="6e0-o9-Qly"/>
                                                     <constraint firstAttribute="width" constant="446" id="wK9-lt-mAW"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <state key="normal" title="Sign In">
+                                                <state key="normal" title="Sign In &gt; ">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <variation key="default">
@@ -217,7 +217,107 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iq3-mm-KUF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="736.79999999999995" y="525.78710644677665"/>
+            <point key="canvasLocation" x="238" y="368"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="G5x-b4-3kD">
+            <objects>
+                <navigationController storyboardIdentifier="FlightBookingNVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4ab-1i-xOt" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9Fh-lw-q10">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="CEv-bd-Ona" kind="relationship" relationship="rootViewController" id="8OX-S8-dV6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wb8-51-zqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="215" y="1051"/>
+        </scene>
+        <!--Booking Table View Controller-->
+        <scene sceneID="Coh-Mb-uuX">
+            <objects>
+                <tableViewController storyboardIdentifier="FlightBookingTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CEv-bd-Ona" customClass="BookingTableViewController" customModule="TravelSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="7uc-Db-mzJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bDR-XP-1pC">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bDR-XP-1pC" id="mXr-CR-Fbn">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="CEv-bd-Ona" id="IZj-1O-F2C"/>
+                            <outlet property="delegate" destination="CEv-bd-Ona" id="H5K-ac-oCj"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Tgx-cd-zTl">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="qDi-bY-Koo"/>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="v6J-1O-Gsv">
+                                <connections>
+                                    <segue destination="yT3-C8-yDN" kind="presentation" identifier="AddBookingSegue" modalPresentationStyle="formSheet" id="FUa-L1-E67"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Hotels" id="5VA-Bz-u1f"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xFn-rS-TP5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1076" y="1050"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="N5m-0P-zdE">
+            <objects>
+                <tableViewController id="cOY-fq-9VX" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="HCf-PP-fF0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GNa-qd-CPA">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GNa-qd-CPA" id="v8f-iG-1Ur">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="cOY-fq-9VX" id="UNR-DZ-qTQ"/>
+                            <outlet property="delegate" destination="cOY-fq-9VX" id="rfu-bu-cgc"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="Cmd-Ag-DGE"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="moH-0j-nHj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4274" y="1172"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ZOm-7c-7Yp">
+            <objects>
+                <navigationController id="yT3-C8-yDN" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4OF-kc-k0f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="cOY-fq-9VX" kind="relationship" relationship="rootViewController" id="XF2-8U-Rl2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4j2-UO-qtB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1964" y="1049"/>
         </scene>
     </scenes>
     <resources>
