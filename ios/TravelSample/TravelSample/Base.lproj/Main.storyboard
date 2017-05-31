@@ -13,7 +13,7 @@
         <!--Login View Controller-->
         <scene sceneID="G8M-vm-GQX">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rzY-hD-ysd" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rzY-hD-ysd" customClass="LoginViewController" customModule="TravelSample" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="myL-dj-2zg"/>
                         <viewControllerLayoutGuide type="bottom" id="z6e-UW-kmh"/>
@@ -28,19 +28,17 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fyq-V2-86a" userLabel="contentView">
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="667"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="01x-SD-sKh" userLabel="bgImage">
-                                                <rect key="frame" x="0.0" y="0.0" width="383" height="667"/>
-                                            </imageView>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDc-JR-jNP" userLabel="passView">
                                                 <rect key="frame" x="0.0" y="287" width="600" height="44"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-eN-PJv">
                                                         <rect key="frame" x="8" y="0.0" width="584" height="44"/>
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <accessibility key="accessibilityConfiguration" label="password"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="6RA-Vf-ydN"/>
                                                         </constraints>
-                                                        <color key="textColor" red="0.60784313729999995" green="0.69803921570000005" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
                                                         <connections>
@@ -68,16 +66,16 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-yS-CGH" userLabel="emailView">
+                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-yS-CGH" userLabel="userView">
                                                 <rect key="frame" x="0.0" y="235" width="600" height="44"/>
                                                 <subviews>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="V5d-Kh-gDb">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="V5d-Kh-gDb" userLabel="user Text Entry">
                                                         <rect key="frame" x="8" y="0.0" width="372" height="44"/>
                                                         <accessibility key="accessibilityConfiguration" label="emailAddress"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="kiF-qn-VsW"/>
                                                         </constraints>
-                                                        <color key="textColor" red="0.60784313729999995" green="0.69803921570000005" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" enablesReturnKeyAutomatically="YES"/>
                                                         <variation key="default">
@@ -90,7 +88,7 @@
                                                         </connections>
                                                     </textField>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.96078431369999995" green="0.98823529409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="V5d-Kh-gDb" secondAttribute="trailing" constant="8" id="6r4-F0-obf"/>
                                                     <constraint firstAttribute="bottom" secondItem="V5d-Kh-gDb" secondAttribute="bottom" id="EWJ-Me-i31"/>
@@ -110,38 +108,37 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-On-WTK">
-                                                <rect key="frame" x="167.5" y="425" width="48" height="20"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-On-WTK">
+                                                <rect key="frame" x="165.5" y="425" width="52" height="33"/>
+                                                <color key="backgroundColor" red="0.77268752553104569" green="0.92931602328431373" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" label="loginButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="6e0-o9-Qly"/>
                                                     <constraint firstAttribute="width" constant="446" id="wK9-lt-mAW"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                <state key="normal" title="Log In">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Sign In">
+                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
-                                                <state key="disabled" backgroundImage="Login-LoginButtonDisabled"/>
-                                                <state key="highlighted" backgroundImage="Login-LoginButtonEnabled"/>
                                                 <variation key="default">
                                                     <mask key="constraints">
-                                                        <exclude reference="wK9-lt-mAW"/>
                                                         <exclude reference="6e0-o9-Qly"/>
+                                                        <exclude reference="wK9-lt-mAW"/>
                                                     </mask>
                                                 </variation>
                                                 <connections>
                                                     <action selector="onLoginTapped:" destination="rzY-hD-ysd" eventType="touchUpInside" id="uW2-m7-UJo"/>
                                                 </connections>
                                             </button>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="CBTravel.LOGO" translatesAutoresizingMaskIntoConstraints="NO" id="cOi-Uu-IWH">
+                                                <rect key="frame" x="38" y="76" width="306" height="72"/>
+                                                <color key="backgroundColor" red="0.96078431372549022" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.96078431372549022" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="FOu-yS-CGH" secondAttribute="trailing" id="6Rn-mM-5ug"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="top" secondItem="Fyq-V2-86a" secondAttribute="top" constant="233" id="7TZ-dn-dSw"/>
-                                            <constraint firstItem="01x-SD-sKh" firstAttribute="top" secondItem="Fyq-V2-86a" secondAttribute="top" id="ATO-Hw-wqj"/>
-                                            <constraint firstAttribute="bottom" secondItem="01x-SD-sKh" secondAttribute="bottom" id="CDu-NE-OB3"/>
-                                            <constraint firstItem="01x-SD-sKh" firstAttribute="leading" secondItem="Fyq-V2-86a" secondAttribute="leading" id="CUR-Ue-Rg9"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="top" secondItem="Fyq-V2-86a" secondAttribute="top" constant="20" symbolic="YES" id="Ghj-Kf-MMy">
                                                 <variation key="heightClass=compact" constant="233"/>
                                                 <variation key="widthClass=compact" constant="233"/>
@@ -153,9 +150,10 @@
                                             <constraint firstItem="VDc-JR-jNP" firstAttribute="leading" secondItem="FOu-yS-CGH" secondAttribute="leading" id="SsA-bV-cb7"/>
                                             <constraint firstItem="VDc-JR-jNP" firstAttribute="top" secondItem="FOu-yS-CGH" secondAttribute="bottom" constant="10" id="TC5-Tb-AbJ"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="height" secondItem="Fyq-V2-86a" secondAttribute="height" multiplier="1:1" id="TIH-rX-VNo"/>
+                                            <constraint firstItem="cOi-Uu-IWH" firstAttribute="centerX" secondItem="Fyq-V2-86a" secondAttribute="centerX" id="Ys9-04-STw"/>
                                             <constraint firstItem="qvQ-On-WTK" firstAttribute="top" secondItem="VDc-JR-jNP" secondAttribute="bottom" constant="94" id="cSa-iO-m9P"/>
                                             <constraint firstItem="qvQ-On-WTK" firstAttribute="centerX" secondItem="Fyq-V2-86a" secondAttribute="centerX" id="m8p-0W-pL9"/>
-                                            <constraint firstAttribute="trailing" secondItem="01x-SD-sKh" secondAttribute="trailing" id="nkM-fM-BkP"/>
+                                            <constraint firstItem="cOi-Uu-IWH" firstAttribute="top" secondItem="Fyq-V2-86a" secondAttribute="top" constant="68" id="nyP-jd-U2P"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="leading" secondItem="Fyq-V2-86a" secondAttribute="leading" id="rsp-fo-Wjd"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="centerY" secondItem="Fyq-V2-86a" secondAttribute="centerY" id="z0Y-YF-syQ"/>
                                         </constraints>
@@ -208,14 +206,13 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bgImageView" destination="01x-SD-sKh" id="3Fl-dl-opS"/>
                         <outlet property="contentView" destination="Fyq-V2-86a" id="WZz-CT-N8L"/>
-                        <outlet property="emailEntryView" destination="FOu-yS-CGH" id="D3e-2e-vYP"/>
-                        <outlet property="emailTextEntry" destination="V5d-Kh-gDb" id="Mum-C3-dCb"/>
                         <outlet property="loginButton" destination="qvQ-On-WTK" id="dR2-2b-TA5"/>
                         <outlet property="loginScrollView" destination="bV5-Ro-HiA" id="Jh2-y0-IFM"/>
                         <outlet property="passwordEntryView" destination="VDc-JR-jNP" id="10S-tq-q9S"/>
                         <outlet property="passwordTextEntry" destination="BR4-eN-PJv" id="dK5-CO-PaK"/>
+                        <outlet property="userEntryView" destination="FOu-yS-CGH" id="ZJZ-7c-4Vl"/>
+                        <outlet property="userTextEntry" destination="V5d-Kh-gDb" id="069-0S-1tH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iq3-mm-KUF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -224,8 +221,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Login-LoginButtonDisabled" width="16" height="16"/>
-        <image name="Login-LoginButtonEnabled" width="16" height="16"/>
-        <image name="background" width="16" height="16"/>
+        <image name="CBTravel.LOGO" width="153" height="36"/>
     </resources>
 </document>

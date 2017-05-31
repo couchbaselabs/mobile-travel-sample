@@ -16,15 +16,15 @@ enum AppNotifications {
         
         
         enum userInfoKeys : String{
-            case userEmail = "userEmail"
-            
+            case user = "user"
+        
         }
     }
     enum loginInFailure :String {
         case name = "LoginFailure"
         
         enum userInfoKeys : String {
-            case userEmail = "userEmail"
+            case user = "user"
             
         }
     }
@@ -39,13 +39,13 @@ enum AppNotifications {
 extension Notification {
     
     public static func notificationForLoginSuccess(_ userEmail:String)-> Notification {
-        let userInfo = [AppNotifications.loginInSuccess.userInfoKeys.userEmail.rawValue:userEmail] as [String : Any]
+        let userInfo = [AppNotifications.loginInSuccess.userInfoKeys.user.rawValue:userEmail] as [String : Any]
         return Notification(name: Notification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, userInfo: userInfo)
         
     }
     
     public static func notificationForLoginFailure(_ userEmail:String)-> Notification {
-        let userInfo = [AppNotifications.loginInFailure.userInfoKeys.userEmail.rawValue:userEmail ]
+        let userInfo = [AppNotifications.loginInFailure.userInfoKeys.user.rawValue:userEmail ]
         return Notification(name: Notification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, userInfo: userInfo)
         
     }

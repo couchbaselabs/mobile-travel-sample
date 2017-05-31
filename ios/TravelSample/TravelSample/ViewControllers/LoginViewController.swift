@@ -15,8 +15,8 @@ class LoginViewController:UIViewController {
     @IBOutlet weak var contentView:UIView!
     @IBOutlet weak var passwordEntryView:UIView!
     @IBOutlet weak var passwordTextEntry:UITextField!
-    @IBOutlet weak var emailEntryView:UIView!
-    @IBOutlet weak var emailTextEntry:UITextField!
+    @IBOutlet weak var userEntryView:UIView!
+    @IBOutlet weak var userTextEntry:UITextField!
     
     @IBOutlet weak var loginButton:UIButton!
     @IBOutlet weak var bgImageView:UIImageView!
@@ -26,8 +26,6 @@ class LoginViewController:UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        loginActionHandler?.attachPresentingView(self)
-        self.setupView()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +63,7 @@ extension LoginViewController:UITextFieldDelegate {
         if textField == self.passwordTextEntry {
             textField.resignFirstResponder()
         }
-        else if textField == self.emailTextEntry {
+        else if textField == self.userTextEntry {
             self.passwordTextEntry.becomeFirstResponder()
         }
         return true;
@@ -73,10 +71,10 @@ extension LoginViewController:UITextFieldDelegate {
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let length = (textField.text?.characters.count)! - range.length + string.characters.count
-        let emailLength = (textField == self.emailTextEntry) ? length : self.emailTextEntry.text?.characters.count
+        let userLength = (textField == self.userTextEntry) ? length : self.userTextEntry.text?.characters.count
         let passwordLength = (textField == self.passwordTextEntry) ? length : self.passwordTextEntry.text?.characters.count
         
-         self.loginButton.isEnabled = (emailLength! > 0 && passwordLength! > 0)
+         self.loginButton.isEnabled = (userLength! > 0 && passwordLength! > 0)
         
         return true;
     }
@@ -88,7 +86,7 @@ extension LoginViewController:UITextFieldDelegate {
 extension LoginViewController {
    
     @IBAction func onLoginTapped(_ sender: UIButton) {
-        if let userName = self.emailTextEntry.text, let password = self.passwordTextEntry.text {
+        if let userName = self.userTextEntry.text, let password = self.passwordTextEntry.text {
             let cbMgr = DatabaseManager.shared
             cbMgr.openOrCreateDatabaseForUser(userName, password: password, handler: { (error) in
                 switch error {
@@ -96,9 +94,7 @@ extension LoginViewController {
                     NotificationCenter.default.post(Notification.notificationForLoginSuccess(userName))
                     
                 default:
-                    NotificationCenter.default.post(Notification.notificationForLoginFailure(userName))
-                    
-                    
+                    NotificationCenter.default.post(Notification.notificationForLoginFailure(userName))                                        
                     
                 }
             })

@@ -92,8 +92,17 @@ extension DatabaseManager {
                 return
             }
             // Create a folder for the logged in user
-            let userFolderPath = defaultDBPath.appendingPathComponent(user, isDirectory: true)
-            options.directory = userFolderPath.absoluteString
+            let userFolderUrl = defaultDBPath.appendingPathComponent(user, isDirectory: true)
+            let userFolderPath = userFolderUrl.path
+            let fileManager = FileManager.default
+            if !fileManager.fileExists(atPath: userFolderPath) {
+                try fileManager.createDirectory(atPath: userFolderPath,
+                                                    withIntermediateDirectories: true,
+                                                    attributes: nil)
+                
+            }
+            
+            options.directory = userFolderPath
             print("Database created at path \(userFolderPath)")
             _db = try Database(name: kDBName, options: options)
             handler(nil)

@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
- 
+        loadLoginViewController()
         return true
     }
 
@@ -55,7 +55,7 @@ extension AppDelegate {
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
-            loginViewController = storyboard.instantiateViewController() as? LoginViewController
+            loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController
             
             window!.rootViewController = loginViewController
             
@@ -65,16 +65,17 @@ extension AppDelegate {
     }
     
     
-    func loadMainMenuViewController() {
+    func loadFlightBookingViewController() {
         
         if let flightVC = flightBookingsViewController {
             window?.rootViewController = UIViewController()
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
-            
-            if let navController = storyboard.instantiateViewController(withIdentifier: "MainMenuNVC") as? UINavigationController{
-                menuViewController = navController.topViewController
+            window?.rootViewController = UIViewController()
+            return
+            if let navController = storyboard.instantiateViewController(withIdentifier: "FlightBookingNVC") as? UINavigationController{
+                flightBookingsViewController = navController.topViewController
                 window?.rootViewController = navController
             }
         }
@@ -98,8 +99,8 @@ extension AppDelegate {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
             
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
-                if let email = userInfo[AppNotifications.loginInSuccess.userInfoKeys.userEmail.rawValue]{
-                    self.loadMainMenuViewController()
+                if let email = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
+                    self.loadFlightBookingViewController()
                     
                 }
             }
@@ -108,7 +109,7 @@ extension AppDelegate {
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,String> {
-                if let user = userInfo[AppNotifications.loginInSuccess.userInfoKeys.userEmail.rawValue]{
+                if let user = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
                     self.logout()
                 }
                 
