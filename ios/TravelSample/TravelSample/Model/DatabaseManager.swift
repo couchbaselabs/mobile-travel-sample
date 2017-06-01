@@ -17,23 +17,25 @@ class DatabaseManager {
             return _db
         }
     }
+    // For demo purposes only. In prod apps, credentials must be stored in keychain
+    public fileprivate(set) var currentUserCredentials:(user:String,password:String)?
     
     var lastError:Error?
     
     // fileprivate
-    fileprivate let kDBName:String = "travel-sample"
+    fileprivate let kDBName:String = "travel-sample-user"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    fileprivate let kRemoteSyncUrl = "http://localhost:4984"
+    fileprivate let kRemoteSyncUrl = "blip://demo:password@localhost:4984"
     
     fileprivate var _db:Database?
     
-    fileprivate var _pushPullRepl:Replication?
+    fileprivate var _pushPullRepl:Replicator?
     
     
-    fileprivate var _pullRepl:CBLReplication?
+    fileprivate var _pullRepl:Replicator?
     
-    fileprivate var _pushRepl:CBLReplication?
+    fileprivate var _pushRepl:Replicator?
     
     fileprivate var _applicationDocumentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
     
@@ -65,28 +67,28 @@ class DatabaseManager {
     
 }
 
-// MARK: Private
-extension DatabaseManager {
-    fileprivate func openOrCreateDatabase() {
-        do {
-            var options = DatabaseOptions()
-            if let documentsPath = _applicationDocumentDirectory?.path {
-                options.directory = documentsPath
-            }
-            _db = try Database(name: kDBName, options: options)
-        }catch {
-        
-            lastError = error
-        }
-    }
-}
+//// MARK: Private
+//extension DatabaseManager {
+//    fileprivate func openOrCreateDatabase() {
+//        do {
+//            var options = DatabaseConfiguration()
+//            if let documentsPath = _applicationDocumentDirectory?.path {
+//                options.directory = documentsPath
+//            }
+//            _db = try Database(name: kDBName, options: options)
+//        }catch {
+//        
+//            lastError = error
+//        }
+//    }
+//}
 
 // MARK: Public
 extension DatabaseManager {
    
     func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
-            var options = DatabaseOptions()
+            var options = DatabaseConfiguration()
             guard let defaultDBPath = _applicationSupportDirectory else {
                 fatalError("Could not open Application Support Directory for app!")
                 return
@@ -104,7 +106,8 @@ extension DatabaseManager {
             
             options.directory = userFolderPath
             print("Database created at path \(userFolderPath)")
-            _db = try Database(name: kDBName, options: options)
+            _db = try Database(name: kDBName, config: options)
+            currentUserCredentials = (user,password)
             handler(nil)
         }catch {
             
@@ -113,14 +116,21 @@ extension DatabaseManager {
         }
     }
     
-    func startPushAndPullReplication() {
+    func startPushAndPullReplicationForCurrentUser() {
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
             // TODO: Set lastError = ...
             return
         }
-        _pushPullRepl = _db?.replication(with: remoteUrl)
+        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
+        print(dbUrl)
+        var config = ReplicatorConfiguration()
+        config.database = db
+        config.target = ReplicatorTarget.url(dbUrl)
         
-        //TODO: Filter by channels belonging to user
+        config.replicatorType = .pushAndPull
+        config.continuous = true
+        _pushPullRepl = Replicator.init(config: config)
+        
         _pushPullRepl?.start()
 
     }
@@ -144,7 +154,19 @@ extension DatabaseManager {
         _pullRepl?.stop()
     }
     
+    
 }
+//
+//extension DatabaseManager:ReplicationDelegate {
+//    public func replication(_ replication: CBLReplication, didChange status: CouchbaseLiteSwift.Replication.Status) {
+//        print("\(#function) with status \(status)")
+//    }
+//    
+//    /** Called when a replication stops, either because it finished or due to an error. */
+//    public func replication(_ replication: CBLReplication, didStopWithError error: Error?) {
+//        print(#function)
+//    }
+//}
 
 extension DatabaseManager {
     

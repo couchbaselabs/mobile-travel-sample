@@ -96,6 +96,9 @@ extension AppDelegate {
     func registerNotificationObservers() {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
             
+            let cbMgr = DatabaseManager.shared
+            cbMgr.startPushAndPullReplicationForCurrentUser()
+                
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
                 if let email = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
                     self.loadFlightBookingViewController()

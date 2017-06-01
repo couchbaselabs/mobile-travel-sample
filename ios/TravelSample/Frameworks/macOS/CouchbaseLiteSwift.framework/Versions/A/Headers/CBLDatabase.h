@@ -8,21 +8,15 @@
 
 #import <Foundation/Foundation.h>
 @class CBLDocument, CBLDocumentFragment, CBLPredicateQuery;
-@protocol CBLConflictResolver;
+@protocol CBLConflictResolver, CBLDocumentChangeListener;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /** This notification is posted by a CBLDatabase in response to document changes. */
 extern NSString* const kCBLDatabaseChangeNotification;
 
-/** The key to access the document IDs of the documents that has been changed. */
+/** The key to access a CBLDatabaseChange object containing information about the change. */
 extern NSString* const kCBLDatabaseChangesUserInfoKey;
-
-/** The key to access the last sequence number as of the notified changes. */
-extern NSString* const kCBLDatabaseLastSequenceUserInfoKey;
-
-/** The key to check whether the changes are from the current database object or not. */
-extern NSString* const kCBLDatabaseIsExternalUserInfoKey;
 
 
 /** Types of database indexes. */
@@ -43,23 +37,20 @@ typedef struct {
 } CBLIndexOptions;
 
 
-/** Options for opening a database. All properties default to NO or nil. */
-@interface CBLDatabaseOptions : NSObject <NSCopying>
+/** Configuration for opening a database. */
+@interface CBLDatabaseConfiguration : NSObject <NSCopying>
 
 /** Path to the directory to store the database in. If the directory doesn't already exist it will
-    be created when the database is opened.
-    A nil value (the default) means to use the default directory, in Application Support. You
-    won't usually need to change this. */
+    be created when the database is opened. The default directory will be in Application Support. 
+    You won't usually need to change this. */
 @property (nonatomic, copy, nullable) NSString* directory;
 
-/** File protection/encryption options (iOS only.)
-    Defaults to whatever file protection settings you've specified in your app's entitlements.
-    Specifying a nonzero value here overrides those settings for the database files.
-    If file protection is at the highest level, NSDataWritingFileProtectionCompleteUnlessOpen or
-    NSDataWritingFileProtectionComplete, it will not be possible to read or write the database
-    when the device is locked. This can make it impossible to run replications in the background
-    or respond to push notifications. */
-@property (nonatomic) NSDataWritingOptions fileProtection;
+
+/** The conflict resolver for this database. The default value is nil, which means the default
+    algorithm will be used, where the revision with more history wins.
+    An individual document can override this for itself by setting its own property. */
+@property (nonatomic, nullable) id<CBLConflictResolver> conflictResolver;
+
 
 /** A key to encrypt the database with. If the database does not exist and is being created, it
     will use this key, and the same key must be given every time it's opened.
@@ -72,11 +63,19 @@ typedef struct {
     * A default nil value, of course, means the database is unencrypted. */
 @property (nonatomic, strong, nullable) id encryptionKey;
 
-/** If YES, the database will be opened read-only. */
-@property (nonatomic) BOOL readOnly;
 
-/** Creates a new instance with a default set of options for a CBLDatabase. */
-+ (instancetype) defaultOptions;
+/** File protection/encryption options (iOS only.)
+    Defaults to whatever file protection settings you've specified in your app's entitlements.
+    Specifying a nonzero value here overrides those settings for the database files.
+    If file protection is at the highest level, NSDataWritingFileProtectionCompleteUnlessOpen or
+    NSDataWritingFileProtectionComplete, it will not be possible to read or write the database
+    when the device is locked. This can make it impossible to run replications in the background
+    or respond to push notifications. The default value is 
+    NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication which is the same default 
+    protection level as the iOS application data. */
+@property (nonatomic) NSDataWritingOptions fileProtection;
+
+- (instancetype) init;
 
 @end
 
@@ -90,54 +89,40 @@ typedef struct {
 /** The database's path. If the database is closed or deleted, nil value will be returned. */
 @property (readonly, nonatomic, nullable) NSString* path;
 
-/** Initializes a database object with a given name and the default database options.
+/** The number of documents in the database. */
+@property (readonly, nonatomic) NSUInteger count;
+
+/** The database's configuration. If the configuration is not specify when initializing 
+    the database, the default configuration will be returned. */
+@property (readonly, copy, nonatomic) CBLDatabaseConfiguration *config;
+
+
+#pragma mark - INITIALIZER
+
+
+/** Initializes a database object with a given name and the default database configuration.
     If the database does not yet exist, it will be created.
     @param name  The name of the database. May NOT contain capital letters!
     @param error  On return, the error if any. */
 - (nullable instancetype) initWithName: (NSString*)name
                                  error: (NSError**)error;
 
-/** Initializes a Couchbase Lite database with a given name and database options.
+/** Initializes a Couchbase Lite database with a given name and database configuration.
     If the database does not yet exist, it will be created, unless the `readOnly` option is used.
     @param name  The name of the database. May NOT contain capital letters!
-    @param options  The database options, or nil for the default options.
+    @param config   The database configuration, or nil for the default configuration.
     @param error  On return, the error if any. */
 - (nullable instancetype) initWithName: (NSString*)name
-                               options: (nullable CBLDatabaseOptions*)options
+                                config: (nullable CBLDatabaseConfiguration*)config
                                  error: (NSError**)error
     NS_DESIGNATED_INITIALIZER;
 
 /** Not available */
 - (instancetype) init NS_UNAVAILABLE;
 
-/** Closes a database. */
-- (BOOL) close: (NSError**)error;
 
-/** Changes the database's encryption key, or removes encryption if the new key is nil.
-    @param key  The encryption key in the form of an NSString (a password) or an
-                NSData object exactly 32 bytes in length (a raw AES key.) If a string is given,
-                it will be internally converted to a raw key using 64,000 rounds of PBKDF2 hashing.
-                A nil value will decrypt the database.
-    @param error  If an error occurs, it will be stored here if this parameter is non-NULL.
-    @result  YES if the database was successfully re-keyed, or NO on error. */
-- (BOOL) changeEncryptionKey: (nullable id)key error: (NSError**)error;
+#pragma mark - GET EXISTING DOCUMENT
 
-/** Deletes a database. */
-- (BOOL) deleteDatabase: (NSError**)error;
-
-/** Deletes a database of the given name in the given directory. */
-+ (BOOL) deleteDatabase: (NSString*)name
-            inDirectory: (nullable NSString*)directory
-                  error: (NSError**)error;
-
-/** Checks whether a database of the given name exists in the given directory or not. */
-+ (BOOL) databaseExists: (NSString*)name
-            inDirectory: (nullable NSString*)directory;
-
-/** Runs a group of database operations in a batch. Use this when performing bulk write operations
-    like multiple inserts/updates; it saves the overhead of multiple database commits, greatly
-    improving performance. */
-- (BOOL) inBatch: (NSError**)error do: (void (NS_NOESCAPE ^)())block;
 
 /** Gets an existing CBLDocument object with the given ID. If the document with the given ID 
     doesn't exist in the database, the value returned will be nil.
@@ -146,16 +131,19 @@ typedef struct {
     */
 - (nullable CBLDocument*) documentWithID: (NSString*)documentID;
 
-/** Gets a document fragment with the given document ID. */
-- (CBLDocumentFragment*) objectForKeyedSubscript: (NSString*)documentID;
+
+#pragma mark - CHECK DOCUMENT EXISTS
+
 
 /** Checks whether the document of the given ID exists in the database or not. */
-- (BOOL) documentExists: (NSString*)documentID;
+- (BOOL) contains: (NSString*)documentID;
 
-/** The conflict resolver for this database.
-    If nil, a default algorithm will be used, where the revision with more history wins.
-    An individual document can override this for itself by setting its own property. */
-@property (nonatomic, nullable) id<CBLConflictResolver> conflictResolver;
+
+#pragma mark - SUBSCRIPTION
+
+
+/** Gets a document fragment with the given document ID. */
+- (CBLDocumentFragment*) objectForKeyedSubscript: (NSString*)documentID;
 
 
 #pragma mark - SAVE DELETE PURGE
@@ -180,6 +168,64 @@ typedef struct {
     This is more drastic than deletion: it removes all traces of the document.
     The purge will NOT be replicated to other databases. */
 - (BOOL) purgeDocument: (CBLDocument*)document error: (NSError**)error;
+
+
+#pragma mark - BATCH OPERATION
+
+
+/** Runs a group of database operations in a batch. Use this when performing bulk write operations
+ like multiple inserts/updates; it saves the overhead of multiple database commits, greatly
+ improving performance. */
+- (BOOL) inBatch: (NSError**)error do: (void (NS_NOESCAPE ^)())block;
+
+
+#pragma mark - DATABASE MAINTENANCE
+
+
+/** Closes a database. */
+- (BOOL) close: (NSError**)error;
+
+/** Deletes a database. */
+- (BOOL) deleteDatabase: (NSError**)error;
+
+/** Compacts the database file by deleting unused attachment files and 
+    vacuuming the SQLite database */
+- (BOOL) compact: (NSError**)error;
+
+/** Changes the database's encryption key, or removes encryption if the new key is nil.
+ @param key  The encryption key in the form of an NSString (a password) or an
+ NSData object exactly 32 bytes in length (a raw AES key.) If a string is given,
+ it will be internally converted to a raw key using 64,000 rounds of PBKDF2 hashing.
+ A nil value will decrypt the database.
+ @param error  If an error occurs, it will be stored here if this parameter is non-NULL.
+ @result  YES if the database was successfully re-keyed, or NO on error. */
+- (BOOL) changeEncryptionKey: (nullable id)key error: (NSError**)error;
+
+/** Deletes a database of the given name in the given directory. */
++ (BOOL) deleteDatabase: (NSString*)name
+            inDirectory: (nullable NSString*)directory
+                  error: (NSError**)error;
+
+/** Checks whether a database of the given name exists in the given directory or not. */
++ (BOOL) databaseExists: (NSString*)name
+            inDirectory: (nullable NSString*)directory;
+
+
+#pragma mark - DOCUMENT CHANGES
+
+
+/** Add a document change listener to the document.
+    @param listener the listener.
+    @param documentID the document ID. */
+- (void) addChangeListener: (id <CBLDocumentChangeListener>)listener
+             forDocumentID: (NSString*)documentID;
+
+
+/** Remove the document change listener from the document. 
+    @param listener the listener.
+    @param documentID the document ID. */
+- (void) removeChangeListener: (id <CBLDocumentChangeListener>)listener
+                forDocumentID: (NSString*)documentID;
 
 
 #pragma mark - QUERYING:
