@@ -131,6 +131,11 @@ extension DatabaseManager {
         config.continuous = true
         _pushPullRepl = Replicator.init(config: config)
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(replicationProgress(notification:)),
+                                               name: NSNotification.Name.ReplicatorChange,
+                                               object: _pushPullRepl)
+        
         _pushPullRepl?.start()
 
     }
@@ -193,9 +198,15 @@ extension DatabaseManager {
 
 
 
-// MARK: Internal
+// MARK: Replication Observer
 extension DatabaseManager {
-    
+    @objc func replicationProgress(notification: NSNotification) {
+        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
+        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
+        
+        print("[Todo] Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+      
+    }
     
 }
 

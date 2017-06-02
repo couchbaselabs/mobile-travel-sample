@@ -30,7 +30,7 @@ extension UIStoryboard {
         return UIStoryboard(name:storyboard.rawValue, bundle: bundle)
     }
     
-    func instantiateViewController<T:UIViewController>()->T where T:StoryboardIdentifiable {
+    func instantiateViewControllerWithIdentifier<T:UIViewController>()->T where T:StoryboardIdentifiable {
         let vc =  self.instantiateViewController(withIdentifier: T.storyboardIdentifier)
         if let viewController = vc as? T {
             return viewController
