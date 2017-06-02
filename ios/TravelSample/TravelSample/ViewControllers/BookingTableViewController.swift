@@ -10,17 +10,24 @@ import UIKit
 
 class BookingTableViewController: UITableViewController {
 
-    var flights:[String]?
+    lazy var bookingPresenter:BookingPresenter = BookingPresenter()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Bookings", comment: "")
+        self.bookingPresenter.attachPresentingView(self)
+        
         self.registerCells()
         self.initializeTable()
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.bookingPresenter.fetchBookingsForCurrentUser(observeChanges: false)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -79,8 +86,11 @@ extension BookingTableViewController {
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "BookingCell")
-        let booking = flights?[indexPath.section]
-        cell.textLabel?.text = "Booking"
+        if bookingPresenter.bookings.count > indexPath.section {
+            let booking = bookingPresenter.bookings[indexPath.section]
+            
+            cell.textLabel?.text = booking["flight"] as? String
+        }
         cell.selectionStyle = .none
         return cell
         
@@ -93,11 +103,25 @@ extension BookingTableViewController {
     
     
     public override func numberOfSections(in tableView: UITableView) -> Int {
-        return (flights?.count) ?? 0
+        return (bookingPresenter.bookings.count) 
     }
     
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
+}
+
+extension BookingTableViewController:BookingPresentingViewProtocol {
+    func updateUIWithUpdatedBookings(_ bookings: Bookings?, error: Error?) {
+         print(#function)
+        switch error {
+            case nil:
+                self.tableView.reloadData()
+            default:
+                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Fai", comment: ""))
+        }
+        //  Ideally, we want to add/remove table cells instead of entire reload but single document here with nested flight details!
+     
+    }
 }
 

@@ -11,10 +11,11 @@ import Foundation
 typealias Booking = [String:Any]
 typealias Bookings = [Booking]
 protocol BookingPresenterProtocol:PresenterProtocol {
+    var bookings:Bookings {get}
     func fetchBookingsForCurrentUser( observeChanges:Bool) 
 }
 
 // Workplan view controller must implement this protocol
 protocol BookingPresentingViewProtocol:PresentingViewProtocol {
-    func updateUIWithBookings(_ bookings:Bookings?)
+    func updateUIWithUpdatedBookings(_ bookings:Bookings?,error:Error?)
 }

@@ -27,10 +27,10 @@ public protocol PresenterProtocol: class {
 // default implementation of PresentingViewProtocol
 extension PresentingViewProtocol {
     public func dataStartedLoading() {
-        //noop
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     public func dataFinishedLoading() {
-        //noop
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
 }
