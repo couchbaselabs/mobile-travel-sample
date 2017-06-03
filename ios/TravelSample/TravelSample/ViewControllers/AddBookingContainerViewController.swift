@@ -22,7 +22,6 @@ class AddBookingContainerViewController:UIViewController {
         if _inboundFlightListingTVC == nil {
             let storyboard = UIStoryboard.getStoryboard(.Main)
             _inboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
-            _inboundFlightListingTVC?.category = "One"
         }
         return _inboundFlightListingTVC
     }
@@ -33,7 +32,6 @@ class AddBookingContainerViewController:UIViewController {
             
             let storyboard = UIStoryboard.getStoryboard(.Main)
             _outboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
-            _outboundFlightListingTVC?.category = "Two"
         }
         return _outboundFlightListingTVC
     }
