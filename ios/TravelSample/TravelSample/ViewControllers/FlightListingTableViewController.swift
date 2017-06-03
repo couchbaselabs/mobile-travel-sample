@@ -10,7 +10,6 @@ import UIKit
 
 class FlightListingTableViewController: UITableViewController {
 
-    var category:String?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,13 +22,7 @@ class FlightListingTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.title = category
-        if category == "Two" {
-            tableView.backgroundColor = UIColor.green
-        }
-        else {
-                  tableView.backgroundColor = UIColor.red
-        }
+       
     }
 
     override func didReceiveMemoryWarning() {

@@ -21,12 +21,14 @@ class BookingPresenter:BookingPresenterProtocol {
     }
     func fetchBookingsForCurrentUser( observeChanges:Bool) {
         print(#function)
+        _bookings.removeAll()
         guard let db = dbMgr.db , let user = dbMgr.currentUserCredentials?.user else {
             fatalError("db is not initialized at this point!")
             return
         }
         self.associatedView?.dataStartedLoading()
-        // TODO: Switch to live query
+        // TODO: Switch to live query depending on observe changes.
+        
         let bookingQuery = Query
             .select()
             .from(DataSource.database(db))

@@ -17,17 +17,25 @@ class AddBookingContainerViewController:UIViewController {
         case inbound
     }
     
-    fileprivate var  inboundFlightListingTVC:FlightListingTableViewController  {
-        let storyboard = UIStoryboard.getStoryboard(.Main)
-        let _vc = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as! FlightListingTableViewController
-        _vc.category = "One"
-        return _vc
+    fileprivate var _inboundFlightListingTVC:FlightListingTableViewController?
+    fileprivate var  inboundFlightListingTVC:FlightListingTableViewController?  {
+        if _inboundFlightListingTVC == nil {
+            let storyboard = UIStoryboard.getStoryboard(.Main)
+            _inboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
+            _inboundFlightListingTVC?.category = "One"
+        }
+        return _inboundFlightListingTVC
     }
-    fileprivate var outboundFlightListingTVC:FlightListingTableViewController {
-        let storyboard = UIStoryboard.getStoryboard(.Main)
-         let _vc = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as! FlightListingTableViewController
-        _vc.category = "Two"
-        return _vc
+    
+    fileprivate var _outboundFlightListingTVC:FlightListingTableViewController?
+    fileprivate var outboundFlightListingTVC:FlightListingTableViewController? {
+        if _outboundFlightListingTVC == nil {
+            
+            let storyboard = UIStoryboard.getStoryboard(.Main)
+            _outboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
+            _outboundFlightListingTVC?.category = "Two"
+        }
+        return _outboundFlightListingTVC
     }
     
     private var firstTime = false
@@ -77,7 +85,10 @@ extension AddBookingContainerViewController {
 }
 
 extension AddBookingContainerViewController {
-    fileprivate func switchToViewController (_ controller:FlightListingTableViewController) {
+    fileprivate func switchToViewController (_ controller:FlightListingTableViewController?) {
+        guard let controller = controller else {
+            return
+        }
         if currentFlightListingVC == controller {
             return
         }
