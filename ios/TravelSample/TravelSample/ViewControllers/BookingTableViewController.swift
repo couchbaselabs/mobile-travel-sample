@@ -17,13 +17,23 @@ class BookingTableViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Bookings", comment: "")
-        self.bookingPresenter.attachPresentingView(self)
         
         self.registerCells()
         self.initializeTable()
         
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        self.bookingPresenter.attachPresentingView(self)
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        self.bookingPresenter.detachPresentingView(self)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.bookingPresenter.fetchBookingsForCurrentUser(observeChanges: false)

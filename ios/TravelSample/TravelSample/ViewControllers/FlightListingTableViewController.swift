@@ -10,9 +10,33 @@ import UIKit
 
 class FlightListingTableViewController: UITableViewController {
 
+    lazy var flightPresenter:FlightPresenter = FlightPresenter()
+    fileprivate var flights:Flights?
+    var searchCriteria:(source:FlightSearchCriteria,destination:FlightSearchCriteria)? {
+        didSet {
+            // Do a N1QL Query directly on server to fetch the flight details
+            if let source = searchCriteria?.source, let destination = searchCriteria?.destination {
+            flightPresenter.fetchFlightsForCurrentUserWithSource(source, destination: destination) { [weak self](flights, error) in
+                switch error {
+                case nil:
+                    self?.flights = flights
+                    self?.tableView.reloadData()
+                default:
+                    self?.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("There was an error when trying to fetch flight details!", comment: ""))
+                }
+            }
+            }
+        }
+    }
+    
+    private func registerCells() {
+        self.tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "FlightCell")
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+    
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -22,7 +46,13 @@ class FlightListingTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       
+        self.flightPresenter.attachPresentingView(self)
+    
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        self.flightPresenter.detachPresentingView(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,28 +60,7 @@ class FlightListingTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -97,4 +106,39 @@ class FlightListingTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension FlightListingTableViewController {
+    // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+       
+        return self.flights?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return 1
+    }
+    
+    
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "FlightCell")
+        guard let flights = self.flights else {
+            return cell
+        }
+        if flights.count > indexPath.section {
+            let flight = flights[indexPath.section]
+            
+            cell.textLabel?.text = flight["flight"] as? String
+        }
+        cell.selectionStyle = .none
+        return cell
+     }
+     
+
+}
+
+extension FlightListingTableViewController:PresentingViewProtocol {
+    // Nothing to override. Just go with the default implementation
 }
