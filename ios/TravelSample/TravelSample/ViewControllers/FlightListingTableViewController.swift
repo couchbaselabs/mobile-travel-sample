@@ -47,6 +47,7 @@ class FlightListingTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.flightPresenter.attachPresentingView(self)
+      
     
     }
     

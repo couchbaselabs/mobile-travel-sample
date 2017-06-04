@@ -27,7 +27,7 @@ import Foundation
 class FlightPresenter:FlightPresenterProtocol {
     // Example query:http://localhost:8080/api/flightPaths/Heathrow/San%20Diego%20Intl?leave=05/04/2017&return=leave=05/04/2017
     
-    let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/flightPaths")
+    let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
     private var dbMgr:DatabaseManager = DatabaseManager.shared
     weak var associatedView: PresentingViewProtocol?
 
@@ -40,8 +40,7 @@ class FlightPresenter:FlightPresenterProtocol {
     
     fileprivate  var  dateFormatter:DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
+        formatter.dateFormat = "MM/dd/yyyy"
         
         return formatter
     }
@@ -54,10 +53,12 @@ class FlightPresenter:FlightPresenterProtocol {
         if let date = source.date {
             leaveDate = dateFormatter.string(from: date)
         }
-        var queryPath = "flightPaths/\(source.name)/\(destination.name)?leave=\(leaveDate)"
-        print("search queryPath is \(queryPath)")
-        if let url = URL.init(string: queryPath, relativeTo: serverBackendUrl) {
-            session.dataTask(with: url) { [weak self] (data, response, error) in
+        let searchPath = "\(source.name)/\(destination.name)"
+        let escapedSearchPath = searchPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        let fullPath = "flightPaths/\(String(describing: escapedSearchPath!))?leave=\(leaveDate)"
+        
+        if let url = URL.init(string: fullPath, relativeTo: serverBackendUrl) {
+            let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in
                 self?.associatedView?.dataFinishedLoading()
                 
                 switch error {
@@ -69,17 +70,22 @@ class FlightPresenter:FlightPresenterProtocol {
                                 if let dataVal = data {
                                     do {
                                         if let flightData = try JSONSerialization.jsonObject(with: dataVal, options:.allowFragments) as? [String:Flights] {
-                                             handler(flightData["data"],nil)
+                                            DispatchQueue.main.async {
+                                                 handler(flightData["data"],nil)
+                                            }
+                                            
                                         }
                                     }
                                 
                                     catch {
                                          print("Failed to serialize JSON data")
                                         //TODO: Create custom error
-                                         handler(nil,nil)
+                                        DispatchQueue.main.async {
+                                            handler(nil,nil)
+                                        }
+                                        
                                     }
                                 }
-                        
                         
                             default:
                                 // TODO: Create custom error
@@ -87,9 +93,14 @@ class FlightPresenter:FlightPresenterProtocol {
                             }                        
                     }
                 default:
-                    handler(nil,error)
+                    DispatchQueue.main.async {
+                        handler(nil,error)
+                    }
+
+                    
                 }
             }
+            dataTask.resume()
         }
     }
     

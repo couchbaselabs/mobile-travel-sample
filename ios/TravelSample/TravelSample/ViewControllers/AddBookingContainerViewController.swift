@@ -70,6 +70,7 @@ extension AddBookingContainerViewController {
     
     @IBAction func onSegmentSelected(_ sender:UISegmentedControl) {
         if sender.selectedSegmentIndex == SegmentIndex.inbound.rawValue {
+            inboundFlightListingTVC?.searchCriteria = (source:("San Diego Intl",Date.init()),destination:("Heathrow",Date.init()))
             switchToViewController(inboundFlightListingTVC)
         }
         if sender.selectedSegmentIndex == SegmentIndex.outbound.rawValue {
@@ -77,9 +78,7 @@ extension AddBookingContainerViewController {
         }
         
     }
-    
-    
-    
+ 
 }
 
 extension AddBookingContainerViewController {
