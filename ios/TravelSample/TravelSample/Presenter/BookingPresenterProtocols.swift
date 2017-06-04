@@ -12,7 +12,10 @@ typealias Booking = [String:Any]
 typealias Bookings = [Booking]
 protocol BookingPresenterProtocol:PresenterProtocol {
     var bookings:Bookings {get}
-    func fetchBookingsForCurrentUser( observeChanges:Bool) 
+    func fetchBookingsForCurrentUser( observeChanges:Bool)
+    func addFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void)
+    func replaceFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void)
+    func removeFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void)
 }
 
 // Workplan view controller must implement this protocol

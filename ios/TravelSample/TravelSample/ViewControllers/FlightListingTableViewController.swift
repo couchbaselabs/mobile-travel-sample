@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FlightListingDelegate {
+protocol FlightListingProtocol:class {
     func onSelectedFlight(_ details:Flight?)
     
 }
@@ -16,7 +16,7 @@ protocol FlightListingDelegate {
 class FlightListingTableViewController: UITableViewController {
 
     lazy var flightPresenter:FlightPresenter = FlightPresenter()
-    weak var delegate:FlightListingDelegate?
+    weak var delegate:FlightListingProtocol?
     
     fileprivate var flights:Flights?
     fileprivate var indexPathOfCurrentSelectedFlight:IndexPath?

@@ -16,8 +16,6 @@ protocol FlightPresenterProtocol:PresenterProtocol {
     var flights:Flights {get}
     func fetchFlightsForCurrentUserWithSource( _ source:FlightSearchCriteria,destination:FlightSearchCriteria, handler:@escaping(_ flights:Flights?, _ error:Error?)->Void)
     
-    func addFlightBookings(_ flights:Flights, handler:@escaping(_ error:Error?)->Void)
-    func replaceFlightBookings(_ flights:Flights, handler:@escaping(_ error:Error?)->Void)
-    func removeFlightBookings(_ flights:Flights, handler:@escaping(_ error:Error?)->Void)
+   
 }
 

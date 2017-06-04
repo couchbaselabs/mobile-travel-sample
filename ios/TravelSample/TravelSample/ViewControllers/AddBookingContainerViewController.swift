@@ -11,7 +11,8 @@ import UIKit
 class AddBookingContainerViewController:UIViewController {
     
     @IBOutlet var listingContainerView:UIView!
-    
+    fileprivate var outboundFlightSelection:Flight?
+    fileprivate var returnFlightSelection:Flight?
     enum SegmentIndex:Int {
         case outbound = 0
         case inbound
@@ -22,6 +23,7 @@ class AddBookingContainerViewController:UIViewController {
         if _inboundFlightListingTVC == nil {
             let storyboard = UIStoryboard.getStoryboard(.Main)
             _inboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
+            _inboundFlightListingTVC?.delegate = self
         }
         return _inboundFlightListingTVC
     }
@@ -32,6 +34,7 @@ class AddBookingContainerViewController:UIViewController {
             
             let storyboard = UIStoryboard.getStoryboard(.Main)
             _outboundFlightListingTVC = storyboard.instantiateViewController(withIdentifier: "FlightListingTableViewController") as? FlightListingTableViewController
+            _outboundFlightListingTVC?.delegate = self
         }
         return _outboundFlightListingTVC
     }
@@ -66,7 +69,7 @@ extension AddBookingContainerViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func onConfirmBooking(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func onSegmentSelected(_ sender:UISegmentedControl) {
@@ -100,5 +103,17 @@ extension AddBookingContainerViewController {
         listingContainerView.addSubview(controller.view)
         
         currentFlightListingVC = controller
+    }
+}
+
+extension AddBookingContainerViewController:FlightListingProtocol {
+    func onSelectedFlight(_ details:Flight?){
+        if currentFlightListingVC == inboundFlightListingTVC {
+            returnFlightSelection = details
+        }
+        if currentFlightListingVC == outboundFlightListingTVC {
+            outboundFlightSelection = details
+        }
+        
     }
 }
