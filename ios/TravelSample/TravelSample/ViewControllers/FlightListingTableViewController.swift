@@ -8,10 +8,20 @@
 
 import UIKit
 
+protocol FlightListingDelegate {
+    func onSelectedFlight(_ details:Flight?)
+    
+}
+
 class FlightListingTableViewController: UITableViewController {
 
     lazy var flightPresenter:FlightPresenter = FlightPresenter()
+    weak var delegate:FlightListingDelegate?
+    
     fileprivate var flights:Flights?
+    fileprivate var indexPathOfCurrentSelectedFlight:IndexPath?
+    
+    
     var searchCriteria:(source:FlightSearchCriteria,destination:FlightSearchCriteria)? {
         didSet {
             // Do a N1QL Query directly on server to fetch the flight details
@@ -109,11 +119,10 @@ class FlightListingTableViewController: UITableViewController {
 
 }
 
+// MARK: - Table view data source
 extension FlightListingTableViewController {
-    // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-       
         return self.flights?.count ?? 0
     }
     
@@ -138,6 +147,30 @@ extension FlightListingTableViewController {
      }
      
 
+}
+
+// MARK: - Table view data source
+extension FlightListingTableViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Logic to allow selection of only one flight listing
+        let cell = tableView.cellForRow(at: indexPath)
+        if indexPathOfCurrentSelectedFlight == indexPath {
+            cell?.accessoryType = UITableViewCellAccessoryType.none
+            indexPathOfCurrentSelectedFlight = nil
+            delegate?.onSelectedFlight(nil)
+            
+        }
+        else {
+            if let indexPathOfCurrentSelectedFlight = indexPathOfCurrentSelectedFlight {
+                let prevSelectedCell = tableView.cellForRow(at: indexPathOfCurrentSelectedFlight)
+                prevSelectedCell?.accessoryType = UITableViewCellAccessoryType.none
+            }
+            indexPathOfCurrentSelectedFlight = indexPath
+            cell?.accessoryType = UITableViewCellAccessoryType.checkmark
+            let flight = flights?[indexPath.section]
+            delegate?.onSelectedFlight(flight)
+        }
+    }
 }
 
 extension FlightListingTableViewController:PresentingViewProtocol {

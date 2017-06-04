@@ -19,6 +19,7 @@ class BookingPresenter:BookingPresenterProtocol {
             return _bookings
         }
     }
+    
     func fetchBookingsForCurrentUser( observeChanges:Bool) {
         print(#function)
         _bookings.removeAll()
@@ -35,14 +36,14 @@ class BookingPresenter:BookingPresenterProtocol {
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
         do {
             for (_, row) in try bookingQuery.run().enumerated() {
+                // There should be only one document for a user
                 print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
                 if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
                      _bookings += bookings
                 }
-               
             }
             self.associatedView?.dataFinishedLoading()
-            
+            print("Thread is \(Thread.current)")
             self.associatedView?.updateUIWithUpdatedBookings(bookings, error: nil)
         }
         catch {

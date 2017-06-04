@@ -57,14 +57,15 @@ class AddBookingContainerViewController:UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    
-  
-    
+
 }
 
 extension AddBookingContainerViewController {
     
     @IBAction func onCancelTapped(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func onConfirmBooking(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     
