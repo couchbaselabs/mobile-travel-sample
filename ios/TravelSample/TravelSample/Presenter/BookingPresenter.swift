@@ -53,11 +53,11 @@ class BookingPresenter:BookingPresenterProtocol {
         _bookings.removeAll()
         guard let db = dbMgr.db , let user = dbMgr.currentUserCredentials?.user else {
             fatalError("db is not initialized at this point!")
-            return
+
         }
         self.associatedView?.dataStartedLoading()
-        // TODO: Switch to live query depending on observe changes.
         
+        // TODO: Switch to live query depending on observe changes.
         let bookingQuery = Query
             .select()
             .from(DataSource.database(db))
@@ -130,6 +130,7 @@ extension BookingPresenter {
             flightDocument.set(_bookings, forKey: "flights")
             do {
                 try db.save(flightDocument)
+                  handler(nil)
             }
             catch {
                 handler(error)

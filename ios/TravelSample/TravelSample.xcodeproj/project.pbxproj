@@ -16,6 +16,7 @@
 		5F2CD93D1EDE28630069F12C /* PresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */; };
 		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
+		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
 		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
 		5FC6ADB01EDEFB2100CED153 /* BookingPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */; };
 		5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */; };
@@ -54,6 +55,7 @@
 		5F2CD93C1EDE28630069F12C /* PresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterProtocols.swift; sourceTree = "<group>"; };
 		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
 		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
 		5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenter.swift; sourceTree = "<group>"; };
@@ -120,10 +122,11 @@
 		5F2CD92D1EDDC4100069F12C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5F2CD92E1EDDC4470069F12C /* BookingTableViewController.swift */,
 				5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */,
+				5F2CD92E1EDDC4470069F12C /* BookingTableViewController.swift */,
 				5FC6ADC11EE1F7F300CED153 /* AddBookingContainerViewController.swift */,
 				5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */,
+				5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */,
 				5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */,
 				5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */,
+				5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */,
 				5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */,
 				5FC6ADC21EE1F7F300CED153 /* AddBookingContainerViewController.swift in Sources */,
 				5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */,

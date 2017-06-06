@@ -22,3 +22,10 @@ protocol BookingPresenterProtocol:PresenterProtocol {
 protocol BookingPresentingViewProtocol:PresentingViewProtocol {
     func updateUIWithUpdatedBookings(_ bookings:Bookings?,error:Error?)
 }
+
+extension BookingPresentingViewProtocol {
+    func updateUIWithUpdatedBookings(_ bookings:Bookings?,error:Error?) {
+        // NOOP
+    }
+ 
+}

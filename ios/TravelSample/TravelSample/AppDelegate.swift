@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CouchbaseLiteSwift
+//import CouchbaseLiteSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

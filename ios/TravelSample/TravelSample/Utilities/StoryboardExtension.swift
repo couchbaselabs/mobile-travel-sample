@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 extension UIStoryboard {
     enum Storyboard:String {
         case Main = "Main"
@@ -15,11 +16,14 @@ extension UIStoryboard {
     
     enum StoryboardSegue {
         case addFlightBooking
+        case searchFlight
         
         var identifier:String {
             switch self {
             case .addFlightBooking:
                 return "AddBookingSegue"
+            case .searchFlight:
+                return "SearchFlightSegue"
                 
             }
         }

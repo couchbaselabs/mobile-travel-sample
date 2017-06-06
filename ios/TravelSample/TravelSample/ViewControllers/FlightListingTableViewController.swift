@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FlightListingProtocol:class {
-    func onSelectedFlight(_ details:Flight?)
+    func onSelectedFlight(_ details:Booking?)
     
 }
 
