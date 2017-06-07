@@ -16,7 +16,7 @@ class AddBookingContainerViewController:UIViewController {
     @IBOutlet weak var searchViewHeightConstraint: NSLayoutConstraint!
     
     enum SearchViewHeight:CGFloat {
-        case regular = 140.0
+        case regular = 165.0
         case expanded = 250.0
         
     }

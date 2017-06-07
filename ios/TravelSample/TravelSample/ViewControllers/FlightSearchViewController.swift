@@ -169,7 +169,7 @@ extension FlightSearchViewController :UITextFieldDelegate{
 }
 
 // MARK: - Table view data source
-extension FlightSearchViewController:UITableViewDelegate, UITableViewDataSource {
+extension FlightSearchViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.airports?.count ?? 0
     }
@@ -194,6 +194,30 @@ extension FlightSearchViewController:UITableViewDelegate, UITableViewDataSource 
         return cell
     }
 
+}
+
+// MARK: - Table view data source
+extension FlightSearchViewController:UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.onAirportSearchTextFieldWasSelected(false)
+        self.fromTableView.isHidden = true
+        self.toTableView.isHidden = true
+        guard let airports = self.airports else {
+            return
+        }
+        if airports.count > indexPath.section {
+            let airport = airports[indexPath.section]
+            
+            if tableView == fromTableView {
+                self.fromTextField.text = airport
+            }
+            if tableView == toTableView {
+                self.toTextField.text = airport
+            }
+            
+        }
+    }
+    
 }
 
 extension FlightSearchViewController:PresentingViewProtocol {
