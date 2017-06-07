@@ -267,7 +267,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Tgx-cd-zTl">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="qDi-bY-Koo"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="qDi-bY-Koo">
+                            <connections>
+                                <action selector="onLogoutTapped:" destination="CEv-bd-Ona" id="bXE-Pv-qPt"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="v6J-1O-Gsv">
                                 <connections>

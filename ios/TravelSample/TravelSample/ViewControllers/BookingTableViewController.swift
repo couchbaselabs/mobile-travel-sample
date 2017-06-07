@@ -51,7 +51,7 @@ class BookingTableViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
-        self.tableView.tableHeaderView = searchHeaderView()
+      //  self.tableView.tableHeaderView = searchHeaderView()
     }
     
     
@@ -73,6 +73,15 @@ class BookingTableViewController: UITableViewController {
         return view
 
     }
+    
+    
+    @IBAction func onLogoutTapped(_ sender: UIBarButtonItem) {
+        let cbMgr = DatabaseManager.shared
+        let _ = cbMgr.closeDatabaseForCurrentUser()
+        NotificationCenter.default.post(Notification.notificationForLogOut())
+        
+    }
+
     
 }
 

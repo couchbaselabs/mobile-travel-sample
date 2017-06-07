@@ -161,7 +161,17 @@ extension DatabaseManager {
     }
     
   
-    
+    func closeDatabaseForCurrentUser() -> Bool {
+        do {
+            // Get handle to DB  specified path
+            try _db?.close()
+            return true
+                
+        }
+        catch {
+            return false
+        }
+    }
     
     // Stops database sync/replication
     func stopAllReplications() {
@@ -194,20 +204,6 @@ extension DatabaseManager {
 //}
 
 extension DatabaseManager {
-    
-    fileprivate func configureCBManagerForSharedData() -> Bool {
-        do {
-            
-            return true
-        }
-        catch {
-            return false
-            
-        }
-    }
-    
-    
-    
     
     private func enableCrazyLevelLogging() {
    
