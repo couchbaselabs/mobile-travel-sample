@@ -27,6 +27,7 @@
 		5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */; };
 		5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */; };
 		5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */; };
+		5FF733BD1EE835E000ECC392 /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +65,7 @@
 		5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightListingTableViewController.swift; sourceTree = "<group>"; };
 		5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenter.swift; sourceTree = "<group>"; };
+		5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		5F2CD90E1EDDB5620069F12C /* TravelSample */ = {
 			isa = PBXGroup;
 			children = (
+				5FF733B71EE8354700ECC392 /* prebuilt */,
 				5F2CD9361EDDC53E0069F12C /* Presenter */,
 				5F2CD9351EDDC5330069F12C /* Model */,
 				5F2CD9341EDDC5090069F12C /* Utilities */,
@@ -177,6 +180,14 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		5FF733B71EE8354700ECC392 /* prebuilt */ = {
+			isa = PBXGroup;
+			children = (
+				5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */,
+			);
+			path = prebuilt;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -238,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */,
+				5FF733BD1EE835E000ECC392 /* travel-sample.cblite2 in Resources */,
 				5F2CD9331EDDC4F40069F12C /* Assets.xcassets in Resources */,
 				5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */,
 			);
@@ -330,12 +342,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -374,10 +387,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

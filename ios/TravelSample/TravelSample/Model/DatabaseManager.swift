@@ -23,7 +23,7 @@ class DatabaseManager {
     var lastError:Error?
     
     // fileprivate
-    fileprivate let kDBName:String = "travel-sample-user"
+    fileprivate let kDBName:String = "travel-sample"
     
     // This is the remote URL of the Sync Gateway (public Port)
     fileprivate let kRemoteSyncUrl = "blip://demo:password@localhost:4984"
@@ -106,7 +106,25 @@ extension DatabaseManager {
             
             options.directory = userFolderPath
             print("Database created at path \(userFolderPath)")
-            _db = try Database(name: kDBName, config: options)
+            if Database.exists(kDBName, inDirectory: userFolderPath) == false {
+                // Load prebuilt database from App Bundle and copy over to Applications support path
+                if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
+                    let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
+                    try fileManager.copyItem(atPath: prebuiltPath, toPath: destinationDBPath)
+                    
+                   
+                }
+                // Get handle to DB  specified path
+                _db = try Database(name: kDBName, config: options)
+            
+               
+            }
+            else {
+                // Create a DB at specified path
+                 _db = try Database(name: kDBName, config: options)
+            }
+            
+            
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -130,6 +148,8 @@ extension DatabaseManager {
         config.replicatorType = .pushAndPull
         config.continuous = true
         _pushPullRepl = Replicator.init(config: config)
+        
+        //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(replicationProgress(notification:)),
