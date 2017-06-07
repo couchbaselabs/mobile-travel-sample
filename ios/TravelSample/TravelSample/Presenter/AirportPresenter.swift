@@ -11,42 +11,64 @@ import CouchbaseLiteSwift
 
 class AirportPresenter:AirportPresenterProtocol {
 
-     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
-    
+    fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     
     weak var associatedView: PresentingViewProtocol?
     
     fileprivate var _flights:Flights = Flights()
     
-    
+    enum AirportCodeLength:Int {
+        case FAA = 3
+        case ICAO = 4
+        
+    }
 }
 
 
-// MARK: Local DB Queries via CBM 2.0
+// MARK: Local DB Queries via CBM 2.0. Both Regular queries and FTS are used
 extension AirportPresenter {
     func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) {
         guard let db = dbMgr.db else {
             fatalError("db is not initialized at this point!")
             
         }
-        
-        // Search for all airports starting with specific searchStr
-        let startsWithQuery = Query
-            .select()
-            .from(DataSource.database(db))
-            .where(Expression.property("airportname").like("\(searchStr)%"))
-        var matches:Airports = []
-        do {
-            for row in try startsWithQuery.run() {
-                if let match = row.document.string(forKey: "airportname") {
-                    matches.append( match)
+        var searchQuery:Query?
+        switch searchStr.characters.count {
+        case AirportCodeLength.FAA.rawValue :
+            searchQuery = Query
+                .select()
+                .from(DataSource.database(db))
+                .where(Expression.property("faa")
+                .equalTo(searchStr.uppercased()))
+            
+        case AirportCodeLength.ICAO.rawValue:
+            searchQuery = Query
+                .select()
+                .from(DataSource.database(db))
+                .where(Expression.property("icao")
+                    .equalTo(searchStr.uppercased()))
+        default:
+   // Search for all airports starting with specific searchStr
+            searchQuery = Query
+                .select()
+                .from(DataSource.database(db))
+                .where(Expression.property("airportname").like("\(searchStr)%"))
+        }
+        if let searchQuery = searchQuery {
+            var matches:Airports = []
+            do {
+                for row in try searchQuery.run() {
+                    if let match = row.document.string(forKey: "airportname") {
+                        matches.append( match)
+                    }
                 }
+                handler(matches,nil)
             }
-            handler(matches,nil)
+            catch {
+                handler(nil,error)
+            }
         }
-        catch {
-             handler(nil,error)
-        }
+
 
     }
 }
