@@ -243,7 +243,7 @@
             </objects>
             <point key="canvasLocation" x="215" y="1051"/>
         </scene>
-        <!--Booking Table View Controller-->
+        <!--My Bookings-->
         <scene sceneID="Coh-Mb-uuX">
             <objects>
                 <tableViewController storyboardIdentifier="FlightBookingTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CEv-bd-Ona" customClass="BookingTableViewController" customModule="TravelSample" customModuleProvider="target" sceneMemberID="viewController">
@@ -266,7 +266,7 @@
                             <outlet property="delegate" destination="CEv-bd-Ona" id="H5K-ac-oCj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Tgx-cd-zTl">
+                    <navigationItem key="navigationItem" title="My Bookings" id="Tgx-cd-zTl">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="qDi-bY-Koo">
                             <connections>
                                 <action selector="onLogoutTapped:" destination="CEv-bd-Ona" id="bXE-Pv-qPt"/>
@@ -278,13 +278,68 @@
                                     <segue destination="yT3-C8-yDN" kind="presentation" identifier="AddBookingSegue" modalPresentationStyle="formSheet" id="FUa-L1-E67"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Hotels" id="5VA-Bz-u1f"/>
+                            <barButtonItem title="Hotels" id="5VA-Bz-u1f">
+                                <connections>
+                                    <segue destination="HEN-7d-NDD" kind="presentation" identifier="ShowHotelSegue" modalPresentationStyle="pageSheet" id="qUa-IP-BMS"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFn-rS-TP5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1076" y="1050"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="agl-Ra-oYP">
+            <objects>
+                <navigationController id="HEN-7d-NDD" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vUp-Lu-FFW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="0op-ZN-ecG" kind="relationship" relationship="rootViewController" id="oJn-tg-xoS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yg6-Dl-9In" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="738" y="1834"/>
+        </scene>
+        <!--Hotels-->
+        <scene sceneID="Vxu-eN-Bb4">
+            <objects>
+                <tableViewController id="0op-ZN-ecG" customClass="HotelsTableViewController" customModule="TravelSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Iq7-WB-RAQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="wcz-Oq-XAf">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wcz-Oq-XAf" id="M1D-PB-aZZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0op-ZN-ecG" id="okI-5z-GqW"/>
+                            <outlet property="delegate" destination="0op-ZN-ecG" id="kn1-li-kJa"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Hotels" id="tnG-zw-6mh">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="qYV-To-xTn">
+                            <connections>
+                                <action selector="onCancelTapped:" destination="0op-ZN-ecG" id="OFb-Ft-rlo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zzh-Jm-nED" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1559" y="1847"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZOm-7c-7Yp">
@@ -302,7 +357,7 @@
             </objects>
             <point key="canvasLocation" x="1916" y="1049"/>
         </scene>
-        <!--Add Booking Container View Controller-->
+        <!--Flight Reservation-->
         <scene sceneID="6yw-WT-c80">
             <objects>
                 <viewController id="5oe-Uw-zgO" customClass="AddBookingContainerViewController" customModule="TravelSample" customModuleProvider="target" sceneMemberID="viewController">
@@ -388,7 +443,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="3OO-TR-jdo">
+                    <navigationItem key="navigationItem" title="Flight Reservation" id="3OO-TR-jdo">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="odd-8A-5z4">
                             <connections>
                                 <action selector="onCancelTapped:" destination="5oe-Uw-zgO" id="l5D-ob-ZXw"/>
