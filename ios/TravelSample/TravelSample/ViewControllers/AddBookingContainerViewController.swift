@@ -12,6 +12,14 @@ class AddBookingContainerViewController:UIViewController {
     
     @IBOutlet var listingContainerView:UIView!
     
+    @IBOutlet weak var searchContainerView: UIView!
+    @IBOutlet weak var searchViewHeightConstraint: NSLayoutConstraint!
+    
+    enum SearchViewHeight:CGFloat {
+        case regular = 140.0
+        case expanded = 250.0
+        
+    }
     fileprivate var outboundFlightSelection:Booking?
     fileprivate var returnFlightSelection:Booking?
     fileprivate var departureSearchCriteria:FlightSearchCriteria?
@@ -54,6 +62,7 @@ class AddBookingContainerViewController:UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        searchViewHeightConstraint.constant = SearchViewHeight.regular.rawValue
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -182,5 +191,14 @@ extension AddBookingContainerViewController:FlightSearchProtocol {
         departureSearchCriteria = source
         returnSearchCriteria = destination
         currentFlightListingVC?.searchCriteria = (source:source,destination:destination)
+    }
+    
+    func onAirportSearchTextFieldWasSelected(_ selected:Bool) {
+        if selected == true {
+            self.searchViewHeightConstraint.constant = SearchViewHeight.expanded.rawValue
+        }
+        else {
+            self.searchViewHeightConstraint.constant = SearchViewHeight.regular.rawValue
+        }
     }
 }

@@ -33,17 +33,12 @@ class FlightPresenter:FlightPresenterProtocol {
        
     weak var associatedView: PresentingViewProtocol?
 
-    fileprivate var _flights:Flights = Flights()
-    var flights:Flights {
-        get {
-            return _flights
-        }
-    }
     
 }
 
 
-// N1QL Query Directly Against Server (via the Couchbase Server)
+// MARK: N1QL
+// Query Directly Against Cpuchbase Server (via the Couchbase Backend TryPy application)
 extension FlightPresenter {
     fileprivate  var  dateFormatter:DateFormatter {
         let formatter = DateFormatter()
@@ -53,7 +48,7 @@ extension FlightPresenter {
     }
     
     func fetchFlightsForCurrentUserWithSource( _ source:FlightSearchCriteria,destination:FlightSearchCriteria,handler:@escaping (_ flights:Flights?, _ error:Error?)->Void) {
-        _flights.removeAll()
+      
         self.associatedView?.dataStartedLoading()
         let session = URLSession.shared
         var leaveDate = ""

@@ -28,6 +28,8 @@
 		5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */; };
 		5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */; };
 		5FF733BD1EE835E000ECC392 /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */; };
+		5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */; };
+		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +68,8 @@
 		5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenter.swift; sourceTree = "<group>"; };
 		5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
+		5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenterProtocols.swift; sourceTree = "<group>"; };
+		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +180,8 @@
 				5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */,
 				5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */,
 				5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */,
+				5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */,
+				5FF733C01EE8865400ECC392 /* AirportPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -271,6 +277,8 @@
 				5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */,
 				5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */,
 				5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */,
+				5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */,
+				5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */,
 				5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */,
 				5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */,
 				5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */,

@@ -13,9 +13,8 @@ typealias Flights = [Flight]
 typealias FlightSearchCriteria = (name:String,date:Date?)
 
 protocol FlightPresenterProtocol:PresenterProtocol {
-    var flights:Flights {get}
     func fetchFlightsForCurrentUserWithSource( _ source:FlightSearchCriteria,destination:FlightSearchCriteria, handler:@escaping(_ flights:Flights?, _ error:Error?)->Void)
-    
+
    
 }
 
