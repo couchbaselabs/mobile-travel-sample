@@ -14,9 +14,7 @@ class AirportPresenter:AirportPresenterProtocol {
     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     
     weak var associatedView: PresentingViewProtocol?
-    
-    fileprivate var _flights:Flights = Flights()
-    
+     
     enum AirportCodeLength:Int {
         case FAA = 3
         case ICAO = 4
@@ -38,21 +36,28 @@ extension AirportPresenter {
             searchQuery = Query
                 .select()
                 .from(DataSource.database(db))
-                .where(Expression.property("faa")
-                .equalTo(searchStr.uppercased()))
+                .where(Expression.property("type")
+                    .equalTo("airport")
+                    .and(Expression.property("faa"))
+                    .equalTo(searchStr.uppercased()))
             
         case AirportCodeLength.ICAO.rawValue:
             searchQuery = Query
                 .select()
                 .from(DataSource.database(db))
-                .where(Expression.property("icao")
+                .where(Expression.property("type")
+                    .equalTo("airport")
+                    .and(Expression.property("icao"))
                     .equalTo(searchStr.uppercased()))
         default:
-   // Search for all airports starting with specific searchStr
+            // Search for all airports starting with specific searchStr
             searchQuery = Query
                 .select()
                 .from(DataSource.database(db))
-                .where(Expression.property("airportname").like("\(searchStr)%"))
+                .where(Expression.property("type")
+                    .equalTo("airport")
+                    .and (Expression.property("airportname"))
+                    .like("\(searchStr)%"))
         }
         if let searchQuery = searchQuery {
             var matches:Airports = []
