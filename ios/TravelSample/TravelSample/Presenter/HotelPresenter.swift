@@ -25,21 +25,36 @@ extension HotelPresenter {
             fatalError("db is not initialized at this point!")
         }
         
-        //TODO: Search for description and location
+        // Description is looked up in the "description" and "name" content
+        // Location is looked up in country, city, state and address
+        // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
+        var descExp:Expression?
+        
+        if let descriptionStr = descriptionStr {
+            descExp = Expression.property("description").like("%\(descriptionStr)%")
+                .or(Expression.property("name").like("%\(descriptionStr)%" ))
+        }
+        
+        let locationExp = Expression.property("country").equalTo(locationStr)
+            .or(Expression.property("city").equalTo(locationStr))
+            .or(Expression.property("state").equalTo(locationStr))
+            .or(Expression.property("address").equalTo(locationStr))
+        
+        var searchExp:Expression = locationExp
+        if  let descExp = descExp {
+            searchExp = locationExp.and(descExp)
+        }
+        
+      
+        
         let hotelSearchQuery = Query
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("type")
                 .equalTo("hotel")
-                .and((Expression.property("country").equalTo(locationStr)
-                    .or(Expression.property("city").equalTo(locationStr))
-                    .or(Expression.property("state").equalTo(locationStr))
-                    .or(Expression.property("address").equalTo(locationStr)))
+            .and(searchExp))
         
-                    .or(Expression.property("description").equalTo(descriptionStr ?? "")
-                        .or(Expression.property("name").equalTo(descriptionStr ?? ""))
-                    )))
-       
+       try! hotelSearchQuery.explain()
     
         var matches:Hotels = []
         do {

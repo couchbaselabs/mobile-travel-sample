@@ -85,7 +85,7 @@ class HotelsTableViewController:UITableViewController {
         let searchButton = UIButton(frame: CGRect(x: 5, y: 100, width: self.view.frame.width - 10, height: 40))
         searchButton.addTarget(self, action: #selector(onHotelsLookup), for: UIControlEvents.touchUpInside)
         searchButton.titleLabel?.text = NSLocalizedString("Lookup", comment: "")
-        searchButton.tintColor = UIColor.gray
+        searchButton.tintColor = UIColor.g
         view.addSubview(searchButton)
         return view
         
