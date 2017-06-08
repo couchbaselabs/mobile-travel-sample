@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class HotelsTableViewController:UITableViewController {
+class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewingDelegate{
     
     lazy var hotelPresenter:HotelPresenter = HotelPresenter()
     fileprivate var descriptionSearchBar:UISearchBar!
@@ -19,7 +19,7 @@ class HotelsTableViewController:UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Bookings", comment: "")
-        
+        registerForPreviewing(with: self, sourceView: self.tableView)
         self.registerCells()
         self.initializeTable()
         
@@ -173,5 +173,49 @@ extension HotelsTableViewController {
 extension HotelsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
+}
+
+// MARK:UIViewControllerPreviewingDelegate
+extension HotelsTableViewController {
+    public func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location) else { return nil }
+        if let detailVC = detailViewControllerFor(indexPath:indexPath) {
+            let cellRect = tableView.rectForRow(at: indexPath)
+            let sourceRect = previewingContext.sourceView.convert(cellRect, from: tableView)
+            previewingContext.sourceRect = sourceRect
+            return detailVC
+        }
+        
+        return nil
+        
+    }
+    
+    @objc(previewingContext:commitViewController:) public func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        
+        show(viewControllerToCommit, sender: self)
+    }
+    fileprivate func detailViewControllerFor(indexPath:IndexPath) -> HotelDetailViewController? {
+        let storyboard = UIStoryboard.getStoryboard(.Main)
+        
+        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "HotelDetailViewController") as? HotelDetailViewController else {
+            return nil
+        }
+        guard let hotels = self.hotels else {
+            return detailVC
+        }
+        if hotels.count > indexPath.section {
+            let hotel = hotels[indexPath.section]
+            detailVC.hotelDesc = hotel["description"] as? String
+            
+        }
+        else {
+            detailVC.detailsTextView.text = "An error!"
+        }
+       
+        
+        return detailVC
+        
+    }
+    
 }
 

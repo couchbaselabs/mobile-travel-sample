@@ -341,6 +341,43 @@
             </objects>
             <point key="canvasLocation" x="1559" y="1847"/>
         </scene>
+        <!--Hotel Detail View Controller-->
+        <scene sceneID="YrP-IS-7rk">
+            <objects>
+                <tableViewController storyboardIdentifier="HotelDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cgr-2S-ULB" customClass="HotelDetailViewController" customModule="TravelSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="umT-bh-vpW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HotelDetailCell" rowHeight="500" id="DYd-yK-FXF" customClass="HotelDetailCell" customModule="TravelSample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="500"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DYd-yK-FXF" id="std-VT-SjJ" customClass="HotelDetailCell" customModule="TravelSample" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="499.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Nfv-of-K2j">
+                                <rect key="frame" x="0.0" y="528" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nfv-of-K2j" id="yDf-Vb-3R8">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="cgr-2S-ULB" id="lsV-g7-PLv"/>
+                            <outlet property="delegate" destination="cgr-2S-ULB" id="pTV-fk-rq4"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LD4-F8-huc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2324" y="1873.313343328336"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZOm-7c-7Yp">
             <objects>

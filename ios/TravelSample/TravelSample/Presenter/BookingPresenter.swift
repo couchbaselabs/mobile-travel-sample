@@ -124,6 +124,7 @@ extension BookingPresenter {
         
       
         if let flightDocument = db.getDocument(docId) {
+        
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings.append(contentsOf: flights)
             
