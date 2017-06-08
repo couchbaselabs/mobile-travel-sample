@@ -24,9 +24,36 @@ extension HotelPresenter {
         guard let db = dbMgr.db else {
             fatalError("db is not initialized at this point!")
         }
-      //  let query = Query.explain(<#T##Query#>)
         
+        //TODO: Search for description and location
+        let hotelSearchQuery = Query
+            .select()
+            .from(DataSource.database(db))
+            .where(Expression.property("type")
+                .equalTo("hotel")
+                .and((Expression.property("country").equalTo(locationStr)
+                    .or(Expression.property("city").equalTo(locationStr))
+                    .or(Expression.property("state").equalTo(locationStr))
+                    .or(Expression.property("address").equalTo(locationStr)))
         
+                    .or(Expression.property("description").equalTo(descriptionStr ?? "")
+                        .or(Expression.property("name").equalTo(descriptionStr ?? ""))
+                    )))
+       
+    
+        var matches:Hotels = []
+        do {
+            for (index,row) in try hotelSearchQuery.run().enumerated() {
+                
+                let match = row.document.toDictionary()
+                matches.append(match)
+                
+            }
+            handler(matches,nil)
+        }
+        catch {
+            handler(nil,error)
+        }
     }
     
 }

@@ -112,19 +112,18 @@ extension DatabaseManager {
                     let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
                     try fileManager.copyItem(atPath: prebuiltPath, toPath: destinationDBPath)
                     
-                   
                 }
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
-            
                
+                try createDatabaseIndexes()
+                
             }
             else {
-                // Create a DB at specified path
+                // Gets handle to existing DB at specified path
                  _db = try Database(name: kDBName, config: options)
             }
-            
-            
+           
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -171,6 +170,14 @@ extension DatabaseManager {
         catch {
             return false
         }
+    }
+    
+    func createDatabaseIndexes() throws{
+        // For searches on type property
+        try _db?.createIndex(["type"])
+        
+        // For Full text search on airports and hotels
+        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: true))
     }
     
     // Stops database sync/replication
