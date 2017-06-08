@@ -38,8 +38,7 @@ extension HotelDetailViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HotelDetailCell") as? HotelDetailCell
+         let cell = tableView.dequeueReusableCell(withIdentifier: "HotelDetailCell", for: indexPath) as? HotelDetailCell
         cell?.detailTextView.text = hotelDesc
         cell?.selectionStyle = .none
         return cell ?? UITableViewCell()
@@ -48,3 +47,4 @@ extension HotelDetailViewController {
     
     
 }
+

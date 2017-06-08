@@ -350,21 +350,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HotelDetailCell" rowHeight="500" id="DYd-yK-FXF" customClass="HotelDetailCell" customModule="TravelSample" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="500"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HotelDetailCell" id="WuE-W2-pDH" customClass="HotelDetailCell" customModule="TravelSample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DYd-yK-FXF" id="std-VT-SjJ" customClass="HotelDetailCell" customModule="TravelSample" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="499.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Nfv-of-K2j">
-                                <rect key="frame" x="0.0" y="528" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nfv-of-K2j" id="yDf-Vb-3R8">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WuE-W2-pDH" id="A3j-3y-769">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Esk-r1-zcX">
+                                            <rect key="frame" x="0.0" y="-8" width="375" height="59"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Esk-r1-zcX" secondAttribute="bottom" constant="-7" id="Lep-1Z-C3K"/>
+                                    <constraint firstAttribute="trailing" secondItem="Esk-r1-zcX" secondAttribute="trailing" id="X2r-hj-TPK"/>
+                                    <constraint firstItem="Esk-r1-zcX" firstAttribute="top" secondItem="WuE-W2-pDH" secondAttribute="top" constant="-8" id="ax4-MA-gBK"/>
+                                    <constraint firstItem="Esk-r1-zcX" firstAttribute="leading" secondItem="WuE-W2-pDH" secondAttribute="leading" id="oAf-iG-fpg"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="detailTextView" destination="Esk-r1-zcX" id="XuV-PB-fqa"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -373,10 +384,11 @@
                             <outlet property="delegate" destination="cgr-2S-ULB" id="pTV-fk-rq4"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="OEr-1y-I2B"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LD4-F8-huc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2324" y="1873.313343328336"/>
+            <point key="canvasLocation" x="2485.5999999999999" y="1865.217391304348"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZOm-7c-7Yp">
@@ -525,7 +537,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eDf-EG-EUZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3689" y="1742"/>
+            <point key="canvasLocation" x="4628" y="1741.529235382309"/>
         </scene>
         <!--Flight Search View Controller-->
         <scene sceneID="UEb-R2-Jeq">

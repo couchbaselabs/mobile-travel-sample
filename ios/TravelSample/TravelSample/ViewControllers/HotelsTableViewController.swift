@@ -169,11 +169,7 @@ extension HotelsTableViewController {
     
 }
 
-// MARK: - Table view data source
-extension HotelsTableViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
-}
+
 
 // MARK:UIViewControllerPreviewingDelegate
 extension HotelsTableViewController {
@@ -217,5 +213,17 @@ extension HotelsTableViewController {
         
     }
     
+}
+
+
+// MARK:UITableViewDelegate
+extension HotelsTableViewController {
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let detailVC = self.detailViewControllerFor(indexPath: indexPath) as? HotelDetailViewController {
+            self.navigationController?.pushViewController(detailVC, animated: true)
+            
+        }
+    }
+
 }
 
