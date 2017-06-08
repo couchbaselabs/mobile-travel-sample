@@ -38,8 +38,8 @@ extension AirportPresenter {
                 .from(DataSource.database(db))
                 .where(Expression.property("type")
                     .equalTo("airport")
-                    .and(Expression.property("faa"))
-                    .equalTo(searchStr.uppercased()))
+                    .and(Expression.property("faa")
+                    .equalTo(searchStr.uppercased())))
             
         case AirportCodeLength.ICAO.rawValue:
             searchQuery = Query
@@ -47,8 +47,8 @@ extension AirportPresenter {
                 .from(DataSource.database(db))
                 .where(Expression.property("type")
                     .equalTo("airport")
-                    .and(Expression.property("icao"))
-                    .equalTo(searchStr.uppercased()))
+                    .and(Expression.property("icao")
+                    .equalTo(searchStr.uppercased())))
         default:
             // Search for all airports starting with specific searchStr
             searchQuery = Query
@@ -56,8 +56,8 @@ extension AirportPresenter {
                 .from(DataSource.database(db))
                 .where(Expression.property("type")
                     .equalTo("airport")
-                    .and (Expression.property("airportname"))
-                    .like("\(searchStr)%"))
+                    .and (Expression.property("airportname")
+                    .like("\(searchStr)%")))
         }
         if let searchQuery = searchQuery {
             var matches:Airports = []
