@@ -12,6 +12,7 @@ class HotelsTableViewController:UITableViewController {
     lazy var hotelPresenter:HotelPresenter = HotelPresenter()
     fileprivate var descriptionSearchBar:UISearchBar!
     fileprivate var locationSearchBar:UISearchBar!
+    fileprivate var searchButton:UIButton!
     var hotels:Hotels?
     
     override func viewDidLoad() {
@@ -82,10 +83,13 @@ class HotelsTableViewController:UITableViewController {
         locationSearchBar.delegate = self
         
         
-        let searchButton = UIButton(frame: CGRect(x: 5, y: 100, width: self.view.frame.width - 10, height: 40))
+        searchButton =  UIButton.init(type: .custom)
+        searchButton.frame =  CGRect(x: 5, y: 100, width: self.view.frame.width - 10, height: 50)
         searchButton.addTarget(self, action: #selector(onHotelsLookup), for: UIControlEvents.touchUpInside)
-        searchButton.titleLabel?.text = NSLocalizedString("Lookup", comment: "")
-        searchButton.tintColor = UIColor.g
+        searchButton.setTitle(NSLocalizedString("Lookup", comment: ""), for: UIControlState.normal)
+        searchButton.setTitleColor(UIColor.darkGray, for: UIControlState.disabled)
+         searchButton.setTitleColor(UIColor.blue, for: UIControlState.normal)
+        searchButton.isEnabled = false
         view.addSubview(searchButton)
         return view
         
@@ -120,6 +124,18 @@ extension HotelsTableViewController:UISearchBarDelegate {
         let searchText = searchBar.text
         print("FTS on bookings for \(String(describing: searchText))")
     }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let length = (searchBar.text?.characters.count)! - range.length + text.characters.count
+        let locationLength = (searchBar == self.locationSearchBar) ? length : self.locationSearchBar.text?.characters.count
+        
+        self.searchButton.isEnabled = (locationLength! > 0 )
+        
+        return true;
+    }
+    
+    
+
     
 }
 
