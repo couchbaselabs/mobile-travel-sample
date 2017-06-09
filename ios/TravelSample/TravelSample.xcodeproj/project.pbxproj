@@ -18,6 +18,7 @@
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
 		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
 		5FBFC8101EE9F37D00A0A9F5 /* HotelDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */; };
+		5FBFC8121EEAE51E00A0A9F5 /* BookingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */; };
 		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
 		5FC6ADB01EDEFB2100CED153 /* BookingPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */; };
 		5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */; };
@@ -32,9 +33,9 @@
 		5FEB6B2D1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2C1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift */; };
 		5FEB6B2F1EE8B5C400A6CC18 /* HotelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */; };
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
-		5FF733BD1EE835E000ECC392 /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */; };
 		5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
+		5FFB5C031EEB3AB20060704F /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +66,7 @@
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
 		5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailCell.swift; sourceTree = "<group>"; };
+		5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingCell.swift; sourceTree = "<group>"; };
 		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
 		5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenter.swift; sourceTree = "<group>"; };
@@ -77,9 +79,9 @@
 		5FEB6B2C1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenter.swift; sourceTree = "<group>"; };
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
-		5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
 		5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
+		5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */,
+				5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -212,7 +215,7 @@
 		5FF733B71EE8354700ECC392 /* prebuilt */ = {
 			isa = PBXGroup;
 			children = (
-				5FF733BC1EE835E000ECC392 /* travel-sample.cblite2 */,
+				5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */,
 			);
 			path = prebuilt;
 			sourceTree = "<group>";
@@ -278,7 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */,
-				5FF733BD1EE835E000ECC392 /* travel-sample.cblite2 in Resources */,
+				5FFB5C031EEB3AB20060704F /* travel-sample.cblite2 in Resources */,
 				5F2CD9331EDDC4F40069F12C /* Assets.xcassets in Resources */,
 				5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */,
 			);
@@ -294,6 +297,7 @@
 				5FC6ADB01EDEFB2100CED153 /* BookingPresenterProtocols.swift in Sources */,
 				5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */,
 				5F2CD93D1EDE28630069F12C /* PresenterProtocols.swift in Sources */,
+				5FBFC8121EEAE51E00A0A9F5 /* BookingCell.swift in Sources */,
 				5F2CD92F1EDDC4470069F12C /* BookingTableViewController.swift in Sources */,
 				5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */,
 				5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */,

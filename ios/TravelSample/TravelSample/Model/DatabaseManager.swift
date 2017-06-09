@@ -26,7 +26,7 @@ class DatabaseManager {
     fileprivate let kDBName:String = "travel-sample"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    fileprivate let kRemoteSyncUrl = "blip://demo:password@localhost:4984"
+    fileprivate let kRemoteSyncUrl = "blip://test:password@localhost:4984"
     
     fileprivate var _db:Database?
     
@@ -116,10 +116,11 @@ extension DatabaseManager {
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
                
-                try createDatabaseIndexes()
+              //  try createDatabaseIndexes()
                 
             }
-            else {
+            else
+            {
                 // Gets handle to existing DB at specified path
                  _db = try Database(name: kDBName, config: options)
             }

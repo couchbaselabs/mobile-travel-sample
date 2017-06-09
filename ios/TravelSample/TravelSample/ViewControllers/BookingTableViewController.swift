@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BookingTableViewController.swift
 //  TravelSample
 //
 //  Created by Priya Rajagopal on 5/30/17.
@@ -10,6 +10,8 @@ import UIKit
 
 class BookingTableViewController: UITableViewController {
 
+    // TODO: Pagination
+    // TODO: Pull to refresh
     lazy var bookingPresenter:BookingPresenter = BookingPresenter()
     
     override func viewDidLoad() {
@@ -17,8 +19,7 @@ class BookingTableViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Bookings", comment: "")
         
-        self.registerCells()
-        self.initializeTable()
+         self.initializeTable()
         
     }
 
@@ -48,17 +49,15 @@ class BookingTableViewController: UITableViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
+        self.tableView.rowHeight = 120        
+        
       //  self.tableView.tableHeaderView = searchHeaderView()
     }
     
     
-    private func registerCells() {
-        self.tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "BookingCell")
-        
-    }
+   
     
     private func searchHeaderView() -> UIView {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80))
@@ -79,7 +78,6 @@ class BookingTableViewController: UITableViewController {
         let cbMgr = DatabaseManager.shared
         let _ = cbMgr.closeDatabaseForCurrentUser()
         NotificationCenter.default.post(Notification.notificationForLogOut())
-        
     }
 
     
@@ -103,11 +101,14 @@ extension BookingTableViewController {
     
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "BookingCell")
+        let cell:BookingCell = tableView.dequeueReusableCell(withIdentifier: "BookingCell", for: indexPath) as! BookingCell
         if bookingPresenter.bookings.count > indexPath.section {
             let booking = bookingPresenter.bookings[indexPath.section]
-            
-            cell.textLabel?.text = booking["flight"] as? String
+            cell.airlineValue = "\(booking["name"] ?? "") : \(booking["flight"] ?? "")"
+            cell.fareValue = "$ \(String(describing: booking["price"] as! Float))"
+            cell.departureAirportValue = booking["sourceairport"] as? String
+            cell.arrivalAirportValue = booking["destinationairport"] as? String
+            cell.dateValue = booking["date"] as? String
         }
         cell.selectionStyle = .none
         return cell
@@ -115,7 +116,7 @@ extension BookingTableViewController {
     }
     
     override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 120
         
     }
     
@@ -136,7 +137,7 @@ extension BookingTableViewController:BookingPresentingViewProtocol {
             case nil:
                 self.tableView.reloadData()
             default:
-                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Fai", comment: ""))
+                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Failure to fetching bookings", comment: ""))
         }
         //  Ideally, we want to add/remove table cells instead of entire reload but single document here with nested flight details!
      

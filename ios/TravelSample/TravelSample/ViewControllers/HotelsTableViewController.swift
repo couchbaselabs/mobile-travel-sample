@@ -54,7 +54,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
-         self.tableView.tableHeaderView = searchHeaderView()
+        self.tableView.tableHeaderView = searchHeaderView()
     }
     
     
@@ -219,7 +219,7 @@ extension HotelsTableViewController {
 // MARK:UITableViewDelegate
 extension HotelsTableViewController {
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let detailVC = self.detailViewControllerFor(indexPath: indexPath) as? HotelDetailViewController {
+        if let detailVC = self.detailViewControllerFor(indexPath: indexPath) {
             self.navigationController?.pushViewController(detailVC, animated: true)
             
         }
