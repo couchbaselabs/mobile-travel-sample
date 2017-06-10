@@ -13,8 +13,6 @@ import Foundation
 enum AppNotifications {
     enum loginInSuccess : String{
         case name = "LoginSuccess"
-        
-        
         enum userInfoKeys : String{
             case user = "user"
         
@@ -22,7 +20,6 @@ enum AppNotifications {
     }
     enum loginInFailure :String {
         case name = "LoginFailure"
-        
         enum userInfoKeys : String {
             case user = "user"
             
@@ -31,9 +28,17 @@ enum AppNotifications {
     
     enum logout:String {
         case name = "LogOut"
-        
     }
     
+    enum replicationInProgress:String {
+        case name = "InProgress"
+    }
+    enum replicationStopped:String {
+        case name = "Stopped"
+    }
+    enum replicationFailed:String {
+        case name = "Failed"
+    }
 }
 
 extension Notification {
@@ -55,6 +60,20 @@ extension Notification {
         
     }
     
+    public static func notificationForReplicationInProgress()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationInProgress.name.rawValue), object: nil, userInfo: nil)
+        
+    }
+    
+    public static func notificationForReplicationStopped()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationStopped.name.rawValue), object: nil, userInfo: nil)
+        
+    }
+    
+    public static func notificationForReplicationFailed()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationFailed.name.rawValue), object: nil, userInfo: nil)
+        
+    }
     
     
 }

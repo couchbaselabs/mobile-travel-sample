@@ -53,8 +53,6 @@ class BookingTableViewController: UITableViewController {
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
         self.tableView.rowHeight = 120        
-        
-      //  self.tableView.tableHeaderView = searchHeaderView()
     }
     
     
@@ -140,7 +138,7 @@ extension BookingTableViewController:BookingPresentingViewProtocol {
             default:
                 self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Failure to fetching bookings", comment: ""))
         }
-        //  Ideally, we want to add/remove table cells instead of entire reload but single document here with nested flight details!
+        //  Ideally, we would want to add/remove table cells instead of entire reload but single document here with nested flight details!
      
     }
 }

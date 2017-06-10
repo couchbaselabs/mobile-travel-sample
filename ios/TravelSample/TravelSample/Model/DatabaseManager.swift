@@ -66,26 +66,9 @@ class DatabaseManager {
         catch  {
             
         }
-           }
-    
+    }
     
 }
-
-//// MARK: Private
-//extension DatabaseManager {
-//    fileprivate func openOrCreateDatabase() {
-//        do {
-//            var options = DatabaseConfiguration()
-//            if let documentsPath = _applicationDocumentDirectory?.path {
-//                options.directory = documentsPath
-//            }
-//            _db = try Database(name: kDBName, options: options)
-//        }catch {
-//        
-//            lastError = error
-//        }
-//    }
-//}
 
 // MARK: Public
 extension DatabaseManager {
@@ -125,7 +108,6 @@ extension DatabaseManager {
             }
             else
             {
-
                 // Gets handle to existing DB at specified path
                  _db = try Database(name: kDBName, config: options)
                 
@@ -210,7 +192,7 @@ extension DatabaseManager {
         //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(replicationProgress(notification:)),
+                                               selector: #selector(pushReplicationProgress(notification:)),
                                                name: NSNotification.Name.ReplicatorChange,
                                                object: _pushRepl)
         
@@ -235,7 +217,7 @@ extension DatabaseManager {
         
         //TODO: Set pull filter to filter on channels belonging to user
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(replicationProgress(notification:)),
+                                               selector: #selector(pullReplicationProgress(notification:)),
                                                name: NSNotification.Name.ReplicatorChange,
                                                object: _pullRepl)
         
@@ -255,25 +237,14 @@ extension DatabaseManager {
     }
 
     
-    
 }
-//
-//extension DatabaseManager:ReplicationDelegate {
-//    public func replication(_ replication: CBLReplication, didChange status: CouchbaseLiteSwift.Replication.Status) {
-//        print("\(#function) with status \(status)")
-//    }
-//    
-//    /** Called when a replication stops, either because it finished or due to an error. */
-//    public func replication(_ replication: CBLReplication, didStopWithError error: Error?) {
-//        print(#function)
-//    }
-//}
 
+// MARK: Utils
 extension DatabaseManager {
     
     private func enableCrazyLevelLogging() {
    
-        
+    
     }
     
 }
@@ -286,8 +257,39 @@ extension DatabaseManager {
         let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
         let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
         
-        print("Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
-      
+        print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+        postNotificationOnReplicationState(s.activity)
+    }
+    
+    @objc func pullReplicationProgress(notification: NSNotification) {
+        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
+        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
+        
+        print("Pull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+        postNotificationOnReplicationState(s.activity)
+        
+    }
+
+    @objc func pushReplicationProgress(notification: NSNotification) {
+        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
+        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
+        
+        print("Push Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+        postNotificationOnReplicationState(s.activity)
+        
+    }
+
+    private func postNotificationOnReplicationState(_ status:Replicator.ActivityLevel) {
+        switch status {
+        case .stopped:
+            NotificationCenter.default.post(Notification.notificationForReplicationStopped())
+        case .idle:
+            NotificationCenter.default.post(Notification.notificationForReplicationStopped())
+        case .busy:
+            NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
+            
+            
+        }
     }
     
 }
