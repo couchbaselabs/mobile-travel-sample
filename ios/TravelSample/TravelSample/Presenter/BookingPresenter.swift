@@ -69,6 +69,7 @@ class BookingPresenter:BookingPresenterProtocol {
                 if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
                      _bookings += bookings
                 }
+                print ("bookings is \(bookings)")
             }
             self.associatedView?.dataFinishedLoading()
             print("Thread is \(Thread.current)")

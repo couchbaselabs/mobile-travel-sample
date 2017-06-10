@@ -22,13 +22,17 @@ class DatabaseManager {
     
     var lastError:Error?
     
+
     // fileprivate
     fileprivate let kDBName:String = "travel-sample"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    fileprivate let kRemoteSyncUrl = "blip://test:password@localhost:4984"
+    fileprivate let kRemoteSyncUrl = "blip://demo:password@localhost:4984"
+    
     
     fileprivate var _db:Database?
+    
+
     
     fileprivate var _pushPullRepl:Replicator?
     
@@ -116,13 +120,15 @@ extension DatabaseManager {
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
                
-              //  try createDatabaseIndexes()
+                try createDatabaseIndexes()
                 
             }
             else
             {
+
                 // Gets handle to existing DB at specified path
                  _db = try Database(name: kDBName, config: options)
+                
             }
            
             currentUserCredentials = (user,password)
@@ -133,6 +139,28 @@ extension DatabaseManager {
             handler(lastError)
         }
     }
+    
+    
+    func closeDatabaseForCurrentUser() -> Bool {
+        do {
+            // Get handle to DB  specified path
+            try _db?.close()
+            return true
+            
+        }
+        catch {
+            return false
+        }
+    }
+    
+    func createDatabaseIndexes() throws{
+        // For searches on type property
+        try _db?.createIndex(["type"])
+        
+        // For Full text search on airports and hotels
+        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: true))
+    }
+
     
     func startPushAndPullReplicationForCurrentUser() {
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
@@ -160,42 +188,72 @@ extension DatabaseManager {
 
     }
     
-  
-    func closeDatabaseForCurrentUser() -> Bool {
-        do {
-            // Get handle to DB  specified path
-            try _db?.close()
-            return true
-                
-        }
-        catch {
-            return false
-        }
-    }
+ 
+   
     
-    func createDatabaseIndexes() throws{
-        // For searches on type property
-        try _db?.createIndex(["type"])
+    // start Push Replication
+    func startPushReplication() {
+        guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
+            // TODO: Set lastError = ...
+            return
+        }
+        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
+        print(dbUrl)
+        var config = ReplicatorConfiguration()
+        config.database = db
+        config.target = ReplicatorTarget.url(dbUrl)
         
-        // For Full text search on airports and hotels
-        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: true))
+        config.replicatorType = .push
+        config.continuous = true
+        _pushRepl = Replicator.init(config: config)
+        
+        //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(replicationProgress(notification:)),
+                                               name: NSNotification.Name.ReplicatorChange,
+                                               object: _pushRepl)
+        
+        _pushRepl?.start()
     }
     
-    // Stops database sync/replication
-    func stopAllReplications() {
-        stopPullReplication()
-        stopPushReplication()
+    // start Pull Replication
+    func startPullReplication() {
+        guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
+            // TODO: Set lastError = ...
+            return
+        }
+        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
+        print(dbUrl)
+        var config = ReplicatorConfiguration()
+        config.database = db
+        config.target = ReplicatorTarget.url(dbUrl)
+        
+        config.replicatorType = .pull
+        config.continuous = true
+        _pullRepl = Replicator.init(config: config)
+        
+        //TODO: Set pull filter to filter on channels belonging to user
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(replicationProgress(notification:)),
+                                               name: NSNotification.Name.ReplicatorChange,
+                                               object: _pullRepl)
+        
+        _pullRepl?.start()
     }
     
-    // stop Push Replication
-    func stopPushReplication() {
-        _pushRepl?.stop()
+    func stopAllReplicationForCurrentUser() {
+        _pushPullRepl?.stop()
     }
     
-    // stop Pull Replication
-    func stopPullReplication() {
+    func stopPullReplicationForCurrentUser() {
         _pullRepl?.stop()
     }
+
+    func stopPushReplicationForCurrentUser() {
+        _pushRepl?.stop()
+    }
+
     
     
 }
@@ -228,7 +286,7 @@ extension DatabaseManager {
         let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
         let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
         
-        print("[Todo] Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+        print("Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
       
     }
     

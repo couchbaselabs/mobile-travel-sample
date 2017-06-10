@@ -26,6 +26,8 @@ class BookingTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.bookingPresenter.attachPresentingView(self)
+        self.bookingPresenter.fetchBookingsForCurrentUser(observeChanges: false)
+        
         
     }
     
@@ -36,7 +38,6 @@ class BookingTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.bookingPresenter.fetchBookingsForCurrentUser(observeChanges: false)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

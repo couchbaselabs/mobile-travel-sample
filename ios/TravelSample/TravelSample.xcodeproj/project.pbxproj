@@ -22,9 +22,6 @@
 		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
 		5FC6ADB01EDEFB2100CED153 /* BookingPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */; };
 		5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */; };
-		5FC6ADB41EDF78B700CED153 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC6ADB31EDF78B700CED153 /* CouchbaseLiteSwift.framework */; };
-		5FC6ADB51EDF78BD00CED153 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC6ADB31EDF78B700CED153 /* CouchbaseLiteSwift.framework */; };
-		5FC6ADB61EDF78BD00CED153 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC6ADB31EDF78B700CED153 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FC6ADC21EE1F7F300CED153 /* AddBookingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC11EE1F7F300CED153 /* AddBookingContainerViewController.swift */; };
 		5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */; };
 		5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */; };
@@ -36,6 +33,10 @@
 		5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 		5FFB5C031EEB3AB20060704F /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */; };
+		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
+		5FFB5C071EEC2C1B0060704F /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */; };
+		5FFB5C081EEC2C220060704F /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */; };
+		5FFB5C091EEC2C220060704F /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,7 +46,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5FC6ADB61EDF78BD00CED153 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5FFB5C091EEC2C220060704F /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,7 +71,6 @@
 		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
 		5FC6ADAF1EDEFB2100CED153 /* BookingPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADB11EDEFD9D00CED153 /* BookingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingPresenter.swift; sourceTree = "<group>"; };
-		5FC6ADB31EDF78B700CED153 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5FC6ADC11EE1F7F300CED153 /* AddBookingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookingContainerViewController.swift; sourceTree = "<group>"; };
 		5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightListingTableViewController.swift; sourceTree = "<group>"; };
 		5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
@@ -82,6 +82,8 @@
 		5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 		5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
+		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
+		5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +91,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FC6ADB51EDF78BD00CED153 /* CouchbaseLiteSwift.framework in Frameworks */,
-				5FC6ADB41EDF78B700CED153 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FFB5C081EEC2C220060704F /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FFB5C071EEC2C1B0060704F /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +136,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FC6ADB31EDF78B700CED153 /* CouchbaseLiteSwift.framework */,
+				5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -208,6 +210,7 @@
 			children = (
 				5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */,
 				5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */,
+				5FFB5C041EEB5B740060704F /* FlightCell.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				5FBFC8121EEAE51E00A0A9F5 /* BookingCell.swift in Sources */,
 				5F2CD92F1EDDC4470069F12C /* BookingTableViewController.swift in Sources */,
 				5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */,
+				5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */,
 				5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */,
 				5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */,
 				5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */,
@@ -443,6 +447,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TravelSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -459,6 +464,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TravelSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
