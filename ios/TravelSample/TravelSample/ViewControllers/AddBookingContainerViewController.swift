@@ -120,16 +120,32 @@ extension AddBookingContainerViewController {
     
     @IBAction func onSegmentSelected(_ sender:UISegmentedControl) {
         if sender.selectedSegmentIndex == SegmentIndex.inbound.rawValue {
-            if let departureSearchCriteria = departureSearchCriteria, let returnSearchCriteria = returnSearchCriteria {
-                inboundFlightListingTVC?.searchCriteria = (source:returnSearchCriteria,destination:departureSearchCriteria)
+            if let departureSearchCriteria = departureSearchCriteria,
+                        let returnSearchCriteria = returnSearchCriteria {
+                if let currentSourceCriteria = inboundFlightListingTVC?.searchCriteria?.source, let currentDestCriteria = inboundFlightListingTVC?.searchCriteria?.destination {
+                    if !(currentSourceCriteria == returnSearchCriteria && currentDestCriteria == departureSearchCriteria){
+                         inboundFlightListingTVC?.searchCriteria = (source:returnSearchCriteria,destination:departureSearchCriteria)
+                    }
+                   
+                }
+            
             }
             
             switchToViewController(inboundFlightListingTVC)
         }
         if sender.selectedSegmentIndex == SegmentIndex.outbound.rawValue {
-            if let departureSearchCriteria = departureSearchCriteria, let returnSearchCriteria = returnSearchCriteria {
-                outboundFlightListingTVC?.searchCriteria = (source:departureSearchCriteria,destination:returnSearchCriteria)
+           
+            if let departureSearchCriteria = departureSearchCriteria,
+                let returnSearchCriteria = returnSearchCriteria {
+                if let currentSourceCriteria = outboundFlightListingTVC?.searchCriteria?.source, let currentDestCriteria = outboundFlightListingTVC?.searchCriteria?.destination {
+                    if !(currentSourceCriteria == departureSearchCriteria && currentDestCriteria == returnSearchCriteria){
+                        outboundFlightListingTVC?.searchCriteria = (source:departureSearchCriteria,destination:returnSearchCriteria)
+                    }
+                    
+                }
+               
             }
+            
             switchToViewController(outboundFlightListingTVC)
         }
 
@@ -202,3 +218,4 @@ extension AddBookingContainerViewController:FlightSearchProtocol {
         }
     }
 }
+
