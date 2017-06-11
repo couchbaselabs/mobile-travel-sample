@@ -133,15 +133,28 @@ extension FlightListingTableViewController {
     
     
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "FlightCell")
+        let cell:FlightCell = tableView.dequeueReusableCell(withIdentifier: "FlightCell", for: indexPath) as! FlightCell
+        
         guard let flights = self.flights else {
             return cell
         }
+        
         if flights.count > indexPath.section {
             let flight = flights[indexPath.section]
             
-            cell.textLabel?.text = flight["flight"] as? String
+            
+            cell.airlineValue = flight["name"] as? String
+            cell.fareValue = "$ \(String(describing: flight["price"] as! Float))"
+            cell.departureTimeValue = flight["utc"] as? String
+            cell.flightValue = flight["flight"] as? String
+         
+            
         }
+
+        let uncheckImage = #imageLiteral(resourceName: "check_notfilled")
+        
+        cell.accessoryView =  UIImageView.init(image:uncheckImage)
+        cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         cell.selectionStyle = .none
         return cell
      }
@@ -155,7 +168,10 @@ extension FlightListingTableViewController {
         // Logic to allow selection of only one flight listing
         let cell = tableView.cellForRow(at: indexPath)
         if indexPathOfCurrentSelectedFlight == indexPath {
-            cell?.accessoryType = UITableViewCellAccessoryType.none
+            let uncheckImage = #imageLiteral(resourceName: "check_notfilled")
+            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            
+            cell?.accessoryView = UIImageView.init(image:uncheckImage)
             indexPathOfCurrentSelectedFlight = nil
             delegate?.onSelectedFlight(nil)
             
@@ -166,7 +182,10 @@ extension FlightListingTableViewController {
                 prevSelectedCell?.accessoryType = UITableViewCellAccessoryType.none
             }
             indexPathOfCurrentSelectedFlight = indexPath
-            cell?.accessoryType = UITableViewCellAccessoryType.checkmark
+            let checkImage = #imageLiteral(resourceName: "check_filled")
+            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            
+            cell?.accessoryView = UIImageView.init(image:checkImage)
             let flight = flights?[indexPath.section]
             delegate?.onSelectedFlight(flight)
         }

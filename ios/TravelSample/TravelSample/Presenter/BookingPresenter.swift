@@ -57,7 +57,7 @@ class BookingPresenter:BookingPresenterProtocol {
         }
         self.associatedView?.dataStartedLoading()
         
-        // TODO: Switch to live query depending on observe changes.
+        // TODO: Switch to live query depending on observe changes when available. 
         let bookingQuery = Query
             .select()
             .from(DataSource.database(db))

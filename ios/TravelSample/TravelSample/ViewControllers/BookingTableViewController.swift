@@ -114,10 +114,7 @@ extension BookingTableViewController {
         
     }
     
-    override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
-        
-    }
+  
     
     
     public override func numberOfSections(in tableView: UITableView) -> Int {
