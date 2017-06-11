@@ -169,9 +169,10 @@ extension FlightListingTableViewController {
         let cell = tableView.cellForRow(at: indexPath)
         if indexPathOfCurrentSelectedFlight == indexPath {
             let uncheckImage = #imageLiteral(resourceName: "check_notfilled")
-            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
             
             cell?.accessoryView = UIImageView.init(image:uncheckImage)
+            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            
             indexPathOfCurrentSelectedFlight = nil
             delegate?.onSelectedFlight(nil)
             
@@ -183,9 +184,10 @@ extension FlightListingTableViewController {
             }
             indexPathOfCurrentSelectedFlight = indexPath
             let checkImage = #imageLiteral(resourceName: "check_filled")
-            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
             
             cell?.accessoryView = UIImageView.init(image:checkImage)
+            cell?.accessoryView?.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            
             let flight = flights?[indexPath.section]
             delegate?.onSelectedFlight(flight)
         }
