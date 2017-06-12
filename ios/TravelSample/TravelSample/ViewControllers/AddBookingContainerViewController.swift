@@ -141,6 +141,10 @@ extension AddBookingContainerViewController {
                     }
                    
                 }
+                else {
+                    inboundFlightListingTVC?.searchCriteria = (source:returnSearchCriteria,destination:departureSearchCriteria)
+                    
+                }
             
             }
             
@@ -156,8 +160,13 @@ extension AddBookingContainerViewController {
                     }
                     
                 }
+                else {
+                    outboundFlightListingTVC?.searchCriteria = (source:departureSearchCriteria,destination:returnSearchCriteria)
+                    
+                }
                
             }
+        
             
             switchToViewController(outboundFlightListingTVC)
         }
