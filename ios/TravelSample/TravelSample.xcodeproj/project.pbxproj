@@ -26,6 +26,7 @@
 		5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */; };
 		5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */; };
 		5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */; };
+		5FE6ECAF1EEED14B006AD07C /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6ECAE1EEED14B006AD07C /* DictionaryExtension.swift */; };
 		5FEB6B2B1EE8B01300A6CC18 /* HotelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2A1EE8B01300A6CC18 /* HotelsTableViewController.swift */; };
 		5FEB6B2D1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2C1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift */; };
 		5FEB6B2F1EE8B5C400A6CC18 /* HotelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */; };
@@ -75,6 +76,7 @@
 		5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightListingTableViewController.swift; sourceTree = "<group>"; };
 		5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenter.swift; sourceTree = "<group>"; };
+		5FE6ECAE1EEED14B006AD07C /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		5FEB6B2A1EE8B01300A6CC18 /* HotelsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelsTableViewController.swift; sourceTree = "<group>"; };
 		5FEB6B2C1EE8B4B300A6CC18 /* HotelPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenter.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			children = (
 				5F2CD9421EDE2CF50069F12C /* Notifications.swift */,
 				5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */,
+				5FE6ECAE1EEED14B006AD07C /* DictionaryExtension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				5FBFC8101EE9F37D00A0A9F5 /* HotelDetailCell.swift in Sources */,
 				5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */,
 				5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */,
+				5FE6ECAF1EEED14B006AD07C /* DictionaryExtension.swift in Sources */,
 				5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */,
 				5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */,
 				5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */,

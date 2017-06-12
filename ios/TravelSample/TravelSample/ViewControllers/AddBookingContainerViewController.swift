@@ -92,19 +92,32 @@ class AddBookingContainerViewController:UIViewController {
 }
 
 extension AddBookingContainerViewController {
-    
+    private  var  dateFormatter:DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        
+        return formatter
+    }
     @IBAction func onCancelTapped(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func onConfirmBooking(_ sender: UIBarButtonItem) {
         var bookings:Bookings = []
-        if let outboundFlightSelection = outboundFlightSelection {
+        if var outboundFlightSelection = outboundFlightSelection {
+            if let date = departureSearchCriteria?.date, let utc = outboundFlightSelection["utc"]  {
+                outboundFlightSelection["date"] = "\(dateFormatter.string(from: date)) \(utc)"
+            }
             bookings.append(outboundFlightSelection)
         }
-        if let returnFlightSelection = returnFlightSelection {
+        if var returnFlightSelection = returnFlightSelection {
+            if let date = returnSearchCriteria?.date , let utc = returnFlightSelection["utc"] {
+                returnFlightSelection["date"] = "\(dateFormatter.string(from: date)) \(utc)"
+            }
+            
             bookings.append( returnFlightSelection)
         }
         if bookings.count > 0{
+           
             self.bookingPresenter.addFlightBookings(bookings) { (error) in
                 switch error {
                 case nil :

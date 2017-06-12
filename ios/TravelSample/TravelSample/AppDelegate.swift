@@ -100,7 +100,7 @@ extension AppDelegate {
             cbMgr.startPushAndPullReplicationForCurrentUser()
                 
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
-                if let email = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
+                if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
                     self.loadFlightBookingViewController()
                     
                 }
@@ -110,7 +110,7 @@ extension AppDelegate {
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,String> {
-                if let user = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
+                if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
                     self.logout()
                 }
                 

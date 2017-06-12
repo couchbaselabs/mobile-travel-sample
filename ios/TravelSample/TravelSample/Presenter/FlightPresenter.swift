@@ -40,7 +40,7 @@ class FlightPresenter:FlightPresenterProtocol {
 // MARK: N1QL
 // Query Directly Against Cpuchbase Server (via the Couchbase Backend TryPy application)
 extension FlightPresenter {
-    fileprivate  var  dateFormatter:DateFormatter {
+    private  var  dateFormatter:DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         
