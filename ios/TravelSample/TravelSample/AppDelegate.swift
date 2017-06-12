@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     fileprivate var loginViewController:LoginViewController?
-    fileprivate var flightBookingsViewController:UIViewController?
+    fileprivate var flightBookingsViewController:UINavigationController?
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -68,12 +68,12 @@ extension AppDelegate {
     func loadFlightBookingViewController() {
         
         if let flightVC = flightBookingsViewController {
-            window?.rootViewController = UIViewController()
+            window?.rootViewController = flightVC
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
             if let navController = storyboard.instantiateViewController(withIdentifier: "FlightBookingNVC") as? UINavigationController{
-                flightBookingsViewController = navController.topViewController
+                flightBookingsViewController = navController
                 window?.rootViewController = navController
             }
         }
