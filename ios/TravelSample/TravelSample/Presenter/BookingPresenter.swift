@@ -147,13 +147,41 @@ extension BookingPresenter {
             
         
     }
-    func replaceFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void) {
-        fatalError("TODO")
-        // TODO
-    }
-    func removeFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void) {
+  
+    func removeFlightBookings(_ bookingsToRemove:Bookings, handler:@escaping(_ error:Error?)->Void) {
         //TODO
-        fatalError("TODO")
+        guard let db = dbMgr.db, let docId = userDocId else {
+            // TODO: Add custom error
+            handler(nil)
+            return
+        }
+        
+        
+        if let flightDocument = db.getDocument(docId) {
+            
+            _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
+            _bookings = _bookings.filter({ (booking) -> Bool in
+                return bookingsToRemove.contains(where: { (bookingToRemove) -> Bool in
+                    return bookingToRemove == booking
+                }) == false
+            })
+            print("Updated booking after delete is \(_bookings)")
+            flightDocument.set(_bookings, forKey: "flights")
+            do {
+                try db.save(flightDocument)
+                handler(nil)
+            }
+            catch {
+                handler(error)
+                return
+            }
+        }
+        else {
+            // TODO: Add custom error
+            handler(nil)
+            return
+        }
+       
     }
 }
 

@@ -124,6 +124,78 @@ extension BookingTableViewController {
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
+    
+}
+
+// MARK: UITableViewDelegate
+extension BookingTableViewController {
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] (action, indexPath) in
+            
+            // remove document at index
+            if let booking = self?.bookingPresenter.bookings[indexPath.section] {
+            
+            self?.bookingPresenter.removeFlightBookings([booking], handler: { (error) in
+                switch error {
+                case nil:
+                    tableView.deleteSections([indexPath.section], with: UITableViewRowAnimation.automatic)
+                default:
+                    self?.showAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("There was an error when attempting to remove the row", comment: ""))
+                }
+            })
+            }
+            
+            
+        })
+        return [deleteAction]
+        
+    }
+
+    /*
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
+    /*
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
+    /*
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
+    /*
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+
 }
 
 extension BookingTableViewController:BookingPresentingViewProtocol {

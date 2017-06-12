@@ -8,22 +8,7 @@
 
 import Foundation
 
-/*Data Model of Flight
- {
- "data": [
- {
- "destinationairport": "LHR",
- "equipment": "777",
- "flight": "AA090",
- "flighttime": 3943.0,
- "name": "American Airlines",
- "price": 492.88,
- "sourceairport": "SAN",
- "utc": "17:44:00"
- }
- ]
- }
- */
+
 class FlightPresenter:FlightPresenterProtocol {
     // Example query:http://localhost:8080/api/flightPaths/Heathrow/San%20Diego%20Intl?leave=05/04/2017&return=leave=05/04/2017
     
