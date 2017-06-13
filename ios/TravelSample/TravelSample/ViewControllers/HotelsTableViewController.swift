@@ -195,14 +195,10 @@ extension HotelsTableViewController {
         }
         if hotels.count > indexPath.section {
             let hotel = hotels[indexPath.section]
-            detailVC.hotelDesc = hotel["description"] as? String
+            detailVC.hotelDesc = hotel
             
         }
-        else {
-            detailVC.detailsTextView.text = "An error!"
-        }
-       
-        
+               
         return detailVC
         
     }
