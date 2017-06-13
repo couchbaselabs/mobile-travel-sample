@@ -20,7 +20,6 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Bookings", comment: "")
         registerForPreviewing(with: self, sourceView: self.tableView)
-        self.registerCells()
         self.initializeTable()
         
     }
@@ -48,17 +47,13 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = 70
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
         self.tableView.tableHeaderView = searchHeaderView()
     }
     
     
-    private func registerCells() {
-        self.tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "HotelCell")
-        
-    }
     
     private func searchHeaderView() -> UIView {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 150))
@@ -150,14 +145,16 @@ extension HotelsTableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "HotelCell")
+        let cell:HotelCell = tableView.dequeueReusableCell(withIdentifier: "HotelCell", for: indexPath) as! HotelCell
         guard let hotels = self.hotels else {
             return cell
         }
         if hotels.count > indexPath.section {
             let hotel = hotels[indexPath.section]
             
-            cell.textLabel?.text = hotel["title"] as? String
+            cell.name.text = hotel["name"] as? String
+            cell.address.text = hotel["address"] as? String
+             cell.phone.text = hotel["phone"] as? String
         }
         cell.selectionStyle = .none
         return cell
