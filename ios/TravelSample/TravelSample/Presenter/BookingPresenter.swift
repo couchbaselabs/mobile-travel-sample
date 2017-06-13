@@ -117,12 +117,15 @@ class BookingPresenter:BookingPresenterProtocol {
 extension BookingPresenter {
     func addFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void) {
         
-        guard let db = dbMgr.db, let docId = userDocId else {
-            // TODO: Add custom error
-            handler(nil)
+        guard let db = dbMgr.db else {
+            handler(TravelSampleError.DatabaseNotInitialized)
             return
         }
         
+        guard  let docId = userDocId else {
+            handler(TravelSampleError.UserNotFound)
+            return
+        }
       
         if let flightDocument = db.getDocument(docId) {
         
@@ -140,7 +143,6 @@ extension BookingPresenter {
             }
         }
         else {
-            // TODO: Add custom error
             handler(nil)
             return
         }
@@ -149,10 +151,14 @@ extension BookingPresenter {
     }
   
     func removeFlightBookings(_ bookingsToRemove:Bookings, handler:@escaping(_ error:Error?)->Void) {
-        //TODO
-        guard let db = dbMgr.db, let docId = userDocId else {
-            // TODO: Add custom error
-            handler(nil)
+    
+        guard let db = dbMgr.db else {
+            handler(TravelSampleError.DatabaseNotInitialized)
+            return
+        }
+        
+        guard  let docId = userDocId else {
+            handler(TravelSampleError.UserNotFound)
             return
         }
         
@@ -177,7 +183,7 @@ extension BookingPresenter {
             }
         }
         else {
-            // TODO: Add custom error
+         
             handler(nil)
             return
         }

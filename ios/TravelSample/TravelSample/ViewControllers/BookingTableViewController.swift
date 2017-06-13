@@ -10,7 +10,7 @@ import UIKit
 
 class BookingTableViewController: UITableViewController {
 
-    // TODO: Pagination
+    // Cannot do paging since all flight bookings in a single document
     // TODO: Pull to refresh
     lazy var bookingPresenter:BookingPresenter = BookingPresenter()
     

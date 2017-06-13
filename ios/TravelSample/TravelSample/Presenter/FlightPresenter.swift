@@ -52,7 +52,6 @@ extension FlightPresenter {
                 case nil:
                     if let httpResp = response as? HTTPURLResponse {
                         switch httpResp.statusCode {
-                        //todo: Do CUstom Error
                         case 200 :
                             if let dataVal = data {
                                 do {
@@ -65,9 +64,8 @@ extension FlightPresenter {
                                     
                                 catch {
                                     print("Failed to serialize JSON data")
-                                    //TODO: Create custom error
                                     DispatchQueue.main.async {
-                                        handler(nil,nil)
+                                        handler(nil,TravelSampleError.DataParseError)
                                     }
                                     
                                 }

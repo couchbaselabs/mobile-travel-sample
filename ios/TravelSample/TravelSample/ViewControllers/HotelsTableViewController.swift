@@ -27,18 +27,15 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-  //      self.hotelPresenter.attachPresentingView(self)
         
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-   //     self.hotelPresenter.detachPresentingView(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      //  self.bookingPresenter.fetchBookingsForCurrentUser(observeChanges: false)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

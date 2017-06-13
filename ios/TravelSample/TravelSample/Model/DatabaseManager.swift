@@ -176,7 +176,8 @@ extension DatabaseManager {
     // start Push Replication
     func startPushReplication() {
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-            // TODO: Set lastError = ...
+            lastError = TravelSampleError.RemoteDatabaseNotReachable
+            
             return
         }
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
@@ -202,7 +203,8 @@ extension DatabaseManager {
     // start Pull Replication
     func startPullReplication() {
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-            // TODO: Set lastError = ...
+            lastError = TravelSampleError.RemoteDatabaseNotReachable
+            
             return
         }
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)

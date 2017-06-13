@@ -44,15 +44,19 @@ extension HotelPresenter {
         if  let descExp = descExp {
             searchExp = locationExp.and(descExp)
         }
-        
+        // TODO: Try out pagination of results
       
-        
+            
+            
+    
         let hotelSearchQuery = Query
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("type")
                 .equalTo("hotel")
             .and(searchExp))
+        
+           
         
        try! hotelSearchQuery.explain()
     
