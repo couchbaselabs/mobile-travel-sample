@@ -87,7 +87,6 @@ extension AppDelegate {
     }
     
     
-    
 }
 
 // MARK: Observers

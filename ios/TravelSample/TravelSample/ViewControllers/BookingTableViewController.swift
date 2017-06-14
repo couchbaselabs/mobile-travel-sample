@@ -46,7 +46,7 @@ class BookingTableViewController: UITableViewController {
     
     private func initializeTable() {
         //    self.tableView.backgroundColor = UIColor.darkGray
-        self.tableView.backgroundColor = UIColor(colorLiteralRed: 242.0/255, green: 252.0/255, blue: 255.0/255, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor(colorLiteralRed: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

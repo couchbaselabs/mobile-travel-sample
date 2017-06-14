@@ -119,16 +119,15 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-On-WTK">
-                                                <rect key="frame" x="156" y="425" width="72" height="33"/>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-On-WTK">
+                                                <rect key="frame" x="116.5" y="425" width="150" height="50"/>
                                                 <accessibility key="accessibilityConfiguration" label="loginButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="6e0-o9-Qly"/>
                                                     <constraint firstAttribute="width" constant="446" id="wK9-lt-mAW"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <state key="normal" title="Sign In &gt; ">
-                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <state key="normal" title="Sign In" backgroundImage="cyan">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -145,7 +144,7 @@
                                                 <color key="backgroundColor" red="0.96078431372549022" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.96078431372549022" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.89224941951589987" green="0.9556830791209997" blue="0.97275640427490795" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="FOu-yS-CGH" secondAttribute="trailing" id="6Rn-mM-5ug"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="top" secondItem="Fyq-V2-86a" secondAttribute="top" constant="233" id="7TZ-dn-dSw"/>
@@ -243,7 +242,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wb8-51-zqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="215" y="1051"/>
+            <point key="canvasLocation" x="122" y="1212"/>
         </scene>
         <!--My Bookings-->
         <scene sceneID="Coh-Mb-uuX">
@@ -252,7 +251,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="7uc-Db-mzJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.94901960784313721" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BookingCell" rowHeight="120" id="bDR-XP-1pC" customClass="BookingCell" customModule="TravelSample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="120"/>
@@ -326,17 +325,20 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="My Bookings" id="Tgx-cd-zTl">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="qDi-bY-Koo">
+                            <color key="tintColor" red="0.047058823529411764" green="0.67450980392156867" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="onLogoutTapped:" destination="CEv-bd-Ona" id="bXE-Pv-qPt"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="v6J-1O-Gsv">
+                                <color key="tintColor" red="0.047058823529411764" green="0.67450980392156867" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <segue destination="yT3-C8-yDN" kind="presentation" identifier="AddBookingSegue" modalPresentationStyle="formSheet" id="FUa-L1-E67"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Hotels" id="5VA-Bz-u1f">
+                                <color key="tintColor" red="0.047058823529411764" green="0.67450980392156867" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <segue destination="HEN-7d-NDD" kind="presentation" identifier="ShowHotelSegue" modalPresentationStyle="pageSheet" id="qUa-IP-BMS"/>
                                 </connections>
@@ -371,7 +373,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Iq7-WB-RAQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="wcz-Oq-XAf" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="70"/>
@@ -436,6 +438,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Hotels" id="tnG-zw-6mh">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="qYV-To-xTn">
+                            <color key="tintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="onCancelTapped:" destination="0op-ZN-ecG" id="OFb-Ft-rlo"/>
                             </connections>
@@ -697,12 +700,14 @@
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZEU-aJ-K42"/>
                                     <barButtonItem title="Confirm Booking" id="1od-I6-CbG">
+                                        <color key="tintColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="onConfirmBooking:" destination="5oe-Uw-zgO" id="hEF-0v-O1e"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2QG-qV-RaK"/>
                                 </items>
+                                <color key="barTintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-a9-PlQ" userLabel="searchContainerView">
                                 <rect key="frame" x="0.0" y="64" width="375" height="165"/>
@@ -735,6 +740,7 @@
                                                 <segment title="Outbound"/>
                                                 <segment title="Return"/>
                                             </segments>
+                                            <color key="tintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="onSegmentSelected:" destination="5oe-Uw-zgO" eventType="valueChanged" id="OF0-So-qBw"/>
                                             </connections>
@@ -764,6 +770,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Flight Reservation" id="3OO-TR-jdo">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="odd-8A-5z4">
+                            <color key="tintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="onCancelTapped:" destination="5oe-Uw-zgO" id="l5D-ob-ZXw"/>
                             </connections>
@@ -788,7 +795,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="77" sectionHeaderHeight="18" sectionFooterHeight="18" id="dce-uH-vQo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="306"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.94901960784313721" green="0.9882352941176471" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FlightCell" rowHeight="75" id="Flu-0Z-1De" customClass="FlightCell" customModule="TravelSample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="75"/>
@@ -877,7 +884,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eDf-EG-EUZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4628" y="1741.529235382309"/>
+            <point key="canvasLocation" x="3452" y="1486"/>
         </scene>
         <!--Flight Search View Controller-->
         <scene sceneID="UEb-R2-Jeq">
@@ -920,7 +927,7 @@
                                         </connections>
                                     </textField>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fP-K5-61e">
-                                        <rect key="frame" x="0.0" y="121" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="113" width="375" height="44"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Xj1-VP-OZ0"/>
@@ -928,13 +935,14 @@
                                         <items>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="9HN-n8-rYc"/>
                                             <barButtonItem title="lookup" id="h9D-qc-MDV">
+                                                <color key="tintColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="onFlightLookupSelected:" destination="AAR-RL-9sO" id="qvV-my-zgU"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="znG-N0-Wjh"/>
                                         </items>
-                                        <color key="barTintColor" red="0.77268752549999997" green="0.92931602329999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="barTintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                     </toolbar>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="mm/dd/yyyy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mYl-jc-8D3">
                                         <rect key="frame" x="9" y="74" width="169" height="30"/>
@@ -1015,6 +1023,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="170" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
+                                                <color key="backgroundColor" red="0.94901960780000005" green="0.98823529409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -1036,6 +1045,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="173" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
+                                                <color key="backgroundColor" red="0.94901960780000005" green="0.98823529409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -1071,7 +1081,7 @@
                                     <constraint firstAttribute="trailing" secondItem="8fP-K5-61e" secondAttribute="trailing" id="lF3-dr-OU5"/>
                                     <constraint firstItem="aNy-DU-mqI" firstAttribute="top" secondItem="3WL-Vo-Uvp" secondAttribute="bottom" constant="1" id="ld3-2J-Q5x"/>
                                     <constraint firstItem="mYl-jc-8D3" firstAttribute="top" secondItem="pvG-cf-ddZ" secondAttribute="bottom" id="oNX-lV-h6v"/>
-                                    <constraint firstAttribute="bottom" secondItem="8fP-K5-61e" secondAttribute="bottom" id="qHz-BT-JsU"/>
+                                    <constraint firstAttribute="bottom" secondItem="8fP-K5-61e" secondAttribute="bottom" constant="8" id="qHz-BT-JsU"/>
                                     <constraint firstItem="CZX-jC-v8x" firstAttribute="leading" secondItem="W00-Gy-ylS" secondAttribute="leading" id="tUz-4k-ctH"/>
                                     <constraint firstItem="yHZ-s3-flg" firstAttribute="leading" secondItem="2Hh-fX-7Os" secondAttribute="leading" constant="9" id="us0-T5-LnF"/>
                                     <constraint firstItem="pvG-cf-ddZ" firstAttribute="leading" secondItem="3WL-Vo-Uvp" secondAttribute="leading" id="vl8-qi-6Pj"/>
@@ -1099,10 +1109,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xeN-1r-3kb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3534" y="931"/>
+            <point key="canvasLocation" x="3533.5999999999999" y="930.58470764617698"/>
         </scene>
     </scenes>
     <resources>
         <image name="CBTravel.LOGO" width="153" height="36"/>
+        <image name="cyan" width="150" height="50"/>
     </resources>
 </document>
