@@ -26,6 +26,7 @@
 		5FC6ADC41EE2178C00CED153 /* FlightListingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */; };
 		5FC6ADC61EE257AD00CED153 /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */; };
 		5FC6ADC81EE25B4600CED153 /* FlightPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */; };
+		5FCE43B21EF18DD4004C9B26 /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FCE43B11EF18DD4004C9B26 /* travel-sample.cblite2 */; };
 		5FE6ECAF1EEED14B006AD07C /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6ECAE1EEED14B006AD07C /* DictionaryExtension.swift */; };
 		5FE6ECB11EEF225A006AD07C /* CustomErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6ECB01EEF225A006AD07C /* CustomErrors.swift */; };
 		5FE6ECB31EF05763006AD07C /* HotelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE6ECB21EF05763006AD07C /* HotelCell.swift */; };
@@ -35,7 +36,6 @@
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
 		5FF733BF1EE885AC00ECC392 /* AirportPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
-		5FFB5C031EEB3AB20060704F /* travel-sample.cblite2 in Resources */ = {isa = PBXBuildFile; fileRef = 5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */; };
 		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
 		5FFB5C071EEC2C1B0060704F /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */; };
 		5FFB5C081EEC2C220060704F /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */; };
@@ -78,6 +78,7 @@
 		5FC6ADC31EE2178C00CED153 /* FlightListingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightListingTableViewController.swift; sourceTree = "<group>"; };
 		5FC6ADC51EE257AD00CED153 /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenter.swift; sourceTree = "<group>"; };
+		5FCE43B11EF18DD4004C9B26 /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
 		5FE6ECAE1EEED14B006AD07C /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		5FE6ECB01EEF225A006AD07C /* CustomErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomErrors.swift; sourceTree = "<group>"; };
 		5FE6ECB21EF05763006AD07C /* HotelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelCell.swift; sourceTree = "<group>"; };
@@ -87,7 +88,6 @@
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
 		5FF733BE1EE885AC00ECC392 /* AirportPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
-		5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "travel-sample.cblite2"; sourceTree = "<group>"; };
 		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
 		5FFB5C061EEC2C1B0060704F /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -227,7 +227,7 @@
 		5FF733B71EE8354700ECC392 /* prebuilt */ = {
 			isa = PBXGroup;
 			children = (
-				5FFB5C021EEB3AB20060704F /* travel-sample.cblite2 */,
+				5FCE43B11EF18DD4004C9B26 /* travel-sample.cblite2 */,
 			);
 			path = prebuilt;
 			sourceTree = "<group>";
@@ -293,7 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */,
-				5FFB5C031EEB3AB20060704F /* travel-sample.cblite2 in Resources */,
+				5FCE43B21EF18DD4004C9B26 /* travel-sample.cblite2 in Resources */,
 				5F2CD9331EDDC4F40069F12C /* Assets.xcassets in Resources */,
 				5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */,
 			);

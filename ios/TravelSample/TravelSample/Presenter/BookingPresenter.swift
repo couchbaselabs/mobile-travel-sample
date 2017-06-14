@@ -72,7 +72,6 @@ class BookingPresenter:BookingPresenterProtocol {
                 print ("bookings is \(bookings)")
             }
             self.associatedView?.dataFinishedLoading()
-            print("Thread is \(Thread.current)")
             self.associatedView?.updateUIWithUpdatedBookings(bookings, error: nil)
         }
         catch {
