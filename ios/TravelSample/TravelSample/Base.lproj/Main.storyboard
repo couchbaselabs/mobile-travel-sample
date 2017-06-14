@@ -40,10 +40,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="667"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDc-JR-jNP" userLabel="passView">
-                                                <rect key="frame" x="0.0" y="287" width="600" height="44"/>
+                                                <rect key="frame" x="8" y="287" width="367" height="44"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-eN-PJv">
-                                                        <rect key="frame" x="8" y="0.0" width="584" height="44"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="376" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <accessibility key="accessibilityConfiguration" label="password"/>
                                                         <constraints>
@@ -57,13 +57,13 @@
                                                         </connections>
                                                     </textField>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.96078431369999995" green="0.98823529409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="33i-Y0-ffO"/>
                                                     <constraint firstItem="BR4-eN-PJv" firstAttribute="leading" secondItem="VDc-JR-jNP" secondAttribute="leading" constant="8" id="5Qs-Wt-aKg"/>
                                                     <constraint firstAttribute="width" constant="600" id="GJy-BY-JIT"/>
                                                     <constraint firstItem="BR4-eN-PJv" firstAttribute="top" secondItem="VDc-JR-jNP" secondAttribute="top" id="Lin-9Q-u5V"/>
-                                                    <constraint firstAttribute="trailing" secondItem="BR4-eN-PJv" secondAttribute="trailing" constant="8" id="QnC-gI-1Gk"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BR4-eN-PJv" secondAttribute="trailing" constant="216" id="QnC-gI-1Gk"/>
                                                     <constraint firstAttribute="bottom" secondItem="BR4-eN-PJv" secondAttribute="bottom" id="bOi-fK-uOG"/>
                                                 </constraints>
                                                 <variation key="default">
@@ -77,8 +77,8 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-yS-CGH" userLabel="userView">
-                                                <rect key="frame" x="0.0" y="235" width="600" height="44"/>
+                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-yS-CGH" userLabel="userView">
+                                                <rect key="frame" x="0.0" y="233" width="383" height="44"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="V5d-Kh-gDb" userLabel="user Text Entry">
                                                         <rect key="frame" x="8" y="0.0" width="372" height="44"/>
@@ -154,9 +154,9 @@
                                                 <variation key="widthClass=compact" constant="233"/>
                                                 <variation key="heightClass=regular-widthClass=regular" constant="400"/>
                                             </constraint>
-                                            <constraint firstItem="VDc-JR-jNP" firstAttribute="trailing" secondItem="FOu-yS-CGH" secondAttribute="trailing" id="NO3-iS-6g6"/>
+                                            <constraint firstItem="VDc-JR-jNP" firstAttribute="trailing" secondItem="FOu-yS-CGH" secondAttribute="trailing" constant="217" id="NO3-iS-6g6"/>
                                             <constraint firstAttribute="centerX" secondItem="FOu-yS-CGH" secondAttribute="centerX" id="Res-Va-yiZ"/>
-                                            <constraint firstItem="FOu-yS-CGH" firstAttribute="trailing" secondItem="VDc-JR-jNP" secondAttribute="trailing" id="SmZ-4B-l9j"/>
+                                            <constraint firstItem="FOu-yS-CGH" firstAttribute="trailing" secondItem="VDc-JR-jNP" secondAttribute="trailing" constant="-217" id="SmZ-4B-l9j"/>
                                             <constraint firstItem="VDc-JR-jNP" firstAttribute="leading" secondItem="FOu-yS-CGH" secondAttribute="leading" id="SsA-bV-cb7"/>
                                             <constraint firstItem="VDc-JR-jNP" firstAttribute="top" secondItem="FOu-yS-CGH" secondAttribute="bottom" constant="10" id="TC5-Tb-AbJ"/>
                                             <constraint firstItem="FOu-yS-CGH" firstAttribute="height" secondItem="Fyq-V2-86a" secondAttribute="height" multiplier="1:1" id="TIH-rX-VNo"/>
@@ -227,7 +227,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iq3-mm-KUF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="238" y="368"/>
+            <point key="canvasLocation" x="237.59999999999999" y="367.46626686656674"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="G5x-b4-3kD">
