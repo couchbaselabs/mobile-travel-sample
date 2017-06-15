@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     fileprivate var loginViewController:LoginViewController?
     fileprivate var flightBookingsViewController:UINavigationController?
+    fileprivate var cbMgr = DatabaseManager.shared
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -95,8 +96,7 @@ extension AppDelegate {
     func registerNotificationObservers() {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
             
-            let cbMgr = DatabaseManager.shared
-            cbMgr.startPushAndPullReplicationForCurrentUser()
+            self.cbMgr.startPushAndPullReplicationForCurrentUser()
                 
             if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
                 if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{

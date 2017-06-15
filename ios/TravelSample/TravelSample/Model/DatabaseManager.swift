@@ -92,7 +92,10 @@ extension DatabaseManager {
             }
             
             options.directory = userFolderPath
-            print("Database created at path \(userFolderPath)")
+            print("WIll open/create DB  at path \(userFolderPath)")
+            /***Once we have selective import in place on SG, we will use prebuilt DB for all static documents
+             Currently, since the SG syncs /imports all files, it messes up the state since the CBL prebuilt DB is out of sync with server
+ 
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
@@ -112,7 +115,13 @@ extension DatabaseManager {
                  _db = try Database(name: kDBName, config: options)
                 
             }
-           
+ ***/
+ 
+            // Open or create database
+           _db = try Database(name: kDBName, config: options)
+            
+            // Create indexes
+            try createDatabaseIndexes()
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -126,7 +135,9 @@ extension DatabaseManager {
     func closeDatabaseForCurrentUser() -> Bool {
         do {
             // Get handle to DB  specified path
+            stopAllReplicationForCurrentUser()
             try _db?.close()
+            _db = nil
             return true
             
         }
@@ -228,14 +239,21 @@ extension DatabaseManager {
     
     func stopAllReplicationForCurrentUser() {
         _pushPullRepl?.stop()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pushPullRepl)
+        
+      
     }
     
     func stopPullReplicationForCurrentUser() {
         _pullRepl?.stop()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pullRepl)
+        
     }
 
     func stopPushReplicationForCurrentUser() {
         _pushRepl?.stop()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pushRepl)
+        
     }
 
     
@@ -260,6 +278,7 @@ extension DatabaseManager {
         let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
         
         print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
+        
         postNotificationOnReplicationState(s.activity)
     }
     
@@ -286,7 +305,7 @@ extension DatabaseManager {
         case .stopped:
             NotificationCenter.default.post(Notification.notificationForReplicationStopped())
         case .idle:
-            NotificationCenter.default.post(Notification.notificationForReplicationStopped())
+            NotificationCenter.default.post(Notification.notificationForReplicationIdle())
         case .busy:
             NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
             

@@ -36,8 +36,8 @@ enum AppNotifications {
     enum replicationStopped:String {
         case name = "Stopped"
     }
-    enum replicationFailed:String {
-        case name = "Failed"
+    enum replicationIdle:String {
+        case name = "Idle"
     }
 }
 
@@ -70,8 +70,8 @@ extension Notification {
         
     }
     
-    public static func notificationForReplicationFailed()-> Notification {
-        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationFailed.name.rawValue), object: nil, userInfo: nil)
+    public static func notificationForReplicationIdle()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil, userInfo: nil)
         
     }
     

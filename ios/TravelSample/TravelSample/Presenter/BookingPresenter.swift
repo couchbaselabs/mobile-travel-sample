@@ -62,7 +62,18 @@ class BookingPresenter:BookingPresenterProtocol {
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
+        try! print(bookingQuery.explain())
         do {
+            let test =  Query
+                .select()
+                .from(DataSource.database(db))
+            for (_,row1) in try test.run().enumerated() {
+                print(row1.document, row1.documentID)
+                if row1.documentID == "user::demo" {
+                    let doc = db.getDocument(row1.documentID)
+                    print(doc?.value(forKey: "username"))
+                }
+            }
             for (_, row) in try bookingQuery.run().enumerated() {
                 // There should be only one document for a user
                 print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
@@ -86,10 +97,27 @@ class BookingPresenter:BookingPresenterProtocol {
     func attachPresentingView(_ view:PresentingViewProtocol) {
         if let viewToAttach = view as? BookingPresentingViewProtocol {
             self.associatedView = viewToAttach
+             //TODO: Remove when live queries are supported
+            registerNotificationObservers()
         }
     }
     func detachPresentingView(_ view:PresentingViewProtocol) {
         self.associatedView = nil
+        //TODO: Remove when live queries are supported
+        deregisterNotificationObservers()
+    }
+    
+    func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil, queue: nil) { [weak self] (notification) in
+            self?.fetchBookingsForCurrentUser(observeChanges: true)
+            
+        }
+    }
+    
+    
+    func deregisterNotificationObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil)
+        
     }
     
 }
@@ -126,12 +154,22 @@ extension BookingPresenter {
             return
         }
       
-        if let flightDocument = db.getDocument(docId) {
+        if var flightDocument = db.getDocument(docId) {
         
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings.append(contentsOf: flights)
             
-            flightDocument.set(_bookings, forKey: "flights")
+            _bookings = _bookings.map({ (orig)  in
+                var newBooking:Booking = [:]
+                newBooking["date"] = orig["date"]
+                newBooking["destinationairport"] = orig["destinationairport"]
+                newBooking["flight"] = orig["flight"]
+                newBooking["price"] = orig["price"]
+                  newBooking["name"] = orig["name"]
+                newBooking["sourceairport"] = orig["sourceairport"]
+                return newBooking
+            })
+             flightDocument.set(_bookings, forKey: "flights")
             do {
                 try db.save(flightDocument)
                   handler(nil)
