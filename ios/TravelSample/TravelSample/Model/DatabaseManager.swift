@@ -93,10 +93,7 @@ extension DatabaseManager {
             
             options.directory = userFolderPath
             print("WIll open/create DB  at path \(userFolderPath)")
-            /***Once we have selective import in place on SG, we will use prebuilt DB for all static documents
-             Currently, since the SG syncs /imports all files, it messes up the state since the CBL prebuilt DB is out of sync with server
- 
-            if Database.exists(kDBName, inDirectory: userFolderPath) == false {
+                       if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
                     let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
@@ -115,13 +112,6 @@ extension DatabaseManager {
                  _db = try Database(name: kDBName, config: options)
                 
             }
- ***/
- 
-            // Open or create database
-           _db = try Database(name: kDBName, config: options)
-            
-            // Create indexes
-            try createDatabaseIndexes()
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {

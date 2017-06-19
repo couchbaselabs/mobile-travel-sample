@@ -64,16 +64,7 @@ class BookingPresenter:BookingPresenterProtocol {
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
         try! print(bookingQuery.explain())
         do {
-            let test =  Query
-                .select()
-                .from(DataSource.database(db))
-            for (_,row1) in try test.run().enumerated() {
-                print(row1.document, row1.documentID)
-                if row1.documentID == "user::demo" {
-                    let doc = db.getDocument(row1.documentID)
-                    print(doc?.value(forKey: "username"))
-                }
-            }
+  
             for (_, row) in try bookingQuery.run().enumerated() {
                 // There should be only one document for a user
                 print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")

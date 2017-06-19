@@ -164,6 +164,11 @@ extension HotelDetailViewController {
         if let addressLabel = self.addressLabel {
             addressLabel.text = "\(hotelDesc?["address"] as? String ?? "") ,\(hotelDesc?["city"] as? String ?? "") ,\(hotelDesc?["country"] as? String ?? "")"
         }
+        
+        if let emailLabel = self.emailLabel {
+            emailLabel.text = hotelDesc?["email"] as? String ?? ""
+
+        }
         if let petsLabel = self.petsLabel {
             petsLabel.text = hotelDesc?["pets_ok"] as? Bool == true ? "true" : "false"
         }
