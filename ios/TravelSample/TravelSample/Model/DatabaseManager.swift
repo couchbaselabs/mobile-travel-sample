@@ -33,7 +33,6 @@ class DatabaseManager {
     fileprivate var _db:Database?
     
 
-    
     fileprivate var _pushPullRepl:Replicator?
     
     
@@ -139,9 +138,13 @@ extension DatabaseManager {
     func createDatabaseIndexes() throws{
         // For searches on type property
         try _db?.createIndex(["type"])
-        
+    
         // For Full text search on airports and hotels
-        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: true))
+        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+        
+        try _db?.createIndex(["description"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+        
+         try _db?.createIndex(["name"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
     }
 
     

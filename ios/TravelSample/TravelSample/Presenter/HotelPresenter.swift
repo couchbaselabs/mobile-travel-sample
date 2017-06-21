@@ -30,10 +30,18 @@ extension HotelPresenter {
         // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
         var descExp:Expression?
         
+//        if let descriptionStr = descriptionStr {
+//            descExp = Expression.property("description").like("%\(descriptionStr)%")
+//                .or(Expression.property("name").like("%\(descriptionStr)%" ))
+//        }
+//        if let descriptionStr = descriptionStr {
+//            descExp = Expression.property("description").match("'\(descriptionStr)'")
+//            .or(Expression.property("name").match("'\(descriptionStr)'"))
+//        }
         if let descriptionStr = descriptionStr {
-            descExp = Expression.property("description").like("%\(descriptionStr)%")
-                .or(Expression.property("name").like("%\(descriptionStr)%" ))
+            descExp = Expression.property("description").match("'\(descriptionStr)'")
         }
+      
         
         let locationExp = Expression.property("country").equalTo(locationStr)
             .or(Expression.property("city").equalTo(locationStr))
@@ -44,10 +52,9 @@ extension HotelPresenter {
         if  let descExp = descExp {
             searchExp = locationExp.and(descExp)
         }
+
         // TODO: Try out pagination of results
       
-            
-            
     
         let hotelSearchQuery = Query
             .select()
@@ -58,7 +65,7 @@ extension HotelPresenter {
         
            
         
-       try! hotelSearchQuery.explain()
+       print(try! hotelSearchQuery.explain())
     
         var matches:Hotels = []
         do {
