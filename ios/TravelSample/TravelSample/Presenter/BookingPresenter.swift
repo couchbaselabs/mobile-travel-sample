@@ -57,32 +57,16 @@ class BookingPresenter:BookingPresenterProtocol {
         }
         self.associatedView?.dataStartedLoading()
         
-        // TODO: Switch to live query depending on observe changes when available.
-        /*** DEBUGGING
-        let bookingQuery1 = db.createQuery(
-                where: "username == 'demo'",
-                returning: ["password", "count(password)"])
-        
-    
-        try! print(bookingQuery1.explain())
-    
-        do {
-            
-            for (_, row) in try bookingQuery1.run().enumerated() {
-                print(row)
-            }
-         }
-        catch {
-            
-            print(error.localizedDescription)
-        }
-    ** DEBUGGING ***/
+       
     
         let bookingQuery = Query
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
         try! print(bookingQuery.explain())
+           
+
+    
         do {
   
             for (_, row) in try bookingQuery.run().enumerated() {

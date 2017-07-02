@@ -53,8 +53,34 @@ extension HotelPresenter {
             searchExp = locationExp.and(descExp)
         }
 
-        // TODO: Try out pagination of results
-      
+//        // TODO: Try out predicate Query
+//        let searchPredicate = NSPredicate.init(format: "type == %@ AND (description CONTAINS %@ AND (country == %@ OR city == %@ OR state == %@ OR address == %@))", "hotel",descriptionStr ?? "", locationStr,locationStr,locationStr,locationStr)
+//        let hotelSearchQuery1 = db.createQuery(
+//            where: searchPredicate ,returning:["name","address"])
+//        
+//        
+//        try! print(hotelSearchQuery1.explain())
+//        
+//        do {
+//            
+//            let rows = try hotelSearchQuery1.run()
+//            
+//                for row in rows {
+//                    print("query row is \(row )")
+//
+//                }
+//            
+//        
+//            for (_, row) in try hotelSearchQuery1.run().enumerated() {
+//                               print(row.document.toDictionary().count)
+//            }
+//        }
+//        catch {
+//            
+//            print(error.localizedDescription)
+//        }
+        
+
     
         let hotelSearchQuery = Query
             .select()
@@ -63,9 +89,7 @@ extension HotelPresenter {
                 .equalTo("hotel")
             .and(searchExp))
         
-           
-        
-       print(try! hotelSearchQuery.explain())
+           print(try! hotelSearchQuery.explain())
     
         var matches:Hotels = []
         do {
