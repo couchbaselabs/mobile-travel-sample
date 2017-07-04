@@ -39,7 +39,8 @@ extension HotelPresenter {
 //            .or(Expression.property("name").match("'\(descriptionStr)'"))
 //        }
         if let descriptionStr = descriptionStr {
-            descExp = Expression.property("description").match("'\(descriptionStr)'")
+            descExp = Expression.property("description").like("%\(descriptionStr)%")
+                            .or(Expression.property("name").like("%\(descriptionStr)%" ))
         }
       
         
