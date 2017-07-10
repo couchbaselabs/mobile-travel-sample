@@ -1,4 +1,4 @@
-The complete tutorial for this sample app is available at http://docs.couchbase.com/tutorials/travel-sample-mobile.html. This is a demonstration of the Couchbase Lite 2.0 APIs and along with the corresponding Travel Sample web app, it demonstrates unified access to shared couchbase server bucket
+The complete tutorial for this sample app is available at http://docs.couchbase.com/tutorials/travel-sample-mobile.html. This is a demonstration of the [Couchbase Lite 2.0](https://developer.couchbase.com/documentation/mobile/2.0/whatsnew.html?language=ios) APIs and along with the corresponding Travel Sample web app, it demonstrates unified access to shared couchbase server bucket
 
 This is the mobile version of travel sample app corresponding to https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
 
