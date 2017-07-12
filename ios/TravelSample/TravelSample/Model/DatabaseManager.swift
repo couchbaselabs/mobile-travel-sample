@@ -27,18 +27,15 @@ class DatabaseManager {
     fileprivate let kDBName:String = "travel-sample"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    fileprivate let kRemoteSyncUrl = "blip://demo:password@localhost:4984"
+    fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
     
     
     fileprivate var _db:Database?
     
 
     fileprivate var _pushPullRepl:Replicator?
+    fileprivate var _pushPullReplListener:NSObjectProtocol?
     
-    
-    fileprivate var _pullRepl:Replicator?
-    
-    fileprivate var _pushRepl:Replicator?
     
     fileprivate var _applicationDocumentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
     
@@ -150,25 +147,51 @@ extension DatabaseManager {
     
     func startPushAndPullReplicationForCurrentUser() {
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-            // TODO: Set lastError = ...
+            lastError = TravelSampleError.RemoteDatabaseNotReachable
+            
             return
         }
-        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
-        print(dbUrl)
-        var config = ReplicatorConfiguration()
-        config.database = db
-        config.target = ReplicatorTarget.url(dbUrl)
         
-        config.replicatorType = .pushAndPull
-        config.continuous = true
-        _pushPullRepl = Replicator.init(config: config)
+        guard let user = self.currentUserCredentials?.user,let password = self.currentUserCredentials?.password  else {
+            lastError = TravelSampleError.UserCredentialsNotProvided
+            return
+        }
+        
+        guard let db = db else {
+            lastError = TravelSampleError.RemoteDatabaseNotReachable
+            return
+        }
+
+        
+        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
+       
+        var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
         
         //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
+        config.replicatorType = .pushAndPull
+        config.continuous = true
+        config.authenticator = BasicAuthenticator(username: user, password: password)
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(replicationProgress(notification:)),
-                                               name: NSNotification.Name.ReplicatorChange,
-                                               object: _pushPullRepl)
+        // This should match what is specified in the sync gateway config
+        // Only pull documents from this user's channel
+        let userChannel = "channel.\(user)"
+        config.channels = [userChannel]
+        
+        
+        _pushPullRepl = Replicator.init(config: config)
+        
+        _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
+            let s = change.status
+            print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
+            // Workarond for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816.
+            if s.progress.completed == s.progress.total {
+                self?.postNotificationOnReplicationState(.idle)
+            }
+            else {
+                self?.postNotificationOnReplicationState(s.activity)
+            }
+        })
+        
         
         _pushPullRepl?.start()
 
@@ -176,79 +199,28 @@ extension DatabaseManager {
     
  
    
-    
-    // start Push Replication
-    func startPushReplication() {
-        guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-            lastError = TravelSampleError.RemoteDatabaseNotReachable
-            
-            return
-        }
-        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
-        print(dbUrl)
-        var config = ReplicatorConfiguration()
-        config.database = db
-        config.target = ReplicatorTarget.url(dbUrl)
-        
-        config.replicatorType = .push
-        config.continuous = true
-        _pushRepl = Replicator.init(config: config)
-        
-        //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pushReplicationProgress(notification:)),
-                                               name: NSNotification.Name.ReplicatorChange,
-                                               object: _pushRepl)
-        
-        _pushRepl?.start()
-    }
-    
-    // start Pull Replication
-    func startPullReplication() {
-        guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-            lastError = TravelSampleError.RemoteDatabaseNotReachable
-            
-            return
-        }
-        let dbUrl = remoteUrl.appendingPathComponent(kDBName)
-        print(dbUrl)
-        var config = ReplicatorConfiguration()
-        config.database = db
-        config.target = ReplicatorTarget.url(dbUrl)
-        
-        config.replicatorType = .pull
-        config.continuous = true
-        _pullRepl = Replicator.init(config: config)
-        
-        //TODO: Set pull filter to filter on channels belonging to user
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pullReplicationProgress(notification:)),
-                                               name: NSNotification.Name.ReplicatorChange,
-                                               object: _pullRepl)
-        
-        _pullRepl?.start()
-    }
-    
     func stopAllReplicationForCurrentUser() {
         _pushPullRepl?.stop()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pushPullRepl)
-        
+        if let _pushPullReplListener = _pushPullReplListener {
+            _pushPullRepl?.removeChangeListener(_pushPullReplListener)
+        }
       
     }
+   
+
+    fileprivate func postNotificationOnReplicationState(_ status:Replicator.ActivityLevel) {
+        switch status {
+        case .stopped:
+            NotificationCenter.default.post(Notification.notificationForReplicationStopped())
+        case .idle:
+            NotificationCenter.default.post(Notification.notificationForReplicationIdle())
+        case .busy:
+            NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
+            
+            
+        }
+    }
     
-    func stopPullReplicationForCurrentUser() {
-        _pullRepl?.stop()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pullRepl)
-        
-    }
-
-    func stopPushReplicationForCurrentUser() {
-        _pushRepl?.stop()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.ReplicatorChange, object: _pushRepl)
-        
-    }
-
     
 }
 
@@ -263,48 +235,4 @@ extension DatabaseManager {
 }
 
 
-
-// MARK: Replication Observer
-extension DatabaseManager {
-    @objc func replicationProgress(notification: NSNotification) {
-        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
-        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
-        
-        print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
-        
-        postNotificationOnReplicationState(s.activity)
-    }
-    
-    @objc func pullReplicationProgress(notification: NSNotification) {
-        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
-        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
-        
-        print("Pull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
-        postNotificationOnReplicationState(s.activity)
-        
-    }
-
-    @objc func pushReplicationProgress(notification: NSNotification) {
-        let s = notification.userInfo![ReplicatorStatusUserInfoKey] as! Replicator.Status
-        let e = notification.userInfo![ReplicatorErrorUserInfoKey] as? NSError
-        
-        print("Push Replicator: \(s.progress.completed)/\(s.progress.total), error: \(e?.description ?? ""), activity = \(s.activity)")
-        postNotificationOnReplicationState(s.activity)
-        
-    }
-
-    private func postNotificationOnReplicationState(_ status:Replicator.ActivityLevel) {
-        switch status {
-        case .stopped:
-            NotificationCenter.default.post(Notification.notificationForReplicationStopped())
-        case .idle:
-            NotificationCenter.default.post(Notification.notificationForReplicationIdle())
-        case .busy:
-            NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
-            
-            
-        }
-    }
-    
-}
 

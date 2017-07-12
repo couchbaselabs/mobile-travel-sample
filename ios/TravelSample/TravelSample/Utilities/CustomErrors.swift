@@ -12,4 +12,5 @@ enum TravelSampleError:Error {
     case UserNotFound
     case RemoteDatabaseNotReachable
     case DataParseError
+    case UserCredentialsNotProvided
 }

@@ -58,22 +58,62 @@ class BookingPresenter:BookingPresenterProtocol {
         self.associatedView?.dataStartedLoading()
         
        
-    
+        // Live Query . Its just one document but we will be notified of changes
+/****** live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816
+ 
+        let bookingQuery = Query
+            .select()
+            .from(DataSource.database(db))
+            .where(Expression.property("username").equalTo(user)).toLive() // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
+       // try! print(bookingQuery.explain())
+           
+     
+        // Register for live query changes
+        bookingQuery.addChangeListener({ [weak self](change) in
+            self?.associatedView?.dataFinishedLoading()
+            
+            switch change.error {
+            case nil:
+                for (_, row) in (change.rows?.enumerated())! {
+                    // There should be only one document for a user
+                    print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
+                    if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
+                        self?._bookings += bookings
+                    }
+                    print ("bookings is \(String(describing: self?.bookings))")
+                }
+                self?.associatedView?.dataFinishedLoading()
+                self?.associatedView?.updateUIWithUpdatedBookings(self?.bookings, error: nil)
+                
+            default:
+                self?.associatedView?.dataFinishedLoading()
+                
+                self?.associatedView?.updateUIWithUpdatedBookings(nil, error: change.error)
+            }
+           
+
+        })
+  
+        // Run query
+        bookingQuery.run()
+ ******/
+        
+        
         let bookingQuery = Query
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
         try! print(bookingQuery.explain())
-           
-
-    
+        
+        
+        
         do {
-  
+            
             for (_, row) in try bookingQuery.run().enumerated() {
                 // There should be only one document for a user
                 print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
                 if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
-                     _bookings += bookings
+                    _bookings += bookings
                 }
                 print ("bookings is \(bookings)")
             }
@@ -86,24 +126,28 @@ class BookingPresenter:BookingPresenterProtocol {
             print(error.localizedDescription)
             self.associatedView?.updateUIWithUpdatedBookings(nil, error: error)
         }
+        
     }
     
     
     func attachPresentingView(_ view:PresentingViewProtocol) {
         if let viewToAttach = view as? BookingPresentingViewProtocol {
             self.associatedView = viewToAttach
-             //TODO: Remove when live queries are supported
+            // Comment if we are doing live query
             registerNotificationObservers()
+
         }
+        
     }
     func detachPresentingView(_ view:PresentingViewProtocol) {
         self.associatedView = nil
-        //TODO: Remove when live queries are supported
+        // Comment if we are doing live query
         deregisterNotificationObservers()
     }
     
     func registerNotificationObservers() {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil, queue: nil) { [weak self] (notification) in
+            // Comment if are  using live query 
             self?.fetchBookingsForCurrentUser(observeChanges: true)
             
         }
