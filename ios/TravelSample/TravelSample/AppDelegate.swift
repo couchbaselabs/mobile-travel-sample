@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileprivate var loginViewController:LoginViewController?
     fileprivate var flightBookingsViewController:UINavigationController?
     fileprivate var cbMgr = DatabaseManager.shared
+    fileprivate var isObservingForLoginEvents:Bool = false
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -53,6 +54,7 @@ extension AppDelegate {
     func loadLoginViewController() {
         if let loginVC = loginViewController {
             window?.rootViewController = loginVC
+    
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
@@ -61,8 +63,9 @@ extension AppDelegate {
             window!.rootViewController = loginViewController
             
         }
-        
         self.registerNotificationObservers()
+        
+        
     }
     
     
@@ -94,30 +97,35 @@ extension AppDelegate {
 extension AppDelegate {
     
     func registerNotificationObservers() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
-            
-            self.cbMgr.startPushAndPullReplicationForCurrentUser()
+        if isObservingForLoginEvents == false {
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
                 
-            if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
-                if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
-                    self.loadFlightBookingViewController()
+                    
+                if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,Any> {
+                    if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
+                        self.cbMgr.startPushAndPullReplicationForCurrentUser()
+                        
+                        self.loadFlightBookingViewController()
+                        
+                        
+                    }
+                }
+                
+            }
+            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
+                if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,String> {
+                    if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
+                        self.logout()
+                    }
                     
                 }
             }
             
-        }
-        
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
-            if let userInfo = (notification as NSNotification).userInfo as? Dictionary<String,String> {
-                if let _ = userInfo[AppNotifications.loginInSuccess.userInfoKeys.user.rawValue]{
-                    self.logout()
-                }
-                
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
+                self.logout()
             }
-        }
-        
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
-            self.logout()
+            isObservingForLoginEvents = true
         }
     }
     
@@ -126,7 +134,7 @@ extension AppDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil)
-        
+        isObservingForLoginEvents = false
         
     }
     

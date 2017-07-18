@@ -89,7 +89,7 @@ extension DatabaseManager {
             
             options.directory = userFolderPath
             print("WIll open/create DB  at path \(userFolderPath)")
-                       if Database.exists(kDBName, inDirectory: userFolderPath) == false {
+            if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
                     let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
@@ -120,10 +120,13 @@ extension DatabaseManager {
     
     func closeDatabaseForCurrentUser() -> Bool {
         do {
+            print(#function)
             // Get handle to DB  specified path
             stopAllReplicationForCurrentUser()
             try _db?.close()
+            
             _db = nil
+          
             return true
             
         }
@@ -146,6 +149,7 @@ extension DatabaseManager {
 
     
     func startPushAndPullReplicationForCurrentUser() {
+        print(#function)
         guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
             lastError = TravelSampleError.RemoteDatabaseNotReachable
             
@@ -162,6 +166,10 @@ extension DatabaseManager {
             return
         }
 
+        if _pushPullRepl != nil {
+            // Replication is already started
+            return
+        }
         
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
@@ -201,8 +209,11 @@ extension DatabaseManager {
    
     func stopAllReplicationForCurrentUser() {
         _pushPullRepl?.stop()
-        if let _pushPullReplListener = _pushPullReplListener {
-            _pushPullRepl?.removeChangeListener(_pushPullReplListener)
+        if let pushPullReplListener = _pushPullReplListener{
+            print(#function)
+            _pushPullRepl?.removeChangeListener(pushPullReplListener)
+            _pushPullRepl = nil
+            _pushPullReplListener = nil
         }
       
     }

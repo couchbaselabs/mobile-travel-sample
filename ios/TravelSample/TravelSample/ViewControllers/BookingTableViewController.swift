@@ -75,6 +75,7 @@ class BookingTableViewController: UITableViewController {
     
     @IBAction func onLogoutTapped(_ sender: UIBarButtonItem) {
         let cbMgr = DatabaseManager.shared
+        self.bookingPresenter.detachPresentingView(self)
         let _ = cbMgr.closeDatabaseForCurrentUser()
         NotificationCenter.default.post(Notification.notificationForLogOut())
     }
