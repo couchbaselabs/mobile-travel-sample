@@ -15,9 +15,9 @@ class BookingPresenter:BookingPresenterProtocol {
     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     fileprivate var _bookings:Bookings = Bookings()
     fileprivate var _liveQueryListener:NSObjectProtocol?
-    fileprivate var _bookingQuery:LiveQuery?
+    //fileprivate var _bookingQuery:LiveQuery?
     // Uncomment below and comment above declaration if doing live queries
-    //fileprivate var _bookingQuery:Query?
+    fileprivate var _bookingQuery:Query?
     var bookings:Bookings {
         get {
             return _bookings
@@ -63,7 +63,7 @@ class BookingPresenter:BookingPresenterProtocol {
         
        
         // Live Query . Its just one document but we will be notified of changes
-/****** live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816   */
+/****** live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816
  
         _bookingQuery = Query
             .select()
@@ -100,20 +100,20 @@ class BookingPresenter:BookingPresenterProtocol {
   
         // Run query
         _bookingQuery?.run()
- /******
-        
+ ******/
+        // Until  BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816 is resolved, use regular query
         
         _bookingQuery = Query
             .select()
             .from(DataSource.database(db))
             .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
-        try! print(_bookingQuery.explain())
+        try! print(_bookingQuery?.explain())
         
         
         
         do {
             
-            for (_, row) in try bookingQuery.run().enumerated() {
+            for (_, row) in try _bookingQuery!.run().enumerated() {
                 // There should be only one document for a user
                 print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
                 if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
@@ -131,7 +131,7 @@ class BookingPresenter:BookingPresenterProtocol {
             self.associatedView?.updateUIWithUpdatedBookings(nil, error: error)
         }
  
- ***/
+
         
     }
     
@@ -141,7 +141,7 @@ class BookingPresenter:BookingPresenterProtocol {
             self.associatedView = viewToAttach
             // Comment if we are doing live query
             registerNotificationObservers()
-//
+
         }
         
     }
@@ -150,21 +150,21 @@ class BookingPresenter:BookingPresenterProtocol {
         self.associatedView = nil
         
         // Comment if we are not doing live query
-        if let liveQueryListener = _liveQueryListener {
-            print(#function)
-            _bookingQuery?.removeChangeListener(liveQueryListener)
-            _bookingQuery = nil
-            _liveQueryListener = nil
-        }
+//        if let liveQueryListener = _liveQueryListener {
+//            print(#function)
+//            _bookingQuery?.removeChangeListener(liveQueryListener)
+//            _bookingQuery = nil
+//            _liveQueryListener = nil
+//        }
      
         // Comment if we are doing live query
-        // deregisterNotificationObservers()
+         deregisterNotificationObservers()
     }
     
     func registerNotificationObservers() {
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil, queue: nil) { [weak self] (notification) in
-            // Comment if are  using live query 
-            // self?.fetchBookingsForCurrentUser(observeChanges: true)
+            // Comment if we are  using live query 
+            self?.fetchBookingsForCurrentUser(observeChanges: true)
             
         }
     }
