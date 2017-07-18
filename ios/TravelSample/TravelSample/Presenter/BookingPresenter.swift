@@ -82,7 +82,7 @@ class BookingPresenter:BookingPresenterProtocol {
                     // There should be only one document for a user
                     print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
                     if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
-                        self?._bookings += bookings
+                        self?._bookings = bookings
                     }
                     print ("bookings is \(String(describing: self?.bookings))")
                 }
@@ -215,7 +215,7 @@ extension BookingPresenter {
             _bookings.append(contentsOf: flights)
             
             _bookings = _bookings.map({ (orig)  in
-                var newBooking:Booking = [:]
+                var newBooking:Booking = orig
                 newBooking["date"] = orig["date"]
                 newBooking["destinationairport"] = orig["destinationairport"]
                 newBooking["flight"] = orig["flight"]
