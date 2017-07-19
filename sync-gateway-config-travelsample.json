@@ -23,7 +23,17 @@ function sync(doc, oldDoc) {
 /* Just ignore all the static travel-sample files */
   var type = getType();
   if (type == "hotel" || type == "airport" || type =="airline" || type == "route") {
+        if (type == "hotel") {
+            /* Routing */
+            // Add doc to the "hotel" channel.
+            channel("hotel");
+	    // Hard code access to "hotel" channel to demo user
+            access("demo","hotel");
+            return;
+       }
+       else {
          return;
+       }
   } 
   /* validation */
    var username = getUserName();

@@ -183,7 +183,9 @@ extension DatabaseManager {
         // This should match what is specified in the sync gateway config
         // Only pull documents from this user's channel
         let userChannel = "channel.\(user)"
-        config.channels = [userChannel]
+        
+        // For demo, allow user to access any changes to Hotels Documents which will be pushed into "hotel" channel
+        config.channels = [userChannel,"hotel"]
         
         
         _pushPullRepl = Replicator.init(config: config)
