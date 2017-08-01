@@ -60,7 +60,7 @@ class BookingPresenter:BookingPresenterProtocol {
 
         }
         self.associatedView?.dataStartedLoading()
-        
+       
        
         // Live Query . Its just one document but we will be notified of changes
 /****** live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816

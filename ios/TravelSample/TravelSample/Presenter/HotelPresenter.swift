@@ -97,6 +97,7 @@ extension HotelPresenter {
             for (index,row) in try hotelSearchQuery.run().enumerated() {
                 
                 let match = row.document.toDictionary()
+              
                 matches.append(match)
                 
             }

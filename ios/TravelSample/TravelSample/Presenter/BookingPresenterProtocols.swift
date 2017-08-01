@@ -11,6 +11,7 @@ import Foundation
 typealias Booking = [String:Any]
 typealias Bookings = [Booking]
 protocol BookingPresenterProtocol:PresenterProtocol {
+    
     var bookings:Bookings {get}
     func fetchBookingsForCurrentUser( observeChanges:Bool)
     func addFlightBookings(_ flights:Bookings, handler:@escaping(_ error:Error?)->Void)

@@ -88,6 +88,8 @@ extension DatabaseManager {
             }
             
             options.directory = userFolderPath
+           // options.conflictResolver = self
+            
             print("WIll open/create DB  at path \(userFolderPath)")
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
@@ -99,6 +101,7 @@ extension DatabaseManager {
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
                
+                
                 try createDatabaseIndexes()
                 
             }
@@ -108,6 +111,7 @@ extension DatabaseManager {
                  _db = try Database(name: kDBName, config: options)
                 
             }
+            
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -236,6 +240,16 @@ extension DatabaseManager {
     
     
 }
+/*
+extension DatabaseManager:ConflictResolver {
+    public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.ReadOnlyDocument? {
+        ArrayObject
+        let mine = conflict.mine
+        let theirs = conflict.theirs
+        return theirs
+    }
+}
+ */
 
 // MARK: Utils
 extension DatabaseManager {
