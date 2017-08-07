@@ -9,15 +9,17 @@
 import Foundation
 import CouchbaseLiteSwift
 
+
+
 class BookingPresenter:BookingPresenterProtocol {
     
     weak var associatedView: BookingPresentingViewProtocol?
     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     fileprivate var _bookings:Bookings = Bookings()
     fileprivate var _liveQueryListener:NSObjectProtocol?
-    //fileprivate var _bookingQuery:LiveQuery?
+    fileprivate var _bookingQuery:LiveQuery?
     // Uncomment below and comment above declaration if doing live queries
-    fileprivate var _bookingQuery:Query?
+    //fileprivate var _bookingQuery:Query?
     var bookings:Bookings {
         get {
             return _bookings
@@ -34,14 +36,17 @@ class BookingPresenter:BookingPresenterProtocol {
         // user signs up. If a user does not have this user document, then we assume that
         // the user is not a valid user
         let userQuery = Query
-            .select()
+            .select(_SelectColumn.DOCIDRESULT)
             .from(DataSource.database(db))
-            .where(Expression.property("username").equalTo(user))
+            .where(_Property.USERNAME.equalTo(user))
         if _userDocId == nil {
             do {
+                
                 for (_, row) in try userQuery.run().enumerated() {
                     // V1.0. There should be only one document for a user.
-                    _userDocId = row.documentID
+                    // There isnt a convenience API to get to documentId from Result. So use "id" key
+                    // Tracking - https://github.com/couchbaselabs/couchbase-lite-apiv2/issues/123
+                    _userDocId = row.string(forKey: "_id")
                 }
             }catch {
                 return nil
@@ -63,12 +68,12 @@ class BookingPresenter:BookingPresenterProtocol {
         
        
         // Live Query . Its just one document but we will be notified of changes
-/****** live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816
+/****** LIVE QUERY SWITCH: live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816***/
  
         _bookingQuery = Query
-            .select()
+            .select(_SelectColumn.FLIGHTSRESULT)
             .from(DataSource.database(db))
-            .where(Expression.property("username").equalTo(user)).toLive() // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
+            .where(_Property.USERNAME.equalTo(user)).toLive() // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
        // try! print(bookingQuery.explain())
            
      
@@ -80,8 +85,9 @@ class BookingPresenter:BookingPresenterProtocol {
             case nil:
                 for (_, row) in (change.rows?.enumerated())! {
                     // There should be only one document for a user
-                    print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
-                    if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
+       
+                    print (row.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
+                    if let bookings = row.array(forKey: "flights")?.toArray() as? Bookings {
                         self?._bookings = bookings
                     }
                     print ("bookings is \(String(describing: self?.bookings))")
@@ -99,10 +105,10 @@ class BookingPresenter:BookingPresenterProtocol {
         })
   
         // Run query
-        _bookingQuery?.run()
- ******/
+        _bookingQuery?.start()
+ /******/
         // Until  BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816 is resolved, use regular query
-        
+        /**** LIVE QUERY SWITCH . Uncomment the Query Request below if doing LiveQuery
         _bookingQuery = Query
             .select()
             .from(DataSource.database(db))
@@ -115,8 +121,8 @@ class BookingPresenter:BookingPresenterProtocol {
             
             for (_, row) in try _bookingQuery!.run().enumerated() {
                 // There should be only one document for a user
-                print (row.document.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
-                if let bookings = row.document.array(forKey: "flights")?.toArray() as? Bookings {
+                print (row.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
+                if let bookings = row.array(forKey: "flights")?.toArray() as? Bookings {
                     _bookings += bookings
                 }
                 print ("bookings is \(bookings)")
@@ -131,7 +137,7 @@ class BookingPresenter:BookingPresenterProtocol {
             self.associatedView?.updateUIWithUpdatedBookings(nil, error: error)
         }
  
-
+*****/
         
     }
     
@@ -139,8 +145,8 @@ class BookingPresenter:BookingPresenterProtocol {
     func attachPresentingView(_ view:PresentingViewProtocol) {
         if let viewToAttach = view as? BookingPresentingViewProtocol {
             self.associatedView = viewToAttach
-            // Comment if we are doing live query
-            registerNotificationObservers()
+            // LIVE QUERY SWITCH: Comment if we are doing live query
+            // registerNotificationObservers()
 
         }
         
@@ -149,16 +155,16 @@ class BookingPresenter:BookingPresenterProtocol {
     
         self.associatedView = nil
         
-        // Comment if we are not doing live query
-//        if let liveQueryListener = _liveQueryListener {
-//            print(#function)
-//            _bookingQuery?.removeChangeListener(liveQueryListener)
-//            _bookingQuery = nil
-//            _liveQueryListener = nil
-//        }
+        // LIVE QUERY SWITCH: Comment block below if we are not doing live query
+        if let liveQueryListener = _liveQueryListener {
+            print(#function)
+            _bookingQuery?.removeChangeListener(liveQueryListener)
+            _bookingQuery = nil
+            _liveQueryListener = nil
+        }
      
-        // Comment if we are doing live query
-         deregisterNotificationObservers()
+        // LIVE QUERY SWITCH: Comment if we are doing live query
+        // deregisterNotificationObservers()
     }
     
     func registerNotificationObservers() {

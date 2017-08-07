@@ -22,7 +22,7 @@ function sync(doc, oldDoc) {
 
 /* Just ignore all the static travel-sample files */
   var type = getType();
-  if (type == "hotel" || type == "airport" || type =="airline" || type == "route") {
+  if (type == "landmark" || type == "hotel" || type == "airport" || type =="airline" || type == "route") {
          return;
   } 
   /* validation */

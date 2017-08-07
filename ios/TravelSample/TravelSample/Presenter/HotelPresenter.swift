@@ -39,15 +39,15 @@ extension HotelPresenter {
 //            .or(Expression.property("name").match("'\(descriptionStr)'"))
 //        }
         if let descriptionStr = descriptionStr {
-            descExp = Expression.property("description").like("%\(descriptionStr)%")
-                            .or(Expression.property("name").like("%\(descriptionStr)%" ))
+            descExp = _Property.DESCRIPTION.like("%\(descriptionStr)%")
+                            .or(_Property.NAME.like("%\(descriptionStr)%" ))
         }
       
         
-        let locationExp = Expression.property("country").equalTo(locationStr)
-            .or(Expression.property("city").equalTo(locationStr))
-            .or(Expression.property("state").equalTo(locationStr))
-            .or(Expression.property("address").equalTo(locationStr))
+        let locationExp = _Property.COUNTRY.equalTo(locationStr)
+            .or(_Property.CITY.equalTo(locationStr))
+            .or(_Property.STATE.equalTo(locationStr))
+            .or(_Property.ADDRESS.equalTo(locationStr))
         
         var searchExp:Expression = locationExp
         if  let descExp = descExp {
@@ -84,9 +84,9 @@ extension HotelPresenter {
 
     
         let hotelSearchQuery = Query
-            .select()
+            .select(_SelectColumn.DOCIDRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
-            .where(Expression.property("type")
+            .where(_Property.TYPE
                 .equalTo("hotel")
             .and(searchExp))
         
@@ -94,10 +94,12 @@ extension HotelPresenter {
     
         var matches:Hotels = []
         do {
-            for (index,row) in try hotelSearchQuery.run().enumerated() {
-                
-                let match = row.document.toDictionary()
-                matches.append(match)
+            for (_,row) in try hotelSearchQuery.run().enumerated() {
+                if let docId = row.string(forKey: "_id"), let doc = db.getDocument(docId) {
+                   
+                    let match = doc.toDictionary()
+                    matches.append(match)
+                }
                 
             }
             handler(matches,nil)

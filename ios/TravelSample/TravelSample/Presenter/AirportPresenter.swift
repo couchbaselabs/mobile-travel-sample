@@ -34,27 +34,27 @@ extension AirportPresenter {
         switch searchStr.characters.count {
         case AirportCodeLength.FAA.rawValue :
             searchQuery = Query
-                .select()
+                .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
-                .where(Expression.property("type")
+                .where(_Property.TYPE
                     .equalTo("airport")
-                    .and(Expression.property("faa")
+                    .and(_Property.FAA
                     .equalTo(searchStr.uppercased())))
             
         case AirportCodeLength.ICAO.rawValue:
             searchQuery = Query
-                .select()
+                .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
-                .where(Expression.property("type")
+                .where(_Property.TYPE
                     .equalTo("airport")
-                    .and(Expression.property("icao")
+                    .and(_Property.ICAO
                     .equalTo(searchStr.uppercased())))
         default:
             // Search for all airports starting with specific searchStr
             searchQuery = Query
-                .select()
+                .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
-                .where(Expression.property("type")
+                .where(_Property.TYPE
                     .equalTo("airport")
                     .and (Expression.property("airportname")
                     .like("\(searchStr)%")))
@@ -63,7 +63,7 @@ extension AirportPresenter {
             var matches:Airports = []
             do {
                 for row in try searchQuery.run() {
-                    if let match = row.document.string(forKey: "airportname") {
+                    if let match = row.string(forKey: "airportname") {
                         matches.append( match)
                     }
                 }
