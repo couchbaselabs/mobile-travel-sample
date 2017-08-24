@@ -12,7 +12,7 @@ import Foundation
 class FlightPresenter:FlightPresenterProtocol {
     // Example query:http://localhost:8080/api/flightPaths/Heathrow/San%20Diego%20Intl?leave=05/04/2017&return=leave=05/04/2017
     
-    let serverBackendUrl:URL? = URL.init(string: "http://localhost:8090/api/")
+    let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
     
        
     weak var associatedView: PresentingViewProtocol?
