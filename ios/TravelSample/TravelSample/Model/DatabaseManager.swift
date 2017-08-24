@@ -221,6 +221,10 @@ extension DatabaseManager {
 
     fileprivate func postNotificationOnReplicationState(_ status:Replicator.ActivityLevel) {
         switch status {
+        case .offline:
+            NotificationCenter.default.post(Notification.notificationForReplicationOffline())
+        case .connecting:
+            NotificationCenter.default.post(Notification.notificationForReplicationConnecting())            
         case .stopped:
             NotificationCenter.default.post(Notification.notificationForReplicationStopped())
         case .idle:
@@ -228,6 +232,8 @@ extension DatabaseManager {
         case .busy:
             NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
             
+            
+      
             
         }
     }

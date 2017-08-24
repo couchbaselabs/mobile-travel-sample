@@ -84,7 +84,7 @@ extension HotelPresenter {
 
     
         let hotelSearchQuery = Query
-            .select(_SelectColumn.DOCIDRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
+            .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(_Property.TYPE
                 .equalTo("hotel")
@@ -95,10 +95,10 @@ extension HotelPresenter {
         var matches:Hotels = []
         do {
             for (_,row) in try hotelSearchQuery.run().enumerated() {
-                if let docId = row.string(forKey: "_id"), let doc = db.getDocument(docId) {
-                   
-                    let match = doc.toDictionary()
-                    matches.append(match)
+                
+                if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
+
+                    matches.append(match.toDictionary())
                 }
                 
             }

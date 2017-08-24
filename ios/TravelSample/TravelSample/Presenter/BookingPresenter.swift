@@ -46,7 +46,7 @@ class BookingPresenter:BookingPresenterProtocol {
                     // V1.0. There should be only one document for a user.
                     // There isnt a convenience API to get to documentId from Result. So use "id" key
                     // Tracking - https://github.com/couchbaselabs/couchbase-lite-apiv2/issues/123
-                    _userDocId = row.string(forKey: "_id")
+                    _userDocId = row.string(forKey: "id")
                 }
             }catch {
                 return nil
@@ -230,7 +230,7 @@ extension BookingPresenter {
                 newBooking["sourceairport"] = orig["sourceairport"]
                 return newBooking
             })
-             flightDocument.set(_bookings, forKey: "flights")
+            flightDocument.setValue(_bookings, forKey: "flights")
             do {
                 try db.save(flightDocument)
                   handler(nil)
@@ -270,7 +270,7 @@ extension BookingPresenter {
                 }) == false
             })
             print("Updated booking after delete is \(_bookings)")
-            flightDocument.set(_bookings, forKey: "flights")
+            flightDocument.setValue(_bookings, forKey: "flights")
             do {
                 try db.save(flightDocument)
                 handler(nil)

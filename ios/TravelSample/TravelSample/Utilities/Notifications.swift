@@ -39,6 +39,14 @@ enum AppNotifications {
     enum replicationIdle:String {
         case name = "Idle"
     }
+    
+    enum replicationConnecting:String {
+        case name = "Connecting"
+    }
+    
+    enum replicationOffline:String {
+        case name = "Offline"
+    }
 }
 
 extension Notification {
@@ -72,6 +80,16 @@ extension Notification {
     
     public static func notificationForReplicationIdle()-> Notification {
         return Notification(name: Notification.Name(rawValue: AppNotifications.replicationIdle.name.rawValue), object: nil, userInfo: nil)
+        
+    }
+    
+    public static func notificationForReplicationConnecting()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationConnecting.name.rawValue), object: nil, userInfo: nil)
+        
+    }
+    
+    public static func notificationForReplicationOffline()-> Notification {
+        return Notification(name: Notification.Name(rawValue: AppNotifications.replicationOffline.name.rawValue), object: nil, userInfo: nil)
         
     }
     
