@@ -98,8 +98,7 @@ extension DatabaseManager {
                 }
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
-               
-                try createDatabaseIndexes()
+                 try createDatabaseIndexes()
                 
             }
             else
