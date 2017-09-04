@@ -1,0 +1,9 @@
+milestones:
+  - title: Full Text Search
+    description: Explain MATCH
+    tryitout:
+      - Log into the Travel Sample Mobile app as “demo” user and password as “password”
+      - In the description text field enter “Pets allowed”.
+      - In the Location text field enter “France”
+      - You will see list of hotels.
+      - Enter the name of the first hotel you see in text field below

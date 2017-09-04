@@ -1,0 +1,7 @@
+requirements:
+  $ref: ./requirements.yaml
+lessons:
+  - $ref: ./01-security.yaml
+  - $ref: ./02-prebuilt.yaml
+  - $ref: ./03-query.yaml
+  - $ref: ./04-fts.yaml
