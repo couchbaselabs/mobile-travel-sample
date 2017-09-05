@@ -1,3 +1,4 @@
+title: Query
 milestones:
   - title: Query the Database
     description: Describe the various query options (SELECT, FROM,WHERE….)
@@ -6,7 +7,7 @@ milestones:
       - how to know if the query is using an index. (Query Index)
       - display flights on search screen. (JOIN)
       - display number of flights between two airports on search screen. (GROUP BY)
-    tryitout:
+      - Try it out 2
       - Log into the Travel Sample Mobile app as “demo” user and password as “password”
       - Tap on  ‘+” button to make a flight reservation
       - In the “From”  airport textfield, enter “San”

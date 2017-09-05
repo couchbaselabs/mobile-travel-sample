@@ -1,3 +1,4 @@
+title: Pre-built database
 milestones:
   - title: Starting with Prebuilt Database
     description: Add code snippet that shows how prebuilt db can be loaded. Explain why “hotels” and “airports” are prebuilt.
