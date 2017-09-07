@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F115DE31F61D878005143C3 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F115DE21F61D878005143C3 /* CouchbaseLiteSwift.framework */; };
+		5F115DE41F61D889005143C3 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F115DE21F61D878005143C3 /* CouchbaseLiteSwift.framework */; };
+		5F115DE51F61D889005143C3 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F115DE21F61D878005143C3 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD90F1EDDB5620069F12C /* AppDelegate.swift */; };
 		5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9131EDDB5620069F12C /* Main.storyboard */; };
 		5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9181EDDB5620069F12C /* LaunchScreen.storyboard */; };
@@ -17,9 +20,6 @@
 		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
 		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
-		5F99894F1F586428007F24F6 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F99894E1F586428007F24F6 /* CouchbaseLiteSwift.framework */; };
-		5F9989501F5864CC007F24F6 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F99894E1F586428007F24F6 /* CouchbaseLiteSwift.framework */; };
-		5F9989511F5864CC007F24F6 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F99894E1F586428007F24F6 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FBFC8101EE9F37D00A0A9F5 /* HotelDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */; };
 		5FBFC8121EEAE51E00A0A9F5 /* BookingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */; };
 		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
@@ -50,7 +50,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F9989511F5864CC007F24F6 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5F115DE51F61D889005143C3 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5F115DE21F61D878005143C3 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5F2CD90C1EDDB5620069F12C /* TravelSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F2CD90F1EDDB5620069F12C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F2CD9141EDDB5620069F12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,7 +71,6 @@
 		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
-		5F99894E1F586428007F24F6 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailCell.swift; sourceTree = "<group>"; };
 		5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingCell.swift; sourceTree = "<group>"; };
 		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
@@ -99,8 +99,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F9989501F5864CC007F24F6 /* CouchbaseLiteSwift.framework in Frameworks */,
-				5F99894F1F586428007F24F6 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5F115DE41F61D889005143C3 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5F115DE31F61D878005143C3 /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,7 +144,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5F99894E1F586428007F24F6 /* CouchbaseLiteSwift.framework */,
+				5F115DE21F61D878005143C3 /* CouchbaseLiteSwift.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
