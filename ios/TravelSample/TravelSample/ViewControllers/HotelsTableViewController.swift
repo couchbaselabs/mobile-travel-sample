@@ -98,7 +98,7 @@ extension HotelsTableViewController {
         guard let locationStr = locationSearchBar.text else {
             return
         }
-        self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, handler: { [weak self](hotels, error) in
+        self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: true, handler: { [weak self](hotels, error) in
             switch error {
             case nil:
                 self?.hotels = hotels

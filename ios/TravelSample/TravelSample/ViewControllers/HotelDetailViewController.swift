@@ -41,10 +41,8 @@ class HotelDetailViewController:UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelBreakfastCell")
         self.tableView.register(HotelCell.self, forCellReuseIdentifier: "HotelDetailCell")
         
-        
     }
 
-    
 }
 
 // MARK: UITableViewDataSource

@@ -8,6 +8,10 @@
 
 import CouchbaseLiteSwift
 
+struct TravelSampleWebService {
+    static let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
+
+}
 struct _Property {
     // Query: Property Expressions
     static let DOCID        = Expression.meta().id

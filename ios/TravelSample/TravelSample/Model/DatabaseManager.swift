@@ -9,12 +9,21 @@
 import Foundation
 import CouchbaseLiteSwift
 
+
+
 class DatabaseManager {
     
     // public
     var db:Database? {
         get {
             return _db
+        }
+    }
+    
+    // public
+    var guestDb:Database? {
+        get {
+            return _guestdb
         }
     }
     // For demo purposes only. In prod apps, credentials must be stored in keychain
@@ -25,12 +34,15 @@ class DatabaseManager {
 
     // fileprivate
     fileprivate let kDBName:String = "travel-sample"
+    fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
     fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
     
     
     fileprivate var _db:Database?
+    fileprivate var _guestdb:Database?
+    
     
 
     fileprivate var _pushPullRepl:Replicator?
@@ -58,6 +70,7 @@ class DatabaseManager {
         // Stop observing changes to the database that affect the query
         do {
             try self._db?.close()
+            try self._guestdb?.close()
         }
         catch  {
             
@@ -69,6 +82,38 @@ class DatabaseManager {
 // MARK: Public
 extension DatabaseManager {
    
+    
+    func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
+        do {
+            var options = DatabaseConfiguration()
+            guard let defaultDBPath = _applicationSupportDirectory else {
+                fatalError("Could not open Application Support Directory for app!")
+                return
+            }
+            // Create a folder for Guest Account if one does not exist
+            let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
+            let guestFolderPath = guestFolderUrl.path
+            let fileManager = FileManager.default
+            if !fileManager.fileExists(atPath: guestFolderPath) {
+                try fileManager.createDirectory(atPath: guestFolderPath,
+                                                withIntermediateDirectories: true,
+                                                attributes: nil)
+                
+            }
+            
+            options.directory = guestFolderPath
+            // Gets handle to existing DB at specified path
+            _guestdb = try Database(name: kGuestDBName, config: options)
+
+            handler(nil)
+        }catch {
+            
+            lastError = error
+            handler(lastError)
+        }
+    }
+
+    
     func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
             var options = DatabaseConfiguration()
@@ -126,6 +171,22 @@ extension DatabaseManager {
             
             _db = nil
           
+            return true
+            
+        }
+        catch {
+            return false
+        }
+    }
+    func closeDatabaseForGuest() -> Bool {
+        do {
+            print(#function)
+            // Get handle to DB  specified path
+
+            try _guestdb?.close()
+            
+            _guestdb = nil
+            
             return true
             
         }

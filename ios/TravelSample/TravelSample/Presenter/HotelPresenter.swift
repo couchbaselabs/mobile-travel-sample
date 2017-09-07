@@ -20,7 +20,34 @@ class HotelPresenter:HotelPresenterProtocol {
 
 // MARK: Local DB Queries via CBM 2.0. Both Regular queries and FTS are used
 extension HotelPresenter {
-    func fetchHotelsMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
+     func fetchHotelsMatchingDescription( _ descriptionStr:String?,location locationStr:String, fromLocalStore:Bool, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
+        
+        switch fromLocalStore {
+        case true:
+            fetchHotelsFromLocalDatabaseMatchingDescription(descriptionStr, location: locationStr, handler: handler)
+        case false:
+             fetchHotelsFromWebServiceMatchingDescription(descriptionStr, location: locationStr, handler: handler)
+        }
+            }
+    
+    
+    
+    func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
+        
+        
+    }
+    func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
+        
+    }
+
+    
+}
+
+
+// MARL Private
+extension HotelPresenter {
+    
+    func fetchHotelsFromLocalDatabaseMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
         guard let db = dbMgr.db else {
             fatalError("db is not initialized at this point!")
         }
@@ -29,20 +56,11 @@ extension HotelPresenter {
         // Location is looked up in country, city, state and address
         // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
         var descExp:Expression?
-        
-//        if let descriptionStr = descriptionStr {
-//            descExp = Expression.property("description").like("%\(descriptionStr)%")
-//                .or(Expression.property("name").like("%\(descriptionStr)%" ))
-//        }
-//        if let descriptionStr = descriptionStr {
-//            descExp = Expression.property("description").match("'\(descriptionStr)'")
-//            .or(Expression.property("name").match("'\(descriptionStr)'"))
-//        }
         if let descriptionStr = descriptionStr {
             descExp = _Property.DESCRIPTION.like("%\(descriptionStr)%")
-                            .or(_Property.NAME.like("%\(descriptionStr)%" ))
+                .or(_Property.NAME.like("%\(descriptionStr)%" ))
         }
-      
+        
         
         let locationExp = _Property.COUNTRY.equalTo(locationStr)
             .or(_Property.CITY.equalTo(locationStr))
@@ -53,51 +71,23 @@ extension HotelPresenter {
         if  let descExp = descExp {
             searchExp = locationExp.and(descExp)
         }
-
-//        // TODO: Try out predicate Query
-//        let searchPredicate = NSPredicate.init(format: "type == %@ AND (description CONTAINS %@ AND (country == %@ OR city == %@ OR state == %@ OR address == %@))", "hotel",descriptionStr ?? "", locationStr,locationStr,locationStr,locationStr)
-//        let hotelSearchQuery1 = db.createQuery(
-//            where: searchPredicate ,returning:["name","address"])
-//        
-//        
-//        try! print(hotelSearchQuery1.explain())
-//        
-//        do {
-//            
-//            let rows = try hotelSearchQuery1.run()
-//            
-//                for row in rows {
-//                    print("query row is \(row )")
-//
-//                }
-//            
-//        
-//            for (_, row) in try hotelSearchQuery1.run().enumerated() {
-//                               print(row.document.toDictionary().count)
-//            }
-//        }
-//        catch {
-//            
-//            print(error.localizedDescription)
-//        }
         
-
-    
+        
         let hotelSearchQuery = Query
             .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(_Property.TYPE
                 .equalTo("hotel")
-            .and(searchExp))
+                .and(searchExp))
         
-           print(try! hotelSearchQuery.explain())
-    
+        print(try! hotelSearchQuery.explain())
+        
         var matches:Hotels = []
         do {
             for (_,row) in try hotelSearchQuery.run().enumerated() {
                 
                 if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
-
+                    
                     matches.append(match.toDictionary())
                 }
                 
@@ -108,9 +98,69 @@ extension HotelPresenter {
             handler(nil,error)
         }
     }
-    
-}
 
+    
+    fileprivate func fetchHotelsFromWebServiceMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void)
+    {
+        // Description is looked up in the "description" and "name" content
+        // Location is looked up in country, city, state and address
+        // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
+        // Example query:http://localhost:8080/api/hotel/<description>/<location>
+        
+        
+        self.associatedView?.dataStartedLoading()
+        let session = URLSession.shared
+        let descStr = descriptionStr ?? "*"
+        let searchPath = "\(descStr)/\(locationStr)"
+        let escapedSearchPath = searchPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        let fullPath = "hotel/\(String(describing: escapedSearchPath!))"
+        
+        if let url = URL.init(string: fullPath, relativeTo: TravelSampleWebService.serverBackendUrl) {
+            let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in
+                self?.associatedView?.dataFinishedLoading()
+                
+                switch error {
+                case nil:
+                    if let httpResp = response as? HTTPURLResponse {
+                        switch httpResp.statusCode {
+                        case 200 :
+                            if let dataVal = data {
+                                do {
+                                    if let flightData = try JSONSerialization.jsonObject(with: dataVal, options:.allowFragments) as? [String:Flights] {
+                                        DispatchQueue.main.async {
+                                            handler(flightData["data"],nil)                                            }
+                                        
+                                    }
+                                }
+                                    
+                                catch {
+                                    print("Failed to serialize JSON data")
+                                    DispatchQueue.main.async {
+                                        handler(nil,TravelSampleError.DataParseError)
+                                    }
+                                    
+                                }
+                            }
+                            
+                        default:
+                            // TODO: Create custom error
+                            print("Got status of \(httpResp)")
+                        }
+                    }
+                default:
+                    DispatchQueue.main.async {
+                        handler(nil,error)
+                    }
+                    
+                }
+            }
+            dataTask.resume()
+        }
+        
+        
+    }
+
+}
 
 // MARK: PresenterProtocol
 extension HotelPresenter:PresenterProtocol {

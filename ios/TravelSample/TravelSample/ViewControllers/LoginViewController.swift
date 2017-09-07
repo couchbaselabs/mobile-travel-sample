@@ -102,6 +102,11 @@ extension LoginViewController {
         
     }
     
+    @IBAction func onGuestLoginTapped(_ sender: UIButton) {
+            NotificationCenter.default.post(Notification.notificationForGuestLoginSuccess())
+                    
+    }
+    
 }
 
 

@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     fileprivate var loginViewController:LoginViewController?
     fileprivate var flightBookingsViewController:UINavigationController?
+    fileprivate var hotelsNavigationViewController:UINavigationController?
     fileprivate var cbMgr = DatabaseManager.shared
     fileprivate var isObservingForLoginEvents:Bool = false
     
@@ -91,6 +92,22 @@ extension AppDelegate {
     }
     
     
+    func loadHotelBookmarkViewController() {
+        
+        if let flightVC = flightBookingsViewController {
+            window?.rootViewController = flightVC
+        }
+        else {
+            let storyboard = UIStoryboard.getStoryboard(.Main)
+            if let navController = storyboard.instantiateViewController(withIdentifier: "BookmarkedHotelListingNVC") as? UINavigationController{
+                hotelsNavigationViewController = navController
+                window?.rootViewController = navController
+            }
+        }
+        
+    }
+    
+    
 }
 
 // MARK: Observers
@@ -125,6 +142,10 @@ extension AppDelegate {
             NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil, queue: nil) { [unowned self] (notification) in
                 self.logout()
             }
+            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: AppNotifications.guestLoginSuccess.name.rawValue), object: nil, queue: nil) {[unowned self] (notification) in
+                self.loadHotelBookmarkViewController()
+            }
             isObservingForLoginEvents = true
         }
     }
@@ -134,6 +155,7 @@ extension AppDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInSuccess.name.rawValue), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.loginInFailure.name.rawValue), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.logout.name.rawValue), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: AppNotifications.guestLoginSuccess.name.rawValue), object: nil)
         isObservingForLoginEvents = false
         
     }
