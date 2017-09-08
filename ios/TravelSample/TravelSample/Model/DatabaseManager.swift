@@ -20,12 +20,7 @@ class DatabaseManager {
         }
     }
     
-    // public
-    var guestDb:Database? {
-        get {
-            return _guestdb
-        }
-    }
+    
     // For demo purposes only. In prod apps, credentials must be stored in keychain
     public fileprivate(set) var currentUserCredentials:(user:String,password:String)?
     
@@ -41,10 +36,8 @@ class DatabaseManager {
     
     
     fileprivate var _db:Database?
-    fileprivate var _guestdb:Database?
     
     
-
     fileprivate var _pushPullRepl:Replicator?
     fileprivate var _pushPullReplListener:NSObjectProtocol?
     
@@ -70,7 +63,6 @@ class DatabaseManager {
         // Stop observing changes to the database that affect the query
         do {
             try self._db?.close()
-            try self._guestdb?.close()
         }
         catch  {
             
@@ -103,7 +95,7 @@ extension DatabaseManager {
             
             options.directory = guestFolderPath
             // Gets handle to existing DB at specified path
-            _guestdb = try Database(name: kGuestDBName, config: options)
+            _db = try Database(name: kGuestDBName, config: options)
 
             handler(nil)
         }catch {
@@ -166,10 +158,21 @@ extension DatabaseManager {
         do {
             print(#function)
             // Get handle to DB  specified path
-            stopAllReplicationForCurrentUser()
-            try _db?.close()
+            if let db = self.db {
+                switch db.name {
+                case kDBName:
+                        stopAllReplicationForCurrentUser()
+                        try _db?.close()
+                        _db = nil
+                case kGuestDBName:
+                    try _db?.close()
+                    _db = nil
+                default:
+                    return false
+                }
+              
+            }
             
-            _db = nil
           
             return true
             
@@ -178,22 +181,7 @@ extension DatabaseManager {
             return false
         }
     }
-    func closeDatabaseForGuest() -> Bool {
-        do {
-            print(#function)
-            // Get handle to DB  specified path
-
-            try _guestdb?.close()
-            
-            _guestdb = nil
-            
-            return true
-            
-        }
-        catch {
-            return false
-        }
-    }
+    
     
     func createDatabaseIndexes() throws{
         // For searches on type property

@@ -17,7 +17,6 @@ class BookmarkHotelPresenter:BookmarkHotelPresenterProtocol {
     fileprivate var _liveQueryListener:NSObjectProtocol?
     fileprivate var _bookingQuery:LiveQuery?
 
-    
 }
 
 
@@ -34,7 +33,7 @@ extension BookmarkHotelPresenter {
         
         
         
-         
+         /*
          do {
             // Query to fetch bookmarked hotels
             let bookmarkHotelExpr = Expression.property("type").equalTo("bookmarkedhotel")
@@ -66,7 +65,7 @@ extension BookmarkHotelPresenter {
             print(error.localizedDescription)
             self.associatedView?.updateUIWithUpdatedBookings(nil, error: error)
          }
-    
+    */
         
         
 
@@ -80,6 +79,8 @@ extension BookmarkHotelPresenter {
         
     }
 }
+
+
 
 // MARK: PresenterProtocol
 extension BookmarkHotelPresenter:PresenterProtocol {

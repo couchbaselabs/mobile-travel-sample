@@ -13,6 +13,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
     fileprivate var descriptionSearchBar:UISearchBar!
     fileprivate var locationSearchBar:UISearchBar!
     fileprivate var searchButton:UIButton!
+    var inGuestMode:Bool = false
     var hotels:Hotels?
     
     override func viewDidLoad() {
@@ -88,6 +89,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
     }
 
+   
     @IBAction func onCancelTapped(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -98,16 +100,31 @@ extension HotelsTableViewController {
         guard let locationStr = locationSearchBar.text else {
             return
         }
-        self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: true, handler: { [weak self](hotels, error) in
-            switch error {
-            case nil:
-                self?.hotels = hotels
-                self?.tableView.reloadData()
-            default:
-                print("Error when fetching hotels \(error?.localizedDescription)")
+        if inGuestMode == false {
+            self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: true, handler: { [weak self](hotels, error) in
+                switch error {
+                case nil:
+                    self?.hotels = hotels
+                    self?.tableView.reloadData()
+                default:
+                    print("Error when fetching hotels \(error?.localizedDescription)")
                 
-            }
-        })
+                }
+            })
+        }
+        else {
+            self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: false, handler: { [weak self](hotels, error) in
+                switch error {
+                case nil:
+                    self?.hotels = hotels
+                    self?.tableView.reloadData()
+                default:
+                    print("Error when fetching hotels \(error?.localizedDescription)")
+                    
+                }
+            })
+            
+        }
         
     }
 }
