@@ -28,16 +28,16 @@ extension HotelPresenter {
         case false:
              fetchHotelsFromWebServiceMatchingDescription(descriptionStr, location: locationStr, handler: handler)
         }
-            }
+    }
     
     
     
     func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        
+        handler(nil)
         
     }
     func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        
+        handler(nil)
     }
 
     
@@ -110,10 +110,15 @@ extension HotelPresenter {
         
         self.associatedView?.dataStartedLoading()
         let session = URLSession.shared
-        let descStr = descriptionStr ?? "*"
-        let searchPath = "\(descStr)/\(locationStr)"
-        let escapedSearchPath = searchPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        let fullPath = "hotel/\(String(describing: escapedSearchPath!))"
+        var escapedDescStr = "*"
+        if let descriptionStr = descriptionStr, descriptionStr != "" {
+            escapedDescStr = descriptionStr.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "*"
+        }
+        
+        let escapedLocationStr = locationStr.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        
+        let searchPath = "\(escapedDescStr)/\(escapedLocationStr)"
+        let fullPath = "hotel/\(String(describing: searchPath))"
         
         if let url = URL.init(string: fullPath, relativeTo: TravelSampleWebService.serverBackendUrl) {
             let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in

@@ -1158,15 +1158,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="I3F-zq-T8s" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="I3F-zq-T8s" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I3F-zq-T8s" id="O9q-ow-lAL">
-                                    <rect key="frame" x="0.0" y="0.0" width="328" height="69.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yge-8G-WPZ">
-                                            <rect key="frame" x="8" y="8" width="312" height="19.5"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="19.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19.5" id="bSt-aU-Vou"/>
                                             </constraints>
@@ -1175,7 +1175,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mf7-rt-YAG">
-                                            <rect key="frame" x="8" y="29" width="312" height="21"/>
+                                            <rect key="frame" x="8" y="29" width="359" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="As5-qr-zj2"/>
                                             </constraints>
@@ -1184,7 +1184,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="555-7890" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ngy-O3-Dnk">
-                                            <rect key="frame" x="4" y="47" width="316" height="18"/>
+                                            <rect key="frame" x="4" y="47" width="363" height="18"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="5BU-i2-s05"/>
@@ -1194,14 +1194,23 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES"/>
                                         </textView>
+                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bookmark-Filled" translatesAutoresizingMaskIntoConstraints="NO" id="aAS-Fj-Isr" userLabel="bookmarkImageView">
+                                            <rect key="frame" x="339" y="39.5" width="28" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="28" id="SCt-uz-4NQ"/>
+                                                <constraint firstAttribute="height" constant="25" id="XlH-ov-6Mn"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mf7-rt-YAG" firstAttribute="top" secondItem="yge-8G-WPZ" secondAttribute="bottom" constant="1.5" id="054-L0-TWl"/>
                                         <constraint firstAttribute="topMargin" secondItem="yge-8G-WPZ" secondAttribute="top" id="6GN-wa-zaI"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="yge-8G-WPZ" secondAttribute="leading" id="AAu-0J-vK2"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="aAS-Fj-Isr" secondAttribute="bottom" constant="-3.5" id="JQh-JI-WQt"/>
                                         <constraint firstItem="mf7-rt-YAG" firstAttribute="leading" secondItem="yge-8G-WPZ" secondAttribute="leading" id="M3I-uC-0Ud"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ngy-O3-Dnk" secondAttribute="trailing" id="XPt-QL-T1W"/>
                                         <constraint firstItem="Ngy-O3-Dnk" firstAttribute="leading" secondItem="O9q-ow-lAL" secondAttribute="leadingMargin" constant="-4" id="e3Y-hc-0za"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="aAS-Fj-Isr" secondAttribute="trailing" id="ecA-JT-VKh"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="yge-8G-WPZ" secondAttribute="trailing" id="tZE-W5-O8u"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="mf7-rt-YAG" secondAttribute="trailing" id="vye-zY-scQ"/>
                                         <constraint firstItem="Ngy-O3-Dnk" firstAttribute="top" secondItem="mf7-rt-YAG" secondAttribute="bottom" constant="-3" id="xWZ-nE-4t8"/>
@@ -1209,6 +1218,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="address" destination="mf7-rt-YAG" id="em5-Pe-jVl"/>
+                                    <outlet property="bookmarkImageView" destination="aAS-Fj-Isr" id="hIV-xh-qwp"/>
                                     <outlet property="name" destination="yge-8G-WPZ" id="0I4-CD-OtV"/>
                                     <outlet property="phone" destination="Ngy-O3-Dnk" id="TeV-CB-qhf"/>
                                 </connections>
@@ -1236,7 +1246,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ek0-4v-Mgh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1814" y="367"/>
+            <point key="canvasLocation" x="1813.5999999999999" y="366.56671664167919"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vK4-Im-f03">
@@ -1339,6 +1349,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Bookmark-Filled" width="50" height="50"/>
         <image name="CBTravel.LOGO" width="153" height="36"/>
         <image name="cyan" width="150" height="50"/>
     </resources>

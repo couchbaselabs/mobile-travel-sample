@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewingDelegate{
+class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewingDelegate, PresentingViewProtocol{
     
     lazy var hotelPresenter:HotelPresenter = HotelPresenter()
     fileprivate var descriptionSearchBar:UISearchBar!
@@ -231,6 +231,33 @@ extension HotelsTableViewController {
             self.navigationController?.pushViewController(detailVC, animated: true)
             
         }
+    }
+    
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let cell = tableView.cellForRow(at: indexPath) as? HotelCell  else {
+            return nil
+        }
+        let actionType = cell.isBookmarked == true ? NSLocalizedString("Bookmark", comment: ""): NSLocalizedString("Unbookmark", comment: "")
+        
+        let bookmarkAction = UITableViewRowAction(style: .normal, title: actionType, handler: { [weak self] (action, indexPath) in
+            // bookmark hotel document at index
+            if let hotelToBM = self?.hotels?[indexPath.section] {
+                
+                self?.hotelPresenter.bookmarkHotels([hotelToBM], handler: { (error) in
+                    if let error = error {
+                        self?.showAlertWithTitle(NSLocalizedString("Failed to Bookmark!", comment: ""), message: error.localizedDescription)
+                    }
+                    else {
+                        cell.isBookmarked = !cell.isBookmarked
+                        
+                    }
+                    
+                })
+                
+            }
+        })
+        return [bookmarkAction]
+        
     }
 
 }

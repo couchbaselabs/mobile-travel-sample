@@ -99,7 +99,7 @@ extension BookmarkedHotelsTableViewController {
 // MARK: UITableViewDelegate
 extension BookmarkedHotelsTableViewController {
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let bookmarkAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("UnBookmark", comment: ""), handler: { [weak self] (action, indexPath) in
+        let bookmarkAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("UnBookmark", comment: ""), handler: { [weak self] (action, indexPath) in
             
             
         })
