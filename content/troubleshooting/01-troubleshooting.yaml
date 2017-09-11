@@ -1,0 +1,9 @@
+title: Troubleshooting
+description: |
+  Should this assume that users have a running system (2 SG + 3 CBS) on their machine to be able to troubleshoot it?
+milestones:
+  - title: TODO
+    description: |
+      TODO
+    tryitout:
+      - TODO

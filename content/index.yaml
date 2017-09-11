@@ -8,3 +8,4 @@ lessons:
   - $ref: ./develop/02-prebuilt.yaml
   - $ref: ./develop/03-query.yaml
   - $ref: ./develop/04-fts.yaml
+  - $ref: ./troubleshooting/01-troubleshooting.yaml
