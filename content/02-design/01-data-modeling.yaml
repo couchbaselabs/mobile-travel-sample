@@ -12,6 +12,8 @@ milestones:
     description: |
       Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
       
+      TODO: Must have all the properties in the GIF.
+      
       ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
     tryitout:
       - Add a type property in the blank fields on the diagram above.
@@ -25,9 +27,14 @@ milestones:
       - Add a date to the model
   - title: Document IDs
     description: |
-      TODO
+      Every document in Couchbase is associated with a unique key that must be provided by the user when the document is created. The key is the unique identifier of the document and can take any format. However, it is recommended that you give it a value that provides some context about the contents of the document.
+      For instance, in the travel app data set, the document Key/ID is of the format `{doc.type}_{alphanumeric_string}`. Here `{doc.type}` provides some context of the purpose of the document and in combination with the `{alphanumeric_string}`, it uniquely identifies the string.
+      The document Key will be listed as “ID” on Couchbase Server admin console. The key is also referred to as the Document ID.
+      
+      ![](https://cl.ly/0K3V1q3m3K1Z/admin-ui.png)
     tryitout:
-      - Add the document Ids.
+      - Option 1, Log into the CB server , search for document with specific key “airline_137” and write down some property value of “icao” in the text box below.
+      - Option 2, Show couple of examples of travel sample doc and ask them to give it a key using format specified above.
   - title: Entity relationships
     description: |
       TODO
