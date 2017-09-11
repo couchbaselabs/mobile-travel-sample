@@ -2,7 +2,22 @@ title: Installation
 milestones:
   - title: Pre-requisites
     description: |
-      Verify the required software is installed
+      Verify the required software is installed.
     tryitout:
-      - iOS - open Xcode 9
-      - Android - open Android Studio 2 and above
+      - iOS - open Xcode 9.
+      - Android - open Android Studio 2 and above.
+  - title: Running the app
+    description: |
+      In this step, you will run the app on a simulator.
+    tryitout:
+      - Install Couchbase Lite 2.0 latest.
+      - Build and run the project. Notice the login screen appearing on the simulator.
+  - title: Couchbase Server 5.0
+    description: |
+      In this step, you will install Couchbase Server.
+      
+      TODO: Instructions to install Couchbase Server.
+      TODO: Instructions to install travel sample bucket.
+      TODO: Instructions to create an admin user with full access.
+    tryitout:
+      - How many documents are there in this bucket.
