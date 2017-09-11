@@ -74,3 +74,6 @@ obj/
 
 
 *.key
+
+# content node_modules
+content/node_modules/
