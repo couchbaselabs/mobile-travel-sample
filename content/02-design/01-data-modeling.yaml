@@ -1,5 +1,20 @@
 title: Data Modeling
+description: |
+  Progressive disclosure of the data model in the travel sample bucket and the guest bucket. The Travel Sample bucket is synchronized between the mobile clients and the Couchbase Server. The guest bucket is a local-only database that is embedded in the mobile client.
+  
+  In this lesson you will learn how to model the data for an application and the relationships between the different models.
+  
+  Couchbase stores data in documents rather than in table rows. A document is a JSON object containing a number of key-value pairs that are typically correlated. This means that it can take any form as long as it is valid JSON. The following represents the same schema as the table above but in JSON format.
+  
+  TODO: Show document as JSON for each entity.
 milestones:
+  - title: Document Types
+    description: |
+      Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
+      
+      ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
+    tryitout:
+      - Add a type property in the blank fields on the diagram above.
   - title: Storing Dates
     description: |
       TODO
