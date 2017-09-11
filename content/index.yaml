@@ -5,7 +5,10 @@ lessons:
   - $ref: ./02-design/01-data-modeling.yaml
   - $ref: ./02-design/02-access-control.yaml
   - $ref: ./03-develop/01-security.yaml
-  - $ref: ./04-develop/02-prebuilt.yaml
-  - $ref: ./04-develop/03-query.yaml
-  - $ref: ./04-develop/04-fts.yaml
+  - $ref: ./03-develop/02-prebuilt.yaml
+  - $ref: ./03-develop/03-query.yaml
+  - $ref: ./03-develop/04-fts.yaml
+  - $ref: ./04-deploy/01-install.yaml
+  - $ref: ./04-deploy/02-upgrade.yaml
+  - $ref: ./04-deploy/03-scale.yaml
   - $ref: ./05-troubleshooting/01-troubleshooting.yaml

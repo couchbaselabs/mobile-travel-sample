@@ -1,0 +1,17 @@
+title: Install
+milestones:
+  - title: Deploy Couchbase Server
+    description: |
+      TODO
+    tryitout:
+      - TODO
+  - title: Deploy Sync Gateway
+    description: |
+      TODO
+    tryitout:
+      - TODO
+  - title: Reverse Proxy
+    description: |
+      TODO
+    tryitout:
+      - TODO
