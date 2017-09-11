@@ -21,3 +21,18 @@ milestones:
       TODO: Instructions to create an admin user with full access.
     tryitout:
       - How many documents are there in this bucket.
+  - title: Python Web App
+    description: |
+      In this step, you will install the back-end component of the application.
+    tryitout:
+      - Create a new user and make a flight booking.
+  - title: Install Sync Gateway
+    description: |
+      TODO
+    tryitout:
+      - Query `http://localhost:4984/travel-sample`. How many documents are returned in the response.
+  - title: Wrap-up
+    description: |
+      TODO
+    tryitout:
+      - Log on the mobile app with the same credentials. Notice the flight booking is synchronized across.

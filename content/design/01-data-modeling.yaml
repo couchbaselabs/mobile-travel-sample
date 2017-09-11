@@ -1,0 +1,25 @@
+title: Data Modeling
+milestones:
+  - title: Storing Dates
+    description: |
+      TODO
+      
+      - Show JSON models
+      
+    tryitout:
+      - Add a date to the model
+  - title: Document IDs
+    description: |
+      TODO
+    tryitout:
+      - Add the document Ids.
+  - title: Entity relationships
+    description: |
+      TODO
+    tryitout:
+      - Add the relationships between each document
+  - title: Blobs
+    description: |
+      TODO
+    tryitout:
+      - TODO
