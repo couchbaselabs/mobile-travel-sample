@@ -1,0 +1,24 @@
+title: Access Control
+description: |
+  Modeling the document schemas for security
+milestones:
+  - title: Routing
+    description: |
+      TODO
+    tryitout:
+      - TODO
+  - title: Read Access
+    description: |
+      TODO
+    tryitout:
+      - TODO
+  - title: Write Access
+    description: |
+      TODO
+    tryitout:
+      - TODO
+  - title: Roles
+    description: |
+      TODO
+    tryitout:
+      - TODO

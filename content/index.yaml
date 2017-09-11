@@ -3,6 +3,7 @@ requirements:
 lessons:
   - $ref: ./installation/01-installation.yaml
   - $ref: ./design/01-data-modeling.yaml
+  - $ref: ./design/02-access-control.yaml
   - $ref: ./develop/01-security.yaml
   - $ref: ./develop/02-prebuilt.yaml
   - $ref: ./develop/03-query.yaml
