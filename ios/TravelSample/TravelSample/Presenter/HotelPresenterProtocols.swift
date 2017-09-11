@@ -16,6 +16,7 @@ protocol HotelPresenterProtocol:PresenterProtocol {
     
     func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void)
     func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void)
+    func fetchBookmarkedHotels( handler:@escaping(_ hotels:BookmarkHotels?, _ error:Error?)->Void)
 }
 
 

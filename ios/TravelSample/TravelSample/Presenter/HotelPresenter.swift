@@ -45,7 +45,7 @@ extension HotelPresenter {
             if document == nil {
                 // First time bookmark is created for guest account
                 // Create document of type "bookmarkedhotels"
-                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[]])
+                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
                 
             }
             
@@ -54,6 +54,7 @@ extension HotelPresenter {
                 handler(TravelSampleError.DocumentFetchException)
                 return
             }
+            
             
             // Get the Ids of all hotels that need to be bookmarked from the hotels array
             let ids:[String] = hotels.map({ (dict)  in
@@ -75,13 +76,16 @@ extension HotelPresenter {
                 // perform batch update
                 try db.inBatch {
                     // Update the bookmarked list with the Ids of hotels
-                    var bookmarked = document?.array(forKey: "hotels")?.toArray()
-                    bookmarked?.append(newlyAddedIds)
+                    var bookmarked = document?.array(forKey: "hotels")
                     
+                    // Ideally have an API that would append elements of a native array to existing ArrayObject
+                    for newId in newlyAddedIds {
+                        bookmarked = bookmarked?.addString(newId)
+                    }
                     
                     if let document = document {
                         // Update and save the bookmark document
-                        document.setArray(ArrayObject.init(array: bookmarked), forKey: "hotels")
+                        document.setArray(bookmarked, forKey: "hotels")
                         
                         try db.save(document)
                         
@@ -119,6 +123,70 @@ extension HotelPresenter {
         handler(nil)
     }
 
+    func fetchBookmarkedHotels( handler:@escaping(_ hotels:BookmarkHotels?, _ error:Error?)->Void)
+    {
+        print(#function)
+        guard let db = dbMgr.db else {
+            handler(nil,TravelSampleError.DatabaseNotInitialized)
+            return
+            
+        }
+        do {
+            
+            
+            /*** START TEST CODE ***
+            let bookmarkDoc = try fetchGuestBookmarkDocumentFromDB(db)
+           
+            let hotels = bookmarkDoc?.array(forKey: "hotels")?.toArray().map{$0 as? String}
+            
+            for hotelId in hotels! {
+                let hotelDoc = db.getDocument(hotelId as! String)
+                print (hotelDoc!.toDictionary())
+            
+            
+                
+                
+            }
+            *** END TEST CODE ***/
+            
+            
+            // Do a JOIN Query to fetch bookmark document and for every hotel Id listed
+            // in the "hotels" property, fetch the corresponding hotel document
+            var bookmarkedHotels:Hotels = Hotels()
+            
+            // Set aliases
+            let bookmarkDS = DataSource.database( db).as("bookmarkDS")
+            let hotelsDS = DataSource.database(db).as("hotelsDS")
+            
+            let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
+            let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+            
+            let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+            let join = Join.join(hotelsDS).on(joinExpr);
+            
+            let typeExpr = Expression.property("type").from("bookmarkDS")
+            
+            let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
+            let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
+            
+            let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
+            
+            print (try? query.explain())
+            for result in try query.run() {
+                print ("RESULT IS \(result.toDictionary())")
+                if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
+                      bookmarkedHotels.append(hotel)
+                }
+            }
+            handler(bookmarkedHotels,nil)
+          
+        }
+        catch {
+            handler(nil,TravelSampleError.DocumentFetchException)
+            return
+ 
+        }
+    }
     
 }
 
@@ -260,7 +328,7 @@ extension HotelPresenter {
         */
         
         for row in try searchQuery.run() {
-            
+            print("Bookmarked doc is \(row.toDictionary())")
             if let docId = row.string(forKey: "id") {
                 return db.getDocument(docId)
             }

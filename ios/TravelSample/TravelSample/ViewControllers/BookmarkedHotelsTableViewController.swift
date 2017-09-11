@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BookmarkedHotelsTableViewController: UITableViewController {
+class BookmarkedHotelsTableViewController: UITableViewController, PresentingViewProtocol {
 
     lazy var bookmarkHotelPresenter:HotelPresenter = HotelPresenter()
     var hotels:Hotels?
@@ -24,6 +24,7 @@ class BookmarkedHotelsTableViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        self.fetchBookmarkedHotelsForGuestAccount()
         
     }
     
@@ -51,7 +52,17 @@ class BookmarkedHotelsTableViewController: UITableViewController {
     }
     
     
-    
+    private func fetchBookmarkedHotelsForGuestAccount() {
+        self.bookmarkHotelPresenter.fetchBookmarkedHotels { [weak self](hotels, error) in
+            if error == nil {
+                self?.hotels = hotels
+                self?.tableView.reloadData()
+            }
+            else {
+                self?.showAlertWithTitle(nil, message: error?.localizedDescription ?? "")
+            }
+        }
+    }
     @IBAction func onLogoutTapped(_ sender: UIBarButtonItem) {
         let cbMgr = DatabaseManager.shared
         let _ = cbMgr.closeDatabaseForCurrentUser()
