@@ -14,6 +14,7 @@ class HotelPresenter:HotelPresenterProtocol {
     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     
     weak var associatedView: PresentingViewProtocol?
+    
   
 }
 
@@ -33,9 +34,87 @@ extension HotelPresenter {
     
     
     func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        handler(nil)
+        guard let db = dbMgr.db else {
+            handler(TravelSampleError.DatabaseNotInitialized)
+            return
+        }
+        
+        do {
+            var document = try fetchGuestBookmarkDocumentFromDB(db)
+            
+            if document == nil {
+                // First time bookmark is created for guest account
+                // Create document of type "bookmarkedhotels"
+                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[]])
+                
+            }
+            
+            // Get current list of bookmarked hotels. 
+            guard let arrOfCurrentIds:[String] = document?.array(forKey: "hotels")?.toArray().flatMap({ return $0 as? String }) else {
+                handler(TravelSampleError.DocumentFetchException)
+                return
+            }
+            
+            // Get the Ids of all hotels that need to be bookmarked from the hotels array
+            let ids:[String] = hotels.map({ (dict)  in
+                if let idVal = dict["id"] as? String {
+                    return idVal
+                }
+                return ""
+             })
+            
+            // Convert to Set for easy set operations
+            let setOfNewIds:Set<String> = Set(ids)
+            
+            
+            // Get the delta of the new list and current Id list to identify the hotels that are not yet bookmarked
+            let newlyAddedIds = Array(setOfNewIds.subtracting(arrOfCurrentIds))
+            
+            if newlyAddedIds.count > 0 {
+                
+                // perform batch update
+                try db.inBatch {
+                    // Update the bookmarked list with the Ids of hotels
+                    var bookmarked = document?.array(forKey: "hotels")?.toArray()
+                    bookmarked?.append(newlyAddedIds)
+                    
+                    
+                    if let document = document {
+                        // Update and save the bookmark document
+                        document.setArray(ArrayObject.init(array: bookmarked), forKey: "hotels")
+                        
+                        try db.save(document)
+                        
+                        // Add the corresponding bookmarked hotels to the database
+                        let docsToAdd = hotels.filter({ (dict) -> Bool in
+                            if let idVal = dict["id"] as? String {
+                                return newlyAddedIds.contains(idVal)
+                            }
+                            return false
+                        })
+                        
+                        for hotelDoc in docsToAdd {
+                            if let idVal = hotelDoc["id"] as? String {
+                            
+                                try db.save(Document.init(idVal, dictionary: hotelDoc))
+                            }
+                        }
+                    }
+                }
+                
+            }
+            handler(nil)
+            
+        
+            
+        }
+        catch {
+            handler(TravelSampleError.DocumentFetchException)
+            return
+        }
         
     }
+    
     func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
         handler(nil)
     }
@@ -47,7 +126,7 @@ extension HotelPresenter {
 // MARL Private
 extension HotelPresenter {
     
-    func fetchHotelsFromLocalDatabaseMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
+    fileprivate func fetchHotelsFromLocalDatabaseMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
         guard let db = dbMgr.db else {
             fatalError("db is not initialized at this point!")
         }
@@ -164,6 +243,32 @@ extension HotelPresenter {
         
         
     }
+    
+    fileprivate func fetchGuestBookmarkDocumentFromDB(_ db:Database)throws ->Document?{
+        let searchQuery = Query
+            .select(_SelectColumn.DOCIDRESULT)
+            .from(DataSource.database(db))
+            .where(_Property.TYPE
+                .equalTo("bookmarkedhotels"))
+        
+        /*
+         {
+         "type" : "bookmarkedhotelss"
+         "hotels":["hotel1","hotel2"]
+         }
+ 
+        */
+        
+        for row in try searchQuery.run() {
+            
+            if let docId = row.string(forKey: "id") {
+                return db.getDocument(docId)
+            }
+        }
+        
+        return nil
+    }
+   
 
 }
 

@@ -13,4 +13,5 @@ enum TravelSampleError:Error {
     case RemoteDatabaseNotReachable
     case DataParseError
     case UserCredentialsNotProvided
+    case DocumentFetchException
 }

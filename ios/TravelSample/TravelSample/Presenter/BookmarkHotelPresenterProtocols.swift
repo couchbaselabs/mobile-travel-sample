@@ -15,7 +15,5 @@ typealias BookmarkHotels = [BookmarkHotel]
 
 protocol BookmarkHotelPresenterProtocol:PresenterProtocol {
     func fetchBookmarkedHotels( handler:@escaping(_ hotels:BookmarkHotels?, _ error:Error?)->Void)
-    func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void)
-    func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void)
 }
 

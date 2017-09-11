@@ -36,12 +36,12 @@ extension BookmarkHotelPresenter {
          /*
          do {
             // Query to fetch bookmarked hotels
-            let bookmarkHotelExpr = Expression.property("type").equalTo("bookmarkedhotel")
+            let bookmarkHotelExpr = Expression.property("type").equalTo("bookmarkedhotels")
             let hotelExpr =
             let _hotelQuery:Query? = Query
                 .select()
                 .from(DataSource.database(db))
-                .where(Expression.property("type").equalTo("bookmarkedhotel"))
+                .where(Expression.property("type").equalTo("bookmarkedhotels"))
             
             try! print(_hotelQuery?.explain())
             
@@ -71,13 +71,7 @@ extension BookmarkHotelPresenter {
 
     }
     
-    func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        
-        
-    }
-    func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        
-    }
+ 
 }
 
 

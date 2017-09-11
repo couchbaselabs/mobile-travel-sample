@@ -48,7 +48,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.rowHeight = 70
+        self.tableView.rowHeight = 80
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
         self.tableView.tableHeaderView = searchHeaderView()
@@ -164,6 +164,7 @@ extension HotelsTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:HotelCell = tableView.dequeueReusableCell(withIdentifier: "HotelCell", for: indexPath) as! HotelCell
+        
         guard let hotels = self.hotels else {
             return cell
         }
@@ -172,7 +173,8 @@ extension HotelsTableViewController {
             
             cell.name.text = hotel["name"] as? String
             cell.address.text = hotel["address"] as? String
-             cell.phone.text = hotel["phone"] as? String
+            cell.phone.text = hotel["phone"] as? String
+            cell.isBookmarked = false
         }
         cell.selectionStyle = .none
         return cell
@@ -237,9 +239,9 @@ extension HotelsTableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? HotelCell  else {
             return nil
         }
-        let actionType = cell.isBookmarked == true ? NSLocalizedString("Bookmark", comment: ""): NSLocalizedString("Unbookmark", comment: "")
+        let actionType = cell.isBookmarked == true ? NSLocalizedString("UnBookmark", comment: ""): NSLocalizedString("Bookmark", comment: "")
         
-        let bookmarkAction = UITableViewRowAction(style: .normal, title: actionType, handler: { [weak self] (action, indexPath) in
+        let bookmarkAction = UITableViewRowAction(style: .default, title: actionType, handler: { [weak self] (action, indexPath) in
             // bookmark hotel document at index
             if let hotelToBM = self?.hotels?[indexPath.section] {
                 
@@ -251,8 +253,9 @@ extension HotelsTableViewController {
                         cell.isBookmarked = !cell.isBookmarked
                         
                     }
-                    
+                    tableView.setEditing(false, animated: true)
                 })
+                
                 
             }
         })

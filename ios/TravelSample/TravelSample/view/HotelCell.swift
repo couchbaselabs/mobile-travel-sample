@@ -14,7 +14,11 @@ class HotelCell: UITableViewCell {
     @IBOutlet weak var address:UILabel!
     @IBOutlet weak var phone:UITextView!
     
-    @IBOutlet weak var bookmarkImageView: UIImageView!
+    @IBOutlet weak var bookmarkImageView: UIImageView! {
+        didSet {
+            isBookmarked = false
+        }
+    }
     var nameValue:String? {
         didSet {
             updateUI()

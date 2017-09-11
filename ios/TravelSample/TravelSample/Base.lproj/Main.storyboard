@@ -386,7 +386,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yg6-Dl-9In" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="959" y="2064"/>
+            <point key="canvasLocation" x="1111" y="2151"/>
         </scene>
         <!--Hotels-->
         <scene sceneID="Vxu-eN-Bb4">
@@ -397,15 +397,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="wcz-Oq-XAf" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="wcz-Oq-XAf" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wcz-Oq-XAf" id="M1D-PB-aZZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="328" height="69.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Pw-Rz-CBu">
-                                            <rect key="frame" x="8" y="8" width="312" height="19.5"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="19.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19.5" id="WQy-MT-RkR"/>
                                             </constraints>
@@ -414,7 +414,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rP7-6d-x6j">
-                                            <rect key="frame" x="8" y="29" width="312" height="21"/>
+                                            <rect key="frame" x="8" y="29" width="359" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="gRF-VC-iv2"/>
                                             </constraints>
@@ -423,7 +423,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="555-7890" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="JBM-sJ-Jxx">
-                                            <rect key="frame" x="4" y="47" width="316" height="18"/>
+                                            <rect key="frame" x="4" y="47" width="327" height="18"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="jDl-ie-Fov"/>
@@ -433,21 +433,31 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES"/>
                                         </textView>
+                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bookmark-Filled" translatesAutoresizingMaskIntoConstraints="NO" id="KAy-Md-rmb" userLabel="bookmarkImageView">
+                                            <rect key="frame" x="339" y="43" width="28" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="28" id="5pf-Cn-9K8"/>
+                                                <constraint firstAttribute="height" constant="25" id="edD-va-nMd"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="topMargin" secondItem="8Pw-Rz-CBu" secondAttribute="top" id="7cf-3S-KbE"/>
                                         <constraint firstItem="JBM-sJ-Jxx" firstAttribute="top" secondItem="rP7-6d-x6j" secondAttribute="bottom" constant="-3" id="AfQ-xu-nyv"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="8Pw-Rz-CBu" secondAttribute="trailing" id="IcR-PV-sdf"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="8Pw-Rz-CBu" secondAttribute="leading" id="TQA-bk-nQc"/>
+                                        <constraint firstItem="KAy-Md-rmb" firstAttribute="leading" secondItem="JBM-sJ-Jxx" secondAttribute="trailing" constant="8" id="cpG-ds-30r"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="KAy-Md-rmb" secondAttribute="bottom" constant="-6.5" id="dl7-2V-Kxo"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="rP7-6d-x6j" secondAttribute="trailing" id="fnO-zU-SEB"/>
                                         <constraint firstItem="JBM-sJ-Jxx" firstAttribute="leading" secondItem="M1D-PB-aZZ" secondAttribute="leadingMargin" constant="-4" id="gN3-cV-lsb"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="JBM-sJ-Jxx" secondAttribute="trailing" id="tEJ-gu-YHB"/>
                                         <constraint firstItem="rP7-6d-x6j" firstAttribute="top" secondItem="8Pw-Rz-CBu" secondAttribute="bottom" constant="1.5" id="tUA-N0-G1Z"/>
                                         <constraint firstItem="rP7-6d-x6j" firstAttribute="leading" secondItem="8Pw-Rz-CBu" secondAttribute="leading" id="tzw-QS-PBX"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="KAy-Md-rmb" secondAttribute="trailing" id="unZ-WU-lka"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="address" destination="rP7-6d-x6j" id="Pin-Qq-p9q"/>
+                                    <outlet property="bookmarkImageView" destination="KAy-Md-rmb" id="VU1-IJ-ny1"/>
                                     <outlet property="name" destination="8Pw-Rz-CBu" id="LAe-6s-Wlr"/>
                                     <outlet property="phone" destination="JBM-sJ-Jxx" id="yGy-pU-fte"/>
                                 </connections>
@@ -469,7 +479,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zzh-Jm-nED" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1865" y="2015"/>
+            <point key="canvasLocation" x="1878" y="2150"/>
         </scene>
         <!--Hotel Detail View Controller-->
         <scene sceneID="YrP-IS-7rk">
@@ -684,7 +694,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LD4-F8-huc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2734" y="2016"/>
+            <point key="canvasLocation" x="2698" y="2150"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZOm-7c-7Yp">
@@ -1194,23 +1204,14 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES"/>
                                         </textView>
-                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bookmark-Filled" translatesAutoresizingMaskIntoConstraints="NO" id="aAS-Fj-Isr" userLabel="bookmarkImageView">
-                                            <rect key="frame" x="339" y="39.5" width="28" height="25"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="28" id="SCt-uz-4NQ"/>
-                                                <constraint firstAttribute="height" constant="25" id="XlH-ov-6Mn"/>
-                                            </constraints>
-                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mf7-rt-YAG" firstAttribute="top" secondItem="yge-8G-WPZ" secondAttribute="bottom" constant="1.5" id="054-L0-TWl"/>
                                         <constraint firstAttribute="topMargin" secondItem="yge-8G-WPZ" secondAttribute="top" id="6GN-wa-zaI"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="yge-8G-WPZ" secondAttribute="leading" id="AAu-0J-vK2"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="aAS-Fj-Isr" secondAttribute="bottom" constant="-3.5" id="JQh-JI-WQt"/>
                                         <constraint firstItem="mf7-rt-YAG" firstAttribute="leading" secondItem="yge-8G-WPZ" secondAttribute="leading" id="M3I-uC-0Ud"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ngy-O3-Dnk" secondAttribute="trailing" id="XPt-QL-T1W"/>
                                         <constraint firstItem="Ngy-O3-Dnk" firstAttribute="leading" secondItem="O9q-ow-lAL" secondAttribute="leadingMargin" constant="-4" id="e3Y-hc-0za"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="aAS-Fj-Isr" secondAttribute="trailing" id="ecA-JT-VKh"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="yge-8G-WPZ" secondAttribute="trailing" id="tZE-W5-O8u"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="mf7-rt-YAG" secondAttribute="trailing" id="vye-zY-scQ"/>
                                         <constraint firstItem="Ngy-O3-Dnk" firstAttribute="top" secondItem="mf7-rt-YAG" secondAttribute="bottom" constant="-3" id="xWZ-nE-4t8"/>
@@ -1218,7 +1219,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="address" destination="mf7-rt-YAG" id="em5-Pe-jVl"/>
-                                    <outlet property="bookmarkImageView" destination="aAS-Fj-Isr" id="hIV-xh-qwp"/>
                                     <outlet property="name" destination="yge-8G-WPZ" id="0I4-CD-OtV"/>
                                     <outlet property="phone" destination="Ngy-O3-Dnk" id="TeV-CB-qhf"/>
                                 </connections>
@@ -1239,7 +1239,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Hotels" id="S8e-mh-8ql">
                             <color key="tintColor" red="0.047058823530000002" green="0.67450980390000004" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="qU0-nl-Mvq" kind="presentation" identifier="SearchHotelInGuestModeSegue" modalPresentationStyle="pageSheet" id="Jg5-21-dJd"/>
+                                <segue destination="HEN-7d-NDD" kind="presentation" identifier="SearchHotelInGuestModeSegue" modalPresentationStyle="pageSheet" id="bgt-BC-WFD"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1273,11 +1273,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="70" id="5Ev-5q-hBP" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="70"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="HotelCell" rowHeight="80" id="5Ev-5q-hBP" customClass="HotelCell" customModule="TravelSample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Ev-5q-hBP" id="7bC-Ba-Bn2">
-                                    <rect key="frame" x="0.0" y="0.0" width="328" height="69.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="328" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHU-f6-xtd">
@@ -1299,10 +1299,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="555-7890" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Wwx-M6-0C0">
-                                            <rect key="frame" x="4" y="47" width="316" height="18"/>
+                                            <rect key="frame" x="4" y="47" width="316" height="25"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="18" id="GjA-vH-8f1"/>
+                                                <constraint firstAttribute="height" constant="25" id="GjA-vH-8f1"/>
                                             </constraints>
                                             <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1345,7 +1345,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bHT-3e-aup" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3423" y="367"/>
+            <point key="canvasLocation" x="3421.5999999999999" y="366.56671664167919"/>
         </scene>
     </scenes>
     <resources>
@@ -1353,4 +1353,7 @@
         <image name="CBTravel.LOGO" width="153" height="36"/>
         <image name="cyan" width="150" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="bgt-BC-WFD"/>
+    </inferredMetricsTieBreakers>
 </document>
