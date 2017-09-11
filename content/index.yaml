@@ -1,11 +1,11 @@
 requirements:
   $ref: ./requirements.yaml
 lessons:
-  - $ref: ./installation/01-installation.yaml
-  - $ref: ./design/01-data-modeling.yaml
-  - $ref: ./design/02-access-control.yaml
-  - $ref: ./develop/01-security.yaml
-  - $ref: ./develop/02-prebuilt.yaml
-  - $ref: ./develop/03-query.yaml
-  - $ref: ./develop/04-fts.yaml
-  - $ref: ./troubleshooting/01-troubleshooting.yaml
+  - $ref: ./01-installation/01-installation.yaml
+  - $ref: ./02-design/01-data-modeling.yaml
+  - $ref: ./02-design/02-access-control.yaml
+  - $ref: ./03-develop/01-security.yaml
+  - $ref: ./04-develop/02-prebuilt.yaml
+  - $ref: ./04-develop/03-query.yaml
+  - $ref: ./04-develop/04-fts.yaml
+  - $ref: ./05-troubleshooting/01-troubleshooting.yaml
