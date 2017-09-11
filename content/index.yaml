@@ -1,6 +1,7 @@
 requirements:
   $ref: ./requirements.yaml
 lessons:
+  - $ref: ./installation/01-installation.yaml
   - $ref: ./develop/01-security.yaml
   - $ref: ./develop/02-prebuilt.yaml
   - $ref: ./develop/03-query.yaml

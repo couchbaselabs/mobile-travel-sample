@@ -1,0 +1,8 @@
+title: Installation
+milestones:
+  - title: Pre-requisites
+    description: |
+      Verify the required software is installed
+    tryitout:
+      - iOS - open Xcode 9
+      - Android - open Android Studio 2 and above
