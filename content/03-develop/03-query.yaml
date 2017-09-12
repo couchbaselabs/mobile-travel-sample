@@ -18,7 +18,7 @@ milestones:
       In this section you will query the hotels.
       
       ```swift
-      let hotels: []
+      let hotels: [] = []
       ```
     tryitout:
       - TODO
