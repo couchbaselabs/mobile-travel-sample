@@ -1,7 +1,8 @@
 title: Query
 milestones:
   - title: Query the Database
-    description: Describe the various query options (SELECT, FROM,WHERE….)
+    description: |
+      Describe the various query options (SELECT, FROM,WHERE….)
     tryitout:
       - display user profile.
       - how to know if the query is using an index. (Query Index)
@@ -12,3 +13,12 @@ milestones:
       - Tap on  ‘+” button to make a flight reservation
       - In the “From”  airport textfield, enter “San”
       - Write down the first value you see listed in the drop down menu
+  - title: Query hotels
+    description: |
+      In this section you will query the hotels.
+      
+      ```swift
+      let hotels: []
+      ```
+    tryitout:
+      - TODO
