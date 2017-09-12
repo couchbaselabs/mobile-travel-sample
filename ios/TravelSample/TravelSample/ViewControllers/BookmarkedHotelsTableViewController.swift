@@ -122,7 +122,10 @@ extension BookmarkedHotelsTableViewController {
                     }
                     else {
                         cell.isBookmarked = !cell.isBookmarked
-                    
+                        self?.hotels?.remove(at: indexPath.section)
+                        tableView.deleteSections(IndexSet(integer:indexPath.section), with: .automatic)
+                        
+                        
                     }
                     tableView.setEditing(false, animated: true)
                 })

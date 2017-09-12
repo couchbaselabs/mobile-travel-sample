@@ -98,8 +98,14 @@ extension HotelPresenter {
                         
                         for hotelDoc in docsToAdd {
                             if let idVal = hotelDoc["id"] as? String {
-                            
-                                try db.save(Document.init(idVal, dictionary: hotelDoc))
+                                if let doc = db.getDocument(idVal) {
+                                    doc.setDictionary(hotelDoc)
+                                    try db.save(doc)
+                                }
+                                else {
+                                    
+                                    try db.save(Document.init(idVal, dictionary: hotelDoc))
+                                }
                             }
                         }
                     }
@@ -184,23 +190,6 @@ extension HotelPresenter {
             
         }
         do {
-            
-            
-            /*** START TEST CODE ***
-            let bookmarkDoc = try fetchGuestBookmarkDocumentFromDB(db)
-           
-            let hotels = bookmarkDoc?.array(forKey: "hotels")?.toArray().map{$0 as? String}
-            
-            for hotelId in hotels! {
-                let hotelDoc = db.getDocument(hotelId as! String)
-                print (hotelDoc!.toDictionary())
-            
-            
-                
-                
-            }
-            *** END TEST CODE ***/
-            
             
             // Do a JOIN Query to fetch bookmark document and for every hotel Id listed
             // in the "hotels" property, fetch the corresponding hotel document
