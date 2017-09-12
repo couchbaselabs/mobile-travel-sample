@@ -150,7 +150,7 @@
                                                     <constraint firstAttribute="width" constant="446" id="dr0-Yu-gF8"/>
                                                     <constraint firstAttribute="height" constant="44" id="p3K-vP-LZj"/>
                                                 </constraints>
-                                                <state key="normal" title="Process as Guest" backgroundImage="cyan">
+                                                <state key="normal" title="Proceed as Guest" backgroundImage="cyan">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <variation key="default">

@@ -39,7 +39,7 @@ extension AirportPresenter {
                 .where(_Property.TYPE
                     .equalTo("airport")
                     .and(_Property.FAA
-                    .equalTo(searchStr.uppercased())))
+                    .equalTo(searchStr.uppercased()))).orderBy(Ordering.property("datfield").ascending())
             
         case AirportCodeLength.ICAO.rawValue:
             searchQuery = Query
