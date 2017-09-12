@@ -48,7 +48,7 @@ class BookmarkedHotelsTableViewController: UITableViewController, PresentingView
         self.tableView.dataSource = self
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
-        self.tableView.rowHeight = 120        
+        self.tableView.rowHeight = 80
     }
     
     

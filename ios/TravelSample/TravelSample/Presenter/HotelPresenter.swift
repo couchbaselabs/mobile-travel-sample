@@ -33,7 +33,7 @@ extension HotelPresenter {
     
     
     
-    func bookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
+    func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
         guard let db = dbMgr.db else {
             handler(TravelSampleError.DatabaseNotInitialized)
             return
@@ -121,7 +121,7 @@ extension HotelPresenter {
         
     }
     
-    func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
+    func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
         guard let db = dbMgr.db else {
             handler(TravelSampleError.DatabaseNotInitialized)
             return
@@ -181,7 +181,7 @@ extension HotelPresenter {
 
     }
 
-    func fetchBookmarkedHotels( handler:@escaping(_ hotels:BookmarkHotels?, _ error:Error?)->Void)
+    func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void)
     {
         print(#function)
         guard let db = dbMgr.db else {
