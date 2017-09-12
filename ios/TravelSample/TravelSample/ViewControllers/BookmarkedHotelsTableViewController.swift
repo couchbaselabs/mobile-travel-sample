@@ -110,8 +110,23 @@ extension BookmarkedHotelsTableViewController {
 // MARK: UITableViewDelegate
 extension BookmarkedHotelsTableViewController {
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let cell = tableView.cellForRow(at: indexPath) as? HotelCell  else {
+            return nil
+        }
         let bookmarkAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("UnBookmark", comment: ""), handler: { [weak self] (action, indexPath) in
-            
+            if let hotelToUBM = self?.hotels?[indexPath.section] {
+                
+                self?.bookmarkHotelPresenter.unbookmarkHotels([hotelToUBM], handler: { (error) in
+                    if let error = error {
+                        self?.showAlertWithTitle(NSLocalizedString("Failed to UnBookmark!", comment: ""), message: error.localizedDescription)
+                    }
+                    else {
+                        cell.isBookmarked = !cell.isBookmarked
+                    
+                    }
+                    tableView.setEditing(false, animated: true)
+                })
+            }
             
         })
         return [bookmarkAction]
@@ -126,6 +141,7 @@ extension BookmarkedHotelsTableViewController {
         if UIStoryboard.StoryboardSegue.searchHotelInGuestMode.identifier == segue.identifier {
             if let destVC = segue.destination as? UINavigationController, let hotelVC = destVC.topViewController as? HotelsTableViewController {
                 hotelVC.inGuestMode = true
+                hotelVC.bookmarkedHotels = hotels
             }
         }
     }

@@ -13,8 +13,10 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
     fileprivate var descriptionSearchBar:UISearchBar!
     fileprivate var locationSearchBar:UISearchBar!
     fileprivate var searchButton:UIButton!
-    var inGuestMode:Bool = false
     var hotels:Hotels?
+    
+    var inGuestMode:Bool = false
+    var bookmarkedHotels:Hotels? // Used only in guest mode to mark ones that were bookmarked
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +24,10 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         self.title = NSLocalizedString("Hotels", comment: "")
         registerForPreviewing(with: self, sourceView: self.tableView)
         self.initializeTable()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -170,11 +170,17 @@ extension HotelsTableViewController {
         }
         if hotels.count > indexPath.section {
             let hotel = hotels[indexPath.section]
+            let isBookmarked = bookmarkedHotels?.filter({ (dict) -> Bool in
+                if let id1 = dict["id"] as? String, let id2 = hotel["id"] as? String{
+                    return id1 == id2
+                }
+                return false
+            })
             
             cell.name.text = hotel["name"] as? String
             cell.address.text = hotel["address"] as? String
             cell.phone.text = hotel["phone"] as? String
-            cell.isBookmarked = false
+            cell.isBookmarked = (isBookmarked?.count)! > 0 ? true: false
         }
         cell.selectionStyle = .none
         return cell
@@ -240,26 +246,53 @@ extension HotelsTableViewController {
             return nil
         }
         let actionType = cell.isBookmarked == true ? NSLocalizedString("UnBookmark", comment: ""): NSLocalizedString("Bookmark", comment: "")
+        let actionStyle:UITableViewRowActionStyle  = cell.isBookmarked == true ? .normal :.default
         
-        let bookmarkAction = UITableViewRowAction(style: .default, title: actionType, handler: { [weak self] (action, indexPath) in
-            // bookmark hotel document at index
-            if let hotelToBM = self?.hotels?[indexPath.section] {
-                
-                self?.hotelPresenter.bookmarkHotels([hotelToBM], handler: { (error) in
-                    if let error = error {
-                        self?.showAlertWithTitle(NSLocalizedString("Failed to Bookmark!", comment: ""), message: error.localizedDescription)
-                    }
-                    else {
-                        cell.isBookmarked = !cell.isBookmarked
+        switch actionType {
+            case "Bookmark":
+                let bookmarkAction = UITableViewRowAction(style: actionStyle, title: actionType, handler: { [weak self] (action, indexPath) in
+                    // bookmark hotel document at index
+                    if let hotelToBM = self?.hotels?[indexPath.section] {
+                        
+                        self?.hotelPresenter.bookmarkHotels([hotelToBM], handler: { (error) in
+                            if let error = error {
+                                self?.showAlertWithTitle(NSLocalizedString("Failed to Bookmark!", comment: ""), message: error.localizedDescription)
+                            }
+                            else {
+                                cell.isBookmarked = !cell.isBookmarked
+                                
+                            }
+                            tableView.setEditing(false, animated: true)
+                        })
+                        
                         
                     }
-                    tableView.setEditing(false, animated: true)
                 })
-                
-                
-            }
-        })
-        return [bookmarkAction]
+                return [bookmarkAction]
+            case "UnBookmark":
+                let bookmarkAction = UITableViewRowAction(style: actionStyle, title: actionType, handler: { [weak self] (action, indexPath) in
+                    // bookmark hotel document at index
+                    if let hotelToUBM = self?.hotels?[indexPath.section] {
+                        
+                        self?.hotelPresenter.unbookmarkHotels([hotelToUBM], handler: { (error) in
+                            if let error = error {
+                                self?.showAlertWithTitle(NSLocalizedString("Failed to UnBookmark!", comment: ""), message: error.localizedDescription)
+                            }
+                            else {
+                                cell.isBookmarked = !cell.isBookmarked
+                                
+                            }
+                            tableView.setEditing(false, animated: true)
+                        })
+                        
+                        
+                    }
+                })
+                return [bookmarkAction]
+            
+        default:
+            return nil
+        }
         
     }
 

@@ -67,7 +67,6 @@ extension HotelPresenter {
             // Convert to Set for easy set operations
             let setOfNewIds:Set<String> = Set(ids)
             
-            
             // Get the delta of the new list and current Id list to identify the hotels that are not yet bookmarked
             let newlyAddedIds = Array(setOfNewIds.subtracting(arrOfCurrentIds))
             
@@ -108,9 +107,6 @@ extension HotelPresenter {
                 
             }
             handler(nil)
-            
-        
-            
         }
         catch {
             handler(TravelSampleError.DocumentFetchException)
@@ -120,7 +116,63 @@ extension HotelPresenter {
     }
     
     func unbookmarkHotels(_ hotels: BookmarkHotels, handler:@escaping( _ error:Error?)->Void) {
-        handler(nil)
+        guard let db = dbMgr.db else {
+            handler(TravelSampleError.DatabaseNotInitialized)
+            return
+        }
+        
+        do {
+            guard let document = try fetchGuestBookmarkDocumentFromDB(db) else {
+                handler(TravelSampleError.DocumentFetchException)
+                return
+            }
+            
+            
+            // Get current list of bookmarked hotels.
+            guard let arrOfCurrentIds:[String] = document.array(forKey: "hotels")?.toArray().flatMap({ return $0 as? String }) else {
+                handler(TravelSampleError.DocumentFetchException)
+                return
+            }
+            
+            
+            // Get the Ids of all hotels that need to be unbookmarked from the hotels array
+            let idsToRemove:[String] = hotels.map({ (dict)  in
+                if let idVal = dict["id"] as? String {
+                    return idVal
+                }
+                return ""
+            })
+            
+            // Convert to Set for easy set operations
+            let setOfCurrentBookmarkedIds:Set<String> = Set(arrOfCurrentIds)
+            
+            // Get the delta of the new list and current Id list to identify the hotels that are not yet bookmarked
+            let IdToRemain = Array(setOfCurrentBookmarkedIds.subtracting(idsToRemove))
+            
+                // perform batch update
+                try db.inBatch {
+                    // Update the bookmarked Id list
+                    document.setArray(ArrayObject.init(array: IdToRemain), forKey: "hotels")
+                    // Save updated version of bookmarkedhotels document
+                    try db.save(document)
+                    
+                    // Remove unbookmarked hotel documents
+                    for idOfDocToRemove in idsToRemove {
+                        if let doc = db.getDocument(idOfDocToRemove) {
+                            try db.delete(doc)
+                        }
+                    }
+                    
+                    
+                }
+            handler(nil)
+
+        }
+        catch {
+            handler(TravelSampleError.DocumentFetchException)
+            return
+        }
+
     }
 
     func fetchBookmarkedHotels( handler:@escaping(_ hotels:BookmarkHotels?, _ error:Error?)->Void)
