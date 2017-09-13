@@ -2,7 +2,9 @@ title: The Basics
 milestones:
   - title: Create a Database
     description: |
-      There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern). The code below creates an empty database.
+      There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
+      
+      The code below creates an empty database for `guest` user.
       *QUESTION*  How to show language specific code ?
 
       ```swift
@@ -39,7 +41,10 @@ milestones:
 
   - title: Create a Document
     description: |
-      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
+      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
+      
+      The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotels" document containing details of the hotel is added to the database. 
+      For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
       
       ```swift
         // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
@@ -81,12 +86,13 @@ milestones:
   - title: Update a Document
     description: |
       To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
+      
       The code below updates the list of bookmarked hotel Ids in the "hotels" property of the _"bookmarkedhotels"_ document. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created. Subsequently, every time you bookmark a hotel, the hotel Id is added to "hotels" property of the _"bookmarkedhotels"_ document.
 
       
       ```swift
           // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
-          // For brevity, some portions of the code that are not specific to document creation have been removed here.
+          // For brevity, some portions of the code that are not specific to document updation have been removed here.
 
           // get existing "BookmarkedHotels" document if one exists
           var document = try fetchGuestBookmarkDocumentFromDB(db)
@@ -115,10 +121,35 @@ milestones:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
       - You will see list of hotels. 
-      - Verify that the first hotel in the list is bookmarked. This would be the case if you followed the instructions in [Create a Document]() section
+      - Verify that the first hotel in the list is bookmarked. If not, make sure you follow instructions in [Create a Document]() section.
       - Swipe right on the second hotel cell
       - You will get option to  “Bookmark” 
       - Tap “bookmark”
       - This should display a "bookmark" icon on the hotel cell
       - Tap "Cancel" button 
       - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
+
+  - title: Delete a Document
+    description: |
+      A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
+      
+      The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
+
+      
+      ```swift
+          // Code snippets can be found in HotelPresenter.swift file in the unookmarkHotels() function. 
+          // For brevity, some portions of the code that are not specific to document creation have been removed here.
+
+          if let doc = db.getDocument(idOfDocToRemove) {
+             try db.delete(doc)
+          }
+      ```
+      
+    tryitout:
+      - Follow the steps in [Update a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
+      - Log into the Travel Sample mobile app as guest user
+      - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
+      - Swipe right on first Hotel cell
+      - You will get option to  “UnBookmark” 
+      - Tap “unbookmark”
+      - Verify that you see a single hotel in the list

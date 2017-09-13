@@ -118,8 +118,7 @@ extension HotelPresenter {
             handler(TravelSampleError.DocumentFetchException)
             return
         }
-        /Users/priya.rajagopal/Desktop/selective_iview_process_1.png
-/Users/priya.rajagopal/Desktop/selective_iview_process_2.png
+        
     }
     
     func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
