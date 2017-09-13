@@ -84,7 +84,7 @@ milestones:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
       - You will see list of hotels. 
-        - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. 
+      - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. 
         The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
       - Swipe right on the first hotel cell
       - You will get option to  “Bookmark” 
