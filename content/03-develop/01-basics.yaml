@@ -39,8 +39,7 @@ milestones:
 
   - title: Create a Document
     description: |
-      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
-      The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
+      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
       
       ```swift
         // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
@@ -86,29 +85,29 @@ milestones:
 
       
       ```swift
-        // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
-        // For brevity, some portions of the code that are not specific to document creation have been removed here.
+          // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
+          // For brevity, some portions of the code that are not specific to document creation have been removed here.
 
-        // get existing "BookmarkedHotels" document if one exists
-        var document = try fetchGuestBookmarkDocumentFromDB(db)
+          // get existing "BookmarkedHotels" document if one exists
+          var document = try fetchGuestBookmarkDocumentFromDB(db)
                  
-       // ....trimming other app logic code ...... 
+          // ....trimming other app logic code ...... 
 
-       // Update the bookmarked list with the Ids of hotels
-       var bookmarked = document?.array(forKey: "hotels")
+          // Update the bookmarked list with the Ids of hotels
+          var bookmarked = document?.array(forKey: "hotels")
                     
-       // Ideally have an API that would append elements of a native array to existing ArrayObject
-       for newId in newlyAddedIds {
-             bookmarked = bookmarked?.addString(newId)
-       }
+          // Ideally have an API that would append elements of a native array to existing ArrayObject
+          for newId in newlyAddedIds {
+               bookmarked = bookmarked?.addString(newId)
+          }
                     
-       if let document = document {
-         // Update and save the bookmark document
-         document.setArray(bookmarked, forKey: "hotels")
-         try db.save(document)
+          if let document = document {
+            // Update and save the bookmark document
+            document.setArray(bookmarked, forKey: "hotels")
+            try db.save(document)
                
-        // ....trimming other app logic code ...... 
-      }
+            // ....trimming other app logic code ...... 
+          }
       ```
       
     tryitout:
