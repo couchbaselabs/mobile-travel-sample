@@ -80,7 +80,7 @@ milestones:
       - You will get option to  “Bookmark” 
       - Tap “bookmark”
       - This should display a "bookmark" icon on the hotel cell
-      - Tap "Cancel" button 
+      - Tap "Cancel" button
       - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
 
   - title: Update a Document
@@ -147,7 +147,6 @@ milestones:
       
     tryitout:
       - Follow the steps in [Update a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
-      - Log into the Travel Sample mobile app as guest user
       - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
       - Swipe right on first Hotel cell
       - You will get option to  “UnBookmark” 
