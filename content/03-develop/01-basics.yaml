@@ -32,7 +32,6 @@ milestones:
             // Create / Open Database with specified options
             _db = try Database(name: kGuestDBName, config: options)
       ```
-      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
     tryitout:
       - Build and Run the Travel Sample Mobile App
       - On Login screen select “Proceed as Guest” option. 
@@ -70,7 +69,8 @@ milestones:
            // ....trimming other app logic code ......   
        }
       ```
-      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
+      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
+  
     tryitout:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
@@ -115,7 +115,8 @@ milestones:
             // ....trimming other app logic code ...... 
           }
       ```
-      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
+      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
+ 
     tryitout:
       - Follow the steps in [Create a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
       - As Guest User, tap on “hotels” button
@@ -144,7 +145,8 @@ milestones:
              try db.delete(doc)
           }
       ```
-      
+      ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
+ 
     tryitout:
       - Follow the steps in [Update a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
       - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
