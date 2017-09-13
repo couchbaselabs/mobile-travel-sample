@@ -29,8 +29,8 @@ milestones:
             options.directory = guestFolderPath
             // Create / Open Database with specified options
             _db = try Database(name: kGuestDBName, config: options)
-
       ```
+      
     tryitout:
       - Build and Run the Travel Sample Mobile App
       - On Login screen select “Proceed as Guest” option. 
@@ -78,8 +78,8 @@ milestones:
                   }
            }
        }
-
       ```
+      
     tryitout:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
