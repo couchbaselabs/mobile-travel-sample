@@ -39,8 +39,8 @@ milestones:
 
   - title: Create a Document
     description: |
-      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. The code below creates a new _"bookmarkedhotels"_ document if one does not exist. 
-      For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
+      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
+      The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
       
       ```swift
         // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
@@ -56,9 +56,8 @@ milestones:
         }
         // .... trimming other app logic code   ....
 
-        // For every hotel that is bookmarked and added to the ""
         if let document = document {
-            // add the Id of the bookmarked hotel to the "hotels" array
+            // add the Id of the bookmarked hotel to the "hotels" property 
             document.setArray(bookmarked, forKey: "hotels")
 
            // Save the "bookmarkedhotel" document in database    
@@ -72,11 +71,55 @@ milestones:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
       - You will see list of hotels. 
-      - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. 
-        The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
+      - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
       - Swipe right on the first hotel cell
       - You will get option to  “Bookmark” 
       - Tap “bookmark”
       - This should display a "bookmark" icon on the hotel cell
       - Tap "Cancel" button 
       - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
+
+- title: Update a Document
+    description: |
+      To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
+      The code below updates the list of bookmarked hotel Ids in the "hotels" property of the _"bookmarkedhotels"_ document. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created. Subsequently, every time you bookmark a hotel, the hotel Id is added to "hotels" property of the _"bookmarkedhotels"_ document.
+
+      
+      ```swift
+        // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
+        // For brevity, some portions of the code that are not specific to document creation have been removed here.
+
+        // get existing "BookmarkedHotels" document if one exists
+        var document = try fetchGuestBookmarkDocumentFromDB(db)
+                 
+       // ....trimming other app logic code ...... 
+
+       // Update the bookmarked list with the Ids of hotels
+       var bookmarked = document?.array(forKey: "hotels")
+                    
+       // Ideally have an API that would append elements of a native array to existing ArrayObject
+       for newId in newlyAddedIds {
+             bookmarked = bookmarked?.addString(newId)
+       }
+                    
+       if let document = document {
+         // Update and save the bookmark document
+         document.setArray(bookmarked, forKey: "hotels")
+         try db.save(document)
+               
+        // ....trimming other app logic code ...... 
+      }
+      ```
+      
+    tryitout:
+      - Follow the steps in [Create a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
+      - As Guest User, tap on “hotels” button
+      - In "location" text field , enter "London"
+      - You will see list of hotels. 
+      - Verify that the first hotel in the list is bookmarked. This would be the case if you followed the instructions in [Create a Document]() section
+      - Swipe right on the second hotel cell
+      - You will get option to  “Bookmark” 
+      - Tap “bookmark”
+      - This should display a "bookmark" icon on the hotel cell
+      - Tap "Cancel" button 
+      - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
