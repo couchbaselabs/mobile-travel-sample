@@ -10,10 +10,11 @@ chapters:
       - $ref: ./02-design/02-access-control.yaml
   - title: Develop
     lessons:
-      - $ref: ./03-develop/01-security.yaml
-      - $ref: ./03-develop/02-prebuilt.yaml
-      - $ref: ./03-develop/03-query.yaml
-      - $ref: ./03-develop/04-fts.yaml
+      - $ref: ./03-develop/01-basics.yaml
+      - $ref: ./03-develop/02-security.yaml
+      - $ref: ./03-develop/03-prebuilt.yaml
+      - $ref: ./03-develop/04-query.yaml
+      - $ref: ./03-develop/05-fts.yaml
   - title: Deploy
     lessons:
       - $ref: ./04-deploy/01-install.yaml

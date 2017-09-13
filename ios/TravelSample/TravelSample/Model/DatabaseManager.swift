@@ -192,7 +192,7 @@ extension DatabaseManager {
         
         try _db?.createIndex(["description"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
         
-         try _db?.createIndex(["name"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+        try _db?.createIndex(["name"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
     }
 
     
