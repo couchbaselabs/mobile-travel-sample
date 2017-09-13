@@ -39,7 +39,8 @@ milestones:
 
   - title: Create a Document
     description: |
-      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. The code below creates a new _"BookmarkedHotels"_ document if one does not exist. For every new hotel Id that is added to the "hotels" array in the _"BookmarkedHotels"_ document, the corresponding "hotel" document is added to the database
+      In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. The code below creates a new _"bookmarkedhotels"_ document if one does not exist. 
+      For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotel" document is added to the database. For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
       
       ```swift
         // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
@@ -64,19 +65,6 @@ milestones:
            try db.save(document)
                         
            // ....trimming other app logic code ......   
-
-           // For every hotel that is bookmarked, add the corresponding "hotel" document to database     
-           for hotelDoc in docsToAdd {
-                  if let idVal = hotelDoc["id"] as? String {
-                     if let doc = db.getDocument(idVal) {
-                          doc.setDictionary(hotelDoc)
-                          try db.save(doc)
-                       }
-                      else {
-                          try db.save(Document.init(idVal, dictionary: hotelDoc))
-                       }
-                  }
-           }
        }
       ```
       
