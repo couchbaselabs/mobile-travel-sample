@@ -1,0 +1,36 @@
+title: Security
+milestones:
+  - title: User Management
+    description: |
+      User is created via the Travel sample web app. When user is created, a corresponding user profile document is created on Couchbase Server.
+    tryitout:
+      - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
+      - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
+      - You should be logged into the web app. There should be nothing created for the user.
+      - Try it out 2
+      - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
+      - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
+      - In the search box, enter "user:demo".
+      - You should see the user document that was created when you signed up via the web app.
+      - Enter the values you see in the "username" and "password" in the text fields below.
+  - title: Access Control
+    description: Describe contents of travel sample sync gateway config file. Explain hardcoded users “Users”, “channels”. Describe how the hardcoded users relate to the web user created in previous step.
+    tryitout:
+      - Run HTTP GET request on sync gateway to fetch users
+      - List the users that are returned in text box below
+      - How it relates to the web user.
+  - title: User Authentication
+    description: todo
+    tryitout:
+      - Log into the Travel Sample Mobile App as “demo” user with password as “password”
+  - title: Encryption
+    description: todo
+    tryitout:
+      - enable encryption on the mobile travel sample app.
+  - title: Key Management
+    description: todo
+    tryitout:
+      - Enable encryption.
+      - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
+      - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
+      - Best Practices
