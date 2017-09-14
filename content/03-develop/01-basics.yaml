@@ -34,9 +34,6 @@ milestones:
       ```
       ```md-swift
       This is swift text only
-      ```swift
-      let x = "hello swift!"
-      ```
       ```
       ```java
       some code
