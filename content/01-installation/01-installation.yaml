@@ -2,10 +2,30 @@ title: Installation
 milestones:
   - title: Pre-requisites
     description: |
-      Verify the required software is installed.
+      Verify the following software is installed 
+      - iOS (Xcode 8.3.3 and above) if developing for iOS platform
+        - Downloadable from [Apple Developer site](https://developer.apple.com)
+      - Android (Android Studio 2.3 and above) if developing for Android platform
+        - Downloadable from [Google Developer site](https://developer.android.com)
+      - Python (V 2.7 and above)
+        - Downloadable from [python.org] (https://www.python.org/downloads/)
+      - git
+        - Downloadable from [git-scm.org] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
     tryitout:
-      - iOS - open Xcode 9.
-      - Android - open Android Studio 2 and above.
+      - If developing for iOS, open Xcode
+      - If developing for Android, open Android Studio
+      - Verify python installation
+        - Run the following command from your terminal command line
+        ```bash
+        python --version
+        ```
+        You should see the version of python displayed
+      - Verify git installation
+        - Run the following command from your terminal command line
+        ```bash
+        git --version
+        ```
+        You should see the version of git installed
   - title: Running the app
     description: |
       In this step, you will run the app on a simulator.
