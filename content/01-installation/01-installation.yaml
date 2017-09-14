@@ -3,10 +3,14 @@ milestones:
   - title: Pre-requisites
     description: |
       Verify the following software is installed 
+      ```md-swift
       - iOS (Xcode 8.3.3 and above) if developing for iOS platform
         - Downloadable from [Apple Developer site](https://developer.apple.com)
+      ```
+      ```md-java
       - Android (Android Studio 2.3 and above) if developing for Android platform
         - Downloadable from [Google Developer site](https://developer.android.com)
+      ```
       - Python (V 2.7 and above)
         - Downloadable from [python.org](https://www.python.org/downloads/)
       - git
@@ -26,7 +30,7 @@ milestones:
         git --version
         ```
         You should see the version of git installed
-  - title: Running the app
+  - title: Travel Sample Mobile App
     description: |
       In this step, you will run the app on a simulator.
     tryitout:
