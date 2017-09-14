@@ -32,7 +32,10 @@ milestones:
         // Create / Open Database with specified options
         _db = try Database(name: kGuestDBName, config: options)
       ```
+      ```md-swift
+      This is swift text only
       
+      ```
       ```java
       some code
       ```
