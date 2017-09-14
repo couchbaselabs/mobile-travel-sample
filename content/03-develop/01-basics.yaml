@@ -37,7 +37,7 @@ milestones:
       some code
       ```
       
-      ```text-java
+      ```md-java
       This is text for java only.
       ```
       
@@ -78,8 +78,11 @@ milestones:
            // ....trimming other app logic code ......   
        }
       ```
+      
+      ```md-swift
       ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-  
+      ```
+      
     tryitout:
       - As Guest User, tap on “hotels” button
       - In "location" text field , enter "London"
