@@ -8,9 +8,9 @@ milestones:
       - Android (Android Studio 2.3 and above) if developing for Android platform
         - Downloadable from [Google Developer site](https://developer.android.com)
       - Python (V 2.7 and above)
-        - Downloadable from [python.org] (https://www.python.org/downloads/)
+        - Downloadable from [python.org](https://www.python.org/downloads/)
       - git
-        - Downloadable from [git-scm.org] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+        - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
     tryitout:
       - If developing for iOS, open Xcode
       - If developing for Android, open Android Studio
