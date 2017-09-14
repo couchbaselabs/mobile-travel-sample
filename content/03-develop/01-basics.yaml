@@ -8,30 +8,39 @@ milestones:
       *QUESTION*  How to show language specific code ?
 
       ```swift
-          // This code can be found in DatabaseManager.swift file
-          // in the openOrCreateDatabaseForGuest() function
+      // This code can be found in DatabaseManager.swift file
+      // in the openOrCreateDatabaseForGuest() function
 
-          // Setup Database Configuration
-          var options = DatabaseConfiguration()
-          guard let defaultDBPath = _applicationSupportDirectory else {
-                fatalError("Could not open Application Support Directory for app!")
-                return
-            }
-            // Create a folder for Guest Account if one does not exist
-            let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
-            let guestFolderPath = guestFolderUrl.path
-            let fileManager = FileManager.default
-            if !fileManager.fileExists(atPath: guestFolderPath) {
-                try fileManager.createDirectory(atPath: guestFolderPath,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-                
-            }
+      // Setup Database Configuration
+      var options = DatabaseConfiguration()
+      guard let defaultDBPath = _applicationSupportDirectory else {
+            fatalError("Could not open Application Support Directory for app!")
+            return
+        }
+        // Create a folder for Guest Account if one does not exist
+        let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
+        let guestFolderPath = guestFolderUrl.path
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: guestFolderPath) {
+            try fileManager.createDirectory(atPath: guestFolderPath,
+                                            withIntermediateDirectories: true,
+                                            attributes: nil)
             
-            options.directory = guestFolderPath
-            // Create / Open Database with specified options
-            _db = try Database(name: kGuestDBName, config: options)
+        }
+        
+        options.directory = guestFolderPath
+        // Create / Open Database with specified options
+        _db = try Database(name: kGuestDBName, config: options)
       ```
+      
+      ```java
+      some code
+      ```
+      
+      ```text-java
+      This is text for java only.
+      ```
+      
     tryitout:
       - Build and Run the Travel Sample Mobile App
       - On Login screen select “Proceed as Guest” option. 

@@ -1,5 +1,8 @@
 requirements:
   $ref: ./requirements.yaml
+platforms:
+  - swift
+  - java
 chapters:
   - title: Installation
     lessons:
