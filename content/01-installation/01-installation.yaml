@@ -32,18 +32,16 @@ milestones:
         You should see the version of git installed
   - title: Travel Sample Mobile App
     description: |
-      ```md-swift
-      - Clone the iOS version of the app from GitHub and switch to the `connect_sv` branch
+      - Clone the app from GitHub and switch to the `connect_sv` branch
       ```bash
       git clone https://github.com/couchbaselabs/mobile-travel-sample.git
       git checkout -b connect_sv
       ```
-      - Run the [install.sh](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/install.sh) script to download and install the 2.0 version of Couchbase Lite.
-
+      - Run the `install.sh` script to download and install the 2.0 version of Couchbase Lite.
       ```bash
+      On iOS: 
       cd ios/TravelSample
       sh install.sh
-      ```
       ```
     tryitout:
       - Open the `TravelSample.xcodeproj` using Xcode
