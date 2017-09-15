@@ -1,7 +1,36 @@
 title: Sync
 milestones:
-  - title: TODO
+  - title: Channels/Data Routing
     description: |
-      TODO
+      Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
     tryitout:
       - TODO
+  - title: Pull Replication
+    description: |
+      
+      - Show code snippet
+      - Set “enablingSync” flag as true
+      - Relaunch the Travel Sample Mobile App
+    tryitout:
+      - Log into the Travel Sample Mobile app as “demo” user and password as “password”
+      - Log into Travel Sample Web App as “demo” user and password as “password”
+      - Make a flight reservation by clicking "booking" button.
+      - Enter “From” airport as “SFO” and select the airport from drop down menu.
+      - Enter “To” airport as “JFK” and select the airport from drop down menu.
+      - Enter From and Return Travel Dates.
+      - Select the first flight listing.
+      - Confirm the booking by clicking shopping cart icon and select “Book” button.
+      - As soon as the flight reservation is confirmed via the web app, you should see the flight listing in the mobile app.
+  - title: Push Replication
+    description: |
+      Show code snippet
+    tryitout:
+      - Log into the Travel Sample Web app as “demo” user and password as “password”
+      - Log into the Travel Sample Mobile app as “demo” user and password as “password”
+      - Tap on  ‘+” button to make a flight reservation
+      - Enter “From” airport as “DTW” and select the airport from drop down menu
+      - Enter “To” airport as “SFO” and select the airport from drop down menu
+      - Enter From and Return Travel Dates
+      - Select the first flight listing
+      - Select “Confirm Booking” 
+      - As soon as the flight reservation is confirmed via the mobile app, you should see the flight listing in the web app
