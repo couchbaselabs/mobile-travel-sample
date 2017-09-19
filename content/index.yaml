@@ -19,11 +19,11 @@ chapters:
       - $ref: ./03-develop/04-prebuilt.yaml
       - $ref: ./03-develop/05-query.yaml
       - $ref: ./03-develop/06-fts.yaml
+  - title: Troubleshooting
+    lessons:
+      - $ref: ./05-troubleshooting/01-troubleshooting.yaml
   - title: Deploy
     lessons:
       - $ref: ./04-deploy/01-install.yaml
       - $ref: ./04-deploy/02-upgrade.yaml
       - $ref: ./04-deploy/03-scale.yaml
-  - title: Troubleshooting
-    lessons:
-      - $ref: ./05-troubleshooting/01-troubleshooting.yaml
