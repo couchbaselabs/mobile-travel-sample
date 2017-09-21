@@ -1,17 +1,67 @@
 title: Install
 milestones:
-  - title: Deploy Couchbase Server
+  - title: Getting Started
     description: |
-      TODO
+      In this lesson you'll learn how to install Sync Gateway and Couchbase Server, our NoSQL database server.
+
+      ### Requirements
+
+      Three instances with the following:
+
+      - Centos 7
+      - RAM >= 2GB
+
+      This lesson contains some scripts to automatically deploy and configure Sync Gateway with Couchbase Server. Download those scripts on each VM using wget.
+
+      ```bash
+      ssh vagrant@192.168.34.11
+      wget https://cl.ly/1q300A3v3R1D/deploy.zip
+      sudo yum install -y unzip
+      unzip deploy.zip
+      ```
+
+      Throughout this lesson, you will use different scripts located in the deploy folder.
+
+      ## Architecture
+
+      The server-side architecture will be comprised of 2 nodes of Sync Gateway and 1 node of Couchbase Server. Each node will run on a different VM. The diagram below describes the architecture:
+
+      - Couchbase Server is running VM1
+      - Sync Gateway is running on VM2 and VM3
+
+      ![](https://cl.ly/2Y3U1a1A0E0b/image74.png)
     tryitout:
       - TODO
-  - title: Deploy Sync Gateway
+  - title: Install Couchbase Server
     description: |
-      TODO
+      To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. It can deployed on a whole host of [operating systems](https://www.couchbase.com/downloads) and can scale horizontally with multiple nodes or vertically by increasing the VM specs. The following script downloads Couchbase Server and creates a new bucket called todo.
+    tryitout:
+      - Log on VM1 (couchbase-server).
+  - title: Install Sync Gateway
+    description: |
+      Sync Gateway is the middleman server that exposes a database API for Couchbase Lite databases to replicate to and from. It connects internally to a Couchbase Server bucket to persist the documents.
+
+      In production, the configuration file should look similar to the one used in development except that instead of using **walrus:** for the bucket it will connect to an instance of Couchbase Server URL as shown below.
+
+      ```json
+      {
+        "interface":":4984",
+        "log": ["HTTP", "Auth"],
+        "databases": {
+          "todo": {
+            "server": "http://localhost:8091",
+            "bucket": "todo",
+            ...
+          }
+        }
+      }
+      ```
+
+      The `install_sync_gateway.sh` script downloads and installs Sync Gateway 1.3. Then it restarts the `sync_gateway` service with the configuration file (`deploy/sync-gateway-config.json`) of the todo application.
     tryitout:
       - TODO
   - title: Reverse Proxy
     description: |
-      TODO
+      With two Sync Gateway nodes you can now configure the reverse proxy and update the sync endpoint in the mobile app to start replications pointing to the reverse proxy instead of an individual Sync Gateway instance. In this example the NGINX instance will run on VM4.
     tryitout:
       - TODO
