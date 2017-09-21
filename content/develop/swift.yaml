@@ -349,8 +349,6 @@ chapters:
               }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
-         
               ## Try it out
               
               - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
@@ -364,6 +362,9 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button 
               - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
+
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
+         
           - title: Delete a Document
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
@@ -379,9 +380,7 @@ chapters:
                      try db.delete(doc)
                   }
               ```
-              
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
-              
+               
               ## Try it out
               
               - Follow the steps in [Update a Document]() section
@@ -390,6 +389,9 @@ chapters:
               - You will get option to  “UnBookmark” 
               - Tap “unbookmark”
               - Verify that you see a single hotel in the list
+
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
+             
       - title: Sync
         milestones:
           - title: Channels/Data Routing
