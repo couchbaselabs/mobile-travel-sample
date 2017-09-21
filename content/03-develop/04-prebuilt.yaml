@@ -1,9 +1,0 @@
-title: Pre-built database
-milestones:
-  - title: Starting with Prebuilt Database
-    description: Add code snippet that shows how prebuilt db can be loaded. Explain why “hotels” and “airports” are prebuilt.
-    tryitout:
-      - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-      - Tap on  ‘+” button to make a flight reservation
-      - In the “From”  airport textfield, enter “San”
-      - Write down the first value you see listed in the drop down menu

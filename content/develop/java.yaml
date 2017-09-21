@@ -1,0 +1,6 @@
+requirements: |
+  - Android Studio 2.2
+  - Android SDK 24
+  - Android Build Tools 24.0.3
+  - JDK 8
+  - ⚠️ Docker and x86 Android emulators are [not compatible](http://stackoverflow.com/questions/37397810/android-studio-unable-to-run-avd) (i.e cannot run simultaneously on the same machine). Make sure Docker isn't running in the background when deploying the application to an x86 Android emulator.

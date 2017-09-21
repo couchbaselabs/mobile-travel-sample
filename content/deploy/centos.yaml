@@ -1,0 +1,306 @@
+requirements: |
+  Three instances with the following:
+  
+  - Centos 7
+  - RAM >= 2GB
+  
+  This lesson contains some scripts to automatically deploy and configure Sync Gateway with Couchbase Server. Download those scripts on each VM using wget.
+  
+  ```bash
+  ssh vagrant@192.168.34.11
+  wget https://cl.ly/1q300A3v3R1D/deploy.zip
+  sudo yum install -y unzip
+  unzip deploy.zip
+  ```
+  
+  Throughout this lesson, you will use different scripts located in the **deploy** folder.
+  
+  ## Architecture
+  
+  The server-side architecture will be comprised of 2 nodes of Sync Gateway and 1 node of Couchbase Server. Each node will run on a different VM. The diagram below describes the architecture:
+  
+  - Couchbase Server is running VM1
+  - Sync Gateway is running on VM2 and VM3
+  
+  ![](img/image74.png)
+chapters:
+  - title: Troubleshooting
+    lessons:
+      - title: Troubleshooting
+        milestones:
+          - title: TODO
+            description: |
+              TODO
+            tryitout:
+              - TODO
+  - title: Deploy
+    lessons:
+      - title: Install
+        milestones:
+          - title: Couchbase Server
+            description: |
+              To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. It can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads) and can scale horizontally with multiple nodes or vertically by increasing the VM specs. The following script downloads Couchbase Server and creates a new bucket called todo.
+              
+              ### Try it out
+              
+              1. Log on VM1 (couchbase-server).
+              1. `cd deploy`
+              1. Run the **install\_couchbase\_server.sh** script.
+              
+                  ```bash
+                  sudo ./install_couchbase_server.sh
+                  ```
+              
+              1. Log on the Couchbase Server Admin Console on [http://VM1_IP:8091](http://VM1_IP:8091) with the user credentials that were created above (**Administrator/password**).
+              
+                  <img src="https://cl.ly/2v400A2s0I2v/image68.gif" class="center-image" />
+            tryitout:
+              - TODO
+          - title: Sync Gateway
+            description: |
+              ## Install Sync Gateway
+              
+              Sync Gateway is the middleman server that exposes a database API for Couchbase Lite databases to replicate to and from. It connects internally to a Couchbase Server bucket to persist the documents.
+              
+              In production, the configuration file should look similar to the one used in development except that instead of using **walrus:** for the bucket it will connect to an instance of Couchbase Server URL as shown below.
+              
+              ```javascript
+              {
+                "interface":":4984",
+                "log": ["HTTP", "Auth"],
+                "databases": {
+                  "todo": {
+                    "server": "http://localhost:8091",
+                    "bucket": "todo",
+                    ...
+                  }
+                }
+              }
+              ```
+              
+              The `install_sync_gateway.sh` script downloads and installs Sync Gateway 1.3. Then it restarts the `sync_gateway` service with the configuration file (`deploy/sync-gateway-config.json`) of the todo application.
+              
+              
+              ### Try it out 
+              
+              1. Log on VM2 (sync-gateway).
+              1. `cd deploy`
+              1. Run the Sync Gateway install script passing the IP of VM1 where Couchbase Server is running.
+              
+                  ```bash
+                  sudo ./install_sync_gateway.sh VM1
+                  ```
+              
+              1. Monitor the log file.
+              
+                  ```bash
+                  sudo tail -f /home/sync_gateway/logs/sync_gateway_error.log
+                  ```
+              
+              1. Send an `/{db}/_all_docs` request with a user's credentials. A user (**user1/pass**) is already defined in the Sync Gateway configuration file.
+              
+                  ```bash
+                  curl -X GET 'http://user1:pass@localhost:4984/todo/_all_docs'
+                  ```
+              
+                  ![](https://cl.ly/1j1q3p333D47/image75.gif)
+              
+              1. Repeat the same steps on VM3 (sync-gateway).
+            tryitout:
+              - TODO
+          - title: Install Sync Gateway
+            description: |
+              Sync Gateway is the middleman server that exposes a database API for Couchbase Lite databases to replicate to and from. It connects internally to a Couchbase Server bucket to persist the documents.
+        
+              In production, the configuration file should look similar to the one used in development except that instead of using **walrus:** for the bucket it will connect to an instance of Couchbase Server URL as shown below.
+        
+              ```json
+              {
+                "interface":":4984",
+                "log": ["HTTP", "Auth"],
+                "databases": {
+                  "todo": {
+                    "server": "http://localhost:8091",
+                    "bucket": "todo",
+                    ...
+                  }
+                }
+              }
+              ```
+        
+              The `install_sync_gateway.sh` script downloads and installs Sync Gateway 1.3. Then it restarts the `sync_gateway` service with the configuration file (`deploy/sync-gateway-config.json`) of the todo application.
+            tryitout:
+              - TODO
+          - title: Reverse Proxy
+            description: |
+              With two Sync Gateway nodes you can now configure the reverse proxy and update the sync endpoint in the mobile app to start replications pointing to the reverse proxy instead of an individual Sync Gateway instance. In this example the NGINX instance will run on VM4.
+              
+              ### Try it out
+              
+              1. Log on VM4 (nginx).
+              1. `cd deploy`
+              1. Run the NGINX install script passing the IP of VM2 and VM3 where the Sync Gateway instances are running.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM2 VM3
+                  ```
+              
+              1. Send an `/{db}/_all_docs` request with a user's credentials to the NGINX port. A user (**user1/pass**) is already defined in the Sync Gateway configuration file.
+              
+                  ```bash
+                  curl -X GET 'http://user1:pass@localhost:8000/todo/_all_docs'
+                  ```
+              
+                  ![](https://cl.ly/392N2E2K0J0T/image76.gif)
+            tryitout:
+              - TODO
+      - title: Upgrade
+        milestones:
+          - title: Upgrading VM2
+            description: |
+              ## Architecture
+              
+              To follow this lesson you must first have completed the Install lesson and have 2 Sync Gateway nodes up and running. You have deployed Sync Gateway 1.3 and in this lesson you will deploy Sync Gateway 1.3.1 as a rolling upgrade.
+              
+              A rolling upgrade means that the nodes are upgraded one at a time. While a node is being upgraded it's taken offline by rebalancing the traffic to other nodes. The diagram below shows this process.
+              
+              ## Upgrading VM2
+              
+              First you will need to redirect the traffic to only one Sync Gateway node (VM3). Once the traffic is redirected you will upgrade Sync Gateway on VM2.
+              
+              ![](img/image79.png)
+              
+              ### Try it out
+              
+              1. Log on VM4 (nginx).
+              1. `cd deploy`
+              1. Run the NGINX script passing only the IP of VM3.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM3
+                  ```
+              
+              1. Log into VM2 (sync-gateway)
+              1. Run the Sync Gateway upgrade script on VM2.
+              
+                  ```bash
+                  sudo ./upgrade_sync_gateway.sh
+                  ```
+                  
+              1. Change back to VM4
+              1. Run the NGINX script again this time passing the IP of VM2 and VM3.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM2 VM3
+                  ```
+              
+              1. Monitor the NGINX operations in real-time.
+              
+                  ```bash
+                  sudo tail -f /var/log/nginx/access_log
+                  ```
+              
+              1. Change back to VM4.
+              1. Send a server request to the NGINX port. The response contains the Sync Gateway version. Notice it switches between 1.3.0 and 1.3.1 because only one node was upgraded.
+              
+                  ```bash
+                  curl 'http://localhost:8000'
+                  ```
+              
+                  ![](https://cl.ly/3m0g1R0J0w37/image77.gif)              
+            tryitout:
+              - TODO
+          - title: Upgrading VM3
+            description: |
+              ## Upgrading VM3
+              
+              In this section you will perform the same sequence of operations to upgrade Sync Gateway on VM3.
+              
+              ![](img/image78.png)
+              
+              ### Try it out
+              
+              1. Log on VM4 (nginx).
+              2. Run the NGINX script passing only the IP of VM2.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM2
+                  ```
+              
+              3. Log on VM3 (sync-gateway).
+              4. Run the Sync Gateway upgrade script on VM3.
+              
+                  ```bash
+                  sudo ./upgrade_sync_gateway.sh
+                  ```
+              
+              5. Log on VM4 (nginx).
+              6. Run the NGINX script again this time passing the IP of VM2 and VM3.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM2 VM3
+                  ```
+              
+              7. Verify that the Sync Gateway version is now 1.3.1.
+              
+                  ```bash
+                  curl VM4:8000
+              
+                  {
+                      "couchdb":"Welcome",
+                      "vendor":{"name":"Couchbase Sync Gateway","version":1.3},
+                      "version":"Couchbase Sync Gateway/1.3.1(16;f18e833)"
+                  }
+                  ```
+              
+              ## Conclusion
+              
+              Well done! You've completed this lesson on upgrading the Sync Gateway version. In the next lesson you will learn how to scale Sync Gatway by adding additional nodes. Feel free to share your feedback, findings or ask any questions on the forums.
+            tryitout:
+              - TODO
+      - title: Scale
+        milestones:
+          - title: Scaling Sync Gateway
+            description: |
+              ## Architecture
+              
+              In this lesson you will deploy a 3rd Sync Gateway node behind the reverse proxy.
+              
+              ![](img/image80.png)
+              
+              ## Scaling Sync Gateway
+              
+              Similarly to previous lessons you will first deploy Sync Gateway with the configuration file passing the IP of the VM running Couchbase Server.
+              
+              There will be 3 Sync Gateway nodes but the reverse proxy is forwarding the load to only 2 of them. To balance the traffic across all 3 you must update the NGINX config file with the IP of VM5.
+              
+              ### Try it out
+              
+              1. Log on VM5 (sync-gateway).
+              1. `cd deploy`
+              1. Run the Sync Gateway install latest script passing the IP of VM1 where Couchbase Server is running.
+              
+                  ```bash
+                  sudo ./install_latest_sync_gateway.sh VM1
+                  ```
+              
+              1. Log on VM4 (nginx).
+              1. Run the NGINX install script passing the IP of VM2, VM3 and VM4 where the Sync Gateway instances are running.
+              
+                  ```bash
+                  sudo ./configure_nginx.sh VM2 VM3 VM5
+                  ```
+              
+              1. Send a curl request to http://localhost:8000. This will return information about the running sync_gateway behind the reverse proxy.
+              
+                  ```bash
+                  curl localhost:8000
+                  ```
+              
+                  ![](https://cl.ly/392N2E2K0J0T/image76.gif)
+              
+              ## Conclusion
+              
+              Well done! You've completed this lesson on scaling. Feel free to share your feedback, findings or ask any questions on the forums.
+            tryitout:
+              - TODO
