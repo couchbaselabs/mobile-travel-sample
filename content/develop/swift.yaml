@@ -8,21 +8,19 @@ chapters:
           - title: Pre-requisites
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
-              ```md-swift
-              - iOS (Xcode 8.3.3 and above) if developing for iOS platform
+              
+                - iOS (Xcode 8.3.3 and above) if developing for iOS platform
                 - Downloadable from [Apple Developer site](https://developer.apple.com)
-              ```
-              ```md-java
-              - Android (Android Studio 2.3 and above) if developing for Android platform
-                - Downloadable from [Google Developer site](https://developer.android.com)
-              ```
-              - Python (V 2.7 and above)
+                
+                - Python (V 2.7 and above)
                 - Downloadable from [python.org](https://www.python.org/downloads/)
-              - git
+              
+                - git
                 - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-            tryitout:
-              - If developing for iOS, open Xcode (JAMES QUESTION - NEED TO SEPARATE BETWEEN iOS AND JAVA IN THIS SECTION)
-              - If developing for Android, open Android Studio
+              
+              ## Try it out
+              
+              - Open Xcode
               - Verify python installation
                 - Run the following command from your terminal command line
                 ```bash
@@ -44,11 +42,12 @@ chapters:
               ```
               - Run the `install.sh` script to download and install the 2.0 version of Couchbase Lite.
               ```bash
-              On iOS-  (JAMES QUESTION- IDEALLY , IT WOULD BE GOOD TO BE ABLE TO SEPARATE BETWEEN iOS AND Android but I can't have code snippets within md-swift blocks)
               cd /path/to/mobile-travel-sample/ios/TravelSample
               sh install.sh
               ```
-            tryitout:
+              
+              ## Try it out
+              
               - Open the `TravelSample.xcodeproj` using Xcode
               - Build and run the project using simulator 
               - Verify that the login screen appears in the simulator
@@ -73,12 +72,12 @@ chapters:
         
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
         
-            tryitout:
+              ## Try it out
+              
               - Launch Couchbase Server 
               - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
               - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket
-        
+              - Verify that you have 31,665 documents in your travel-sample bucket       
           - title: Travel Sample Web App (Python)
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
@@ -103,17 +102,16 @@ chapters:
               PASSWORD = 'password' 
               ```
         
-        
-            tryitout:
-              - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
-                ``` bash
-                python travel.py
-                * Running on http://localhost:8080/ (Press CTRL+C to quit)
-                ```
-              - Open http://localhost:8080/ in your web browser
-              - Verify that you see the login screen of the Travel Sample Web App as shown below
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-        
+              ## Try it out
+              
+                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
+                  ``` bash
+                  python travel.py
+                  * Running on http://localhost:8080/ (Press CTRL+C to quit)
+                  ```
+                - Open http://localhost:8080/ in your web browser
+                - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
           - title: Sync Gateway v1.5
             description: |
               - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
@@ -122,7 +120,9 @@ chapters:
               cd /path/to/syncgatewayinstall/bin
               ./sync_gateway cd /path/to/mobile-travel-sample/ios/TravelSample/sync-gateway-config-travelsample.json
               ```
-            tryitout:
+              
+              ## Try it out
+              
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
   - title: Design
@@ -158,8 +158,6 @@ chapters:
                 It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trips reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
               
                 ![](https://cl.ly/2l0118183p11/guest-model.png)
-            tryitout:
-              - TODO
           - title: Document Types
             description: |
               Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
@@ -167,7 +165,9 @@ chapters:
               TODO: Must have all the properties in the GIF.
               
               ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
-            tryitout:
+              
+              ## Try it out
+              
               - Add a type property in the blank fields on the diagram above.
           - title: Document Key/ID
             description: |
@@ -176,7 +176,9 @@ chapters:
               The document Key will be listed as “ID” on Couchbase Server admin console. The key is also referred to as the Document ID.
               
               ![](https://cl.ly/0K3V1q3m3K1Z/admin-ui.png)
-            tryitout:
+              
+              ## Try it out
+              
               - Option 1, Log into the CB server , search for document with specific key “airline_137” and write down some property value of “icao” in the text box below.
               - Option 2, Show couple of examples of travel sample doc and ask them to give it a key using format specified above.
           - title: Document _id
@@ -200,48 +202,31 @@ chapters:
               ```
               
               Mobile App Developers using Couchbase Lite  should typically never have to directly read or write the _id property. You would query the meta().id field to fetch the document ID. We will learn more about this in our lesson on Queries.
-            tryitout:
-              - TODO
           - title: Storing Dates
             description: |
               TODO
               
               - Show JSON models
-              
-            tryitout:
-              - Add a date to the model
           - title: Entity relationships
             description: |
               TODO
-            tryitout:
-              - Add the relationships between each document
           - title: Blobs
             description: |
               TODO
-            tryitout:
-              - TODO
       - title: Access Control
         milestones:
           - title: Routing
             description: |
               TODO
-            tryitout:
-              - TODO
           - title: Read Access
             description: |
               TODO
-            tryitout:
-              - TODO
           - title: Write Access
             description: |
               TODO
-            tryitout:
-              - TODO
           - title: Roles
             description: |
               TODO
-            tryitout:
-              - TODO
   - title: Develop
     lessons:
       - title: The Basics
@@ -278,23 +263,13 @@ chapters:
                 // Create / Open Database with specified options
                 _db = try Database(name: kGuestDBName, config: options)
               ```
-              ```md-swift
-              This is swift text only
-              ```
-              ```java
-              some code
-              ```
               
-              ```md-java
-              This is text for java only.
-              ```
+              ## Try it out
               
-            tryitout:
               - Build and Run the Travel Sample Mobile App
               - On Login screen select “Proceed as Guest” option. 
               - This will log you into app in Guest Mode. Signing in as Guest will create a new empty  database for “guest” account if one does not exist
-              - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time. 
-        
+              - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create a Document
             description: |
               In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
@@ -327,11 +302,10 @@ chapters:
                }
               ```
               
-              ```md-swift
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-              ```
               
-            tryitout:
+              ## Try it out
+              
               - As Guest User, tap on “hotels” button
               - In "location" text field , enter "London"
               - You will see list of hotels. 
@@ -342,7 +316,6 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
-        
           - title: Update a Document
             description: |
               To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
@@ -351,34 +324,36 @@ chapters:
         
               
               ```swift
-                  // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
-                  // For brevity, some portions of the code that are not specific to document updation have been removed here.
-        
-                  // get existing "BookmarkedHotels" document if one exists
-                  var document = try fetchGuestBookmarkDocumentFromDB(db)
-                         
-                  // ....trimming other app logic code ...... 
-        
-                  // Update the bookmarked list with the Ids of hotels
-                  var bookmarked = document?.array(forKey: "hotels")
-                            
-                  // Ideally have an API that would append elements of a native array to existing ArrayObject
-                  for newId in newlyAddedIds {
-                       bookmarked = bookmarked?.addString(newId)
-                  }
-                            
-                  if let document = document {
-                    // Update and save the bookmark document
-                    document.setArray(bookmarked, forKey: "hotels")
-                    try db.save(document)
-                       
-                    // ....trimming other app logic code ...... 
-                  }
+              // Code snippets can be found in HotelPresenter.swift file in the bookmarkHotels() function. 
+              // For brevity, some portions of the code that are not specific to document updation have been removed here.
+    
+              // get existing "BookmarkedHotels" document if one exists
+              var document = try fetchGuestBookmarkDocumentFromDB(db)
+                     
+              // ....trimming other app logic code ...... 
+    
+              // Update the bookmarked list with the Ids of hotels
+              var bookmarked = document?.array(forKey: "hotels")
+                        
+              // Ideally have an API that would append elements of a native array to existing ArrayObject
+              for newId in newlyAddedIds {
+                   bookmarked = bookmarked?.addString(newId)
+              }
+                        
+              if let document = document {
+                // Update and save the bookmark document
+                document.setArray(bookmarked, forKey: "hotels")
+                try db.save(document)
+                   
+                // ....trimming other app logic code ...... 
+              }
               ```
+              
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
          
-            tryitout:
-              - Follow the steps in [Create a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
+              ## Try it out
+              
+              - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
               - As Guest User, tap on “hotels” button
               - In "location" text field , enter "London"
               - You will see list of hotels. 
@@ -389,7 +364,6 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button 
               - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
-        
           - title: Delete a Document
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
@@ -405,10 +379,12 @@ chapters:
                      try db.delete(doc)
                   }
               ```
+              
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
-         
-            tryitout:
-              - Follow the steps in [Update a Document]() section (QUESTION - JAMES.N CAN WE ADD A LINK?)
+              
+              ## Try it out
+              
+              - Follow the steps in [Update a Document]() section
               - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
               - Swipe right on first Hotel cell
               - You will get option to  “UnBookmark” 
@@ -419,15 +395,15 @@ chapters:
           - title: Channels/Data Routing
             description: |
               Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
-            tryitout:
-              - TODO
           - title: Pull Replication
             description: |
               
               - Show code snippet
               - Set “enablingSync” flag as true
               - Relaunch the Travel Sample Mobile App
-            tryitout:
+              
+              ## Try it out
+              
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Log into Travel Sample Web App as “demo” user and password as “password”
               - Make a flight reservation by clicking "booking" button.
@@ -440,7 +416,9 @@ chapters:
           - title: Push Replication
             description: |
               Show code snippet
-            tryitout:
+              
+              ## Try it out
+              
               - Log into the Travel Sample Web app as “demo” user and password as “password”
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  ‘+” button to make a flight reservation
@@ -455,7 +433,9 @@ chapters:
           - title: User Management
             description: |
               User is created via the Travel sample web app. When user is created, a corresponding user profile document is created on Couchbase Server.
-            tryitout:
+            
+              ## Try it out
+              
               - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
               - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
               - You should be logged into the web app. There should be nothing created for the user.
@@ -466,22 +446,34 @@ chapters:
               - You should see the user document that was created when you signed up via the web app.
               - Enter the values you see in the "username" and "password" in the text fields below.
           - title: Access Control
-            description: Describe contents of travel sample sync gateway config file. Explain hardcoded users “Users”, “channels”. Describe how the hardcoded users relate to the web user created in previous step.
-            tryitout:
+            description: |
+              Describe contents of travel sample sync gateway config file. Explain hardcoded users “Users”, “channels”. Describe how the hardcoded users relate to the web user created in previous step.
+            
+              ## Try it out
+            
               - Run HTTP GET request on sync gateway to fetch users
               - List the users that are returned in text box below
               - How it relates to the web user.
           - title: User Authentication
-            description: todo
-            tryitout:
+            description: |
+              todo
+            
+              ## Try it out
+            
               - Log into the Travel Sample Mobile App as “demo” user with password as “password”
           - title: Encryption
-            description: todo
-            tryitout:
+            description: |
+              todo
+              
+              ## Try it out
+              
               - enable encryption on the mobile travel sample app.
           - title: Key Management
-            description: todo
-            tryitout:
+            description: |
+              todo
+              
+              ## Try it out
+              
               - Enable encryption.
               - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
               - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
@@ -489,8 +481,11 @@ chapters:
       - title: Pre-built database
         milestones:
           - title: Starting with Prebuilt Database
-            description: Add code snippet that shows how prebuilt db can be loaded. Explain why “hotels” and “airports” are prebuilt.
-            tryitout:
+            description: |
+              Add code snippet that shows how prebuilt db can be loaded. Explain why “hotels” and “airports” are prebuilt.
+            
+              ## Try it out
+              
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  ‘+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
@@ -500,7 +495,9 @@ chapters:
           - title: Query the Database
             description: |
               Describe the various query options (SELECT, FROM,WHERE….)
-            tryitout:
+          
+              ## Try it out
+              
               - display user profile.
               - how to know if the query is using an index. (Query Index)
               - display flights on search screen. (JOIN)
@@ -517,13 +514,14 @@ chapters:
               ```swift
               let hotels: [] = []
               ```
-            tryitout:
-              - TODO
       - title: Full Text Search
         milestones:
           - title: Full Text Search
-            description: Explain MATCH
-            tryitout:
+            description: |
+              Explain MATCH
+              
+              ## Try it out
+            
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - In the description text field enter “Pets allowed”.
               - In the Location text field enter “France”
