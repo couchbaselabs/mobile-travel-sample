@@ -302,8 +302,6 @@ chapters:
                }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-              
               ## Try it out
               
               - As Guest User, tap on “hotels” button
@@ -316,6 +314,8 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
+              
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
           - title: Update a Document
             description: |
               To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
