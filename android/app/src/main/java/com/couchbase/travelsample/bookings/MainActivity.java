@@ -1,9 +1,11 @@
-package com.couchbase.travelsample;
+package com.couchbase.travelsample.bookings;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.couchbase.travelsample.R;
 
 public class MainActivity extends AppCompatActivity {
 
