@@ -1,11 +1,13 @@
 package com.couchbase.travelsample.bookings;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.couchbase.travelsample.R;
+import com.couchbase.travelsample.searchflight.SearchFlightActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), SearchFlightActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -8,6 +8,6 @@ public interface BookingsContract {
     interface View {
 
         void showSearchFlight();
-        
+
     }
 }
