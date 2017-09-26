@@ -7,6 +7,8 @@ public interface SearchFlightContract {
 
     interface UserActionsListener {
 
+        void startsWith(String prefix);
+
         void saveFlight(String title, String description);
 
     }
