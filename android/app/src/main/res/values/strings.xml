@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TravelSample</string>
+    <string name="flying_from">Flying from</string>
+    <string name="flying_to">Flying To</string>
+    <string name="departing">Departing</string>
+    <string name="returning">Returning</string>
+    <string name="look_up">Look up</string>
 </resources>

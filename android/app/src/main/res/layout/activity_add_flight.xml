@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/forecast"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:alignItems="center"
+    app:flexWrap="wrap"
+    app:justifyContent="space_around">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        app:layout_flexBasisPercent="50%">
+        <EditText
+            android:id="@+id/fromInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/flying_from" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        app:layout_flexBasisPercent="50%">
+        <EditText
+            android:id="@+id/toInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/flying_to" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        app:layout_flexBasisPercent="50%">
+        <EditText
+            android:id="@+id/depart"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/departing" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        app:layout_flexBasisPercent="50%">
+        <EditText
+            android:id="@+id/returning"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/returning" />
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_flexBasisPercent="50%"
+        android:onClick="signup"
+        android:text="@string/look_up"
+        android:textColor="#1E91D6" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/flightsList"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+
+</com.google.android.flexbox.FlexboxLayout>
