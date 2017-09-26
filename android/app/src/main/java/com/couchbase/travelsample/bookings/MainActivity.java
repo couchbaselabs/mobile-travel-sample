@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.couchbase.lite.Database;
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.searchflight.SearchFlightActivity;
+import com.couchbase.travelsample.util.DatabaseManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DatabaseManager.getSharedInstance(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search_flights);
         fab.setOnClickListener(new View.OnClickListener() {

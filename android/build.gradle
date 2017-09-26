@@ -18,6 +18,9 @@ allprojects {
         maven {
             url "https://maven.google.com"
         }
+        maven {
+            url "http://mobile.maven.couchbase.com/maven2/dev/"
+        }
     }
 }
 
