@@ -1,9 +1,9 @@
 package com.couchbase.travelsample.bookings;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.couchbase.lite.Database;
@@ -18,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DatabaseManager.installPrebuiltDatabase(getApplicationContext(), "travel-sample.cblite2.zip");
         DatabaseManager.getSharedInstance(getApplicationContext());
+        Database database = DatabaseManager.getDatabase();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search_flights);
         fab.setOnClickListener(new View.OnClickListener() {

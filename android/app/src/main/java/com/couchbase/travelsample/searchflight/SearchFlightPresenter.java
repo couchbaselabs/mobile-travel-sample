@@ -21,19 +21,19 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
             .select(SelectResult.expression(Expression.property("airportname")))
             .from(DataSource.database(database))
             .where(
-                Expression.property("type").equalTo(Expression.property("airport"))
+                Expression.property("type").equalTo("airport")
                 .and(Expression.property("faa").equalTo(prefix.toUpperCase()))
             );
 
         ResultSet rows = null;
         try {
             rows = searchQuery.run();
+            Result row;
+            while ((row = rows.next()) != null) {
+                Log.d("app", String.format("airport name :: %s", row.getString("airportname")));
+            }
         } catch (CouchbaseLiteException e) {
             Log.e("app", "Failed to run query", e);
-        }
-        Result row;
-        while ((row = rows.next()) != null) {
-            Log.d("app", String.format("airport name :: %s", row.getString("airportname")));
         }
     }
 
