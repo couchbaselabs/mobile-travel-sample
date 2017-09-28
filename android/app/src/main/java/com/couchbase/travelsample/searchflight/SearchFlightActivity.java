@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.couchbase.lite.ResultSet;
 import com.couchbase.travelsample.R;
 
 import static com.couchbase.travelsample.R.id.fromInput;
 
-public class SearchFlightActivity extends AppCompatActivity {
+public class SearchFlightActivity extends AppCompatActivity implements SearchFlightContract.View {
 
     private SearchFlightContract.UserActionsListener mActionListener;
 
@@ -22,7 +23,7 @@ public class SearchFlightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_flights);
 
-        mActionListener = new SearchFlightPresenter();
+        mActionListener = new SearchFlightPresenter(this);
 
         EditText fromInput = (EditText) findViewById(R.id.fromInput);
         fromInput.addTextChangedListener(new TextWatcher() {
@@ -38,5 +39,10 @@ public class SearchFlightActivity extends AppCompatActivity {
                 mActionListener.startsWith(prefix);
             }
         });
+    }
+
+    @Override
+    public void showAirports(ResultSet result) {
+
     }
 }

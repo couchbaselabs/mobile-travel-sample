@@ -1,9 +1,17 @@
 package com.couchbase.travelsample.searchflight;
 
+import com.couchbase.lite.ResultSet;
+
 /**
  * This specifies the contract between the view and the presenter.
  */
 public interface SearchFlightContract {
+
+    interface View {
+
+        void showAirports(ResultSet result);
+
+    }
 
     interface UserActionsListener {
 

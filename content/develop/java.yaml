@@ -233,39 +233,43 @@ chapters:
               TODO
   - title: Develop
     lessons:
+      - title: MVP Architecture
+        milestones:
+          - title: Overview
+            description: |
+              ### The Model-View-Presenter pattern
+              
+              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application.
+              
+              ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
+              
+              #### Model
+              
+              The model provides and stores the internal data.
+              In our travel app, the entities are represented in different models. `Booking`s are stored in a `BookingsRepository` that is backed by a `BookingsServiceApi`.
+              
+              #### View
+              
+              The view (not to be confused with the Android class View) handles the display of data (i.e the model). User actions are forwarded to the presenter.
+              In our app, the view is represented by Fragments, but basically could be any Android View. We have three Views in our app:
+              
+              - A view that provides an interface for displaying a list of bookings (`BookingsContract.View`) that is implemented in its own fragment (`BookingsFragment`).
+              - A view that provides an interface to search for flights (`FlightSearch.View`) and corresponding fragment (`FlightSearchFragment`).
       - title: The Basics
         milestones:
           - title: Create a Database
             description: |
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
-              
-              The code below creates an empty database for `guest` user.
-              *QUESTION*  How to show language specific code ?
         
-              ```swift
-              // This code can be found in DatabaseManager.swift file
-              // in the openOrCreateDatabaseForGuest() function
+              [Fragment.java]()
         
-              // Setup Database Configuration
-              var options = DatabaseConfiguration()
-              guard let defaultDBPath = _applicationSupportDirectory else {
-                    fatalError("Could not open Application Support Directory for app!")
-                    return
-                }
-                // Create a folder for Guest Account if one does not exist
-                let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
-                let guestFolderPath = guestFolderUrl.path
-                let fileManager = FileManager.default
-                if !fileManager.fileExists(atPath: guestFolderPath) {
-                    try fileManager.createDirectory(atPath: guestFolderPath,
-                                                    withIntermediateDirectories: true,
-                                                    attributes: nil)
-                    
-                }
-                
-                options.directory = guestFolderPath
-                // Create / Open Database with specified options
-                _db = try Database(name: kGuestDBName, config: options)
+              ```java
+              DatabaseConfiguration config = new DatabaseConfiguration(context);
+              try {
+                database = new Database("travel-sample", config);
+              } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+              }
               ```
               
               ## Try it out
@@ -498,7 +502,36 @@ chapters:
         milestones:
           - title: Query the Database
             description: |
+              The way to query data in Couchbase Lite 2.0 is by creating a `Query` object and then executing that query.
+              
+              The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
+              
+              #### Implement SearchFlightPresenter#startWith
+              
+              Open the file [app/src/main/java/.../searchflight/SearchFlightPresenter]() and  implement the method `startsWith`.
+              
+              ```java
+              Database database = DatabaseManager.getDatabase();
+              Query searchQuery = Query
+                .select(SelectResult.expression(Expression.property("airportname")))
+                .from(DataSource.database(database))
+                .where(
+                  Expression.property("type").equalTo("airport")
+                  .and(Expression.property("faa").equalTo(prefix.toUpperCase()))
+                );
+      
+              ResultSet rows = null;
+              try {
+                  rows = searchQuery.run();
+                  mSearchView.showAirports(rows);
+              } catch (CouchbaseLiteException e) {
+                  Log.e("app", "Failed to run query", e);
+              }
+              ```
+            
               Describe the various query options (SELECT, FROM,WHERE….)
+          
+              
           
               ## Try it out
               

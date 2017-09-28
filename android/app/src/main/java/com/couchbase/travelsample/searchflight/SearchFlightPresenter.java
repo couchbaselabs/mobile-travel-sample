@@ -1,5 +1,6 @@
 package com.couchbase.travelsample.searchflight;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -13,6 +14,12 @@ import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 public class SearchFlightPresenter implements SearchFlightContract.UserActionsListener{
+
+    private final SearchFlightContract.View mSearchView;
+
+    public SearchFlightPresenter(@NonNull SearchFlightContract.View mSearchView) {
+        this.mSearchView = mSearchView;
+    }
 
     @Override
     public void startsWith(String prefix) {
@@ -28,10 +35,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         ResultSet rows = null;
         try {
             rows = searchQuery.run();
-            Result row;
-            while ((row = rows.next()) != null) {
-                Log.d("app", String.format("airport name :: %s", row.getString("airportname")));
-            }
+            mSearchView.showAirports(rows);
         } catch (CouchbaseLiteException e) {
             Log.e("app", "Failed to run query", e);
         }
