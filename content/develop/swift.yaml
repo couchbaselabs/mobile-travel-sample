@@ -294,7 +294,7 @@ chapters:
               - _HotelPresenter_ which implements the `HotelPresenterProtocol`
                    
               In addition, there are some simple custom UI widgets like custom UITableViewCells 
-              
+
       - title: The Basics
         milestones:
           - title: Create a Database
@@ -542,14 +542,26 @@ chapters:
         milestones:
           - title: Starting with Prebuilt Database
             description: |
-              Add code snippet that shows how prebuilt db can be loaded. Explain why “hotels” and “airports” are prebuilt.
+              In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
+              Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the Application Support directory.
+              
+              Open [DatabaseManager.swift] and navigate to the [openOrCreateDatabaseForUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L72) method. This method first checks if a database file already exists. If it doesn't exist it loads the database from the app bundle.
+              
+              ```swift
+               if Database.exists(kDBName, inDirectory: userFolderPath) == false {
+                // Load prebuilt database from App Bundle and copy over to Applications support path
+                if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
+                     try Database.copy(fromPath: prebuiltPath, toDatabase: "/\(kDBName)", config: options)
+                    
+                }
+              ```
             
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  ‘+” button to make a flight reservation
+              - Tap on  "+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
-              - Write down the first value you see listed in the drop down menu
+              - Confirm that the first item in the dropdown list of "San Diego Intl"
       - title: Query
         milestones:
           - title: Query the Database

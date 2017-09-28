@@ -129,8 +129,7 @@ extension DatabaseManager {
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                    let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
-                    try fileManager.copyItem(atPath: prebuiltPath, toPath: destinationDBPath)
+                     try Database.copy(fromPath: prebuiltPath, toDatabase: "/\(kDBName)", config: options)
                     
                 }
                 // Get handle to DB  specified path
