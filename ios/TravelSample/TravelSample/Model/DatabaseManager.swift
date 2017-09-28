@@ -129,7 +129,7 @@ extension DatabaseManager {
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                     try Database.copy(fromPath: prebuiltPath, toDatabase: "/\(kDBName)", config: options)
+                     try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", config: options)
                     
                 }
                 // Get handle to DB  specified path
@@ -185,13 +185,15 @@ extension DatabaseManager {
     func createDatabaseIndexes() throws{
         // For searches on type property
         try _db?.createIndex(["type"])
+        try _db?.createIndex(["name"])
+        try _db?.createIndex(["airportname"])
+
     
         // For Full text search on airports and hotels
-        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
         
         try _db?.createIndex(["description"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
         
-        try _db?.createIndex(["name"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+
     }
 
     

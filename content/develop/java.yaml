@@ -515,11 +515,25 @@ chapters:
               - Write down the first value you see listed in the drop down menu
       - title: Query
         milestones:
-          - title: Query the Database
-            description: |
-              The way to query data in Couchbase Lite 2.0 is by creating a `Query` object and then executing that query.
-              
-              The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
+         - title: Overview
+           description: |
+              Couchbase Lite 2.0 includes support for N1QL like query interface. Database can be queried by constructing a query using a Query builder  and then executing that query.
+
+              The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+              - Pattern Matching 
+              - Regex Matching
+              - Math Functions
+              - String Manipulation Functions
+              - Aggregate Functions
+              - Grouping
+              - Joins (within single database)
+              - Sorting
+              - NilOrMissing properties
+
+         - title: Simple Query
+           description: |
+             The travel app has many instances of querying the database. We will discuss a simple example here.
+             The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
               
               ![](https://cl.ly/2b0T2g2N3c3D/airport-search-android.gif)
               
@@ -577,12 +591,13 @@ chapters:
               - Tap on  ‘+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
               - Write down the first value you see listed in the drop down menu
-          - title: Query hotels
-            description: |
+      - title: Advanced Query 
+        description: |
               In this section you will query the hotels.
               
-              ```swift
-              let hotels: [] = []
+              ```java
+              Query q = new Query()
+
               ```
       - title: Full Text Search
         milestones:

@@ -551,7 +551,7 @@ chapters:
                if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                     try Database.copy(fromPath: prebuiltPath, toDatabase: "/\(kDBName)", config: options)
+                     try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", config: options)
                     
                 }
               ```
@@ -567,68 +567,62 @@ chapters:
            
       - title: Query
         milestones:
-          - title: Query the Database
+          - title: Query
             description: |
-              The way to query data in Couchbase Lite 2.0 is by creating a `Query` object and then executing that query.
-              
-              The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
-              
-              ![](https://cl.ly/2b0T2g2N3c3D/airport-search-android.gif)
-              
-              #### Implement SearchFlightPresenter#startWith
-              
-              Open the file [app/src/main/java/.../searchflight/SearchFlightPresenter]() and  implement the method `startsWith`. The query looks up for documents with `type` property equal to `airport` and an `faa` code that matches the input text value.
-              
-              ```java
-              Database database = DatabaseManager.getDatabase();
-              Query searchQuery = Query
-                  .select(SelectResult.expression(Expression.property("airportname")))
-                  .from(DataSource.database(database))
-                  .where(
-                      Expression.property("type").equalTo("airport")
-                      .and(Expression.property("faa").equalTo(prefix.toUpperCase()))
-                  );
+              Couchbase Lite 2.0 includes support for N1QL like query interface. Database can be queried by creating a `Query` builder object and then executing that query.
+
+              The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+              - Pattern Matching 
+              - Regex Matching
+              - Math Functions
+              - String Manipulation Functions
+              - Aggregate Functions
+              - Grouping
+              - Joins (within single database)
+              - Sorting
+              - NilOrMissing properties
+
+              In the travel app, there are many instances of querying the database. We will discuss one particular case here.
+
+              Open AirportPresenter.swift and navigate to the [fetchAirportsMatching](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28) method. 
+              The query below requests for the "name property in documents with "type property equal to "airport" and matching the search string. The `where` clause of the `Query` varies depending on the length of the search string. We discuss one particular case here wherein we look for documents whose "FAA" property matches the specified search string
+          
+              ```swift
+              var searchQuery:Query?
+              searchQuery = Query
+                .select(_SelectColumn.AIRPORTNAMERESULT)
+                .from(DataSource.database(db))
+                .where(_Property.TYPE
+                    .equalTo("airport")
+                    .and(_Property.FAA
+                    .equalTo(searchStr.uppercased())))
               ```
             
-              Next we will run the query and return immediately if the query failed for some reason.
+              Run the query and iterate over the results 
               
-              ```java
-              ResultSet rows = null;
-              try {
-                  rows = searchQuery.run();
-              } catch (CouchbaseLiteException e) {
-                  Log.e("app", "Failed to run query", e);
-                  return;
+              ```swift
+              if let searchQuery = searchQuery {
+              var matches:Airports = []
+              do {
+                for row in try searchQuery.run() {
+                    if let match = row.string(forKey: "airportname") {
+                        matches.append( match)
+                    }
+                }
+                handler(matches,nil)
               }
+              catch {
+                handler(nil,error)
+              }          
               ```
-              
-              The view expects to receive a `List<String>` object, so we need to convert the query response (`ResultSet`) into a `List` object.
-              
-              ```java
-              Result row;
-              List<String> data = new ArrayList<>();
-              while ((row = rows.next()) != null) {
-                  data.add(row.getString("airportname"));
-              }
-              ```
-              
-              In the last step we call the View's `showAiports()` method passing the list of airport name to be displayed in the Recycler View.
-              
-              ```java
-              mSearchView.showAirports(data);
-              ```
+
           
               ## Try it out
               
-              - display user profile.
-              - how to know if the query is using an index. (Query Index)
-              - display flights on search screen. (JOIN)
-              - display number of flights between two airports on search screen. (GROUP BY)
-              - Try it out 2
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  ‘+” button to make a flight reservation
-              - In the “From”  airport textfield, enter “San”
-              - Write down the first value you see listed in the drop down menu
+              - In the “From”  airport textfield, enter "DTW""
+              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co
           - title: Query hotels
             description: |
               In this section you will query the hotels.

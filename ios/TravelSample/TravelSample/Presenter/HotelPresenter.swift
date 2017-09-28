@@ -243,10 +243,11 @@ extension HotelPresenter {
         // Description is looked up in the "description" and "name" content
         // Location is looked up in country, city, state and address
         // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
+        // MATCH can only appear at top-level, or in a top-level AND
+
         var descExp:Expression?
         if let descriptionStr = descriptionStr {
-            descExp = _Property.DESCRIPTION.like("%\(descriptionStr)%")
-                .or(_Property.NAME.like("%\(descriptionStr)%" ))
+            descExp = _Property.DESCRIPTION.match("%\(descriptionStr)%")
         }
         
         
@@ -257,18 +258,18 @@ extension HotelPresenter {
         
         var searchExp:Expression = locationExp
         if  let descExp = descExp {
-            searchExp = locationExp.and(descExp)
+            searchExp = descExp.and(locationExp)
         }
         
         
         let hotelSearchQuery = Query
             .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
-            .where(_Property.TYPE
-                .equalTo("hotel")
-                .and(searchExp))
+            .where(
+                _Property.TYPE.equalTo("hotel")
+                .and(descExp!))
         
-        print(try! hotelSearchQuery.explain())
+        print(try? hotelSearchQuery.explain())
         
         var matches:Hotels = []
         do {

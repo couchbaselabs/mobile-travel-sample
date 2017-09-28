@@ -132,7 +132,7 @@ extension HotelsTableViewController {
 extension HotelsTableViewController:UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         let searchText = searchBar.text
-        print("FTS on bookings for \(String(describing: searchText))")
+        print("FTS on hotels for \(String(describing: searchText))")
     }
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -180,7 +180,9 @@ extension HotelsTableViewController {
             cell.name.text = hotel["name"] as? String
             cell.address.text = hotel["address"] as? String
             cell.phone.text = hotel["phone"] as? String
-            cell.isBookmarked = (isBookmarked?.count)! > 0 ? true: false
+            if let count = isBookmarked?.count {
+                cell.isBookmarked = count > 0 ? true: false
+            }
         }
         cell.selectionStyle = .none
         return cell
