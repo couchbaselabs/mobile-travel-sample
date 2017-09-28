@@ -9,14 +9,14 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-                - iOS (Xcode 8.3.3 and above) if developing for iOS platform
-                - Downloadable from [Apple Developer site](https://developer.apple.com)
+              ### iOS (Xcode 8.3.3 and above) if developing for iOS platform
+              - Downloadable from [Apple Developer site](https://developer.apple.com)
                 
-                - Python (V 2.7 and above)
-                - Downloadable from [python.org](https://www.python.org/downloads/)
+              ### Python (V 2.7 and above)
+              - Downloadable from [python.org](https://www.python.org/downloads/)
               
-                - git
-                - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+              ### git
+              - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
               
@@ -235,22 +235,66 @@ chapters:
             description: |
               ### The Model-View-Presenter pattern
               
-              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application.
+              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view.
               
               ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
               
+              #### Protocols
+              In the Travel app, we define two sets of protocols. The `PresenterProtocol` protocol that must be implemented by all Presenter objects and `PresentingViewProtocol` must be implemented by the corresponding "view" objects. 
+              The `PresenterProtocol` and `PresentingViewProtocol` may be optionally extended to support capabilities of specific presenter/view 
+             
+              The app defines following PresenterProtocols that extend the PresenterProtocol` protocol 
+              - _BookingPresenterProtocol_ defines methods to be implemented by the Booking Presenter
+              - _FlightPresenterProtocol_ defines methods to be implemented by the Flight Presenter
+              - _AirportPresenterProtocol_ defines methods to be implemented by the Airport Presenter
+              - _HotelPresenterProtocol_ defines methods to be implemented by the Hotel Presenter
+
+              The app defines following PresentingViewProtocols that extend the PresentingViewProtocol` protocol 
+              - _BookingPresentingViewProtocol_ defines methods to be implemented by the Booking View 
+
+
               #### Model
               
-              The model provides and stores the internal data.
-              In our travel app, the entities are represented in different models. `Booking`s are stored in a `BookingsRepository` that is backed by a `BookingsServiceApi`.
+              The model provides and stores the internal data. In our travel app, for simplicity, we use standard data types of `Dictionary` and `Array` to represent the data. In a real application, one would use a custom  object to represent the model. 
+              
+              The app implements the following models
+              - _Booking_ which represents a flight reservation
+              - _Flight_ which represents airline details
+              - _Airport_ which represents airport name
+              - _Hotel_ which represents hotel details
+
+              In addition, the `DatabaseManager.swift` is a singleton class that is used to manage the common database operations such as Database Creation/Deletion and Replication.
+              
               
               #### View
               
-              The view (not to be confused with the Android class View) handles the display of data (i.e the model). User actions are forwarded to the presenter.
-              In our app, the view is represented by Fragments, but basically could be any Android View. We have three Views in our app:
+              In the Travel app, the  `UIView` and the `UIViewController` classes represent the "view" in MVP. It handles user input and forwards requests to the Presenter. It updates the UI based on response from the Presenter. The view object holds a weak reference to the corresponding Presenter object that implements the corresponding `PresenterProtocol`.
               
-              - A view that provides an interface for displaying a list of bookings (`BookingsContract.View`) that is implemented in its own fragment (`BookingsFragment`).
-              - A view that provides an interface to search for flights (`FlightSearch.View`) and corresponding fragment (`FlightSearchFragment`).
+              The app implements the following ViewControllers
+              - _LoginViewController_ which represents the login UI
+              - _BookmarkedHotelsTableViewController_ which represents the UI that lists bookmarked hotels
+              - _BookingTableViewController_ which represents the flight reservations UI
+              - _FlightListingTableViewController_ which represents the UI that lists of flight details
+              - _FlightSearchViewController_ which represents flight search UI
+              - _HotelsTableViewController_ which represents the UI that lists hotels
+              - _HotelDetailViewController_ which represents the UI that lists hotel details
+              
+              In addition, there are custom UITableViewCells 
+
+               
+              #### Presenter
+              
+              The Presenter acts as the intermediary between the View and the Model. It holds a weak reference to the corresponding view object that implements appropriate `PresentingViewProtocol`.
+
+
+              The app implements the following Presenters
+              - _BookingPresenter_ which implements the  `BookingPresenterProtocol`
+              - _FlightPresenter_ which implements the  `FlightPresenterProtocol`
+              - _AirportPresenter_ which implements the  `AirportPresenterProtocol`
+              - _HotelPresenter_ which implements the `HotelPresenterProtocol`
+                   
+              In addition, there are some simple custom UI widgets like custom UITableViewCells 
+              
       - title: The Basics
         milestones:
           - title: Create a Database
