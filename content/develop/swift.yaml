@@ -545,7 +545,7 @@ chapters:
               In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
               Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the Application Support directory.
               
-              Open [DatabaseManager.swift] and navigate to the [openOrCreateDatabaseForUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L72) method. This method first checks if a database file already exists. If it doesn't exist it loads the database from the app bundle.
+              Open DatabaseManager.swift and navigate to the [openOrCreateDatabaseForUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L72) method. This method first checks if a database file already exists. If it doesn't exist it loads the database from the app bundle.
               
               ```swift
                if Database.exists(kDBName, inDirectory: userFolderPath) == false {
