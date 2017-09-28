@@ -492,7 +492,7 @@ chapters:
             description: |
               In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle a database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date. Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the application directory.
               
-              Open ![DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java) and navigate to the database constructor. This method first checks if a database file already exists. If it doesn't exist it loads the database from the asset catalogue.
+              Open [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java) and navigate to the database constructor. This method first checks if a database file already exists. If it doesn't exist it loads the database from the asset catalogue.
               
               ```java
               File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
