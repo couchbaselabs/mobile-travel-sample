@@ -562,6 +562,9 @@ chapters:
               - Tap on  "+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
               - Confirm that the first item in the dropdown list of "San Diego Intl"
+
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_prebuilt.gif)
+           
       - title: Query
         milestones:
           - title: Query the Database
