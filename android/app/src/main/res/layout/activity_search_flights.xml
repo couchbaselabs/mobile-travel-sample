@@ -58,7 +58,7 @@
         android:text="@string/look_up"
         android:textColor="#1E91D6" />
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/flightsList"
+        android:id="@+id/resultList"
         android:layout_width="match_parent"
         android:layout_height="300dp"/>
 

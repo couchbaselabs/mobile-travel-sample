@@ -13,6 +13,9 @@ import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.util.DatabaseManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchFlightPresenter implements SearchFlightContract.UserActionsListener{
 
     private final SearchFlightContract.View mSearchView;
@@ -35,14 +38,22 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         ResultSet rows = null;
         try {
             rows = searchQuery.run();
-            mSearchView.showAirports(rows);
         } catch (CouchbaseLiteException e) {
             Log.e("app", "Failed to run query", e);
+            return;
         }
+
+        Result row;
+        List<String> data = new ArrayList<>();
+        while ((row = rows.next()) != null) {
+            data.add(row.getString("airportname"));
+        }
+        mSearchView.showAirports(data);
     }
 
     @Override
     public void saveFlight(String title, String description) {
 
     }
+
 }

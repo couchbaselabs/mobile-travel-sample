@@ -229,6 +229,28 @@ chapters:
               TODO
   - title: Develop
     lessons:
+      - title: MVP Architecture
+        milestones:
+          - title: Overview
+            description: |
+              ### The Model-View-Presenter pattern
+              
+              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application.
+              
+              ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
+              
+              #### Model
+              
+              The model provides and stores the internal data.
+              In our travel app, the entities are represented in different models. `Booking`s are stored in a `BookingsRepository` that is backed by a `BookingsServiceApi`.
+              
+              #### View
+              
+              The view (not to be confused with the Android class View) handles the display of data (i.e the model). User actions are forwarded to the presenter.
+              In our app, the view is represented by Fragments, but basically could be any Android View. We have three Views in our app:
+              
+              - A view that provides an interface for displaying a list of bookings (`BookingsContract.View`) that is implemented in its own fragment (`BookingsFragment`).
+              - A view that provides an interface to search for flights (`FlightSearch.View`) and corresponding fragment (`FlightSearchFragment`).
       - title: The Basics
         milestones:
           - title: Create a Database
@@ -488,7 +510,54 @@ chapters:
         milestones:
           - title: Query the Database
             description: |
-              Describe the various query options (SELECT, FROM,WHERE….)
+              The way to query data in Couchbase Lite 2.0 is by creating a `Query` object and then executing that query.
+              
+              The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
+              
+              ![](https://cl.ly/2b0T2g2N3c3D/airport-search-android.gif)
+              
+              #### Implement SearchFlightPresenter#startWith
+              
+              Open the file [app/src/main/java/.../searchflight/SearchFlightPresenter]() and  implement the method `startsWith`. The query looks up for documents with `type` property equal to `airport` and an `faa` code that matches the input text value.
+              
+              ```java
+              Database database = DatabaseManager.getDatabase();
+              Query searchQuery = Query
+                  .select(SelectResult.expression(Expression.property("airportname")))
+                  .from(DataSource.database(database))
+                  .where(
+                      Expression.property("type").equalTo("airport")
+                      .and(Expression.property("faa").equalTo(prefix.toUpperCase()))
+                  );
+              ```
+            
+              Next we will run the query and return immediately if the query failed for some reason.
+              
+              ```java
+              ResultSet rows = null;
+              try {
+                  rows = searchQuery.run();
+              } catch (CouchbaseLiteException e) {
+                  Log.e("app", "Failed to run query", e);
+                  return;
+              }
+              ```
+              
+              The view expects to receive a `List<String>` object, so we need to convert the query response (`ResultSet`) into a `List` object.
+              
+              ```java
+              Result row;
+              List<String> data = new ArrayList<>();
+              while ((row = rows.next()) != null) {
+                  data.add(row.getString("airportname"));
+              }
+              ```
+              
+              In the last step we call the View's `showAiports()` method passing the list of airport name to be displayed in the Recycler View.
+              
+              ```java
+              mSearchView.showAirports(data);
+              ```
           
               ## Try it out
               
