@@ -18,9 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseManager.installPrebuiltDatabase(getApplicationContext(), "travel-sample.cblite2.zip");
         DatabaseManager.getSharedInstance(getApplicationContext());
-        Database database = DatabaseManager.getDatabase();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search_flights);
         fab.setOnClickListener(new View.OnClickListener() {

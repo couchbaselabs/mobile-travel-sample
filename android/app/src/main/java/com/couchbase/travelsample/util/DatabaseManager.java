@@ -23,8 +23,13 @@ import java.util.zip.ZipInputStream;
 public class DatabaseManager {
     private static Database database;
     private static DatabaseManager instance = null;
+    private static String dbName;
 
     protected DatabaseManager(Context context) {
+        File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
+        if (!dbFile.exists()) {
+            DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
+        }
         DatabaseConfiguration config = new DatabaseConfiguration(context);
         try {
             database = new Database("travel-sample", config);
