@@ -567,9 +567,9 @@ chapters:
            
       - title: Query
         milestones:
-          - title: Query
-            description: |
-              Couchbase Lite 2.0 includes support for N1QL like query interface. Database can be queried by creating a `Query` builder object and then executing that query.
+         - title: Overview
+           description: |
+              Couchbase Lite 2.0 includes support for N1QL like query interface. Database can be queried by constructing a query using a Query builder  and then executing that query.
 
               The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
               - Pattern Matching 
@@ -582,7 +582,10 @@ chapters:
               - Sorting
               - NilOrMissing properties
 
-              In the travel app, there are many instances of querying the database. We will discuss one particular case here.
+         - title: Simple Query
+           description: |
+              
+              The travel app has many instances of querying the database. We will discuss a simple example here.
 
               Open AirportPresenter.swift and navigate to the [fetchAirportsMatching](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28) method. 
               The query below requests for the "name property in documents with "type property equal to "airport" and matching the search string. The `where` clause of the `Query` varies depending on the length of the search string. We discuss one particular case here wherein we look for documents whose "FAA" property matches the specified search string
@@ -615,16 +618,16 @@ chapters:
                 handler(nil,error)
               }          
               ```
-
           
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  ‘+” button to make a flight reservation
               - In the “From”  airport textfield, enter "DTW""
-              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co
-          - title: Query hotels
-            description: |
+              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+
+         - title: Advanced Query 
+           description: |
               In this section you will query the hotels.
               
               ```swift

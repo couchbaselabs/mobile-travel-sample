@@ -515,8 +515,8 @@ chapters:
               - Write down the first value you see listed in the drop down menu
       - title: Query
         milestones:
-         - title: Overview
-           description: |
+          - title: Overview
+            description: |
               Couchbase Lite 2.0 includes support for N1QL like query interface. Database can be queried by constructing a query using a Query builder  and then executing that query.
 
               The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
@@ -530,8 +530,8 @@ chapters:
               - Sorting
               - NilOrMissing properties
 
-         - title: Simple Query
-           description: |
+          - title: Simple Query
+            description: |
              The travel app has many instances of querying the database. We will discuss a simple example here.
              The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
               
@@ -591,14 +591,15 @@ chapters:
               - Tap on  ‘+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
               - Write down the first value you see listed in the drop down menu
-      - title: Advanced Query 
-        description: |
+
+          - title: Advanced Query 
+            description: |
               In this section you will query the hotels.
               
               ```java
-              Query q = new Query()
-
+                Query q = new Query()
               ```
+              
       - title: Full Text Search
         milestones:
           - title: Full Text Search

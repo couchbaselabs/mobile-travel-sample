@@ -261,13 +261,26 @@ extension HotelPresenter {
             searchExp = descExp.and(locationExp)
         }
         
-        
+       /*
         let hotelSearchQuery = Query
             .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(
                 _Property.TYPE.equalTo("hotel")
-                .and(descExp!))
+                .and(descExp!)
+                .and(locationExp))
+        */
+        
+        let hotelSearchQuery = Query
+            .select(SelectResult.all()) // CHANGE THIS WHEN SELECT* IS SUPPORTED
+            .from(DataSource.database(db))
+            .where(
+                Expression.property("type").equalTo("hotel")
+                    .and(Expression.property("description").match("%\(descriptionStr)%"))
+                    .and(Expression.property("country").equalTo(locationStr)
+                        .or(Expression.property("city").equalTo(locationStr))
+                        .or(Expression.property("state").equalTo(locationStr))
+                        .or(Expression.property("address").equalTo(locationStr))))
         
         print(try? hotelSearchQuery.explain())
         
