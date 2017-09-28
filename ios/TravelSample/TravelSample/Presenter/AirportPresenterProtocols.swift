@@ -7,9 +7,6 @@
 //
 
 import Foundation
-typealias Airport = String
-typealias Airports = [Airport]
-
 
 protocol AirportPresenterProtocol:PresenterProtocol {
     func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) 

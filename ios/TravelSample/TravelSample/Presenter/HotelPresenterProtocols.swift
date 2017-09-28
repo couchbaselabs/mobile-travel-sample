@@ -7,8 +7,7 @@
 //
 
 import Foundation
-typealias Hotel = [String:Any]
-typealias Hotels = [Hotel]
+
 
 
 protocol HotelPresenterProtocol:PresenterProtocol {
