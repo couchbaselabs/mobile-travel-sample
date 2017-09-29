@@ -164,10 +164,10 @@ chapters:
               ![](https://cl.ly/470H3j1y371N/logs.png)
               
               Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
-  - title: Design
-    lessons:
-      - title: Data Modeling
-        milestones:
+      - title: Design
+        lessons:
+        - title: Data Modeling
+          milestones:
           - title: Introduction
             description: |
               Progressive disclosure of the data model in the travel sample bucket and the guest bucket. The Travel Sample bucket is synchronized between the mobile clients and the Couchbase Server. The guest bucket is a local-only database that is embedded in the mobile client.
@@ -206,12 +206,7 @@ chapters:
                 ![](https://cl.ly/2l0118183p11/guest-model.png)
           - title: Document Types
             description: |
-              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
-<<<<<<< HEAD
-                           
-=======
-              
->>>>>>> 2d29817d94d082baf02a01aebf8ba11fde62bb4a
+              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it "type"
               ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
               
               ## Try it out
