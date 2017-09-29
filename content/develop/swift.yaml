@@ -164,8 +164,8 @@ chapters:
               ![](https://cl.ly/470H3j1y371N/logs.png)
               
               Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
-      - title: Design
-        lessons:
+  - title: Design
+    lessons:
         - title: Data Modeling
           milestones:
           - title: Introduction
