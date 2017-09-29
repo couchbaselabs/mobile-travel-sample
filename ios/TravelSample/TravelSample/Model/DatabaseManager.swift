@@ -225,8 +225,6 @@ extension DatabaseManager {
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
         var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
-        
-        //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
         config.replicatorType = .pushAndPull
         config.continuous = true
         config.authenticator = BasicAuthenticator(username: user, password: password)

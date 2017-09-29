@@ -475,6 +475,10 @@ chapters:
             
             
               Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
+          - title: XAttrs
+            description: |
+              TODO Describe the new XAttrs for convergence
+
           - title: Pull Replication
             description: |
               

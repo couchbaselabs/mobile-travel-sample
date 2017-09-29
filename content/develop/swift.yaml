@@ -528,13 +528,53 @@ chapters:
             
             
               Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
+          
+          - title: XAttrs
+            description: |
+              TODO Describe the new XAttrs for convergence
+
           - title: Pull Replication
             description: |
               
-              - Show code snippet
-              - Set “enablingSync” flag as true
-              - Relaunch the Travel Sample Mobile App
+              Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database.
               
+              Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented over the BLIP messaging protocol layered over WebSocket. 
+              ![](https://blog.couchbase.com/wp-content/uploads/2017/08/layered.png)
+              
+              The replication process can be “continuous” or “one shot“.
+              - In “Continuous” replication mode, the changes are continually synchronized between the client and Sync Gateway.
+              
+              - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
+
+              The code snippet can be found in the DatabaseManager.swift file in the [startPushAndPullReplicationForCurrentUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L202) function.
+              ```swift
+                var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
+                config.replicatorType = .pushAndPull
+                config.continuous = true
+                config.authenticator = BasicAuthenticator(username: user, password: password)
+                
+                // This should match what is specified in the sync gateway config
+                // Only pull documents from this user's channel
+                let userChannel = "channel.\(user)"
+                config.channels = [userChannel]
+                _pushPullRepl = Replicator.init(config: config)
+                
+                _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
+                    let s = change.status
+                    print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
+          
+                    if s.progress.completed == s.progress.total {
+                        self?.postNotificationOnReplicationState(.idle)
+                    }
+                    else {
+                        self?.postNotificationOnReplicationState(s.activity)
+                    }
+                })
+                
+        
+                 _pushPullRepl?.start()
+              ```
+               
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
