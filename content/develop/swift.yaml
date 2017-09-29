@@ -235,7 +235,7 @@ chapters:
               
               ```json
               {
-                  <a>"_id"</a>: "airline_137",
+                  "_id": "airline_137",
                   "_rev": "1-b4e60280a1a0e3d46efad7bfd0e2068c",
                   "callsign": "AIRFRANS",
                   "country": "France",
