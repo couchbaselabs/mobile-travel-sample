@@ -537,6 +537,8 @@ chapters:
               
               Open the file [app/src/main/java/.../searchflight/SearchFlightPresenter]() and  implement the method `startsWith`. The query looks up for documents with `type` property equal to `airport` and an `faa` code that matches the input text value.
               
+              The query below `selects` the "name"" property in documents `from` database `where` the "type"" property is equal to "airport" and the "FAA" property is equaly to the search string. 
+          
               ```java
               Database database = DatabaseManager.getDatabase();
               Query searchQuery = Query

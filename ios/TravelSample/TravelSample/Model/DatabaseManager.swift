@@ -47,12 +47,14 @@ class DatabaseManager {
     fileprivate var _applicationSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
     
     static let shared:DatabaseManager = {
+        
         let instance = DatabaseManager()
         instance.initialize()
         return instance
     }()
     
     func initialize() {
+        enableCrazyLevelLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
@@ -293,9 +295,9 @@ extension DatabaseManager {
 // MARK: Utils
 extension DatabaseManager {
     
-    private func enableCrazyLevelLogging() {
+    fileprivate func enableCrazyLevelLogging() {
    
-    
+        Database.setLogLevel(.debug, domain: .database)
     }
     
 }

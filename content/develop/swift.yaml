@@ -583,7 +583,8 @@ chapters:
               The travel app has many instances of querying the database. We will discuss a simple example here.
 
               Open AirportPresenter.swift and navigate to the [fetchAirportsMatching](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28) method. 
-              The query below requests for the "name property in documents with "type property equal to "airport" and matching the search string. The `where` clause of the `Query` varies depending on the length of the search string. We discuss one particular case here wherein we look for documents whose "FAA" property matches the specified search string
+              The query below `selects` the "name"" property in documents `from` database `where` the "type"" property is equal to "airport" and the "FAA" property is equaly to the search string. 
+           
           
               ```swift
               var searchQuery:Query?
@@ -600,13 +601,13 @@ chapters:
               
               ```swift
               if let searchQuery = searchQuery {
-              var matches:Airports = []
-              do {
-                for row in try searchQuery.run() {
+                var matches:Airports = []
+                do {
+                  for row in try searchQuery.run() {
                     if let match = row.string(forKey: "airportname") {
                         matches.append( match)
                     }
-                }
+                  }
                 handler(matches,nil)
               }
               catch {
@@ -617,17 +618,67 @@ chapters:
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  ‘+” button to make a flight reservation
+              - Tap on  "+"" button to make a flight reservation
               - In the “From”  airport textfield, enter "DTW""
               - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
 
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_simple_query.gif)
+
          - title: Advanced Query 
            description: |
-              In this section you will query the hotels.
+              In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
+              Open HotelPresenter.swift and navigate to the [fetchBookmarkedHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L184) method.
               
+              If you recall from the Data Modeling section of "Hotels" bucket, the "bookmarkedhotels" document contains a "hotels" property which is an array of Ids of bookmarked hotels.
+              
+              The JOIN query in code snippet below fetches documents whose `Id` is included in the "hotels" property array in "bookmarkedhotels" type document.
+
               ```swift
-              let hotels: [] = []
+               var bookmarkedHotels:Hotels = Hotels()
+            
+              // Set aliases
+              let bookmarkDS = DataSource.database( db).as("bookmarkDS")
+              let hotelsDS = DataSource.database(db).as("hotelsDS")
+            
+              let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
+              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+            
+              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+              let join = Join.join(hotelsDS).on(joinExpr);
+            
+              let typeExpr = Expression.property("type").from("bookmarkDS")
+            
+              let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
+              let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
+            
+              let query = Query.select(bookmarkAllColumns, hotelsAllColumns)
+                                .from(bookmarkDS)
+                                .join(join)
+                                .where(typeExpr.equalTo("bookmarkedhotels"));
+            
+           
+              for result in try query.run() {
+                if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
+                      bookmarkedHotels.append(hotel)
+                }
+              }
+               handler(bookmarkedHotels,nil)
               ```
+
+              ## Try it out
+              
+              - Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
+              - Tap on  "Hotels"" button 
+              - In the "Description" text field, enter "pets"
+              - In the "Location" text field, enter "London"
+              - Verify that you see the "Novotel London West" listed
+              - Swipe left to "bookmark" the hotel
+              - Tap "Cancel" button
+              - Verify that the Novatel hotel that you bookmarked earlier shows up in the list
+
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_join_query.gif)
+
+
       - title: Full Text Search
         milestones:
           - title: Full Text Search
