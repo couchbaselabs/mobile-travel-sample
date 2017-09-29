@@ -141,21 +141,28 @@ chapters:
                 
                 The Travel Sample Bucket hosts the following types of documents
                   
-                - Airline
-                - Airport
-                - Hotel
-                - Route
-                - Landmarked (not used in apps)
-                - User Document (created and managed by user)
+                - airline
+                - airport
+                - hotel
+                - route
+                - landmark (not used in apps)
+                - user Document (created and managed by user)
                 
                 Except for the user document, most of the documents are static/semi-static in nature. 
               
                 ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-                ### GUEST Bucket
+                ### Guest Bucket
                 
                 The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
+
                 It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trips reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
+
+                The Guest Bucket hosts the following types of documents
+                  
+                - bookmarkedhotels 
+                - hotel
+               
               
                 ![](https://cl.ly/2l0118183p11/guest-model.png)
           - title: Document Types
