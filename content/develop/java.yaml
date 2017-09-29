@@ -168,10 +168,10 @@ chapters:
               ![](https://cl.ly/470H3j1y371N/logs.png)
               
               Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
-      - title: Design
-        lessons:
-      - title: Data Modeling
-        milestones:
+  - title: Design
+    lessons:
+        - title: Data Modeling
+          milestones:
           - title: Introduction
             description: |
               Progressive disclosure of the data model in the travel sample bucket and the guest bucket. The Travel Sample bucket is synchronized between the mobile clients and the Couchbase Server. The guest bucket is a local-only database that is embedded in the mobile client.
@@ -195,13 +195,13 @@ chapters:
               
                 ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-                ### GUEST Bucket
+                ### Guest Bucket
                 
-               The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
+                The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
 
-               It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trips reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
+                It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trips reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
 
-               The Guest Bucket hosts the following types of documents
+                The Guest Bucket hosts the following types of documents
                   
                 - bookmarkedhotels 
                 - hotel

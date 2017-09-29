@@ -191,6 +191,7 @@ chapters:
               
                 ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
+                
                 ### Guest Bucket
                 
                 The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
