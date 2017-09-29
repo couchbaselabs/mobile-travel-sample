@@ -208,8 +208,6 @@ chapters:
             description: |
               Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
               
-              TODO: Must have all the properties in the GIF.
-              
               ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
               
               ## Try it out
@@ -252,20 +250,6 @@ chapters:
             description: |
               TODO
           - title: Blobs
-            description: |
-              TODO
-      - title: Access Control
-        milestones:
-          - title: Routing
-            description: |
-              TODO
-          - title: Read Access
-            description: |
-              TODO
-          - title: Write Access
-            description: |
-              TODO
-          - title: Roles
             description: |
               TODO
   - title: Develop
