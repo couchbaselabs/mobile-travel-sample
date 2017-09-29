@@ -202,11 +202,6 @@ chapters:
               ```
               
               Mobile App Developers using Couchbase Lite  should typically never have to directly read or write the _id property. You would query the meta().id field to fetch the document ID. We will learn more about this in our lesson on Queries.
-          - title: Storing Dates
-            description: |
-              TODO
-              
-              - Show JSON models
           - title: Entity relationships
             description: |
               TODO
