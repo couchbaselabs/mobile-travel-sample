@@ -247,7 +247,7 @@ extension HotelPresenter {
 
         var descExp:Expression?
         if let descriptionStr = descriptionStr {
-            descExp = _Property.DESCRIPTION.match("%\(descriptionStr)%")
+            descExp = _Property.DESCRIPTION.match(descriptionStr)
         }
         
         
@@ -261,17 +261,18 @@ extension HotelPresenter {
             searchExp = descExp.and(locationExp)
         }
         
-       
+       /*
         let hotelSearchQuery = Query
             .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(
                 _Property.TYPE.equalTo("hotel")
-                .and(descExp!))
+                )
         
-        /*
+        */
         let hotelSearchQuery = Query
-            .select(SelectResult.all()) // CHANGE THIS WHEN SELECT* IS SUPPORTED
+            .select(SelectResult.expression(Expression.meta().id),
+                    SelectResult.expression(Expression.property("name"))) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(
                 Expression.property("description").match("%\(descriptionStr)%")
@@ -280,7 +281,7 @@ extension HotelPresenter {
                         .or(Expression.property("city").equalTo(locationStr))
                         .or(Expression.property("state").equalTo(locationStr))
                         .or(Expression.property("address").equalTo(locationStr))))
- */
+ 
         
         print(try? hotelSearchQuery.explain())
         
