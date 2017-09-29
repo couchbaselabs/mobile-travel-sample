@@ -239,8 +239,7 @@ chapters:
           - title: Document _id
             description: |
               When Sync Gateway processes a document, it adds relevant metadata to the document. The metadata includes an "_id" property that corresponds  to the document ID. You will see this property if you query for the document via the the Sync Gateway REST API.
-              
-              `GET {{adminurl}}/{{db}}/airline_137`
+       
               
               ```json
               {
