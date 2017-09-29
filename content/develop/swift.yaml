@@ -125,6 +125,45 @@ chapters:
               
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
+          - title: Docker
+            description: |
+              In this section, you will learn how to run all 3 components in Docker containers. The different container names are:
+              
+              - **sync-gateway**: running with the configuration file.
+              - **web**: the Python web client which is the existing web application.
+              - **couchbase**: running an instance of Couchbase Server 5.0.
+              
+              Open **docker-compose.yaml**, it should contain the following:
+              
+              ```yaml
+              web:
+                build: ./try-cb-python
+                ports:
+                  - '8080:8080'
+                links:
+                  - syncgateway
+              syncgateway:
+                image: couchbase/sync-gateway
+                command: sync-gateway-config.json
+                ports:
+                  - '4984:4984'
+              couchbaseserver:
+                image: 'couchbase/server'
+                ports:
+                  - '8091:8091'
+              ```
+              
+              You will now use Docker compose to run all 3 components from a single command.
+              
+              ```bash
+              docker-compose up
+              ```
+              
+              And you see the following.
+              
+              ![](https://cl.ly/470H3j1y371N/logs.png)
+              
+              Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
   - title: Design
     lessons:
       - title: Data Modeling
@@ -456,6 +495,36 @@ chapters:
         milestones:
           - title: Channels/Data Routing
             description: |
+              In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. You’ll learn how to use Couchbase Lite’s synchronization APIs, set up Sync Gateway for synchronization with the cloud and other devices.
+              
+              Now that your application runs smoothly on the device you are ready to introduce Sync Gateway. Create a new file called **sync-gateway-config.json** with the following.
+              
+              ```javascript
+              {
+                "interface":":4984",
+                "log": ["*"],
+                "databases": {
+                  "travel-sample": {
+                    "import_docs": "continuous",
+                    "unsupported": {
+                      "enable_extended_attributes": true,
+                      "replicator_2":true
+                    },
+                    "bucket":"travel-sample",
+                    "server": "http://localhost:8091",
+                    "username": "admin",
+                    "password": "password",
+                    "users":{
+                        "admin": {"password": "password", "admin_channels": ["*"]}, 
+                        "demo": {"password": "password"},
+                        "tester": {"password": "password"}
+                    }
+                  }
+                }
+              }
+              ```
+            
+            
               Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
           - title: Pull Replication
             description: |
@@ -490,6 +559,24 @@ chapters:
               - Select the first flight listing
               - Select “Confirm Booking” 
               - As soon as the flight reservation is confirmed via the mobile app, you should see the flight listing in the web app
+          - title: Web client
+            description: |
+              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server application now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              
+              The following configuration settings in the Sync Gateway config file enables the import.
+              
+              ```javascript
+              "unsupported": {
+              	"enable_extended_attributes": true
+              }
+              ```
+              
+              ## Try it out
+              
+              - Log on the mobile with your credentials.
+              - Place a new flight booking from mobile app.
+              - Switch back to the user profile page.
+              - You should see the same flight booking displayed on the web client.
       - title: Security
         milestones:
           - title: User Management
