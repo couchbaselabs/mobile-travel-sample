@@ -5,4 +5,5 @@
     <string name="departing">Departing</string>
     <string name="returning">Returning</string>
     <string name="look_up">Look up</string>
+    <string name="title_activity_login">Login</string>
 </resources>
