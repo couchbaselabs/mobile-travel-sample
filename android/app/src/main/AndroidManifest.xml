@@ -10,11 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".bookings.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".searchflight.SearchFlightActivity">
         </activity>
@@ -22,11 +17,18 @@
             android:name=".login.Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".bookmarks.BookmarksActivity"
             android:label="@string/title_activity_bookmarks"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".hotels.HotelsActivity">
         </activity>
     </application>
 
