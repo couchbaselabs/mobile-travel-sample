@@ -59,22 +59,25 @@ chapters:
             description: |
               In this step, you will install and launch version 5.0 of the Couchbase Server.
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
-              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected. 
+              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
+              
+                ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
+              
               - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
                 - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
         
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
         
               - Launch Couchbase Server 
               - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
               - Create an RBAC user named "_admin_" with password "_password_" with full access to the travel-sample bucket.
                 - Note that you can create any user but you must configure the user in the [sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json) as well.
             
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
         
               - Create a Full text search index on travel-sample bucket called 'hotels'
         
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
         
               ## Try it out
               
