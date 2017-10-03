@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.util.ResultAdapter;
@@ -37,6 +39,12 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
         mRecyclerView.setLayoutManager(layoutManager);
 
         ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>());
+        mResultAdapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+            @Override
+            public void OnClick(View view, int position) {
+                Log.d("App", String.valueOf(position));
+            }
+        });
         mRecyclerView.setAdapter(mResultAdapter);
 
         mActionListener = new HotelsPresenter(this);
@@ -58,7 +66,14 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mRecyclerView.setAdapter(new ResultAdapter(hotels));
+                ResultAdapter adapter = new ResultAdapter(hotels);
+                adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+                    @Override
+                    public void OnClick(View view, int position) {
+                        Log.d("App", String.valueOf(position));
+                    }
+                });
+                mRecyclerView.setAdapter(adapter);
                 mRecyclerView.invalidate();
             }
         });

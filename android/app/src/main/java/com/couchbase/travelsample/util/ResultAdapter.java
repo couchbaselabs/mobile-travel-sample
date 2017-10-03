@@ -11,6 +11,11 @@ import java.util.List;
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
 
     private List<String> mResultSet;
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        void OnClick(View view, int position);
+    }
 
     public ResultAdapter(List<String> mResultSet) {
         this.mResultSet = mResultSet;
@@ -32,12 +37,23 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.title.setText(mResultSet.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemClickListener.OnClick(view, position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mResultSet.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 }
