@@ -1,6 +1,7 @@
 package com.couchbase.travelsample.hotels;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface HotelsContract {
     interface UserActionsListener {
 
         void fetchHotels();
+
+        void bookmarkHotels(JSONObject hotel);
 
     }
 

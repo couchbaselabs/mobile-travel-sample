@@ -5,6 +5,11 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
+
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.couchbase.travelsample.util.DatabaseManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,5 +76,18 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             }
         });
 
+    }
+
+    @Override
+    public void bookmarkHotels(JSONObject hotel) {
+        Database database = DatabaseManager.getDatabase();
+        Document document = new Document();
+        document.set(new HashMap<String, Object>());
+
+        try {
+            Log.d("App", hotel.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

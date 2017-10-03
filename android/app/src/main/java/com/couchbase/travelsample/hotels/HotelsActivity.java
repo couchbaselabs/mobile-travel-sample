@@ -54,7 +54,7 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
     }
 
     @Override
-    public void showHotels(JSONArray data) {
+    public void showHotels(final JSONArray data) {
         final List<String> hotels = new ArrayList<>();
         for (int i = 0; i < data.length(); i++) {
             try {
@@ -71,6 +71,14 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
                     @Override
                     public void OnClick(View view, int position) {
                         Log.d("App", String.valueOf(position));
+                        JSONObject selectedHotel = null;
+                        try {
+                            selectedHotel = data.getJSONObject(position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mActionListener.bookmarkHotels(selectedHotel);
+
                     }
                 });
                 mRecyclerView.setAdapter(adapter);
