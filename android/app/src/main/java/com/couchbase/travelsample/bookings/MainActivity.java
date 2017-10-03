@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.couchbase.lite.Database;
 import com.couchbase.travelsample.R;
+import com.couchbase.travelsample.hotels.HotelsActivity;
 import com.couchbase.travelsample.searchflight.SearchFlightActivity;
 import com.couchbase.travelsample.util.DatabaseManager;
 
@@ -28,5 +29,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void onHotelsTapped(View view) {
+        Intent intent = new Intent(getApplicationContext(), HotelsActivity.class);
+        startActivity(intent);
     }
 }

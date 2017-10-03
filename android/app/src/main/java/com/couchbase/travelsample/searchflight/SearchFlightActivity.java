@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.couchbase.travelsample.R;
+import com.couchbase.travelsample.util.ResultAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.List;
 public class SearchFlightActivity extends AppCompatActivity implements SearchFlightContract.View {
 
     private SearchFlightContract.UserActionsListener mActionListener;
-    private ResultAdapter mResultAdapter;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -37,7 +37,7 @@ public class SearchFlightActivity extends AppCompatActivity implements SearchFli
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mResultAdapter = new ResultAdapter(new ArrayList<String>());
+        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>());
         mRecyclerView.setAdapter(mResultAdapter);
 
         mActionListener = new SearchFlightPresenter(this);
@@ -62,39 +62,5 @@ public class SearchFlightActivity extends AppCompatActivity implements SearchFli
     public void showAirports(List<String> airports) {
         mRecyclerView.setAdapter(new ResultAdapter(airports));
         mRecyclerView.invalidate();
-    }
-}
-
-class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
-
-    private List<String> mResultSet;
-
-    ResultAdapter(List<String> mResultSet) {
-        this.mResultSet = mResultSet;
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        ViewHolder(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(android.R.id.text1);
-        }
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(android.R.layout.simple_selectable_list_item, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(mResultSet.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mResultSet.size();
     }
 }

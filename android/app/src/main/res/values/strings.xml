@@ -7,4 +7,5 @@
     <string name="look_up">Look up</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_bookmarks">BookmarksActivity</string>
+    <string name="hotels">Hotels</string>
 </resources>
