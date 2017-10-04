@@ -186,16 +186,15 @@ extension DatabaseManager {
     
     func createDatabaseIndexes() throws{
         // For searches on type property
-        try _db?.createIndex(["type"])
-        try _db?.createIndex(["name"])
-        try _db?.createIndex(["airportname"])
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
 
     
         // For Full text search on airports and hotels
+        try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
         
-        try _db?.createIndex(["description"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
-        
-
+   
     }
 
     
