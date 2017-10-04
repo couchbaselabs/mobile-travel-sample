@@ -133,6 +133,35 @@ chapters:
               - Verify that you get back a JSON response
           - title: Docker
             description: |
+              In this section, you will learn how to run the components in Docker containers. Before getting started, first make sure that you have an instance of Couchbase Server 5.0 running locally (follow the steps in the [Couchbase Server v5.0](/develop/java#/0/0/2) lesson).
+              
+              ## Python Web App
+              
+              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+              
+              ```bash
+              $ docker push jamiltz/try-cb-python
+              ```
+              
+              Once the command has completed you can start the application with the following.
+              
+              ```bash
+              $ docker run -it -p 8080:8080 try-cb-python
+              ```
+              
+              You should then see the following in the logs.
+              
+              ```bash
+              Connecting to: couchbase://docker.for.mac.localhost/travel-sample?username=Administrator
+               * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+              ```
+              
+              You can now run the Android app which will connect to the Python Web App to retrieve hotel documents.
+              
+              ![](https://cl.ly/3i3I3O1B0G1j/hotels-guest.gif)
+              
+              ## Docker Compose
+            
               In this section, you will learn how to run all 3 components in Docker containers. The different container names are:
               
               - **sync-gateway**: running with the configuration file.
