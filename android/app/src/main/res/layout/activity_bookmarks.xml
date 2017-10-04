@@ -23,6 +23,11 @@
 
     <include layout="@layout/content_bookmarks"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bookmarksList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

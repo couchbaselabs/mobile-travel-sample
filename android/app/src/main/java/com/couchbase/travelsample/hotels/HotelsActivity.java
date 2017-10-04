@@ -49,8 +49,6 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
 
         mActionListener = new HotelsPresenter(this);
         mActionListener.fetchHotels();
-
-        mActionListener = new HotelsPresenter(this);
     }
 
     @Override
@@ -78,7 +76,6 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
                             e.printStackTrace();
                         }
                         mActionListener.bookmarkHotels(selectedHotel);
-
                     }
                 });
                 mRecyclerView.setAdapter(adapter);

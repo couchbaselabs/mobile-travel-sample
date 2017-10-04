@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseManager.getSharedInstance(getApplicationContext());
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search_flights);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
