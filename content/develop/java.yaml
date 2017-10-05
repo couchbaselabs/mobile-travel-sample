@@ -1,9 +1,4 @@
 requirements: |
-  - Android Studio 2.2
-  - Android SDK 24
-  - Android Build Tools 24.0.3
-  - JDK 8
-  - ⚠️ Docker and x86 Android emulators are [not compatible](http://stackoverflow.com/questions/37397810/android-studio-unable-to-run-avd) (i.e cannot run simultaneously on the same machine). Make sure Docker isn't running in the background when deploying the application to an x86 Android emulator.
 chapters:
   - title: Installation
     lessons:
@@ -13,7 +8,7 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-                - Android (Android Studio 2.3 and above) if developing for Android platform
+                - Android (Android Studio 2.3 and above) 
                 - Downloadable from [Google Developer site](https://developer.android.com)
               
                 - Python (V 2.7 and above)

@@ -9,7 +9,7 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-              ### iOS (Xcode 8.3.3 and above) if developing for iOS platform
+              ### iOS (Xcode 8.3.3 and above) 
               - Downloadable from [Apple Developer site](https://developer.apple.com)
                 
               ### Python (V 2.7 and above)
