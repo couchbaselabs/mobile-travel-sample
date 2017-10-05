@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
@@ -25,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -111,7 +113,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         Document document = null;
         Result row = null;
         while ((row = rows.next()) != null) {
-            document = database.getDocument(row.getString("id"));
+            document = database.getDocument(row.getString("_id"));
             Log.d("APP", document.toString());
         }
 
@@ -128,7 +130,22 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             }
         }
 
+        /* Get current list of hotels */
+        Array hotelIds = null;
+        try {
+            hotelIds = document
+                .getArray("hotels")
+                .addString(hotel.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        document.setArray("hotels", hotelIds);
 
+        try {
+            database.save(document);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
     }
 }

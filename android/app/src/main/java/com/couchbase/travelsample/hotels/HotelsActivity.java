@@ -38,7 +38,7 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>());
+        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>(), android.R.layout.simple_selectable_list_item);
         mResultAdapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
             @Override
             public void OnClick(View view, int position) {
@@ -64,7 +64,7 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ResultAdapter adapter = new ResultAdapter(hotels);
+                ResultAdapter adapter = new ResultAdapter(hotels, android.R.layout.simple_selectable_list_item);
                 adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
                     @Override
                     public void OnClick(View view, int position) {

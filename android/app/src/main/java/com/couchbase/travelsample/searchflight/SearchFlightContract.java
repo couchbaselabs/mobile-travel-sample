@@ -1,6 +1,7 @@
 package com.couchbase.travelsample.searchflight;
 
-import com.couchbase.lite.ResultSet;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -11,15 +12,19 @@ public interface SearchFlightContract {
 
     interface View {
 
-        void showAirports(List<String> airports);
+        void showAirports(List<String> airports, String tag);
+
+        void showFlights(List<List<JSONObject>> flights);
 
     }
 
     interface UserActionsListener {
 
-        void startsWith(String prefix);
+        void startsWith(String s, String prefix);
 
-        void saveFlight(String title, String description);
+        void fetchFlights(String origin, String destination, String from, String to);
+
+        void saveFlight(List<JSONObject> flight);
 
     }
 }

@@ -2,6 +2,7 @@
 <com.google.android.flexbox.FlexboxLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/forecast"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,57 +10,52 @@
     app:flexWrap="wrap"
     app:justifyContent="space_around">
 
-    <android.support.design.widget.TextInputLayout
+
+    <AutoCompleteTextView
+        android:id="@+id/auto_fromInput"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        app:layout_flexBasisPercent="50%">
-        <EditText
-            android:id="@+id/fromInput"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="@string/flying_from" />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.design.widget.TextInputLayout
+        app:layout_flexBasisPercent="50%"
+        android:ems="10" />
+
+    <AutoCompleteTextView
+        android:id="@+id/auto_toInput"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        app:layout_flexBasisPercent="50%">
-        <EditText
-            android:id="@+id/toInput"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="@string/flying_to" />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.design.widget.TextInputLayout
+        app:layout_flexBasisPercent="50%"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/departDate"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        app:layout_flexBasisPercent="50%">
-        <EditText
-            android:id="@+id/depart"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="@string/departing" />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.design.widget.TextInputLayout
+        android:hint="@string/hintFrom"
+        app:layout_flexBasisPercent="50%"
+        android:textSize="@dimen/date"
+        android:textAlignment="center"
+        android:onClick="showDatePicker" />
+    <TextView
+        android:id="@+id/arriveDate"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        app:layout_flexBasisPercent="50%">
-        <EditText
-            android:id="@+id/returning"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="@string/returning" />
-    </android.support.design.widget.TextInputLayout>
+        android:hint="@string/hintTo"
+        app:layout_flexBasisPercent="50%"
+        android:textSize="@dimen/date"
+        android:textAlignment="center"
+        android:onClick="showDatePicker" />
     <Button
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_flexBasisPercent="50%"
-        android:onClick="signup"
+        android:onClick="onFlightLookupTap"
         android:text="@string/look_up"
         android:textColor="#1E91D6" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/resultList"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="300dp"
+        tools:listItem="@layout/flight_search_list_item" />
 
 </com.google.android.flexbox.FlexboxLayout>
