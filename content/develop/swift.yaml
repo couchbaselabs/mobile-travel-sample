@@ -9,13 +9,13 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-              ### iOS (Xcode 8.3.3 and above) 
+              #### iOS (Xcode 8.3.3 and above) 
               - Downloadable from [Apple Developer site](https://developer.apple.com)
                 
-              ### Python (V 2.7 and above)
+              #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
               
-              ### git
+              #### git
               - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
@@ -748,16 +748,16 @@ chapters:
               The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type. Consider the following query 
               ``` swift
               let hotelSearchQuery = Query
-                                    .select(SelectResult.expression(Expression.meta().id),
-                                            SelectResult.expression(Expression.property("name"))) 
-                                    .from(DataSource.database(db))
-                                    .where(
-                                        Expression.property("description").like("%\(descriptionStr)%")
-                                        .and(Expression.property("type").equalTo("hotel"))
-                                        .and(Expression.property("country").equalTo(locationStr)
-                                            .or(Expression.property("city").equalTo(locationStr))
-                                            .or(Expression.property("state").equalTo(locationStr))
-                                            .or(Expression.property("address").equalTo(locationStr))))
+                                .select(SelectResult.expression(Expression.meta().id),
+                                        SelectResult.expression(Expression.property("name"))) 
+                                .from(DataSource.database(db))
+                                .where(
+                                    Expression.property("description").like("%\(descriptionStr)%")
+                                   .and(Expression.property("type").equalTo("hotel"))
+                                   .and(Expression.property("country").equalTo(locationStr)
+                                   .or(Expression.property("city").equalTo(locationStr))
+                                   .or(Expression.property("state").equalTo(locationStr))
+                                   .or(Expression.property("address").equalTo(locationStr))))
  
 
               ```
