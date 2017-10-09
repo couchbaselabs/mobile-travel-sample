@@ -127,6 +127,7 @@ Vagrant.configure("2") do |config|
   configure_nodes(config, "sg", 1, true)
   configure_nodes(config, "cb", 2, false)
   configure_nodes(config, "sg", 1, false)
+  configure_nodes(config, "nginx", 1, false)
 
 end
 
@@ -142,11 +143,16 @@ def configure_nodes(config, product, num_nodes, autostart)
           puppet.facter = { # Pass variables to puppet
             "url" => $cb_url # Couchbase download location
           }
+          puts "Couchbase Server:\thttp://#{IP_ADDRESS % num}:8091/"
         elsif product == "sg"
           puppet.manifest_file = "sg_puppet.pp"
           puppet.facter = { # Pass variables to puppet
-            "url" => $sg_url # Couchbase download location
+            "url" => $sg_url # Sync Gateway download location
           }
+          puts "Sync Gateway:\t\thttp://#{IP_ADDRESS % num}:4984/"
+        elsif product == "nginx"
+          puppet.manifest_file = "nginx_puppet.pp"
+          puts "NGINX :\t\t\thttp://#{IP_ADDRESS % num}:4984/"
         end
 
       end
@@ -157,11 +163,6 @@ def configure_nodes(config, product, num_nodes, autostart)
       end
       node.vm.network :private_network, :ip => IP_ADDRESS % num
 
-      if product == "cb"
-        puts "Couchbase Server:\thttp://#{IP_ADDRESS % num}:8091/"
-      elsif product == "sg"
-        puts "Sync Gateway:\t\thttp://#{IP_ADDRESS % num}:4984/"
-      end
       node.vm.hostname = $hostname % num
 
       node.vm.provider "virtualbox" do |v|
@@ -169,6 +170,8 @@ def configure_nodes(config, product, num_nodes, autostart)
           v.name = "Couchbase Server #{CB_VERSION} #{$operating_system.gsub '/', '_'} Node #{num}"
         elsif product == "sg"
           v.name = "Sync Gateway #{SG_VERSION_SHORT} #{$operating_system.gsub '/', '_'} Node #{num}"
+        elsif product == "nginx"
+          v.name = "NGINX #{$operating_system.gsub '/', '_'} Node #{num}"
         end
 
       end

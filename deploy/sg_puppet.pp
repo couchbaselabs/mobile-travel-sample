@@ -1,5 +1,5 @@
 # ===
-# Install and Run Couchbase Server
+# Install and Run Sync Gateway
 # ===
 
 $suffix = $operatingsystem ? {

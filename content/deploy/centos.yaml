@@ -299,11 +299,11 @@ chapters:
 
                 We can also check and see that Sync Gateway has connected to Couchbase Server. If you go to the *Buckets* section, you can click *Documents* to view the contents of the `todo` bucket.
 
-                ![]()
+                ![](assets/todo_bucket.png)
 
                 Here you should now see a handful of documents holding Sync Gateway's metadata:
 
-                ![]()
+                ![](assets/todo_docs.png)
 
               Congratulations! Sync Gateway is now configured with a Couchbase Server backend. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
