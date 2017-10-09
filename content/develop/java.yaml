@@ -486,11 +486,12 @@ chapters:
               - In the search box, enter "user:demo".
               - You should see the user document that was created when you signed up via the web app.
               - Enter the values you see in the "username" and "password" in the text fields below.
+              
               ![]()
           - title: Access Control
             description: |
               In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. The Couchbase Sync Gateway is an 
-              Internet-facing synchronization mechanism that securely syncs data across devices as well as between devices and the cloud. It exposes a web interface that provides
+              Internet-facing synchronization mechanism that exposes a web interface which provides
               - Data Synchronization and Routing
               - Authorization and Access Control
               
@@ -524,9 +525,16 @@ chapters:
             
               ## Try it out
             
-              - Run HTTP GET request on sync gateway to fetch users
-              - List the users that are returned in text box below
-              - How it relates to the web user.
+              - Run the following command in yout terminal
+              ```bash
+              curl -X GET http://localhost:4984/travel-sample/
+              ```
+              - Confirm that you see an "Unauthorized" error from the server
+              -  Run the following command in yout terminal. The `authorization` header is base64 encoded value of "demo:password"
+              ```bash
+              curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
+              ```
+              - Confirm that you see the details of the "travel-sample" database and "state" is "online"
           - title: User Authentication
             description: |
               todo

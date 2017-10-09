@@ -549,11 +549,9 @@ chapters:
               - Data Synchronization and Routing
               - Authorization and Access Control
               
-              In this chapter, we will focus on Authorization and Access Control. 
+              In this chapter, we will focus on Authorization and Access Control. We will discuss Data Synchronization and Routing in the [Sync](http://docs-build.sc.couchbase.com:9000/develop/swift#/2/3/0) chapter.
              
-              In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.          
-
-              A Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
+              In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
 
               Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json.
 
@@ -579,9 +577,17 @@ chapters:
             
               ## Try it out
             
-              - Run HTTP GET request on sync gateway to fetch users
-              - List the users that are returned in text box below
-              - How it relates to the web user.
+              - Run the following command in yout terminal
+              ```bash
+              curl -X GET http://localhost:4984/travel-sample/
+              ```
+              - Confirm that you see an "Unauthorized" error from the server
+              -  Run the following command in yout terminal. The `authorization` header is base64 encoded value of "demo:password"
+              ```bash
+              curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
+              ```
+              - Confirm that you see the details of the "travel-sample" database and "state" is "online"
+
           - title: User Authentication
             description: |
               todo
