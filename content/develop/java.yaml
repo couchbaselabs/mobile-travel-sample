@@ -430,7 +430,7 @@ chapters:
          
               ## Try it out
               
-              - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
+              - Follow the steps in [Create a Document](/develop/java#/2/0/0) section
               - As Guest User, tap on “hotels” button
               - In "location" text field , enter "London"
               - You will see list of hotels. 
@@ -495,7 +495,7 @@ chapters:
               - Data Synchronization and Routing
               - Authorization and Access Control
               
-              In this chapter, we will focus on Authorization and Access Control. 
+              In this chapter, we will focus on Authorization and Access Control.We will discuss Data Synchronization and Routing in the [Sync](http://docs-build.sc.couchbase.com:9000/develop/java#/2/3/0) chapter.
              
               In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.          
 
@@ -503,7 +503,7 @@ chapters:
 
               Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json.
 
-              - The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. 
+              - The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. A "tester" and "admin" user is also configured.
               Note that in a real world app, when a user registers via the web app, the web app would use the Sync Gateway REST API to dynamically create the user. 
               ```javascript
                "users":{
@@ -513,7 +513,7 @@ chapters:
                 }
               ```
 
-              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the "Sync" section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](http://docs-build.sc.couchbase.com:9000/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
               // Give user read access to channel
@@ -563,54 +563,31 @@ chapters:
         milestones:
           - title: Channels & Data Routing
             description: |
-              In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. The Couchbase Sync Gateway is an 
-              Internet-facing synchronization mechanism that securely syncs data across devices as well as between devices and the cloud. It exposes a web interface that provides
-              - Data Synchronization and Routing
-              - Authorization and Access Control
+              In the lesson on [Access Control](http://docs-build.sc.couchbase.com:9000/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
      
-              A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
+              A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
+
+              - Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to  
+
+                - Partition the data set
+                - Authorize users to access documents.
+                - Minimize the amount of data synced down to devices.
+
 
               In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
-              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
-
-              ### Users
-               
+              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json. It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
+    
               ```javascript
-              {
-                "interface":":4984",
-                "log": ["*"],
-                "databases": {
-                  "travel-sample": {
-                    "import_docs": "continuous",
-                    "unsupported": {
-                      "enable_extended_attributes": true,
-                      "replicator_2":true
-                    },
-                    "bucket":"travel-sample",
-                    "server": "http://localhost:8091",
-                    "username": "admin",
-                    "password": "password",
-                    "users":{
-                        "admin": {"password": "password", "admin_channels": ["*"]}, 
-                        "demo": {"password": "password"},
-                        "tester": {"password": "password"}
-                    }
-                  }
-                }
-              }
+              /* Routing */
+              // Add doc to the user's channel.
+              channel("channel." + username);
+
               ```
             
             
-              Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database.  Every document in the database belongs to a set of channels, and every user is allowed to access a set of channels. A channel is used to  
-
-              - Partition the data set
-              - Authorize users to access documents.
-              - Minimize the amount of data synced down to devices.
-
-              Describe contents of travel sample sync gateway config file. Explain “channels”. Describe how the user document is routed to specific channel.
           - title: XAttrs
             description: |
-             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/4) section.
+             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/4) section.
 
              
              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
