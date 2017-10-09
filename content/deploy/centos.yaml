@@ -109,30 +109,6 @@ chapters:
 
                 This is because, by default, the port is only accessible from `localhost` - in this case the VM. Don't worry, we'll change that when we come to configure it to make life easier.
 
-          - title: Reverse Proxy
-            description: |
-              # TODO
-              With two Sync Gateway nodes you can now configure the reverse proxy and update the sync endpoint in the mobile app to start replications pointing to the reverse proxy instead of an individual Sync Gateway instance. In this example the NGINX instance will run on VM4.
-
-              ### Try it out
-
-              1. Log on VM4 (nginx).
-              1. `cd deploy`
-              1. Run the NGINX install script passing the IP of VM2 and VM3 where the Sync Gateway instances are running.
-
-                  ```bash
-                  sudo ./configure_nginx.sh VM2 VM3
-                  ```
-
-              1. Send an `/{db}/_all_docs` request with a user's credentials to the NGINX port. A user (**user1/pass**) is already defined in the Sync Gateway configuration file.
-
-                  ```bash
-                  curl -X GET 'http://user1:pass@localhost:8000/todo/_all_docs'
-                  ```
-
-                  ![](https://cl.ly/392N2E2K0J0T/image76.gif)
-            tryitout:
-              - TODO
       - title: Configure
         milestones:
           - title: Configuring Couchbase Server
@@ -172,7 +148,164 @@ chapters:
 
           - title: Configuring Sync Gateway
             description: |
+              Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the backend. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
+              1. First we need to ssh into the VM running Sync Gateway - Vagrant makes this as easy as running one command:
+
+                ```bash
+                $ vagrant ssh node2-sg
+                Sync Gateway:           http://10.150.150.102:4984/
+                [vagrant@node2-centos7 ~]$
+                ```
+
+              1. Once we're ssh'd in, we can first see the Admin API for the first time:
+
+                ```bash
+                $ curl localhost:4985
+
+                {"ADMIN":true,"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.4},"version":"Couchbase Sync Gateway/1.4.1(3;ddffd85)"}
+                ```
+
+              1. With this API, we can check the current running config:
+
+                ```
+                $ curl localhost:4985/_config
+                ```
+
+                The output might be a bit awkward to read, but pretty-printed it should look something like this:
+
+                ```
+                {
+                  "Interface": "0.0.0.0:4984",
+                  "AdminInterface": "127.0.0.1:4985",
+                  "log": [
+                    "HTTP+"
+                  ],
+                  "Databases": {
+                    "db": {
+                      "server": "walrus:data",
+                      "pool": "default",
+                      "bucket": "db",
+                      "name": "db",
+                      "users": {
+                        "GUEST": {
+                          "name": "",
+                          "admin_channels": [
+                            "*"
+                          ],
+                          "all_channels": null
+                        }
+                      }
+                    }
+                  }
+                }
+                ```
+
+              1. In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
+
+                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property:
+
+                ```json
+                "todo": {
+                  "server": "http://10.150.150.101:8091",
+                  "bucket": "todo",
+                  "username": "sg_user",
+                  "password": "rb4c_p4ssw0rd",
+                  "users": {
+                    "GUEST": {"disabled": false, "admin_channels": ["*"] }
+                  }
+                }
+                ```
+
+                While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
+
+                ```json
+                "log": ["*"]
+                ```
+
+                And also make the Admin API accessible externally:
+
+                ```json
+                "adminInterface": "0.0.0.0:4985"
+                ```
+
+                Before saving, it's worth doublechecking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
+
+                ```bash
+                $ sudo python -m json.tool /home/sync_gateway/sync_gateway.json
+                Expecting , delimiter: line 3 column 2 (char 17)
+                ```
+
+              1. With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
+
+                ```bash
+                $ sudo service sync_gateway restart
+                ```
+
+                Now when we check the `_config` endpoint, we should see the new database included:
+
+                ```bash
+                $ curl localhost:4985/_config -sS | python -m json.tool
+                {
+                    "AdminInterface": "0.0.0.0:4985",
+                    "Databases": {
+                        "db": {
+                            "bucket": "db",
+                            "name": "db",
+                            "pool": "default",
+                            "server": "walrus:data",
+                            "users": {
+                                "GUEST": {
+                                    "admin_channels": [
+                                        "*"
+                                    ],
+                                    "all_channels": null,
+                                    "name": ""
+                                }
+                            }
+                        },
+                        "todo": {
+                            "bucket": "todo",
+                            "name": "todo",
+                            "password": "rb4c_p4ssw0rd",
+                            "pool": "default",
+                            "server": "http://10.150.150.101:8091",
+                            "username": "sg_user",
+                            "users": {
+                                "GUEST": {
+                                    "admin_channels": [
+                                        "*"
+                                    ],
+                                    "all_channels": null,
+                                    "name": ""
+                                }
+                            }
+                        }
+                    },
+                    "Interface": "0.0.0.0:4984",
+                    "log": [
+                        "*"
+                    ]
+                }
+                ```
+              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+
+                ```bash
+                $ curl localhost:4984/todo/_all_docs
+                {"rows":[
+                ],
+                "total_rows":0,"update_seq":1}
+                ```
+
+                We can also check and see that Sync Gateway has connected to Couchbase Server. If you go to the *Buckets* section, you can click *Documents* to view the contents of the `todo` bucket.
+
+                ![]()
+
+                Here you should now see a handful of documents holding Sync Gateway's metadata:
+
+                ![]()
+
+              Congratulations! Sync Gateway is now configured with a Couchbase Server backend. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
       - title: Scale
         milestones:
