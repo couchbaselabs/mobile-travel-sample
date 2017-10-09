@@ -54,7 +54,7 @@ class DatabaseManager {
     }()
     
     func initialize() {
-        enableCrazyLevelLogging()
+       //  enableCrazyLevelLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
