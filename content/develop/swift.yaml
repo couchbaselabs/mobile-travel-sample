@@ -562,12 +562,16 @@ chapters:
           
           - title: XAttrs
             description: |
-              TODO Describe the new XAttrs for convergence
+             Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+             TODO Describe the new XAttrs for convergence
 
-          - title: Pull Replication
+          - title: Replication
             description: |
               
-              Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database.
+              Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
+              
+              - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
+              - Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
               
               Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented over the BLIP messaging protocol layered over WebSocket. 
               ![](https://blog.couchbase.com/wp-content/uploads/2017/08/layered.png)
@@ -578,6 +582,8 @@ chapters:
               - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
 
               The code snippet can be found in the DatabaseManager.swift file in the [startPushAndPullReplicationForCurrentUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L202) function.
+              The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the travel sample app, it is `pushAndPull` indicating that both push and pull replication is enabled
+
               ```swift
                 var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
                 config.replicatorType = .pushAndPull
@@ -601,55 +607,47 @@ chapters:
                         self?.postNotificationOnReplicationState(s.activity)
                     }
                 })
-                
-        
+                    
                  _pushPullRepl?.start()
               ```
                
-              ## Try it out
+              ## Try it out (Push Replication)
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Log into Travel Sample Web App as “demo” user and password as “password”
-              - Make a flight reservation by clicking "booking" button.
-              - Enter “From” airport as “SFO” and select the airport from drop down menu.
-              - Enter “To” airport as “JFK” and select the airport from drop down menu.
-              - Enter From and Return Travel Dates.
-              - Select the first flight listing.
-              - Confirm the booking by clicking shopping cart icon and select “Book” button.
-              - As soon as the flight reservation is confirmed via the web app, you should see the flight listing in the mobile app.
-          - title: Push Replication
-            description: |
-              Show code snippet
-              
-              ## Try it out
-              
-              - Log into the Travel Sample Web app as “demo” user and password as “password”
-              - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  ‘+” button to make a flight reservation
-              - Enter “From” airport as “DTW” and select the airport from drop down menu
-              - Enter “To” airport as “SFO” and select the airport from drop down menu
-              - Enter From and Return Travel Dates
-              - Select the first flight listing
+              - Tap on  "+" button to make a flight reservation
+              - Enter “From” airport as SFO and select the airport from drop down menu
+              - Enter “To” airport as DTW and select the airport from drop down menu
+              - Enter From and Return Dates
+              - Tap "lookup" button
+              - From list of flights, select the first flight listing
               - Select “Confirm Booking” 
-              - As soon as the flight reservation is confirmed via the mobile app, you should see the flight listing in the web app
-          - title: Web client
-            description: |
-              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server application now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              - Access the Travel Sample Web app running on http://localhost:8080 
+              - Make sure that the "New User" checkbox is unchecked
+              - Log into the web app as “demo” user with password as “password”
+              - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
+
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_push_sync.gif)
+           
+             
+              ## Try it out (Pull Replication)
               
-              The following configuration settings in the Sync Gateway config file enables the import.
-              
-              ```javascript
-              "unsupported": {
-              	"enable_extended_attributes": true
-              }
-              ```
-              
-              ## Try it out
-              
-              - Log on the mobile with your credentials.
-              - Place a new flight booking from mobile app.
-              - Switch back to the user profile page.
-              - You should see the same flight booking displayed on the web client.
+              - Access the Travel Sample Web app running on http://localhost:8080 
+              - Make sure that the "New User" checkbox is unchecked
+              - Log into the web app as “demo” user with password as “password”
+              - Make a flight reservation by clicking "booking" button.
+              - Enter “From” airport as "San" and select the airport from drop down menu.
+              - Enter “To” airport as "SFO" and select the airport from drop down menu.
+              - Enter From and Return Travel Dates
+              - Click on "Find Flights" button
+              - From list of flights, select the first flight listing
+              - Confirm the booking by clicking on the shopping cart icon and click on “Book” button
+              - Log into the Travel Sample Mobile app as “demo” user and password as “password”    
+              - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
+
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_pull_sync.gif)
+           
+
+       
       - title: Security
         milestones:
           - title: User Management
