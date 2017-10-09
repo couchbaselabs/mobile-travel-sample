@@ -528,7 +528,7 @@ chapters:
         milestones:
           - title: Channels/Data Routing
             description: |
-              In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. You’ll learn how to use Couchbase Lite’s synchronization APIs, set up Sync Gateway for synchronization with the cloud and other devices.
+              In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. 
               
               Now that your application runs smoothly on the device you are ready to introduce Sync Gateway. Create a new file called **sync-gateway-config.json** with the following.
               
@@ -562,8 +562,20 @@ chapters:
           
           - title: XAttrs
             description: |
+             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/4) section.
+
              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
-             TODO Describe the new XAttrs for convergence
+             
+             Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
+             In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
+
+             This can be enabled through a configuration setting in the sync gateway config file
+             Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
+
+             ```javascript
+              "enable_shared_bucket_access":true
+             ```
+        
 
           - title: Replication
             description: |
@@ -611,6 +623,7 @@ chapters:
                  _pushPullRepl?.start()
               ```
                
+              
               ## Try it out (Push Replication)
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
@@ -629,6 +642,7 @@ chapters:
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_push_sync.gif)
            
              
+              
               ## Try it out (Pull Replication)
               
               - Access the Travel Sample Web app running on http://localhost:8080 
