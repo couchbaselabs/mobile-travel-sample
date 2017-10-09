@@ -524,6 +524,88 @@ chapters:
 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
              
+      - title: Security
+        milestones:
+          - title: User Management
+            description: |
+              User is created via the Travel sample web app. When user is created, a corresponding user profile document is created on Couchbase Server.
+            
+              ## Try it out (Web App)
+              
+              - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
+              - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
+              - You should be logged into the web app. There should be nothing created for the user.
+              
+              ## Try it out (Couchbase Server)
+              - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
+              - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
+              - In the search box, enter "user:demo".
+              - You should see the user document that was created when you signed up via the web app.
+              - Enter the values you see in the "username" and "password" in the text fields below.
+          - title: Access Control
+            description: |
+              In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. The Couchbase Sync Gateway is an 
+              Internet-facing synchronization mechanism that exposes a web interface which provides
+              - Data Synchronization and Routing
+              - Authorization and Access Control
+              
+              In this chapter, we will focus on Authorization and Access Control. 
+             
+              In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.          
+
+              A Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
+
+              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json.
+
+              - The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. 
+              Note that in a real world app, when a user registers via the web app, the web app would use the Sync Gateway REST API to dynamically create the user. 
+              ```javascript
+               "users":{
+                  "admin": {"password": "password", "admin_channels": ["*"]}, 
+                  "demo": {"password": "password"},
+                  "tester": {"password": "password"}
+                }
+              ```
+
+              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the "Sync" section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+
+              ``` JavaScript
+              // Give user read access to channel
+              if (!isDelete()) {
+                // Deletion of user document is essentially deletion of user
+                access(username,"channel." + username)
+              }
+              ```
+            
+              ## Try it out
+            
+              - Run HTTP GET request on sync gateway to fetch users
+              - List the users that are returned in text box below
+              - How it relates to the web user.
+          - title: User Authentication
+            description: |
+              todo
+            
+              ## Try it out
+            
+              - Log into the Travel Sample Mobile App as “demo” user with password as “password”
+          - title: Encryption
+            description: |
+              todo
+              
+              ## Try it out
+              
+              - enable encryption on the mobile travel sample app.
+          - title: Key Management
+            description: |
+              todo
+              
+              ## Try it out
+              
+              - Enable encryption.
+              - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
+              - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
+              - Best Practices
       - title: Sync
         milestones:
           - title: Channels/Data Routing
@@ -564,16 +646,20 @@ chapters:
             description: |
              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/4) section.
 
+            
              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+             
              
              Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
              In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
 
+             
              This can be enabled through a configuration setting in the sync gateway config file
              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
 
              ```javascript
-              "enable_shared_bucket_access":true
+               "import_docs": "continuous",
+               "enable_shared_bucket_access":true
              ```
         
 
@@ -661,57 +747,7 @@ chapters:
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_pull_sync.gif)
            
 
-       
-      - title: Security
-        milestones:
-          - title: User Management
-            description: |
-              User is created via the Travel sample web app. When user is created, a corresponding user profile document is created on Couchbase Server.
-            
-              ## Try it out
-              
-              - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
-              - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
-              - You should be logged into the web app. There should be nothing created for the user.
-              - Try it out 2
-              - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
-              - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
-              - In the search box, enter "user:demo".
-              - You should see the user document that was created when you signed up via the web app.
-              - Enter the values you see in the "username" and "password" in the text fields below.
-          - title: Access Control
-            description: |
-              Describe contents of travel sample sync gateway config file. Explain hardcoded users “Users”, “channels”. Describe how the hardcoded users relate to the web user created in previous step.
-            
-              ## Try it out
-            
-              - Run HTTP GET request on sync gateway to fetch users
-              - List the users that are returned in text box below
-              - How it relates to the web user.
-          - title: User Authentication
-            description: |
-              todo
-            
-              ## Try it out
-            
-              - Log into the Travel Sample Mobile App as “demo” user with password as “password”
-          - title: Encryption
-            description: |
-              todo
-              
-              ## Try it out
-              
-              - enable encryption on the mobile travel sample app.
-          - title: Key Management
-            description: |
-              todo
-              
-              ## Try it out
-              
-              - Enable encryption.
-              - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
-              - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
-              - Best Practices
+     
       - title: Pre-built database
         milestones:
           - title: Starting with Prebuilt Database
