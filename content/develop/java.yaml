@@ -136,13 +136,13 @@ chapters:
               To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
               
               ```bash
-              $ docker push jamiltz/try-cb-python
+              $ docker pull connectsv/try-cb-python
               ```
               
               Once the command has completed you can start the application with the following.
               
               ```bash
-              $ docker run -it -p 8080:8080 try-cb-python
+              $ docker run -it -p 8080:8080 connectsv/try-cb-python
               ```
               
               You should then see the following in the logs.
@@ -152,49 +152,14 @@ chapters:
                * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
               ```
               
-              You can now run the Android app which will connect to the Python Web App to retrieve hotel documents.
-              
-              ![](https://cl.ly/3i3I3O1B0G1j/hotels-guest.gif)
-              
-              ## Docker Compose
             
-              In this section, you will learn how to run all 3 components in Docker containers. The different container names are:
               
-              - **sync-gateway**: running with the configuration file.
-              - **web**: the Python web client which is the existing web application.
-              - **couchbase**: running an instance of Couchbase Server 5.0.
+              ## Sync Gateway 1.5
+              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+
+              ## Couchbase Server 5.0
+              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
               
-              Open **docker-compose.yaml**, it should contain the following:
-              
-              ```yaml
-              web:
-                build: ./try-cb-python
-                ports:
-                  - '8080:8080'
-                links:
-                  - syncgateway
-              syncgateway:
-                image: couchbase/sync-gateway
-                command: sync-gateway-config.json
-                ports:
-                  - '4984:4984'
-              couchbaseserver:
-                image: 'couchbase/server'
-                ports:
-                  - '8091:8091'
-              ```
-              
-              You will now use Docker compose to run all 3 components from a single command.
-              
-              ```bash
-              docker-compose up
-              ```
-              
-              And you see the following.
-              
-              ![](https://cl.ly/470H3j1y371N/logs.png)
-              
-              Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
   - title: Design
     lessons:
         - title: Data Modeling

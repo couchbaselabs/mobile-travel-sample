@@ -53,7 +53,10 @@ chapters:
               - Verify that the login screen appears in the simulator
           - title: Couchbase Server v5.0
             description: |
-              In this step, you will install and launch version 5.0 of the Couchbase Server.
+              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
+
+              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
               
@@ -83,6 +86,8 @@ chapters:
           - title: Travel Sample Web App (Python)
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
+
+               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
         
               - Install `libcouchbase` which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
@@ -116,33 +121,39 @@ chapters:
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
           - title: Sync Gateway v1.5
             description: |
+            In this lesson, you will install and launch version 1.5 of the Sync Gateway
+
+             **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+             
               - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
-              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github repo
+              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
+
               ```bash
               cd /path/to/syncgatewayinstall/bin
-              ./sync_gateway cd /path/to/mobile-travel-sample/ios/TravelSample/sync-gateway-config-travelsample.json
+              ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
               ```
               
               ## Try it out
-              
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
+
+
           - title: Docker
             description: |
-              In this section, you will learn how to run the components in Docker containers. Before getting started, first make sure that you have an instance of Couchbase Server 5.0 running locally (follow the steps in the [Couchbase Server v5.0](/develop/java#/0/0/2) lesson).
+            In this section, you will learn how to run the components in Docker containers.
               
               ## Python Web App
               
               To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
               
               ```bash
-              $ docker push jamiltz/try-cb-python
+              $ docker pull connectsv/try-cb-python
               ```
               
               Once the command has completed you can start the application with the following.
               
               ```bash
-              $ docker run -it -p 8080:8080 try-cb-python
+              $ docker run -it -p 8080:8080 connectsv/try-cb-python
               ```
               
               You should then see the following in the logs.
@@ -152,49 +163,74 @@ chapters:
                * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
               ```
               
-              You can now run the Android app which will connect to the Python Web App to retrieve hotel documents.
+               ## Try it out
               
-              ![](https://cl.ly/3i3I3O1B0G1j/hotels-guest.gif)
+                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
+                  ``` bash
+                  python travel.py
+                  * Running on http://localhost:8080/ (Press CTRL+C to quit)
+                  ```
+                - Open http://localhost:8080/ in your web browser
+                - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
               
-              ## Docker Compose
-            
-              In this section, you will learn how to run all 3 components in Docker containers. The different container names are:
-              
-              - **sync-gateway**: running with the configuration file.
-              - **web**: the Python web client which is the existing web application.
-              - **couchbase**: running an instance of Couchbase Server 5.0.
-              
-              Open **docker-compose.yaml**, it should contain the following:
-              
-              ```yaml
-              web:
-                build: ./try-cb-python
-                ports:
-                  - '8080:8080'
-                links:
-                  - syncgateway
-              syncgateway:
-                image: couchbase/sync-gateway
-                command: sync-gateway-config.json
-                ports:
-                  - '4984:4984'
-              couchbaseserver:
-                image: 'couchbase/server'
-                ports:
-                  - '8091:8091'
+              ## Sync Gateway 1.5
+              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+
+               ```bash
+              // Placeholder
+              $ docker pull connectsv/sync-gateway
               ```
               
-              You will now use Docker compose to run all 3 components from a single command.
+              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. Once the command has completed you can start the application with the following.
               
               ```bash
-              docker-compose up
+              // placeholder
+              cd /path/to/mobile-travel-sample/sync-gateway-config-file/
+              docker run -p 4984-4985:4984-4985 -d -v /Users:/path/to/mobile-travel-sample/sync-gateway-config-file/ tleyden5iwx/sync-gateway:1.5.0-589-community -adminInterface :4985 /path/to/mobile-travel-sample/sync-gateway-config-file/sync-gateway-config-travelsample.json
+              ```
+
+              - Verify that the docker container is running with the following command in the terminal window
+              ```bash
+              $ docker ps
+              ```
+
+              ## Try it out
+              
+              - Access this URL `http://localhost:4985/travel-sample` in your browser
+              - Verify that you get back a JSON response
+
+              ## Couchbase Server 5.0
+              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+
+              ```bash
+              // Placeholder
+              $ docker pull connectsv/couchbase-server
               ```
               
-              And you see the following.
+              Once the command has completed you can start the application with the following.
               
-              ![](https://cl.ly/470H3j1y371N/logs.png)
+              ```bash
+              // placeholder
+              $ docker run -it -p 8091:8091 connectsv/ouchbase-server
+              ```
+
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
+            
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+        
+              - Create a Full text search index on travel-sample bucket called 'hotels'
+        
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
+        
+              ## Try it out
               
-              Notice how the logs from Sync Gateway (in blue) and from the Web app (in yellow) are aggregated.
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Select the "Buckets" option from the menu on the left
+              - Verify that you have 31,665 documents in your travel-sample bucket
   - title: Design
     lessons:
         - title: Data Modeling
