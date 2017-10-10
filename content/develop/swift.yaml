@@ -146,23 +146,25 @@ chapters:
             
               ## Python Web App
               
-              To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+              To run the application in a container, you will first get the docker image from Docker Cloud. 
+              
+              - Open a new terminal window and run the following.
               
               ```bash
               $ docker pull connectsv/try-cb-python
               ```
               
-              Once the command has completed you can start the application with the following.
+               - Once the command has completed you can start the application with the following.
               
-              ```bash
-              $ docker run -it -p 8080:8080 connectsv/try-cb-python
-              ```
+               ```bash
+               $ docker run -it -p 8080:8080 connectsv/try-cb-python
+               ```
               
-              You should then see the following in the logs.
+               You should then see the following in the logs.
               
-              ```bash
-              * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
-              ```
+               ```bash
+               * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+               ```
               ### Try it out
               
                 - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
@@ -181,8 +183,17 @@ chapters:
               // Placeholder
               $ docker pull connectsv/sync-gateway
               ```
-              
-              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. Once the command has completed you can start the application with the following.
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                 ``` bash
+                $ ifconfig
+                ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                ``` JavaScript
+                "server": "http://192.168.1.121:8091"
+                ```
+
+              -  Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file. Once the command has completed you can start the application with the following.
               
               ```bash
               // placeholder
@@ -231,6 +242,41 @@ chapters:
               - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
               - Select the "Buckets" option from the menu on the left
               - Verify that you have 31,665 documents in your travel-sample bucket
+
+               ## Docker Compose
+              Alternatively, you can use Docker compose to install all of the three server side components - The Travel Sample Web App, Couchbase Server 5.0 and Sync Gateway 1.5.
+
+
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                 ``` bash
+                $ ifconfig
+                ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                ``` JavaScript
+                "server": "http://192.168.1.121:8091"
+                ```
+
+              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+              ```` bash
+              try-cb-python:
+                image: jamiltz/try-cb-python 
+                ports:
+                  - 8080:8080
+
+              sync-gateway:
+                image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                ports:
+                  - "4984-4985:4984-4985"
+                command: -adminInterface :4985 ${PWD}/sync-gateway-config-travelsample.json
+                volumes:
+                  - ${PWD}:${PWD}
+              ```
+              - Run the following command to bring up all three containers
+              ``` bash
+              $ docker-compose up
+              ```
   - title: Design
     lessons:
         - title: Data Modeling
