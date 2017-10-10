@@ -10,6 +10,7 @@
       },
       "bucket":"travel-sample",
       "server": "http://localhost:8091",
+      "enable_shared_bucket_access":true,
       "username": "admin",
       "password": "password",
       "users":{
