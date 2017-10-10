@@ -160,13 +160,13 @@ chapters:
                * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
               ```
               
-               ## Try it out
+               ### Try it out
               
                 - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
-                  ``` bash
-                  python travel.py
-                  * Running on http://localhost:8080/ (Press CTRL+C to quit)
-                  ```
+                ``` bash
+                python travel.py
+                * Running on http://localhost:8080/ (Press CTRL+C to quit)
+                ```
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
@@ -174,7 +174,7 @@ chapters:
               ## Sync Gateway 1.5
               To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
 
-               ```bash
+              ```bash
               // Placeholder
               $ docker pull connectsv/sync-gateway
               ```
@@ -192,7 +192,7 @@ chapters:
               $ docker ps
               ```
 
-              ## Try it out
+              ### Try it out
               
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
@@ -222,7 +222,7 @@ chapters:
         
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
         
-              ## Try it out
+              ### Try it out
               
               - Launch Couchbase Server 
               - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
