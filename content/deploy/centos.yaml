@@ -382,7 +382,101 @@ chapters:
 
           - title: Scaling Sync Gateway
             description: |
+              As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Becuase of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
 
+              1. As you might've noticed in the last section, there's a spare Sync Gateway node just waiting to be provisioned. Before we get to that though, it's worth considering configuration again. Because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node. If you've looked over `sg_puppet.pp`, you might've seen this section:
+
+                ```ruby
+                # Copy config if one supplied
+                exec { "sync_gateway-config":
+                    command => "/bin/cp /vagrant/sync_gateway.json /home/sync_gateway/sync_gateway.json",
+                    returns => [0,1],
+                    notify => Service["sync_gateway"],
+                    require => Package["sync_gateway"]
+                }
+                ```
+
+                Essentially this will copy in a supplied `sync_gateway.json` and restart Sync Gateway during the provisioning process. This gets copied from the `/vagrant/` directory inside the VM - this directory is actually mapped directly to the host's directory that the Vagrant was started from. This gives us an opportunity to save some time.
+
+              1. If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
+
+                ```bash
+                $ vagrant ssh node2-sg
+
+                [vagrant@node2-centos7 ~]$ sudo cp /home/sync_gateway/sync_gateway.json /vagrant/
+                ```
+
+                Now the next node we spin up will pull in this config automatically.
+
+              1. Now it's just a simple matter of running `vagrant up` on the new Sync Gateway node:
+
+                ```bash
+                $ vagrant up node5-sg
+                Sync Gateway:           http://10.150.150.105:4984/
+                Bringing machine 'node5-sg' up with 'virtualbox' provider...
+                ```
+
+              1. Now, unlike last time, we should be able to access the Admin port directly as we enabled it in the config that got copied across.
+
+                ```bash
+                $ curl 10.150.150.105:4985
+
+                {"ADMIN":true, ...
+                ```
+
+              ### Load Balancing
+
+              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in.
+
+              1. There's one final Vagrant that we haven't touched yet - and you might've guessed from the name what it does. Before we spin it up though, let's take a look at `nginx_puppet.pp`. Just like `sg_puppet.pp`, there's a section that copies in a config file and restarts the service:
+
+                ```ruby
+                # Copy config if one supplied
+                exec { "sync_gateway-config":
+                    command => "/bin/cp /vagrant/nginx.conf /etc/nginx/conf.d/sync_gateway_nginx.conf",
+                    returns => [0,1],
+                    notify => Service["nginx"],
+                    require => Package["nginx"]
+                }
+                ```
+
+              1. Let's have a look at `nginx.conf` to see what we're copying in. First, we've got the list of upstream servers, which currently only has the first Sync Gateway node:
+
+                ```
+                upstream sync_gateway {
+                  server 10.150.150.102:4984;
+                }
+                ```
+                Let's add the second Sync Gateway node in:
+
+                ```
+                upstream sync_gateway {
+                  server 10.150.150.102:4984;
+                  server 10.150.150.105:4984;
+                }
+                ```
+
+                This allows NGINX to balance requests between the two nodes.
+
+                The rest of the file deals with how we want NGIX to proxy the requests generally, whether that's to one server or many. It's a little outside the scope of this workshop, but you can find more details in our [documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/nginx/index.html).
+
+              1. With `nginx.conf` updated and saved, we can now spin up the final VM as we have for the others:
+
+                ```bash
+                $ vagrant up node6-nginx
+                NGINX :                 http://10.150.150.106:4984/
+                Bringing machine 'node6-nginx' up with 'virtualbox' provider...
+                ```
+
+              1. Once this is complete, you should be able to make requests to the NGINX VM as though it were Sync Gateway:
+
+                ```bash
+                $ curl 10.150.150.106:4984/todo/_changes
+                {"results":[
+                {"seq":1,"id":"_user/GUEST","changes":[]}
+                ],
+                "last_seq":"1"}
+                ```
 
   - title: Troubleshooting
       lessons:
