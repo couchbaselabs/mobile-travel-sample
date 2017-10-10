@@ -479,11 +479,9 @@ chapters:
                 ```
 
   - title: Troubleshooting
-      lessons:
-        - title: Troubleshooting
-          milestones:
-            - title: TODO
-              description: |
-                TODO
-              tryitout:
-                - TODO
+    lessons:
+      - title: Troubleshooting
+        milestones:
+          - title: TODO
+            description: |
+              TODO
