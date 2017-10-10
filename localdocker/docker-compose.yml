@@ -1,0 +1,12 @@
+try-cb-python:
+    image: jamiltz/try-cb-python 
+    ports:
+        - 8080:8080
+
+sync-gateway:
+    image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+    ports:
+        - "4984-4985:4984-4985"
+    command: -adminInterface :4985 ${PWD}/sync-gateway-config-travelsample.json
+    volumes:
+        - ${PWD}:${PWD}
