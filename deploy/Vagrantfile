@@ -29,7 +29,9 @@ SYNC_GATEWAY_DOWNLOAD_LINKS = {
 
 DEFAULT_RAM = 1024
 DEFAULT_CPUS = 1
-IP_ADDRESS = "10.150.150.10%d"
+IP_ADDRESS = "10.150.150.1%.2d"
+CB_MAN_NODES = 2
+SG_MAN_NODES = 1
 
 # Name of the host endpoint to serve as bridge to local network
 #  (if not found vagrant will ask the user for each node)
@@ -55,6 +57,18 @@ unless ENV['VAGRANT_OS'].nil?
   end
 else
   $operating_system = "centos7"
+end
+
+unless ENV['VAGRANT_CB_EXTRA_NODES'].nil?
+  cb_ex_nodes = ENV['VAGRANT_CB_EXTRA_NODES'].to_i
+else
+  cb_ex_nodes = 0
+end
+
+unless ENV['VAGRANT_SG_EXTRA_NODES'].nil?
+  sg_ex_nodes = ENV['VAGRANT_SG_EXTRA_NODES'].to_i
+else
+  sg_ex_nodes = 0
 end
 
 unless ENV['VAGRANT_RAM'].nil? || ENV['VAGRANT_RAM'] == 0
@@ -123,15 +137,25 @@ Vagrant.configure("2") do |config|
   end
 
   $node_count = 0
+  # These nodes are provisioned automatically on `vagrant up`
   configure_nodes(config, "cb", 1, true)
   configure_nodes(config, "sg", 1, true)
-  configure_nodes(config, "cb", 2, false)
-  configure_nodes(config, "sg", 1, false)
+
+  # These nodes will always exist, but need to be named in a command, e.g. `vagrant up node3-cb`
+  configure_nodes(config, "cb", CB_MAN_NODES, false)
+  configure_nodes(config, "sg", SG_MAN_NODES, false)
   configure_nodes(config, "nginx", 1, false)
+
+  # These nodes will only exist if specified by an env var
+  configure_nodes(config, "cb", cb_ex_nodes, false)
+  configure_nodes(config, "sg", sg_ex_nodes, false)
 
 end
 
 def configure_nodes(config, product, num_nodes, autostart)
+  if num_nodes == 0
+    return
+  end
   ($node_count + 1).upto($node_count + num_nodes) do |num|
     config.vm.define "node#{num}-#{product}", autostart: autostart do |node|
 
