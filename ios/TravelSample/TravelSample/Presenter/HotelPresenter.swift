@@ -267,23 +267,8 @@ extension HotelPresenter {
             .from(DataSource.database(db))
             .where(
                 _Property.TYPE.equalTo("hotel")
-                 .and(descExp)
+                 .and(searchExp)
                 )
-        
-    /*
-        let hotelSearchQuery = Query
-            .select(SelectResult.expression(Expression.meta().id),
-                    SelectResult.expression(Expression.property("name"))) // CHANGE THIS WHEN SELECT* IS SUPPORTED
-            .from(DataSource.database(db))
-            .where(
-                Expression.property("description").match("%\(descriptionStr)%")
-                    .and(Expression.property("type").equalTo("hotel"))
-                    .and(Expression.property("country").equalTo(locationStr)
-                        .or(Expression.property("city").equalTo(locationStr))
-                        .or(Expression.property("state").equalTo(locationStr))
-                        .or(Expression.property("address").equalTo(locationStr))))
- 
-        */
         print(try? hotelSearchQuery.explain())
         
         var matches:Hotels = []
