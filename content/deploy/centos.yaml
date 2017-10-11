@@ -47,12 +47,12 @@ chapters:
                 ```bash
                 $ curl http://10.150.150.102:4984/
 
-                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.4},"version":"Couchbase Sync Gateway/1.4.1(3;ddffd85)"}
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
                 ```
 
               or by either opening the URL in a browser:
 
-                ![]()
+                ![](assets/sg_browser.png)
 
               1. Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
 
@@ -163,7 +163,7 @@ chapters:
                 ```bash
                 $ curl localhost:4985
 
-                {"ADMIN":true,"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.4},"version":"Couchbase Sync Gateway/1.4.1(3;ddffd85)"}
+                {"ADMIN":true,"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
                 ```
 
               1. With this API, we can check the current running config:
@@ -174,7 +174,7 @@ chapters:
 
                 The output might be a bit awkward to read, but pretty-printed it should look something like this:
 
-                ```
+                ```json
                 {
                   "Interface": "0.0.0.0:4984",
                   "AdminInterface": "127.0.0.1:4985",
@@ -442,14 +442,14 @@ chapters:
 
               1. Let's have a look at `nginx.conf` to see what we're copying in. First, we've got the list of upstream servers, which currently only has the first Sync Gateway node:
 
-                ```
+                ```nginx
                 upstream sync_gateway {
                   server 10.150.150.102:4984;
                 }
                 ```
                 Let's add the second Sync Gateway node in:
 
-                ```
+                ```nginx
                 upstream sync_gateway {
                   server 10.150.150.102:4984;
                   server 10.150.150.105:4984;
