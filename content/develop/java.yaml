@@ -247,7 +247,10 @@ chapters:
               - Verify that you have 31,665 documents in your travel-sample bucket
 
               ## Docker Compose
-              Alternatively, you can use Docker compose to install all of the three server side components - The Travel Sample Web App, Couchbase Server 5.0 and Sync Gateway 1.5.
+              Alternatively, you can use Docker compose to install all of the three server side components 
+                - The Travel Sample Web App
+                - Couchbase Server 5.0 
+                - Sync Gateway 1.5
 
 
               - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
@@ -262,20 +265,22 @@ chapters:
 
               - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
               - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
-                ```` bash
+                ````
                   try-cb-python:
                     image: jamiltz/try-cb-python 
                     ports:
                       - 8080:8080
+                    container_name: try_cb_python
 
-                  sync-gateway:
-                    image: tleyden5iwx/sync-gateway:1.5.0-589-community 
-                    ports:
-                      - "4984-4985:4984-4985"
-                    command: -adminInterface :4985 ${PWD}/sync-gateway-config-travelsample.json
-                    volumes:
-                      - ${PWD}:${PWD}
-                ```
+                    sync-gateway:
+                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      ports:
+                        - "4984-4985:4984-4985"
+                      command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                      volumes:
+                        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+                      container_name: sync_gateway
+                 ```
               - Run the following command to bring up all three containers
                 ``` bash
                 $ docker-compose up
