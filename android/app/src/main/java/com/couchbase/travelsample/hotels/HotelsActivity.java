@@ -1,29 +1,28 @@
 package com.couchbase.travelsample.hotels;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.util.ResultAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.couchbase.travelsample.R.string.hotels;
+import java.util.Map;
 
 public class HotelsActivity extends AppCompatActivity implements HotelsContract.View {
 
     private HotelsContract.UserActionsListener mActionListener;
     private RecyclerView mRecyclerView;
+    private EditText mLocationInput;
+    private EditText mDescriptionInput;
+    private Boolean IS_GUEST;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,44 +37,59 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>(), android.R.layout.simple_selectable_list_item);
-        mResultAdapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+        mActionListener = new HotelsPresenter(this);
+
+        IS_GUEST = getIntent().getBooleanExtra(getString(R.string.guest_field), false);
+
+        mLocationInput = (EditText) findViewById(R.id.locationInput);
+        mLocationInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void OnClick(View view, int position) {
-                Log.d("App", String.valueOf(position));
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String location = editable.toString();
+                searchHotels(location, mDescriptionInput.getText().toString());
             }
         });
-        mRecyclerView.setAdapter(mResultAdapter);
 
-        mActionListener = new HotelsPresenter(this);
-        mActionListener.fetchHotels();
+        mDescriptionInput = (EditText) findViewById(R.id.descriptionInput);
+        mDescriptionInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String description = editable.toString();
+                searchHotels(mLocationInput.getText().toString(), description);
+            }
+        });
+    }
+
+    void searchHotels(String location, String description) {
+        if (IS_GUEST) {
+            mActionListener.fetchHotels(location, description);
+        } else {
+            mActionListener.queryHotels(location, description);
+        }
     }
 
     @Override
-    public void showHotels(final JSONArray data) {
-        final List<String> hotels = new ArrayList<>();
-        for (int i = 0; i < data.length(); i++) {
-            try {
-                hotels.add(data.getJSONObject(i).getString("name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    public void showHotels(final List<Map<String, Object>> hotels) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ResultAdapter adapter = new ResultAdapter(hotels, android.R.layout.simple_selectable_list_item);
+                ResultAdapter adapter = new ResultAdapter(hotels, "name", "address");
                 adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        Log.d("App", String.valueOf(position));
-                        JSONObject selectedHotel = null;
-                        try {
-                            selectedHotel = data.getJSONObject(position);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (IS_GUEST) {
+                            Map<String, Object> selectedHotel = hotels.get(position);
+                            mActionListener.bookmarkHotels(selectedHotel);
+                            finish();
                         }
-                        mActionListener.bookmarkHotels(selectedHotel);
                     }
                 });
                 mRecyclerView.setAdapter(adapter);

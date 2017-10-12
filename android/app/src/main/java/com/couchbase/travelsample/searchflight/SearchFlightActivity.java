@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -16,10 +15,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.couchbase.travelsample.R;
-import com.couchbase.travelsample.util.FlightSearchAdapter;
 import com.couchbase.travelsample.util.DatePickerFragment;
+import com.couchbase.travelsample.util.FlightSearchAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -153,4 +151,5 @@ public class SearchFlightActivity extends AppCompatActivity implements SearchFli
             }
         });
     }
+
 }

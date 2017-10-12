@@ -8,17 +8,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.hotels.HotelsActivity;
 import com.couchbase.travelsample.util.ResultAdapter;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BookmarksActivity extends AppCompatActivity implements BookmarksContract.View {
 
@@ -37,6 +34,7 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarksCon
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), HotelsActivity.class);
+                intent.putExtra(getString(R.string.guest_field), true);
                 startActivity(intent);
             }
         });
@@ -49,22 +47,13 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarksCon
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>(), android.R.layout.simple_selectable_list_item);
-        mResultAdapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
-            @Override
-            public void OnClick(View view, int position) {
-                Log.d("App", String.valueOf(position));
-            }
-        });
-        mRecyclerView.setAdapter(mResultAdapter);
-
         mActionListener = new BookmarksPresenter(this);
         mActionListener.fetchBookmarks();
     }
 
     @Override
-    public void showBookmarks(List<String> bookmarks) {
-        ResultAdapter adapter = new ResultAdapter(bookmarks, android.R.layout.simple_selectable_list_item);
+    public void showBookmarks(List<Map<String, Object>> bookmarks) {
+        ResultAdapter adapter = new ResultAdapter(bookmarks, "name", "address");
         adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
             @Override
             public void OnClick(View view, int position) {
@@ -73,12 +62,6 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarksCon
         });
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.invalidate();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mActionListener.fetchBookmarks();
     }
 
 }

@@ -1,15 +1,9 @@
 package com.couchbase.travelsample.util;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 

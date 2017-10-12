@@ -3,12 +3,8 @@ package com.couchbase.travelsample.searchflight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import okhttp3.OkHttpClient;
-import okhttp3.internal.tls.OkHostnameVerifier;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Implementation of the SearchFlight Service API that looks up for flights.

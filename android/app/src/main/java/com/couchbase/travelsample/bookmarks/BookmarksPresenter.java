@@ -1,11 +1,13 @@
 package com.couchbase.travelsample.bookmarks;
 
-import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.Function;
 import com.couchbase.lite.Join;
+import com.couchbase.lite.LiveQuery;
+import com.couchbase.lite.LiveQueryChange;
+import com.couchbase.lite.LiveQueryChangeListener;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
@@ -13,7 +15,9 @@ import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookmarksPresenter implements BookmarksContract.UserActionsListener {
 
@@ -40,25 +44,30 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
         SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
 
-        Query query = Query
+        LiveQuery query = Query
             .select(bookmarkAllColumns, hotelsAllColumns)
             .from(bookmarkDS)
             .join(join)
-            .where(typeExpr.equalTo("bookmarkedhotels"));
+            .where(typeExpr.equalTo("bookmarkedhotels")).toLive();
 
-        ResultSet rows = null;
-        try {
-            rows = query.run();
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
+        query.addChangeListener(new LiveQueryChangeListener() {
+            @Override
+            public void changed(LiveQueryChange change) {
+                ResultSet rows = change.getRows();
 
-        List<String> data = new ArrayList<String>();
-        Result row = null;
-        while((row = rows.next()) != null) {
-            data.add(row.getDictionary("hotelDS").getString("name"));
-        }
-        mBookmarksView.showBookmarks(data);
+                List<Map<String, Object>> data = new ArrayList<>();
+                Result row = null;
+                while((row = rows.next()) != null) {
+                    Map<String, Object> properties = new HashMap<>();
+                    properties.put("name", row.getDictionary("hotelDS").getString("name"));
+                    properties.put("address", row.getDictionary("hotelDS").getString("address"));
+                    data.add(properties);
+                }
+                mBookmarksView.showBookmarks(data);
+            }
+        });
+
+        query.run();
     }
 
 }

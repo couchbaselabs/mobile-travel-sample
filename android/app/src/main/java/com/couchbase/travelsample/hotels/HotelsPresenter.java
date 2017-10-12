@@ -22,11 +22,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,9 +50,15 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void fetchHotels() {
+    public void fetchHotels(String location, String description) {
         String backendUrl = "http://10.0.2.2:8080/api/";
-        String fullPath = "hotel/%2A/France";
+        String fullPath = null;
+        try {
+            fullPath = String.format("hotel/%s/%s", URLEncoder.encode(description, "UTF-8").replace("+", "%20"), URLEncoder.encode(location, "UTF-8").replace("+", "%20"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
         URL url = null;
         try {
             url = new URL(backendUrl + fullPath);
@@ -73,8 +82,20 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
                 try (ResponseBody responseBody = response.body()) {
                     if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
                     String responseString = responseBody.string();
-                    System.out.println(responseString);
-                    JSONArray hotels = new JSONObject(responseString).getJSONArray("data");
+                    JSONArray data = new JSONObject(responseString).getJSONArray("data");
+                    List<Map<String, Object>> hotels = new ArrayList<Map<String, Object>>();
+                    for (int i = 0; i < data.length(); i++) {
+                        try {
+                            Map<String, Object> properties = new HashMap<>();
+                            properties.put("name", data.getJSONObject(i).getString("name"));
+                            properties.put("id", data.getJSONObject(i).getString("id"));
+                            properties.put("address", data.getJSONObject(i).getString("address"));
+                            hotels.add(properties);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     mHotelView.showHotels(hotels);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -85,7 +106,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     }
 
     @Override
-    public void bookmarkHotels(JSONObject hotel) {
+    public void bookmarkHotels(Map<String, Object> hotel) {
         Database database = DatabaseManager.getDatabase();
 
         Query searchQuery = Query
@@ -132,13 +153,9 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
 
         /* Get current list of hotels */
         Array hotelIds = null;
-        try {
-            hotelIds = document
-                .getArray("hotels")
-                .addString(hotel.getString("id"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        hotelIds = document
+            .getArray("hotels")
+            .addString((String) hotel.get("id"));
 
         document.setArray("hotels", hotelIds);
 
@@ -147,5 +164,45 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void queryHotels(String location, String description) {
+        Database database = DatabaseManager.getDatabase();
+        Expression descExp = Expression.property("description").match(description);
+
+        Expression locationExp = Expression.property("country")
+            .equalTo(location)
+            .or(Expression.property("city").equalTo(location))
+            .or(Expression.property("state").equalTo(location))
+            .or(Expression.property("address").equalTo(location));
+
+        Expression searchExp = descExp.and(locationExp);
+
+        Query hotelSearchQuery = Query
+            .select(SelectResult.all())
+            .from(DataSource.database(database))
+            .where(
+                Expression.property("type").equalTo("hotel")
+                .and(searchExp)
+            );
+
+        ResultSet rows = null;
+        try {
+            rows = hotelSearchQuery.run();
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+        Result row = null;
+        while((row = rows.next()) != null) {
+            Map<String, Object> properties = new HashMap<String, Object>();
+            properties.put("name", row.getDictionary("travel-sample").getString("name"));
+            properties.put("address", row.getDictionary("travel-sample").getString("address"));
+            data.add(properties);
+        }
+        mHotelView.showHotels(data);
     }
 }
