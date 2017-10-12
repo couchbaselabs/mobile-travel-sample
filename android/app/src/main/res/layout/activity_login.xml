@@ -31,17 +31,20 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="openLoginActivity"
-            android:text="Sign in"
-            android:textColor="#0072BB" />
+            android:background="@color/colorPrimary"
+            android:onClick="onLoginTapped"
+            android:text="@string/sign_in"
+            android:textColor="@color/colorAccent"/>
 
         <Button
+            android:layout_marginTop="@dimen/fab_margin"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:onClick="onGuestLoginTapped"
-            android:text="Proceed as Guest"
-            android:textColor="#1E91D6" />
+            android:text="@string/proceed_as_guest"
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
 

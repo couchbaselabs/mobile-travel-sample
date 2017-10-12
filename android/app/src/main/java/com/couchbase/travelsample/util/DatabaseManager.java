@@ -3,9 +3,12 @@ package com.couchbase.travelsample.util;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
+import com.couchbase.lite.Replicator;
+import com.couchbase.lite.ReplicatorConfiguration;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -14,6 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -106,6 +112,24 @@ public class DatabaseManager {
         while((read = in.read(buffer)) != -1){
             out.write(buffer, 0, read);
         }
+    }
+
+    public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
+        String syncUrl = "blip://10.0.2.2:4984/travel-sample";
+        URI url = null;
+        try {
+            url = new URI(syncUrl);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ReplicatorConfiguration config = new ReplicatorConfiguration(database, url);
+        config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+        config.setContinuous(true);
+        config.setAuthenticator(new BasicAuthenticator(username, password));
+
+        Replicator replicator = new Replicator(config);
+        replicator.start();
     }
 
     public static DatabaseManager getSharedInstance(Context context) {

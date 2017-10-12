@@ -12,13 +12,15 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
     private List<String> mResultSet;
     private OnItemClickListener mOnItemClickListener;
+    private int mLayout;
 
     public interface OnItemClickListener {
         void OnClick(View view, int position);
     }
 
-    public ResultAdapter(List<String> mResultSet) {
+    public ResultAdapter(List<String> mResultSet, int layout) {
         this.mResultSet = mResultSet;
+        this.mLayout = layout;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -32,7 +34,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(android.R.layout.simple_selectable_list_item, parent, false);
+        View view = layoutInflater.inflate(mLayout, parent, false);
         return new ViewHolder(view);
     }
 

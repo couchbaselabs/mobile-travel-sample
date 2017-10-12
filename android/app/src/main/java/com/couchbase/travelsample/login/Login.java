@@ -7,7 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.couchbase.travelsample.R;
+import com.couchbase.travelsample.bookings.BookingsActivity;
 import com.couchbase.travelsample.bookmarks.BookmarksActivity;
+import com.couchbase.travelsample.searchflight.SearchFlightActivity;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 public class Login extends AppCompatActivity {
@@ -20,10 +22,18 @@ public class Login extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DatabaseManager.getSharedInstance(getApplicationContext());
+        DatabaseManager.startPushAndPullReplicationForCurrentUser("demo", "password");
     }
+
+
 
     public void onGuestLoginTapped(View view) {
         Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
+        startActivity(intent);
+    }
+
+    public void onLoginTapped(View view) {
+        Intent intent = new Intent(getApplicationContext(), BookingsActivity.class);
         startActivity(intent);
     }
 }
