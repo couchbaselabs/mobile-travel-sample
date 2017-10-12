@@ -170,7 +170,7 @@ chapters:
                 $ docker-compose up
                 ```
       
-      - title: Couchbase Server v5.0
+      - title: Couchbase Server 5.0
         milestones:
           
           - title: Manual
@@ -282,7 +282,7 @@ chapters:
                 ``` bash
                 $ docker-compose up
                 ```
-      - title: Sync Gateway v1.5
+      - title: Sync Gateway 1.5
         milestones:
           - title: Manual
             description: |
