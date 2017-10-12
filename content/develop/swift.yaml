@@ -93,7 +93,7 @@ chapters:
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-          - title: Local Docker
+          - title: Docker (Local)
             description: |
               
               To run the application in a container, you will first get the docker image from Docker Cloud. 
@@ -206,7 +206,7 @@ chapters:
               - Select the "Buckets" option from the menu on the left
               - Verify that you have 31,665 documents in your travel-sample bucket       
            
-          - title: Local Docker
+          - title: Docker (Local)
             description: |
              To run the application in a container, you will first get the docker image from Docker Cloud. 
               
@@ -304,7 +304,7 @@ chapters:
               - Verify that you get back a JSON response
 
 
-          - title: Docker
+          - title: Docker (Local)
             description: |
               To run the application in a container, you will first get the docker image from Docker Cloud. 
               
