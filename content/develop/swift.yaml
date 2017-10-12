@@ -3,7 +3,7 @@ requirements: |
 chapters:
   - title: Installation
     lessons:
-      - title: Installation
+      - title: Pre-requisites
         milestones:
           - title: Pre-requisites
             description: |
@@ -33,6 +33,9 @@ chapters:
                 git --version
                 ```
                 You should see the version of git installed
+      - title: Travel Mobile App
+        milestones:
+          
           - title: Travel Sample Mobile App
             description: |
               - Clone the app from GitHub and switch to the `connect_sv` branch
@@ -51,39 +54,10 @@ chapters:
               - Open the `TravelSample.xcodeproj` using Xcode
               - Build and run the project using simulator 
               - Verify that the login screen appears in the simulator
-          - title: Couchbase Server v5.0
-            description: |
-              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
-
-              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
-
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
-              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
-              
-                ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
-              
-              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
-                - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
-        
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
-        
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
-            
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
-        
-              - Create a Full text search index on travel-sample bucket called 'hotels'
-        
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
-        
-              ## Try it out
-              
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket       
-          - title: Travel Sample Web App (Python)
+      
+      - title: Travel Web Backend
+        milestones:
+          - title: Manual
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
@@ -119,32 +93,8 @@ chapters:
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-          
-          - title: Sync Gateway v1.5
+          - title: Local Docker
             description: |
-             In this lesson, you will install and launch version 1.5 of the Sync Gateway
-
-              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
-             
-              - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
-              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
-
-              ``` bash
-              cd /path/to/syncgatewayinstall/bin
-              ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
-              ```
-            
-              ## Try it out
-
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
-
-
-          - title: Docker
-            description: |
-              In this section, you will learn how to run the components in Docker containers.
-            
-              ## Python Web App
               
               To run the application in a container, you will first get the docker image from Docker Cloud. 
               
@@ -167,7 +117,7 @@ chapters:
             
                  Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
                 ```
-              ### Try it out
+              ## Try it out
               
                 - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
                   ``` bash
@@ -177,8 +127,185 @@ chapters:
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+            
+          - title: Docker Compose
+            description: |
+              Alternatively, you can use Docker compose to install all of the three server side components 
+                - The Travel Sample Web App
+                - Couchbase Server 5.0 
+                - Sync Gateway 1.5.
+
+
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                  ``` bash
+                  $ ifconfig
+                  ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                  ``` JavaScript
+                  "server": "http://192.168.1.121:8091"
+                  ```
+
+              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
-              ## Sync Gateway 1.5
+                 ````
+                  try-cb-python:
+                    image: jamiltz/try-cb-python 
+                    ports:
+                      - 8080:8080
+                    container_name: try_cb_python
+
+                    sync-gateway:
+                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      ports:
+                        - "4984-4985:4984-4985"
+                      command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                      volumes:
+                        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+                      container_name: sync_gateway
+                 ```
+              - Run the following command to bring up all three containers
+                ``` bash
+                $ docker-compose up
+                ```
+      
+      - title: Couchbase Server v5.0
+        milestones:
+          
+          - title: Manual
+            description: |
+              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
+
+              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
+              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
+              
+                ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
+              
+              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
+                - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
+        
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
+        
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
+            
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+        
+              - Create a Full text search index on travel-sample bucket called 'hotels'
+        
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
+        
+              ## Try it out
+              
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Select the "Buckets" option from the menu on the left
+              - Verify that you have 31,665 documents in your travel-sample bucket       
+           
+          - title: Local Docker
+            description: |
+             To run the application in a container, you will first get the docker image from Docker Cloud. 
+              
+              - Open a new terminal window and run the following.
+
+                ```bash
+                // Placeholder
+                $ docker pull connectsv/couchbase-server
+                ```
+              
+              - Once the command has completed you can start the application with the following.
+              
+                ```bash
+                // placeholder
+                $ docker run -it -p 8091:8091 connectsv/ouchbase-server
+                ```
+
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
+            
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+        
+              - Create a Full text search index on travel-sample bucket called 'hotels'
+        
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
+        
+              ### Try it out
+              
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Select the "Buckets" option from the menu on the left
+              - Verify that you have 31,665 documents in your travel-sample bucket
+
+          - title: Docker Compose
+            description: |
+              Alternatively, you can use Docker compose to install all of the three server side components 
+                - The Travel Sample Web App
+                - Couchbase Server 5.0 
+                - Sync Gateway 1.5.
+
+
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                  ``` bash
+                  $ ifconfig
+                  ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                  ``` JavaScript
+                  "server": "http://192.168.1.121:8091"
+                  ```
+
+              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+              
+                 ````
+                  try-cb-python:
+                    image: jamiltz/try-cb-python 
+                    ports:
+                      - 8080:8080
+                    container_name: try_cb_python
+
+                    sync-gateway:
+                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      ports:
+                        - "4984-4985:4984-4985"
+                      command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                      volumes:
+                        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+                      container_name: sync_gateway
+                 ```
+              - Run the following command to bring up all three containers
+                ``` bash
+                $ docker-compose up
+                ```
+      - title: Sync Gateway v1.5
+        milestones:
+          - title: Manual
+            description: |
+             In this lesson, you will install and launch version 1.5 of the Sync Gateway
+
+              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+             
+              - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
+              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
+
+              ``` bash
+              cd /path/to/syncgatewayinstall/bin
+              ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+              ```
+            
+              ## Try it out
+
+              - Access this URL `http://localhost:4985/travel-sample` in your browser
+              - Verify that you get back a JSON response
+
+
+          - title: Docker
+            description: |
               To run the application in a container, you will first get the docker image from Docker Cloud. 
               
               - Open a new terminal window and run the following.
@@ -216,41 +343,9 @@ chapters:
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
 
-              ## Couchbase Server 5.0
-              To run the application in a container, you will first get the docker image from Docker Cloud. 
-              
-              - Open a new terminal window and run the following.
 
-                ```bash
-                // Placeholder
-                $ docker pull connectsv/couchbase-server
-                ```
-              
-              - Once the command has completed you can start the application with the following.
-              
-                ```bash
-                // placeholder
-                $ docker run -it -p 8091:8091 connectsv/ouchbase-server
-                ```
-
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
-            
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
-        
-              - Create a Full text search index on travel-sample bucket called 'hotels'
-        
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
-        
-              ### Try it out
-              
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket
-
-               ## Docker Compose
+          - title: Docker Compose
+            description: |
               Alternatively, you can use Docker compose to install all of the three server side components 
                 - The Travel Sample Web App
                 - Couchbase Server 5.0 
