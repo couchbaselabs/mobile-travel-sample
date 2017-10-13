@@ -567,16 +567,17 @@ chapters:
               - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
               - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
               - You should be logged into the web app. There should be nothing created for the user.
-              ![]()
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/web_user_signup.gif)
               
               ## Try it out (Couchbase Server)
               - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
               - In the search box, enter "user:demo".
               - You should see the user document that was created when you signed up via the web app.
-              - Enter the values you see in the "username" and "password" in the text fields below.
+              - Confirm that the "username" that you see is "demo"
               
-              ![]()
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/cb_user_auth.gif)
+
           - title: Access Control
             description: |
               In this lesson you’ll be introduced to Sync Gateway, our secure web gateway. The Couchbase Sync Gateway is an 
