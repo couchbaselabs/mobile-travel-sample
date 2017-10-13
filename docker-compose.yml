@@ -5,7 +5,7 @@ try-cb-python:
     container_name: try_cb_python
 
 sync-gateway:
-    image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+    image: connectsv/sync-gateway-internal:1.5.0-community 
     ports:
         - "4984-4985:4984-4985"
     command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json

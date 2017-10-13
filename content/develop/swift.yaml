@@ -10,7 +10,8 @@ chapters:
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
               #### iOS (Xcode 8.3.3 and above) 
-              - Downloadable from [Apple Developer site](https://developer.apple.com)
+              - Preferrable to use Xcode9
+              - Downloadable latest version from the [Mac App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
                 
               #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
@@ -157,7 +158,7 @@ chapters:
                     container_name: try_cb_python
 
                     sync-gateway:
-                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      image: connectsv/sync-gateway-internal:1.5.0-community 
                       ports:
                         - "4984-4985:4984-4985"
                       command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
@@ -270,7 +271,7 @@ chapters:
                     container_name: try_cb_python
 
                     sync-gateway:
-                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      image: connectsv/sync-gateway-internal:1.5.0-community 
                       ports:
                         - "4984-4985:4984-4985"
                       command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
@@ -328,9 +329,9 @@ chapters:
               
                 ```bash
                 // placeholder
-                cd /path/to/mobile-travel-sample/sync-gateway-config-file/
+                $ cd /path/to/mobile-travel-sample/sync-gateway-config-file/
 
-                 docker run -p 4984-4985:4984-4985 -d -v `pwd`:`pwd` tleyden5iwx/sync-gateway:1.5.0-589-community -adminInterface :4985 `pwd`/sync-gateway-config-travelsample.json
+                $ docker run -p 4984-4985:4984-4985 --name sync-gateway -d -v `pwd`/sync_gateway.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
 
               - Verify that the docker container is running with the following command in the terminal window
@@ -373,7 +374,7 @@ chapters:
                     container_name: try_cb_python
 
                     sync-gateway:
-                      image: tleyden5iwx/sync-gateway:1.5.0-589-community 
+                      image: connectsv/sync-gateway-internal:1.5.0-community 
                       ports:
                         - "4984-4985:4984-4985"
                       command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
