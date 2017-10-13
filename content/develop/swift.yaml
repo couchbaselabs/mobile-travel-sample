@@ -1136,12 +1136,55 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              Explain MATCH
+              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-senstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
+
+              - In order to do FTS queries, an FTS index must be created. Open DatabaseManager.swift and navigate to the [createDatabaseIndexes](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L195) method.
+               
+              This code snippet created a FTS index on the property named `description`
+              ```swift
+               try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
+              ```
+
+              - Open the HotelPresenter.swift and navigate to the [fetchHotelsFromLocalDatabaseMatchingDescription](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L238) method
+
+              The following code snippet shows creation of a `match` FTS query expression on the `description` property. In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with a `equalTo` comparison expression which looks for the `locationStr` in the `country`,`city`,`state` or `address` properties . 
+              
+              This expression is then used in the `where` clause of the query the usual way.
+
+              ```swift
+              var descExp:Expression?
+              if let descriptionStr = descriptionStr {
+                descExp = _Property.DESCRIPTION.match(descriptionStr)
+              }
+        
+        
+              let locationExp = _Property.COUNTRY.equalTo(locationStr)
+                                .or(_Property.CITY.equalTo(locationStr))
+                                .or(_Property.STATE.equalTo(locationStr))
+                                .or(_Property.ADDRESS.equalTo(locationStr))
+        
+              var searchExp:Expression = locationExp
+              if  let descExp = descExp {
+                searchExp = descExp.and(locationExp)
+              }
+        
+       
+              let hotelSearchQuery = Query
+                                    .select(_SelectColumn.ALLRESULT) 
+                                    .from(DataSource.database(db))
+                                    .where(
+                                      _Property.TYPE.equalTo("hotel")
+                                      .and(searchExp) )
+              ```
+
+
               
               ## Try it out
             
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - In the description text field enter “Pets allowed”.
-              - In the Location text field enter “France”
-              - You will see list of hotels.
-              - Enter the name of the first hotel you see in text field below
+              - Tap on "hotels" button
+              - In the description text field enter “Pets.
+              - In the Location text field enter "London"
+              - Verify that you see one hotel listed named "Novotel London West"
+
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_fts_query.gif)
