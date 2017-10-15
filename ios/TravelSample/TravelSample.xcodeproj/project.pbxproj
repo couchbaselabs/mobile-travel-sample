@@ -16,6 +16,8 @@
 		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
 		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
+		5F74D4E91F9397E600EB0CDB /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F74D4E81F9397E600EB0CDB /* CouchbaseLiteSwift.framework */; };
+		5F74D4EA1F93985E00EB0CDB /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F74D4E81F9397E600EB0CDB /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F9180721F7D30450067E2C6 /* Booking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180711F7D30450067E2C6 /* Booking.swift */; };
 		5F9180741F7D30880067E2C6 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180731F7D30880067E2C6 /* Flight.swift */; };
 		5F9180761F7D309A0067E2C6 /* Airport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180751F7D309A0067E2C6 /* Airport.swift */; };
@@ -43,8 +45,6 @@
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
-		5FFF0FC71F8E8D6C0029D74B /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFF0FC61F8E8C8D0029D74B /* CouchbaseLiteSwift.framework */; };
-		5FFF0FC81F8E8D6C0029D74B /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFF0FC61F8E8C8D0029D74B /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,7 +54,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5FFF0FC81F8E8D6C0029D74B /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5F74D4EA1F93985E00EB0CDB /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,6 +73,7 @@
 		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
+		5F74D4E81F9397E600EB0CDB /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5F9180711F7D30450067E2C6 /* Booking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Booking.swift; sourceTree = "<group>"; };
 		5F9180731F7D30880067E2C6 /* Flight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		5F9180751F7D309A0067E2C6 /* Airport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Airport.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
-		5FFF0FC61F8E8C8D0029D74B /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FFF0FC71F8E8D6C0029D74B /* CouchbaseLiteSwift.framework in Frameworks */,
+				5F74D4E91F9397E600EB0CDB /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +153,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FFF0FC61F8E8C8D0029D74B /* CouchbaseLiteSwift.framework */,
+				5F74D4E81F9397E600EB0CDB /* CouchbaseLiteSwift.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -289,6 +289,7 @@
 				TargetAttributes = {
 					5F2CD90B1EDDB5620069F12C = {
 						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = T97TEF42TA;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -486,10 +487,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = T97TEF42TA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/iOS/swift3.1",
 				);
 				INFOPLIST_FILE = TravelSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -503,10 +506,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = T97TEF42TA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/iOS/swift3.1",
 				);
 				INFOPLIST_FILE = TravelSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

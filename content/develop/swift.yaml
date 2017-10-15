@@ -734,7 +734,7 @@ chapters:
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
               - In the search box, enter "user:demo".
               - You should see the user document that was created when you signed up via the web app.
-              - Enter the values you see in the "username" and "password" in the text fields below.
+              - Confirm that the "username" that you see is "demo"
 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/cb_user_auth.gif)
 
@@ -764,8 +764,8 @@ chapters:
               - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"]http://docs-build.sc.couchbase.com:9000/develop/swift#/2/3/0] section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
-              // Give user read access to channel
-              if (!isDelete()) {
+                // Give user read access to channel
+                if (!isDelete()) {
                 // Deletion of user document is essentially deletion of user
                 access(username,"channel." + username)
               }

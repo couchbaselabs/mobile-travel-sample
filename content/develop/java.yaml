@@ -606,11 +606,11 @@ chapters:
               - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](http://docs-build.sc.couchbase.com:9000/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
-              // Give user read access to channel
-              if (!isDelete()) {
-                // Deletion of user document is essentially deletion of user
-                access(username,"channel." + username)
-              }
+                // Give user read access to channel
+                if (!isDelete()) {
+                  // Deletion of user document is essentially deletion of user
+                  access(username,"channel." + username)
+                }
               ```
             
               ## Try it out

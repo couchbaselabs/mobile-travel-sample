@@ -246,15 +246,15 @@ extension HotelPresenter {
         // MATCH can only appear at top-level, or in a top-level AND
 
         var descExp:Expression?
-        if let descriptionStr = descriptionStr {
+        if let descriptionStr = descriptionStr , descriptionStr != ""{
             descExp = _Property.DESCRIPTION.match(descriptionStr)
         }
         
         
-        let locationExp = _Property.COUNTRY.equalTo(locationStr)
-            .or(_Property.CITY.equalTo(locationStr))
-            .or(_Property.STATE.equalTo(locationStr))
-            .or(_Property.ADDRESS.equalTo(locationStr))
+        let locationExp = _Property.COUNTRY.like("%\(locationStr)%")
+            .or(_Property.CITY.like("%\(locationStr)%"))
+            .or(_Property.STATE.like("%\(locationStr)%"))
+            .or(_Property.ADDRESS.like("%\(locationStr)%"))
         
         var searchExp:Expression = locationExp
         if  let descExp = descExp {
