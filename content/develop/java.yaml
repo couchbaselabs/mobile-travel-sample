@@ -244,47 +244,47 @@ chapters:
               - Select the "Buckets" option from the menu on the left
               - Verify that you have 31,665 documents in your travel-sample bucket
 
-          - title: Docker Compose
-            description: |
-              Alternatively, you can use Docker compose to install all of the three server side components 
-                - The Travel Sample Web App
-                - Couchbase Server 5.0 
-                - Sync Gateway 1.5.
+          # - title: Docker Compose
+          #   description: |
+          #     Alternatively, you can use Docker compose to install all of the three server side components 
+          #       - The Travel Sample Web App
+          #       - Couchbase Server 5.0 
+          #       - Sync Gateway 1.5.
 
 
-              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
-                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-                  ``` bash
-                  $ ifconfig
-                  ```
-                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
-                  ``` JavaScript
-                  "server": "http://192.168.1.121:8091"
-                  ```
+          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+          #       -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+          #         ``` bash
+          #         $ ifconfig
+          #         ```
+          #       - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+          #         ``` JavaScript
+          #         "server": "http://192.168.1.121:8091"
+          #         ```
 
-              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
-              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+          #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
-                ```yaml
-                try-cb-python:
-                  image: jamiltz/try-cb-python 
-                  ports:
-                    - 8080:8080
-                  container_name: try_cb_python
-                sync-gateway:
-                  image: connectsv/sync-gateway-internal:1.5.0-community 
-                  ports:
-                    - "4984-4985:4984-4985"
-                  command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
-                  volumes:
-                    - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
-                  container_name: sync_gateway
-                ```
+          #       ```yaml
+          #       try-cb-python:
+          #         image: jamiltz/try-cb-python 
+          #         ports:
+          #           - 8080:8080
+          #         container_name: try_cb_python
+          #       sync-gateway:
+          #         image: connectsv/sync-gateway-internal:1.5.0-community 
+          #         ports:
+          #           - "4984-4985:4984-4985"
+          #         command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+          #         volumes:
+          #           - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+          #         container_name: sync_gateway
+          #       ```
                 
-              - Run the following command to bring up all three containers
-                ```bash
-                $ docker-compose up
-                ```
+          #     - Run the following command to bring up all three containers
+          #       ```bash
+          #       $ docker-compose up
+          #       ```
       - title: Sync Gateway 1.5
         milestones:
           - title: Manual
@@ -347,47 +347,47 @@ chapters:
               - Verify that you get back a JSON response
 
 
-          - title: Docker Compose
-            description: |
-              Alternatively, you can use Docker compose to install all of the three server side components 
-                - The Travel Sample Web App
-                - Couchbase Server 5.0 
-                - Sync Gateway 1.5.
+          # - title: Docker Compose
+          #   description: |
+          #     Alternatively, you can use Docker compose to install all of the three server side components 
+          #       - The Travel Sample Web App
+          #       - Couchbase Server 5.0 
+          #       - Sync Gateway 1.5.
 
 
-              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
-                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-                  ```bash
-                  $ ifconfig
-                  ```
-                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
-                  ```js
-                  "server": "http://192.168.1.121:8091"
-                  ```
+          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+          #       -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+          #         ```bash
+          #         $ ifconfig
+          #         ```
+          #       - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+          #         ```js
+          #         "server": "http://192.168.1.121:8091"
+          #         ```
 
-              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
-              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+          #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
-                  ```
-                   try-cb-python:
-                    image: jamiltz/try-cb-python 
-                    ports:
-                      - 8080:8080
-                    container_name: try_cb_python
+          #         ```
+          #          try-cb-python:
+          #           image: jamiltz/try-cb-python 
+          #           ports:
+          #             - 8080:8080
+          #           container_name: try_cb_python
 
-                    sync-gateway:
-                      image: connectsv/sync-gateway-internal:1.5.0-community 
-                      ports:
-                        - "4984-4985:4984-4985"
-                      command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
-                      volumes:
-                        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
-                      container_name: sync_gateway
-                 ```
-              - Run the following command to bring up all three containers
-                ``` bash
-                $ docker-compose up
-                ```
+          #           sync-gateway:
+          #             image: connectsv/sync-gateway-internal:1.5.0-community 
+          #             ports:
+          #               - "4984-4985:4984-4985"
+          #             command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+          #             volumes:
+          #               - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+          #             container_name: sync_gateway
+          #        ```
+          #     - Run the following command to bring up all three containers
+          #       ``` bash
+          #       $ docker-compose up
+          #       ```
   - title: Design
     lessons:
         - title: Data Modeling
