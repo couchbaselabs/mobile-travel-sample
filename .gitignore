@@ -81,3 +81,6 @@ content/node_modules/
 deploy/*.rpm
 deploy/*.deb
 deploy/.vagrant/
+
+# DS_Store
+.DS_Store
