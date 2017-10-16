@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.couchbase.travelsample.R;
+
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(android.R.layout.two_line_list_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.list_item, parent, false);
         return new ViewHolder(view);
     }
 

@@ -33,17 +33,28 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
     private static String dbName;
 
-    protected DatabaseManager(Context context) {
-        File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
-        if (!dbFile.exists()) {
-            DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
-        }
-        DatabaseConfiguration config = new DatabaseConfiguration(context);
-        try {
-            database = new Database("travel-sample", config);
-            database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
+    protected DatabaseManager(Context context, boolean isGuest) {
+        if (isGuest) {
+            DatabaseConfiguration config = new DatabaseConfiguration(context);
+            File folder = new File(String.format("%s/guest", context.getFilesDir()));
+            config.setDirectory(folder);
+            try {
+                database = new Database("travel-sample", config);
+            } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
+            if (!dbFile.exists()) {
+                DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
+            }
+            DatabaseConfiguration config = new DatabaseConfiguration(context);
+            try {
+                database = new Database("travel-sample", config);
+                database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
+            } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -135,9 +146,9 @@ public class DatabaseManager {
         replicator.start();
     }
 
-    public static DatabaseManager getSharedInstance(Context context) {
+    public static DatabaseManager getSharedInstance(Context context, boolean isGuest) {
         if (instance == null) {
-            instance = new DatabaseManager(context);
+            instance = new DatabaseManager(context, isGuest);
         }
         return instance;
     }

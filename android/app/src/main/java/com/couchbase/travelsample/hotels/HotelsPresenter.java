@@ -3,7 +3,6 @@ package com.couchbase.travelsample.hotels;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -54,7 +53,9 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         String backendUrl = "http://10.0.2.2:8080/api/";
         String fullPath = null;
         try {
-            fullPath = String.format("hotel/%s/%s", URLEncoder.encode(description, "UTF-8").replace("+", "%20"), URLEncoder.encode(location, "UTF-8").replace("+", "%20"));
+            String descriptionStr = description.equals("") ? "*" : URLEncoder.encode(description, "UTF-8").replace("+", "%20");
+            String locationStr = location.equals("") ? "*" : URLEncoder.encode(location, "UTF-8").replace("+", "%20");
+            fullPath = String.format("hotel/%s/%s", descriptionStr, locationStr);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;
@@ -109,6 +110,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void bookmarkHotels(Map<String, Object> hotel) {
         Database database = DatabaseManager.getDatabase();
 
+        /* Look-up Guest user document. */
         Query searchQuery = Query
             .select(SelectResult.expression(Expression.meta().getId()))
             .from(DataSource.database(database))
@@ -117,10 +119,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             );
 
         /*
-         {
-         "type" : "bookmarkedhotelss"
-         "hotels":["hotel1","hotel2"]
-         }
+
         */
 
         ResultSet rows = null;
@@ -135,10 +134,16 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         Result row = null;
         while ((row = rows.next()) != null) {
             document = database.getDocument(row.getString("_id"));
-            Log.d("APP", document.toString());
         }
 
         if (document == null) {
+            /*
+             * The Guest user document doesn't exist. Create it.
+             *  {
+             *    "type": "bookmarkedhotels"
+             *    "hotels": ["hotel1","hotel2"]
+             *  }
+             */
             document = new Document();
             HashMap<String, Object> properties = new HashMap<>();
             properties.put("type", "bookmarkedhotels");
@@ -161,6 +166,14 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
 
         try {
             database.save(document);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+
+        Document hotelDoc = new Document((String) hotel.get("id"));
+        hotelDoc.set(hotel);
+        try {
+            database.save(hotelDoc);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
