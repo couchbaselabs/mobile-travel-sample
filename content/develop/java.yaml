@@ -8,14 +8,21 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-                #### Android (Android Studio 2.3 and above) 
-                - Downloadable from [Google Developer site](https://developer.android.com)
+              #### Android
               
-                #### Python (V 2.7 and above)
-                - Downloadable from [python.org](https://www.python.org/downloads/)
+              - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
+              - Android device or emulator running API level 16 or above
+              - Android SDK 26
+              - Android Build Tools 26
+              - JDK 8
+            
+              #### Python (V 2.7 and above)
               
-                #### git
-                - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+              - Downloadable from [python.org](https://www.python.org/downloads/)
+            
+              #### git
+              
+              - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
               
