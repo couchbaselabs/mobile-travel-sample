@@ -32,8 +32,8 @@ class DatabaseManager {
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
-   // fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
-    fileprivate let kRemoteSyncUrl = "blip://54.148.83.39:4984"
+    fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
+   // fileprivate let kRemoteSyncUrl = "blip://54.148.83.39:4984"
    
     
     fileprivate var _db:Database?
