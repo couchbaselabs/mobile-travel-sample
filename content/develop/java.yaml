@@ -2,20 +2,27 @@ requirements: |
 chapters:
   - title: Installation
     lessons:
-      - title: Installation
+      - title: Pre-requisites
         milestones:
           - title: Pre-requisites
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
-                #### Android (Android Studio 2.3 and above) 
-                - Downloadable from [Google Developer site](https://developer.android.com)
+              #### Android
               
-                #### Python (V 2.7 and above)
-                - Downloadable from [python.org](https://www.python.org/downloads/)
+              - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
+              - Android device or emulator running API level 16 or above
+              - Android SDK 26
+              - Android Build Tools 26
+              - JDK 8
+            
+              #### Python (V 2.7 and above)
               
-                #### git
-                - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+              - Downloadable from [python.org](https://www.python.org/downloads/)
+            
+              #### git
+              
+              - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
               
@@ -32,56 +39,28 @@ chapters:
                 git --version
                 ```
                 You should see the version of git installed
+      - title: Travel Mobile App
+        milestones:
+          
           - title: Travel Sample Mobile App
             description: |
               - Clone the app from GitHub and switch to the `connect_sv` branch
-              ```bash
-              git clone https://github.com/couchbaselabs/mobile-travel-sample.git
-              git checkout -b connect_sv
-              ```
-              - Run the `install.sh` script to download and install the 2.0 version of Couchbase Lite.
-              ```bash
-              cd /path/to/mobile-travel-sample/ios/TravelSample
-              sh install.sh
-              ```
+                ```bash
+                git clone https://github.com/couchbaselabs/mobile-travel-sample.git
+                git checkout -b connect_sv
+                ```
+              - Open **android/build.gradle** using Android Studio
+              - Build and run the project
               
-              ## Try it out
+                ![](https://cl.ly/1r0T100T0c22/as-build.png)
               
-              - Open the `TravelSample.xcodeproj` using Xcode
-              - Build and run the project using simulator 
               - Verify that the login screen appears in the simulator
-          - title: Couchbase Server v5.0
-            description: |
-              In this step, you will install and launch version 5.0 of the Couchbase Server.
-               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/5) section**
-
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
-              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
-              
-                ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
-              
-              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
-                - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
-        
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
-        
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
-            
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
-        
-              - Create a Full text search index on travel-sample bucket called 'hotels'
-        
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
-        
-              ## Try it out
-              
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket       
-          - title: Travel Sample Web App (Python)
+      
+                ![](https://cl.ly/0T0G2S083g41/as-login.png)
+      
+      - title: Travel Web Backend
+        milestones:
+          - title: Manual
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
@@ -117,29 +96,8 @@ chapters:
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-          - title: Sync Gateway v1.5
+          - title: Docker (Local)
             description: |
-             In this lesson, you will install and launch version 1.5 of the Sync Gateway
-
-             **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/5) section**
-             
-              - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
-              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
-
-              ```bash
-              cd /path/to/syncgatewayinstall/bin
-              ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
-              ```
-              
-              ## Try it out
-              
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
-          - title: Docker
-            description: |
-              In this section, you will learn how to run the components in Docker containers. Before getting started, first make sure that you have an instance of Couchbase Server 5.0 running locally (follow the steps in the [Couchbase Server v5.0](/develop/java#/0/0/2) lesson).
-              
-              ## Python Web App
               
               To run the application in a container, you will first get the docker image from Docker Cloud. 
               
@@ -147,7 +105,7 @@ chapters:
               
                 ```bash
                 $ docker pull connectsv/try-cb-python
-               ```
+                ```
               
               - Once the command has completed you can start the application with the following.
               
@@ -158,62 +116,102 @@ chapters:
               - You should then see the following in the logs.
               
                 ```bash
-                  Connecting to: couchbase://docker.for.mac.localhost/travel-sample?username=Administrator
-                  * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+                 Connecting to: couchbase://docker.for.mac.localhost/travel-sample?username=Administrator
+            
+                 Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
                 ```
-              
-               ### Try it   out
+              ## Try it out
               
                 - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
                   ``` bash
                   python travel.py
-                  * Running on http://localhost:8080/ (Press CTRL+C to quit)
+                   Running on http://localhost:8080/ (Press CTRL+C to quit)
                   ```
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-              
-              ## Sync Gateway 1.5
-              To run the application in a container, you will first get the docker image from Docker Cloud. 
-              
-              - Open a new terminal window and run the following.
+            
+          - title: Docker Compose
+            description: |
+              Alternatively, you can use Docker compose to install all of the three server side components 
+                - The Travel Sample Web App
+                - Couchbase Server 5.0 
+                - Sync Gateway 1.5.
 
-                ```bash
-                // Placeholder
-                $ docker pull connectsv/sync-gateway
-                ```
-              
+
               - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
                 -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-                 ``` bash
+                  ``` bash
                   $ ifconfig
                   ```
                 - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
                   ``` JavaScript
-                   "server": "http://192.168.1.121:8091"
+                  "server": "http://192.168.1.121:8091"
                   ```
 
-              -  Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` config file . Once the command has completed you can start the application with the following.
+              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
-                ```bash
-                // placeholder
-                $ cd /path/to/mobile-travel-sample/sync-gateway-config-file/
+                 ````
+                  try-cb-python:
+                    image: jamiltz/try-cb-python 
+                    ports:
+                      - 8080:8080
+                    container_name: try_cb_python
 
-                $ docker run -p 4984-4985:4984-4985 --name sync-gateway -d -v `pwd`/sync_gateway.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                    sync-gateway:
+                      image: connectsv/sync-gateway-internal:1.5.0-community 
+                      ports:
+                        - "4984-4985:4984-4985"
+                      command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                      volumes:
+                        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+                      container_name: sync_gateway
+                 ```
+              - Run the following command to bring up all three containers
+                ``` bash
+                $ docker-compose up
                 ```
+      
+      - title: Couchbase Server 5.0
+        milestones:
+          
+          - title: Manual
+            description: |
+              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
 
-              - Verify that the docker container is running with the following command in the terminal window
-                ```bash
-                $ docker ps
-                ```
+              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
 
-              ### Try it out
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
+              - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
               
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
-
-              ## Couchbase Server 5.0
-              To run the application in a container, you will first get the docker image from Docker Cloud. 
+                ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
+              
+              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
+                - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
+        
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
+        
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
+            
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+        
+              - Create a Full text search index on travel-sample bucket called 'hotels'
+        
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
+        
+              ## Try it out
+              
+              - Launch Couchbase Server 
+              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Select the "Buckets" option from the menu on the left
+              - Verify that you have 31,665 documents in your travel-sample bucket       
+           
+          - title: Docker (Local)
+            description: |
+             To run the application in a container, you will first get the docker image from Docker Cloud. 
               
               - Open a new terminal window and run the following.
 
@@ -246,26 +244,131 @@ chapters:
               - Select the "Buckets" option from the menu on the left
               - Verify that you have 31,665 documents in your travel-sample bucket
 
-              ## Docker Compose
+          - title: Docker Compose
+            description: |
               Alternatively, you can use Docker compose to install all of the three server side components 
                 - The Travel Sample Web App
                 - Couchbase Server 5.0 
-                - Sync Gateway 1.5
+                - Sync Gateway 1.5.
 
 
               - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
                 -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-                 ``` bash
-                $ ifconfig
-                ```
+                  ``` bash
+                  $ ifconfig
+                  ```
                 - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
-                ``` JavaScript
-                "server": "http://192.168.1.121:8091"
-                ```
+                  ``` JavaScript
+                  "server": "http://192.168.1.121:8091"
+                  ```
 
               - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
               - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
-                ````
+              
+                ```yaml
+                try-cb-python:
+                  image: jamiltz/try-cb-python 
+                  ports:
+                    - 8080:8080
+                  container_name: try_cb_python
+                sync-gateway:
+                  image: connectsv/sync-gateway-internal:1.5.0-community 
+                  ports:
+                    - "4984-4985:4984-4985"
+                  command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                  volumes:
+                    - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+                  container_name: sync_gateway
+                ```
+                
+              - Run the following command to bring up all three containers
+                ```bash
+                $ docker-compose up
+                ```
+      - title: Sync Gateway 1.5
+        milestones:
+          - title: Manual
+            description: |
+             In this lesson, you will install and launch version 1.5 of the Sync Gateway
+
+              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+             
+              - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
+              - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
+
+              ``` bash
+              cd /path/to/syncgatewayinstall/bin
+              ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+              ```
+            
+              ## Try it out
+
+              - Access this URL `http://localhost:4985/travel-sample` in your browser
+              - Verify that you get back a JSON response
+
+
+          - title: Docker (Local)
+            description: |
+              To run the application in a container, you will first get the docker image from Docker Cloud. 
+              
+              - Open a new terminal window and run the following.
+
+                ```bash
+                // Placeholder
+                $ docker pull couchbase/sync-gateway-internal:1.5.0-community
+                ```
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                  ``` bash
+                  $ ifconfig
+                  ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                  ``` JavaScript
+                  "server": "http://192.168.1.121:8091"
+                  ```
+
+              -  Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file. Once the command has completed you can start the application with the following.
+              
+                ```bash
+                // placeholder
+                $ cd /path/to/mobile-travel-sample/sync-gateway-config-file/
+
+                $ docker run -p 4984-4985:4984-4985 --name sync-gateway -d -v `pwd`/sync_gateway.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                ```
+
+              - Verify that the docker container is running with the following command in the terminal window
+                ```bash
+                $ docker ps
+                ```
+
+              ### Try it out
+              
+              - Access this URL `http://localhost:4985/travel-sample` in your browser
+              - Verify that you get back a JSON response
+
+
+          - title: Docker Compose
+            description: |
+              Alternatively, you can use Docker compose to install all of the three server side components 
+                - The Travel Sample Web App
+                - Couchbase Server 5.0 
+                - Sync Gateway 1.5.
+
+
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+                  ```bash
+                  $ ifconfig
+                  ```
+                - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+                  ```js
+                  "server": "http://192.168.1.121:8091"
+                  ```
+
+              - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+              - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+              
+                  ```
                    try-cb-python:
                     image: jamiltz/try-cb-python 
                     ports:
@@ -285,11 +388,6 @@ chapters:
                 ``` bash
                 $ docker-compose up
                 ```
-               
-
-
-
-              
   - title: Design
     lessons:
         - title: Data Modeling
@@ -403,22 +501,70 @@ chapters:
             description: |
               ### The Model-View-Presenter pattern
               
-              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application.
+              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view.
               
               ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
               
+              In the Android Studio project, the code is structured by feature. You can select the **Android** option in the left navigator to view the files by package.
+              
+              ![](https://cl.ly/1h080V1V2g2j/left-navigator.png)
+              
+              #### Protocols
+              In the Travel app, we define two sets of protocols. The `PresenterProtocol` protocol that must be implemented by all Presenter objects and `PresentingViewProtocol` must be implemented by the corresponding "view" objects. 
+              The `PresenterProtocol` and `PresentingViewProtocol` may be optionally extended to support capabilities of specific presenter/view 
+             
+              The app defines following PresenterProtocols that extend the PresenterProtocol` protocol 
+              - _BookingPresenterProtocol_ defines methods to be implemented by the Booking Presenter
+              - _FlightPresenterProtocol_ defines methods to be implemented by the Flight Presenter
+              - _AirportPresenterProtocol_ defines methods to be implemented by the Airport Presenter
+              - _HotelPresenterProtocol_ defines methods to be implemented by the Hotel Presenter
+
+              The app defines following PresentingViewProtocols that extend the PresentingViewProtocol` protocol 
+              - _BookingPresentingViewProtocol_ defines methods to be implemented by the Booking View 
+
+
               #### Model
               
-              The model provides and stores the internal data.
+              The model provides and stores the internal data. In our travel app, for simplicity, we use standard data types of `Dictionary` and `Array` to represent the data. In a real application, one would use a custom  object to represent the model. 
               In our travel app, the entities are represented in different models. `Booking`s are stored in a `BookingsRepository` that is backed by a `BookingsServiceApi`.
+              The app implements the following models
+              - _Booking_ which represents a flight reservation
+              - _Flight_ which represents airline details
+              - _Airport_ which represents airport name
+              - _Hotel_ which represents hotel details
+
+              In addition, the `DatabaseManager.swift` is a singleton class that is used to manage the common database operations such as Database Creation/Deletion and Replication.
+              
               
               #### View
               
-              The view (not to be confused with the Android class View) handles the display of data (i.e the model). User actions are forwarded to the presenter.
-              In our app, the view is represented by Fragments, but basically could be any Android View. We have three Views in our app:
+              In the Travel app, the  `UIView` and the `UIViewController` classes represent the "view" in MVP. It handles user input and forwards requests to the Presenter. It updates the UI based on response from the Presenter. The view object holds a weak reference to the corresponding Presenter object that implements the corresponding `PresenterProtocol`.
               
-              - A view that provides an interface for displaying a list of bookings (`BookingsContract.View`) that is implemented in its own fragment (`BookingsFragment`).
-              - A view that provides an interface to search for flights (`FlightSearch.View`) and corresponding fragment (`FlightSearchFragment`).
+              The app implements the following ViewControllers
+              - _LoginViewController_ which represents the login UI
+              - _BookmarkedHotelsTableViewController_ which represents the UI that lists bookmarked hotels
+              - _BookingTableViewController_ which represents the flight reservations UI
+              - _FlightListingTableViewController_ which represents the UI that lists of flight details
+              - _FlightSearchViewController_ which represents flight search UI
+              - _HotelsTableViewController_ which represents the UI that lists hotels
+              - _HotelDetailViewController_ which represents the UI that lists hotel details
+              
+              In addition, there are custom UITableViewCells 
+
+               
+              #### Presenter
+              
+              The Presenter acts as the intermediary between the View and the Model. It holds a weak reference to the corresponding view object that implements appropriate `PresentingViewProtocol`.
+
+
+              The app implements the following Presenters
+              - _BookingPresenter_ which implements the  `BookingPresenterProtocol`
+              - _FlightPresenter_ which implements the  `FlightPresenterProtocol`
+              - _AirportPresenter_ which implements the  `AirportPresenterProtocol`
+              - _HotelPresenter_ which implements the `HotelPresenterProtocol`
+                   
+              In addition, there are some simple custom UI widgets like custom UITableViewCells 
+
       - title: The Basics
         milestones:
           - title: Create a Database
@@ -462,6 +608,10 @@ chapters:
               The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotels" document containing details of the hotel is added to the database. 
               For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
               
+              **Edit the file** in `app/src/android/java/.../HotelsPresenter.java` and comment in the code to persist a new document to the database.
+              
+              First make sure to remove the `return;` statement and add the code to persist a new document.
+              
               ```java
               document = new Document();
               HashMap<String, Object> properties = new HashMap<>();
@@ -475,8 +625,6 @@ chapters:
               }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-              
               ## Try it out
               
               - As Guest User, tap on “hotels” button
@@ -489,6 +637,9 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
+              
+                ![](https://cl.ly/1d0M462F2X09/as-bookmark.gif)
+              
           - title: Update a Document
             description: |
               To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
@@ -515,8 +666,6 @@ chapters:
               }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
-         
               ## Try it out
               
               - Follow the steps in [Create a Document](/develop/java#/2/0/0) section
