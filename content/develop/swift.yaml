@@ -55,7 +55,7 @@ chapters:
               
               #### On Xcode 9
               If you are building using Xcode9, you will have to download the Swift 3.2/Swift 4 compatible version of Couchbase Lite framework
-              ```
+              
               - Run the `install_9.sh` script to download and install the 2.0 version of Couchbase Lite.
               ```bash
               cd /path/to/mobile-travel-sample/ios/TravelSample
