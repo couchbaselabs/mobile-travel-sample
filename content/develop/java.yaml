@@ -38,21 +38,18 @@ chapters:
           - title: Travel Sample Mobile App
             description: |
               - Clone the app from GitHub and switch to the `connect_sv` branch
-              ```bash
-              git clone https://github.com/couchbaselabs/mobile-travel-sample.git
-              git checkout -b connect_sv
-              ```
-              - Run the `install.sh` script to download and install the 2.0 version of Couchbase Lite.
-              ```bash
-              cd /path/to/mobile-travel-sample/ios/TravelSample
-              sh install.sh
-              ```
+                ```bash
+                git clone https://github.com/couchbaselabs/mobile-travel-sample.git
+                git checkout -b connect_sv
+                ```
+              - Open **android/build.gradle** using Android Studio
+              - Build and run the project
               
-              ## Try it out
+                ![](https://cl.ly/1r0T100T0c22/as-build.png)
               
-              - Open the `TravelSample.xcodeproj` using Xcode
-              - Build and run the project using simulator 
               - Verify that the login screen appears in the simulator
+      
+                ![](https://cl.ly/0T0G2S083g41/as-login.png)
       
       - title: Travel Web Backend
         milestones:
@@ -621,8 +618,6 @@ chapters:
               }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-              
               ## Try it out
               
               - As Guest User, tap on “hotels” button
@@ -635,6 +630,9 @@ chapters:
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Cancel" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
+              
+                ![](https://cl.ly/1d0M462F2X09/as-bookmark.gif)
+              
           - title: Update a Document
             description: |
               To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
