@@ -7,6 +7,9 @@ import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
+import com.couchbase.lite.Expression;
+import com.couchbase.lite.FTSIndexItem;
+import com.couchbase.lite.Index;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorConfiguration;
 
@@ -19,7 +22,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -39,6 +41,7 @@ public class DatabaseManager {
         DatabaseConfiguration config = new DatabaseConfiguration(context);
         try {
             database = new Database("travel-sample", config);
+            database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }

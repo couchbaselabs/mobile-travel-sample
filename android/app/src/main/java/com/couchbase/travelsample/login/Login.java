@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.bookings.BookingsActivity;
 import com.couchbase.travelsample.bookmarks.BookmarksActivity;
-import com.couchbase.travelsample.searchflight.SearchFlightActivity;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 public class Login extends AppCompatActivity {
+
+    EditText usernameInput;
+    EditText passwordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +24,10 @@ public class Login extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        usernameInput = (EditText) findViewById(R.id.usernameInput);
+        passwordInput = (EditText) findViewById(R.id.passwordInput);
+
         DatabaseManager.getSharedInstance(getApplicationContext());
-        DatabaseManager.startPushAndPullReplicationForCurrentUser("demo", "password");
     }
 
 
@@ -33,6 +38,9 @@ public class Login extends AppCompatActivity {
     }
 
     public void onLoginTapped(View view) {
+        DatabaseManager.startPushAndPullReplicationForCurrentUser(usernameInput.getText().toString(),
+            passwordInput.getText().toString());
+
         Intent intent = new Intent(getApplicationContext(), BookingsActivity.class);
         startActivity(intent);
     }

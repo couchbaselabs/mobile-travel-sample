@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.couchbase.travelsample.R;
@@ -15,8 +14,8 @@ import com.couchbase.travelsample.hotels.HotelsActivity;
 import com.couchbase.travelsample.searchflight.SearchFlightActivity;
 import com.couchbase.travelsample.util.ResultAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BookingsActivity extends AppCompatActivity implements BookingsContract.View {
 
@@ -45,15 +44,6 @@ public class BookingsActivity extends AppCompatActivity implements BookingsContr
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        ResultAdapter mResultAdapter = new ResultAdapter(new ArrayList<String>(), android.R.layout.simple_selectable_list_item);
-        mResultAdapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
-            @Override
-            public void OnClick(View view, int position) {
-                Log.d("App", String.valueOf(position));
-            }
-        });
-        mRecyclerView.setAdapter(mResultAdapter);
-
         mActionListener = new BookingsPresenter(this);
         mActionListener.fetchUserBookings();
     }
@@ -64,8 +54,8 @@ public class BookingsActivity extends AppCompatActivity implements BookingsContr
     }
 
     @Override
-    public void showBookings(List<String> bookings) {
-        ResultAdapter adapter = new ResultAdapter(bookings, android.R.layout.simple_selectable_list_item);
+    public void showBookings(List<Map<String, Object>> bookings) {
+        ResultAdapter adapter = new ResultAdapter(bookings, "name", "journey");
         adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
             @Override
             public void OnClick(View view, int position) {
@@ -80,4 +70,5 @@ public class BookingsActivity extends AppCompatActivity implements BookingsContr
         Intent intent = new Intent(getApplicationContext(), SearchFlightActivity.class);
         startActivity(intent);
     }
+
 }

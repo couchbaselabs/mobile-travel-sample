@@ -82,6 +82,9 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         Database database = DatabaseManager.getDatabase();
         Document document = database.getDocument(docId);
         Array bookings = document.getArray("flights");
+        if (bookings == null) {
+            bookings = new Array();
+        }
         for (int i = 0; i < flights.size(); i++) {
             HashMap<String, Object> properties = new HashMap<>();
             try {

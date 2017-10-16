@@ -12,4 +12,11 @@
     <string name="proceed_as_guest">Proceed as Guest</string>
     <string name="hintFrom">01/12/2017</string>
     <string name="hintTo">05/12/2017</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="guest_field">IS_GUEST</string>
+    <string name="heathrow">Heathrow</string>
+    <string name="san_francisco_intl">San Francisco Intl</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
