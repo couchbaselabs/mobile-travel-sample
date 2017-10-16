@@ -64,7 +64,7 @@ chapters:
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/5) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/java#/0/2/1) section**
         
               - Install `libcouchbase` which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
@@ -180,7 +180,7 @@ chapters:
             description: |
               In this lesson, you will install and launch version 5.0 of the Couchbase Server.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/3/1) section**
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
@@ -213,18 +213,20 @@ chapters:
             description: |
              To run the application in a container, you will first get the docker image from Docker Cloud. 
               
-              - Open a new terminal window and run the following.
-
+              - Open a new terminal window and run the following command
                 ```bash
-                // Placeholder
                 $ docker pull connectsv/couchbase-server
                 ```
               
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                // placeholder
-                $ docker run -it -p 8091:8091 connectsv/ouchbase-server
+                $ docker run -d --name cb-server -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                ```
+
+              - It may take a few seconds for the server to startup. Verify that the docker image is running with following command
+                ```bash
+                $ docker ps
                 ```
 
               - Launch Couchbase Server 
@@ -291,7 +293,7 @@ chapters:
             description: |
              In this lesson, you will install and launch version 1.5 of the Sync Gateway
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/5) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/4/1) section**
              
               - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
               - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
@@ -317,11 +319,16 @@ chapters:
                 // Placeholder
                 $ docker pull couchbase/sync-gateway-internal:1.5.0-community
                 ```
-              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
-                -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-                  ``` bash
-                  $ ifconfig
-                  ```
+              - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](/develop/java#/0/1/0) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+                -  Identify the local IP Address of your machine. 
+                    - On a Linux or macOS system, type in the following command in terminal
+                    ``` bash
+                    $ ifconfig
+                    ```
+                    - On a Windows system, type in the following command in terminal
+                    ``` bash
+                    $ ipconfig
+                    ```
                 - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
                   ``` JavaScript
                   "server": "http://192.168.1.121:8091"
@@ -330,10 +337,9 @@ chapters:
               -  Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file. Once the command has completed you can start the application with the following.
               
                 ```bash
-                // placeholder
                 $ cd /path/to/mobile-travel-sample/sync-gateway-config-file/
 
-                $ docker run -p 4984-4985:4984-4985 --name sync-gateway -d -v `pwd`/sync_gateway.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
 
               - Verify that the docker container is running with the following command in the terminal window
@@ -734,7 +740,7 @@ chapters:
               - Data Synchronization and Routing
               - Authorization and Access Control
               
-              In this chapter, we will focus on Authorization and Access Control.We will discuss Data Synchronization and Routing in the [Sync](http://docs-build.sc.couchbase.com:9000/develop/java#/2/3/0) chapter.
+              In this chapter, we will focus on Authorization and Access Control.We will discuss Data Synchronization and Routing in the [Sync](/develop/java#/2/3/0) chapter.
              
               In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.          
 
@@ -752,7 +758,7 @@ chapters:
                 }
               ```
 
-              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](http://docs-build.sc.couchbase.com:9000/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
                 // Give user read access to channel
@@ -802,7 +808,7 @@ chapters:
         milestones:
           - title: Channels & Data Routing
             description: |
-              In the lesson on [Access Control](http://docs-build.sc.couchbase.com:9000/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
+              In the lesson on [Access Control](/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
      
               A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
 
@@ -826,7 +832,7 @@ chapters:
             
           - title: XAttrs
             description: |
-             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/4) section.
+             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/java#/0/4/0) section.
 
              
              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
