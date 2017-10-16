@@ -39,11 +39,11 @@ chapters:
           
           - title: Travel Sample Mobile App
             description: |
-              - Clone the app from GitHub and switch to the `connect_sv` branch
+              - Clone the app from GitHub and switch to the `connect_sv` branch. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
               ```bash
-              git clone https://github.com/couchbaselabs/mobile-travel-sample.git
-              git checkout -b connect_sv
+              git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
+              
               #### On Xcode 8
               If you are building using Xcode8, you will have to download the Swift 3.1 compatible version of Couchbase Lite framework
               

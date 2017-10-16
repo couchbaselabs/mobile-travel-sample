@@ -46,8 +46,8 @@ chapters:
             description: |
               - Clone the app from GitHub and switch to the `connect_sv` branch
                 ```bash
-                git clone https://github.com/couchbaselabs/mobile-travel-sample.git
-                git checkout -b connect_sv
+                git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+  
                 ```
               - Open **android/build.gradle** using Android Studio
               - Build and run the project
