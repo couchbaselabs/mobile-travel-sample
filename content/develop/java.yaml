@@ -492,13 +492,6 @@ chapters:
               ```
               - Confirm that "_id" property is "airline_137"
 
-
-          - title: Entity relationships
-            description: |
-              TODO
-          - title: Blobs
-            description: |
-              TODO
   - title: Develop
     lessons:
       - title: MVP Architecture
@@ -780,23 +773,6 @@ chapters:
               curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
               ```
               - Confirm that you see the details of the "travel-sample" database and "state" is "online"
-          - title: User Authentication
-            description: |
-              todo
-            
-              ## Try it out
-            
-              - Log into the Travel Sample Mobile App as “demo” user with password as “password”
-          - title: Encryption
-            description: |
-              todo
-              
-              ## Try it out
-              
-              - enable encryption on the mobile travel sample app.
-          - title: Key Management
-            description: |
-              todo
               
               ## Try it out
               

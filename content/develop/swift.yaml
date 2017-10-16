@@ -504,12 +504,6 @@ chapters:
               - Confirm that "_id" property is "airline_137"
 
 
-          - title: Entity relationships
-            description: |
-              TODO
-          - title: Blobs
-            description: |
-              TODO
   - title: Develop
     lessons:
       - title: MVP Architecture
@@ -802,30 +796,6 @@ chapters:
               ```
               - Confirm that you see the details of the "travel-sample" database and "state" is "online"
 
-          - title: User Authentication
-            description: |
-              todo
-            
-              ## Try it out
-            
-              - Log into the Travel Sample Mobile App as “demo” user with password as “password”
-          - title: Encryption
-            description: |
-              todo
-              
-              ## Try it out
-              
-              - enable encryption on the mobile travel sample app.
-          - title: Key Management
-            description: |
-              todo
-              
-              ## Try it out
-              
-              - Enable encryption.
-              - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
-              - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
-              - Best Practices
       - title: Sync
         milestones:
           - title: Channels/Data Routing
