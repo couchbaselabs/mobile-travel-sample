@@ -27,17 +27,19 @@ public class Login extends AppCompatActivity {
         usernameInput = (EditText) findViewById(R.id.usernameInput);
         passwordInput = (EditText) findViewById(R.id.passwordInput);
 
-        DatabaseManager.getSharedInstance(getApplicationContext());
     }
 
 
 
     public void onGuestLoginTapped(View view) {
+        DatabaseManager.getSharedInstance(getApplicationContext(), true);
+
         Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
         startActivity(intent);
     }
 
     public void onLoginTapped(View view) {
+        DatabaseManager.getSharedInstance(getApplicationContext(), false);
         DatabaseManager.startPushAndPullReplicationForCurrentUser(usernameInput.getText().toString(),
             passwordInput.getText().toString());
 

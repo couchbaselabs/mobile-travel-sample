@@ -36,7 +36,9 @@
                     android:id="@+id/locationInput"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:hint="@string/location" />
+                    android:hint="@string/location"
+                    android:textColor="#fff"
+                    android:textColorHint="#e7e7e7"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -47,7 +49,9 @@
                     android:id="@+id/descriptionInput"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:hint="@string/description"/>
+                    android:hint="@string/description"
+                    android:textColor="#fff"
+                    android:textColorHint="#e7e7e7"/>
             </android.support.design.widget.TextInputLayout>
 
         </com.google.android.flexbox.FlexboxLayout>
