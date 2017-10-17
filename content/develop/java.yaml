@@ -359,12 +359,6 @@ chapters:
                  Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
                 ```
               ## Try it out
-              
-                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
-                  ``` bash
-                  python travel.py
-                   Running on http://localhost:8080/ (Press CTRL+C to quit)
-                  ```
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
