@@ -395,7 +395,7 @@ chapters:
               - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
-                $ docker pull connectsv/try-cb-python
+                $ docker pull connectsv/try-cb-py
                 ```
               
                - Once the command has completed you can start the application with the following.
