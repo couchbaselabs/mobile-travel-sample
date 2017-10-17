@@ -16,11 +16,12 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     private List<Map<String, Object>> mResultSet;
     private String mField1;
     private String mField2;
-    private OnItemClickListener mOnItemClickListener;
+    private OnItemListener mOnItemListener;
     private int mLayout;
 
-    public interface OnItemClickListener {
+    public interface OnItemListener {
         void OnClick(View view, int position);
+        void OnSwipe(int position);
     }
 
     public ResultAdapter(List<Map<String, Object>> mResultSet, String field1, String field2) {
@@ -43,6 +44,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.list_item, parent, false);
+        view.setPadding(20, 20, 20, 20);
         return new ViewHolder(view);
     }
 
@@ -54,7 +56,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.OnClick(view, position);
+                mOnItemListener.OnClick(view, position);
             }
         });
     }
@@ -64,7 +66,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         return mResultSet.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
+    public void setOnItemClickListener(OnItemListener onItemListener) {
+        mOnItemListener = onItemListener;
+    }
+
+    public void remove(int position) {
+        mOnItemListener.OnSwipe(position);
     }
 }

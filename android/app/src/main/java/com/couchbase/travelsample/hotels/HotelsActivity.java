@@ -82,7 +82,7 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
             @Override
             public void run() {
                 ResultAdapter adapter = new ResultAdapter(hotels, "name", "address");
-                adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+                adapter.setOnItemClickListener(new ResultAdapter.OnItemListener() {
                     @Override
                     public void OnClick(View view, int position) {
                         if (IS_GUEST) {
@@ -90,6 +90,11 @@ public class HotelsActivity extends AppCompatActivity implements HotelsContract.
                             mActionListener.bookmarkHotels(selectedHotel);
                             finish();
                         }
+                    }
+
+                    @Override
+                    public void OnSwipe(int position) {
+
                     }
                 });
                 mRecyclerView.setAdapter(adapter);

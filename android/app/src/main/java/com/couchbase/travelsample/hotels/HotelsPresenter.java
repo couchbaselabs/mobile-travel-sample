@@ -185,10 +185,10 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         Expression descExp = Expression.property("description").match(description);
 
         Expression locationExp = Expression.property("country")
-            .equalTo(location)
-            .or(Expression.property("city").equalTo(location))
-            .or(Expression.property("state").equalTo(location))
-            .or(Expression.property("address").equalTo(location));
+            .like("%" + location + "%")
+            .or(Expression.property("city").like("%" + location + "%"))
+            .or(Expression.property("state").like("%" + location + "%"))
+            .or(Expression.property("address").like("%" + location + "%"));
 
         Expression searchExp = descExp.and(locationExp);
 
