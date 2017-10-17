@@ -24,15 +24,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <ImageView
+            android:src="@drawable/cb_travel_banner"
+            android:layout_width="200dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="@string/sign_in"/>
+            android:layout_gravity="center_horizontal"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="300dp"
