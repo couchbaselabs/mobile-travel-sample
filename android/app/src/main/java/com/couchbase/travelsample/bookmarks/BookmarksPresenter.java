@@ -1,7 +1,9 @@
 package com.couchbase.travelsample.bookmarks;
 
+import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.Function;
 import com.couchbase.lite.Join;
@@ -61,6 +63,7 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
                     Map<String, Object> properties = new HashMap<>();
                     properties.put("name", row.getDictionary("hotelDS").getString("name"));
                     properties.put("address", row.getDictionary("hotelDS").getString("address"));
+                    properties.put("id", row.getDictionary("hotelDS").getString("id"));
                     data.add(properties);
                 }
                 mBookmarksView.showBookmarks(data);
@@ -70,4 +73,14 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         query.run();
     }
 
+    @Override
+    public void removeBookmark(Map<String, Object> bookmark) {
+        Database database = DatabaseManager.getDatabase();
+        Document document = database.getDocument((String) bookmark.get("id"));
+        try {
+            database.delete(document);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
 }

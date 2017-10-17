@@ -56,9 +56,14 @@ public class BookingsActivity extends AppCompatActivity implements BookingsContr
     @Override
     public void showBookings(List<Map<String, Object>> bookings) {
         ResultAdapter adapter = new ResultAdapter(bookings, "name", "journey");
-        adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ResultAdapter.OnItemListener() {
             @Override
             public void OnClick(View view, int position) {
+
+            }
+
+            @Override
+            public void OnSwipe(int position) {
 
             }
         });

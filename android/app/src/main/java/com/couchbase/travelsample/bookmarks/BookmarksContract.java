@@ -18,6 +18,8 @@ public interface BookmarksContract {
 
         void fetchBookmarks();
 
+        void removeBookmark(Map<String, Object> bookmark);
+
     }
 
 }
