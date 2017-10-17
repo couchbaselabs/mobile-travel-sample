@@ -80,23 +80,25 @@ chapters:
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/3/1) section**
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
+              - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/createadminuser.png)
+        
               - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
               
                 ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
               
-              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. 
-                - If you have a previous installation of the server without this bucket, you can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
+              - Install the sample bucket named *travel-sample* because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console 
         
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/sample_bucket.png)
         
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
-            
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
+              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/add_rbac.png)
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
         
-              - Create a Full text search index on travel-sample bucket called 'hotels'
-        
+              - Create a Full text search index on travel-sample bucket called 'hotels'.You can do this from the "Search" menu. Just go with default index settings.
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/add_fts.png)
+                
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
         
               ## Try it out
@@ -104,7 +106,7 @@ chapters:
               - Launch Couchbase Server 
               - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
               - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket       
+              - Verify that you have around 31,000 documents in your travel-sample bucket       
            
           - title: Docker (Local)
             description: |
@@ -126,23 +128,13 @@ chapters:
                 ```bash
                 $ docker ps
                 ```
-           
-              - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
-            
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
-        
-              - Create a Full text search index on travel-sample bucket called 'hotels'
-        
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
         
               ### Try it out
               
               - Launch Couchbase Server 
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Log into the "Admin Console" with username as "Administrator" and password as "password"
               - Select the "Buckets" option from the menu on the left
-              - Verify that you have 31,665 documents in your travel-sample bucket
+              - Verify that you have around 31,000 documents in your travel-sample bucket
 
           # - title: Docker Compose
           #   description: |
@@ -194,6 +186,7 @@ chapters:
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/4/1) section**
              
               - Install Sync Gateway 1.5 from [download](https://www.couchbase.com/downloads) v1.5 of Sync Gateway on platform of choice
+              - The same user credentials will be used in the configuration file ([sync-gateway-config-travelsample.json](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json)) for Sync Gateway to access the documents in this bucket.
               - Launch the Sync Gateway with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded from the Travel Sample Mobile App Github rep. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
 
               ``` bash
@@ -329,7 +322,7 @@ chapters:
               $ (try-cb-python) Macintosh-2:try-cb-python mactester$ 
               ```
 
-               - The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
+              - The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
               ``` bash
               cd /path/to/try-cb-python
               pip install -r requirements.txt
@@ -342,10 +335,9 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-              ``` bash
+              ```bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
-               
               ```
         
               ## Try it out
