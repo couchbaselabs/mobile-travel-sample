@@ -39,7 +39,7 @@ chapters:
           
           - title: Travel Sample Mobile App
             description: |
-              - Clone the app from GitHub and switch to the `connect_sv` branch. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
+              - Clone the "connect_sv" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
               ```bash
               git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
@@ -68,120 +68,7 @@ chapters:
               - Build and run the project using simulator 
               - Verify that the login screen appears in the simulator
       
-      - title: Travel Web Backend
-        milestones:
-          - title: Manual
-            description: |
-              We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
-
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/2/1) section**
-        
-              - Install `libcouchbase` which is the Core C SDK used by the Python SDK
-                - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
-        
-              - Clone the Travel Sample web app repo and checkout the 5.0 branch
-              ```bash
-              git clone https://github.com/couchbaselabs/try-cb-python.git
-              git checkout 5.0
-              ```
-              - The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
-              ``` bash
-              cd /path/to/try-cb-python
-              pip install -r requirements.txt
-              ```
-        
-              - Update the travel.py file to reflect the username and password that you have used during Couchbase Server install. This defaults to "Administrator" and "password"
-              ``` python
-              DEFAULT_USER = "Administrator"
-              PASSWORD = 'password' 
-              ```
-        
-              ## Try it out
-              
-                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
-                  ``` bash
-                  python travel.py
-                  * Running on http://localhost:8080/ (Press CTRL+C to quit)
-                  ```
-                - Open http://localhost:8080/ in your web browser
-                - Verify that you see the login screen of the Travel Sample Web App as shown below
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-          - title: Docker (Local)
-            description: |
-              
-              To run the application in a container, you will first get the docker image from Docker Cloud. 
-              
-              - Open a new terminal window and run the following.
-              
-                ```bash
-                $ docker pull connectsv/try-cb-python
-                ```
-              
-               - Once the command has completed you can start the application with the following.
-              
-                ```bash
-                $ docker run -it -p 8080:8080 connectsv/try-cb-python
-                 ```
-              
-               You should then see the following in the logs.
-              
-                ```bash
-                 Connecting to: couchbase://docker.for.mac.localhost/travel-sample?username=Administrator
-            
-                 Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
-                ```
-              ## Try it out
-              
-                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
-                  ``` bash
-                  python travel.py
-                   Running on http://localhost:8080/ (Press CTRL+C to quit)
-                  ```
-                - Open http://localhost:8080/ in your web browser
-                - Verify that you see the login screen of the Travel Sample Web App as shown below
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-            
-          # - title: Docker Compose
-          #   description: |
-          #     Alternatively, you can use Docker compose to install all of the three server side components 
-          #       - The Travel Sample Web App
-          #       - Couchbase Server 5.0 
-          #       - Sync Gateway 1.5.
-
-
-          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
-          #       -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
-          #         ``` bash
-          #         $ ifconfig
-          #         ```
-          #       - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
-          #         ``` JavaScript
-          #         "server": "http://192.168.1.121:8091"
-          #         ```
-
-          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
-          #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
-              
-          #        ````
-          #         try-cb-python:
-          #           image: jamiltz/try-cb-python 
-          #           ports:
-          #             - 8080:8080
-          #           container_name: try_cb_python
-
-          #           sync-gateway:
-          #             image: connectsv/sync-gateway-internal:1.5.0-community 
-          #             ports:
-          #               - "4984-4985:4984-4985"
-          #             command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
-          #             volumes:
-          #               - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
-          #             container_name: sync_gateway
-          #        ```
-          #     - Run the following command to bring up all three containers
-          #       ``` bash
-          #       $ docker-compose up
-          #       ```
+      
       
       - title: Couchbase Server 5.0
         milestones:
@@ -386,6 +273,145 @@ chapters:
               
           #         ```
           #          try-cb-python:
+          #           image: jamiltz/try-cb-python 
+          #           ports:
+          #             - 8080:8080
+          #           container_name: try_cb_python
+
+          #           sync-gateway:
+          #             image: connectsv/sync-gateway-internal:1.5.0-community 
+          #             ports:
+          #               - "4984-4985:4984-4985"
+          #             command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+          #             volumes:
+          #               - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+          #             container_name: sync_gateway
+          #        ```
+          #     - Run the following command to bring up all three containers
+          #       ``` bash
+          #       $ docker-compose up
+          #       ```
+          
+      - title: Travel Web Backend
+        milestones:
+          - title: Manual
+            description: |
+              We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
+
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/2/1) section**
+        
+              - Install `libcouchbase` which is the Core C SDK used by the Python SDK
+                - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
+        
+              - Clone the 5.0 branch of Travel Sample web app repo 
+              ```bash
+              git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+             
+              ```         
+
+              - We will run the Travel Web App in a Python virtual environment. 
+                First, check if `virtualenv` is installed on your system
+              ```bash
+              $ virtualenv --version
+              ```
+
+              - if `virtualenv` is not installed , you can use `apt-get` or `pip` to install it
+              ```bash
+              $ sudo pip install virtualenv
+              ```
+
+              - Specify the folder for your virtual environment
+              ```bash
+              $ virtualenv /path/to/try-cb-python
+              ```
+              - Activate your environment. You should see a prompt as shown below
+              ```bash
+              $ source /path/to/try-cb-python/bin/activate
+              $ (try-cb-python) Macintosh-2:try-cb-python mactester$ 
+              ```
+
+               - The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
+              ``` bash
+              cd /path/to/try-cb-python
+              pip install -r requirements.txt
+              ```
+        
+              - Update the travel.py file to reflect the username and password that you have used during Couchbase Server install. This defaults to "Administrator" and "password"
+              ``` python
+              DEFAULT_USER = "Administrator"
+              PASSWORD = 'password' 
+              ```
+
+              - Now launch the Travel Web App
+              ``` bash
+              python travel.py
+              * Running on http://localhost:8080/ (Press CTRL+C to quit)
+               
+              ```
+        
+              ## Try it out
+           
+                - Open http://localhost:8080/ in your web browser
+                - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+          - title: Docker (Local)
+            description: |
+              
+              To run the application in a container, you will first get the docker image from Docker Cloud. 
+              
+              - Open a new terminal window and run the following.
+              
+                ```bash
+                $ docker pull connectsv/try-cb-python
+                ```
+              
+               - Once the command has completed you can start the application with the following.
+              
+                ```bash
+                $ docker run -it -p 8080:8080 connectsv/try-cb-python
+                 ```
+              
+               You should then see the following in the logs.
+              
+                ```bash
+                 Connecting to: couchbase://docker.for.mac.localhost/travel-sample?username=Administrator
+            
+                 Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+                ```
+              ## Try it out
+              
+                - Launch the Travel Sample web application by running the travel.py file from a terminal. It will tell you the port on localhost to goto in your web browser
+                  ``` bash
+                  python travel.py
+                   Running on http://localhost:8080/ (Press CTRL+C to quit)
+                  ```
+                - Open http://localhost:8080/ in your web browser
+                - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+            
+          # - title: Docker Compose
+          #   description: |
+          #     Alternatively, you can use Docker compose to install all of the three server side components 
+          #       - The Travel Sample Web App
+          #       - Couchbase Server 5.0 
+          #       - Sync Gateway 1.5.
+
+
+          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+          #       -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
+          #         ``` bash
+          #         $ ifconfig
+          #         ```
+          #       - Open the `sync-gateway-config-travelsample.json` and look for `server`and update `localhost` with the local IP Address of your machine. In this example, the local IP Address is `192.168.1.121`
+          #         ``` JavaScript
+          #         "server": "http://192.168.1.121:8091"
+          #         ```
+
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+          #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
+              
+          #        ````
+          #         try-cb-python:
           #           image: jamiltz/try-cb-python 
           #           ports:
           #             - 8080:8080
