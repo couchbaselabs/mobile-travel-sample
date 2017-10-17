@@ -2,8 +2,32 @@ requirements: |
 chapters:
   - title: Installation
     lessons:
-      - title: Pre-requisites
+      - title: Overview
         milestones:
+          - title: Components
+            description: |
+              This is the high level architecture of the system that we will be running
+              ![](https://raw.githubusercontent.com/couchbaselabs/couchbase_mobile_blogs/master/travelsample_mobile/travelsampleapp-arch.png?token=AAnYg2D_RWF1NrKsEgtIti0P52joLSA1ks5Z756YwA%3D%3D)
+
+              It includes the following components -
+              - Client Side 
+                - Travel Mobile App -  Android App in java that is linked with Couchbase Lite 2.0 (Developer Preview)
+              - Server Side
+                - Couchbase Server v5.0
+                - Sync Gateway v1.5
+                - Travel Web App - Python web app integrated with Couchbase Python SDK
+
+              For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
+              
+              For the server side components, you have three options 
+              - Manual
+                - Here, you would download and install the components on your local machine
+              - Docker (Cloud)
+                - In this case, you would install all the server components in separate docker containers on your local machine
+              - Cloud (Rightscale)
+                - In this case, you can launch and connect to an instance of the server components running on a cloud
+
+              It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section later in the workshop
           - title: Pre-requisites
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
@@ -127,7 +151,11 @@ chapters:
               - Log into the "Admin Console" with username as "Administrator" and password as "password"  
               - Select the "Buckets" option from the menu on the left
               - Verify that you have around 31,000 documents in your travel-sample bucket
+          - title: Cloud
+            description: |
+              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
 
+              [DETAILS COMING SOON]
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
@@ -235,7 +263,11 @@ chapters:
               - Access this URL `http://localhost:4985/travel-sample` in your browser
               - Verify that you get back a JSON response
 
+          - title: Cloud
+            description: |
+              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
 
+              [DETAILS COMING SOON]
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
@@ -368,7 +400,11 @@ chapters:
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-            
+          - title: Cloud
+            description: |
+              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
+
+              [DETAILS COMING SOON]
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
