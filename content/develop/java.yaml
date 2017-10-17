@@ -293,9 +293,8 @@ chapters:
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
         
               - Clone the 5.0 branch of Travel Sample web app repo 
-              ```bash
-              git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
-             
+              ``` bash
+              $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
               ```         
 
               - We will run the Travel Web App in a Python virtual environment. 
