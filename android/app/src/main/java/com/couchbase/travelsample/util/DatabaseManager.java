@@ -51,7 +51,7 @@ public class DatabaseManager {
             DatabaseConfiguration config = new DatabaseConfiguration(context);
             try {
                 database = new Database("travel-sample", config);
-                database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
+                createFTSQueryIndex();
             } catch (CouchbaseLiteException e) {
                 e.printStackTrace();
             }
@@ -67,6 +67,14 @@ public class DatabaseManager {
             copyFile(inputStream, out);
             unpackZip(context.getFilesDir().getPath() + "/", filename);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createFTSQueryIndex() {
+        try {
+            database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
+        } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }

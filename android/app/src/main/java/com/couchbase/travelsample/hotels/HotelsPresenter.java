@@ -182,6 +182,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     @Override
     public void queryHotels(String location, String description) {
         Database database = DatabaseManager.getDatabase();
+
         Expression descExp = Expression.property("description").match(description);
 
         Expression locationExp = Expression.property("country")
