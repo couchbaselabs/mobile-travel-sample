@@ -203,7 +203,7 @@ chapters:
                - Select the "Buckets" option from the menu on the left
                - Verify that you have around 31,000 documents in your travel-sample bucket
 
-              ## Try it out (Sync Gateway)
+               ## Try it out (Sync Gateway)
 
                - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
                - You should the following response
@@ -378,7 +378,7 @@ chapters:
                - Select the "Buckets" option from the menu on the left
                - Verify that you have around 31,000 documents in your travel-sample bucket
 
-              ## Try it out (Sync Gateway)
+               ## Try it out (Sync Gateway)
 
                - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
                - You should the following response
@@ -578,7 +578,7 @@ chapters:
                - Select the "Buckets" option from the menu on the left
                - Verify that you have around 31,000 documents in your travel-sample bucket
 
-              ## Try it out (Sync Gateway)
+               ## Try it out (Sync Gateway)
 
                - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
                - You should the following response
