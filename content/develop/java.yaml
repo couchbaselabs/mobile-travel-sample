@@ -856,13 +856,12 @@ chapters:
               channel("channel." + username);
 
               ```
-            
-            
+          
           - title: XAttrs
             description: |
              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/java#/0/4/0) section.
 
-             
+            
              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
              
              
@@ -878,9 +877,8 @@ chapters:
               "enable_shared_bucket_access":true
              ```
 
-          - title:  Replication
+          - title: Replication
             description: |
-              
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
               
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
@@ -892,12 +890,56 @@ chapters:
               The replication process can be “continuous” or “one shot“.
               - In “Continuous” replication mode, the changes are continually synchronized between the client and Sync Gateway.
               
-              - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
+              - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication.
+              
+              **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. You will implement the method `startPushAndPullReplicationForCurrentUser(String username, String password)`. Remove the `return;` statement.
 
-              SHOW CODE SNIPPET
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
+              
               ```java
+              public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
+                ...
+              }
               ```
-               
+              
+              First, you initialize the `URL` object which represents the Sync Gateway instance to synchronize with.
+              
+              ```java
+              String syncUrl = "blip://10.0.2.2:4984/travel-sample";
+              URI url = null;
+              try {
+                  url = new URI(syncUrl);
+              } catch (URISyntaxException e) {
+                  e.printStackTrace();
+              }
+              ```
+
+              Next, you will configure the replication. The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway. The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel App, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
+
+              ```java
+              ReplicatorConfiguration config = new ReplicatorConfiguration(database, url);
+              config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+              config.setContinuous(true);
+              ```
+              
+              The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/swift#/2/2/1) section
+          
+              ```java
+              config.setAuthenticator(new BasicAuthenticator(username, password));
+              ```
+
+              The Replicator is initialized with the specified configuration 
+              
+              ```swift
+              Replicator replicator = new Replicator(config);
+              ```
+
+              Replication is started
+              
+              ```swift
+              replicator.start();
+              ```
+              
               ## Try it out (Push Replication)
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
@@ -914,8 +956,7 @@ chapters:
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_push_sync.gif)
-           
-             
+
               ## Try it out (Pull Replication)
               
               - Access the Travel Sample Web app running on http://localhost:8080 
@@ -932,8 +973,7 @@ chapters:
               - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_pull_sync.gif)
-           
-     
+
       - title: Pre-built database
         milestones:
           - title: Starting with Prebuilt Database
