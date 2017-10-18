@@ -28,7 +28,7 @@ chapters:
 
               1. You can make a note of the IP addresses in your output, but they should be the same as the ones above. As you might have guessed, we now have two VMs running - one with Couchbase Server and one with Sync Gateway. Let's check the Couchbase Server instance by going to the IP Address and port specified, you should be greeted with this screen:
 
-                ![](assets/welcome_wide.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_wide.png)
 
               1. That's it, Couchbase Server is now running on this VM. We'll get into configuring it in a minute, but let's take a look at what we did under the covers so that you can replicate this with whatever provisioning tools you prefer (or manually, if you're a purist like that!).
 
@@ -52,7 +52,7 @@ chapters:
 
               or by either opening the URL in a browser:
 
-                ![](assets/sg_browser.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/sg_browser.png)
 
               1. Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
 
@@ -118,33 +118,33 @@ chapters:
               ## Configuring Couchbase Server using the UI
               1. Open the UI in a browser - this should be at http://10.150.150.101:8091/ - and select *Setup New Cluster*
 
-                ![](assets/welcome_focus.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
-              1. The next step is pretty self explainatory. You don't need to worry too much about the cluster name, but we'll be needed the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
+              1. The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
 
-                ![](assets/cluster_init.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/cluster_init.png)
 
               1. For the next step, you'll need to accept the Terms and Conditions, and then click *Configure Disk, Memory, Services* (we don't want the defaults in this case).
 
-                ![](assets/terms_conditions.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/terms_conditions.png)
 
-              1. On this page, the only things we need to do are to diable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. Everything else is fine as it is - hit *Save & Finish*.
+              1. On this page, the only things we need to do are to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. Everything else is fine as it is - hit *Save & Finish*.
 
-                ![](assets/node_init.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init.png)
 
               1. Welcome to the Couchbase Server UI! You can see at the moment we have one node running the Data Service, and not much else going on - so let's add a bucket. Click *Buckets* on the left hand bar, then *ADD BUCKET* in the top right corner. In this case, we'll call our bucket `todo` and stick with the defaults for everything else. You can of course pick a different name for your bucket, but be aware that some of the examples in later lessons may need tweaking to match.
 
-                ![](assets/main_ui.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/main_ui.png)
 
-                ![](assets/bucket_init.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
               1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control]() is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authenication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
-                ![](assets/rbac_user.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
               1. As for the roles themselves, we want to give `sg_user` the *Bucket Full Access* role for the `todo` bucket.
 
-                ![](assets/rbac_role.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_role.png)
 
           - title: Configuring Sync Gateway
             description: |
@@ -168,7 +168,7 @@ chapters:
 
               1. With this API, we can check the current running config:
 
-                ```
+                ```bash
                 $ curl localhost:4985/_config
                 ```
 
@@ -203,7 +203,7 @@ chapters:
 
               1. In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
 
-                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property:
+                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html):
 
                 ```json
                 "todo": {
@@ -213,9 +213,13 @@ chapters:
                   "password": "rb4c_p4ssw0rd",
                   "users": {
                     "GUEST": {"disabled": false, "admin_channels": ["*"] }
-                  }
+                  },
+                  "import_docs": "continuous",
+                  "enable_shared_bucket_access": true
                 }
                 ```
+
+                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seemlessly.
 
                 While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
 
@@ -288,7 +292,8 @@ chapters:
                     ]
                 }
                 ```
-              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+
+              1. We can confirm this in a couple of places. Firstly, we cang see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -299,11 +304,11 @@ chapters:
 
                 We can also check and see that Sync Gateway has connected to Couchbase Server. If you go to the *Buckets* section, you can click *Documents* to view the contents of the `todo` bucket.
 
-                ![](assets/todo_bucket.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_bucket.png)
 
                 Here you should now see a handful of documents holding Sync Gateway's metadata:
 
-                ![](assets/todo_docs.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_docs.png)
 
               Congratulations! Sync Gateway is now configured with a Couchbase Server backend. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
@@ -311,7 +316,8 @@ chapters:
         milestones:
           - title: Scaling Couchbase Server
             description: |
-              Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster. Luckily, this is incredibly simple to set up with Couchbase Server. All you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
+              Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster.
+              Couchbase Server is designed to make this scaling incredibly easy; all you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
 
               1. First, we'll need some more nodes. If you've been looking over the `Vagrantfile` you might have noticed there are a few spare nodes mentioned:
 
@@ -336,6 +342,7 @@ chapters:
                 above with their current state. For more information about a specific
                 VM, run `vagrant status NAME`.
                 ```
+
               1. So we've got a couple of spare Couchbase Server nodes - let's spin those up. Unlike before, we will need to specify these by name:
 
                 ```bash
@@ -348,35 +355,35 @@ chapters:
 
                 Once this completes, you should see the familiar UI at either of those URLs:
 
-                ![](assets/welcome_focus.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
               1. For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
 
-                ![](assets/join_cluster.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster.png)
 
                 Before we click through, we also want to only have the Data Service running on this node, we can do this in the same way we did last time under the *Configure Services & Settings For This Node* section:
 
-                ![](assets/join_cluster_detail.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_detail.png)
 
                 Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
 
-                ![](assets/joined_cluster.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/joined_cluster.png)
 
                 It's worth noting at this point that you can access and administer the cluster from any of the nodes - you'll notice we're still on `10.150.150.102`.
 
               1. We've got one more node to add, let's do it from the cluster itself, rather than from the new node. Click the *Servers* section on the left hand bar, and you can now see the last node we added:
 
-                ![](assets/pending_rebalance.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/pending_rebalance.png)
 
-                As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance. 
+                As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
               1. In the top right corner, click *ADD SERVER* and then fill in the IP address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
 
-                ![](assets/add_node.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/add_node.png)
 
               1. Finally, start a rebalance with the *Rebalance* button and watch it progress.
 
-                ![](assets/rebalancing.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rebalancing.png)
 
                 The key thing to note here is that everything is totally online. All data is available during the rebalance.
 
@@ -447,6 +454,7 @@ chapters:
                   server 10.150.150.102:4984;
                 }
                 ```
+
                 Let's add the second Sync Gateway node in:
 
                 ```nginx
@@ -477,6 +485,53 @@ chapters:
                 ],
                 "last_seq":"1"}
                 ```
+
+      - title: Extra Credit
+        milestones:
+          - title: Adding more Couchbase Services
+            description: |
+              When we scaled out the Couchbase Server cluster, we only used the Data Service, because it was all we really needed. For a production deployment, this is actually what we'd recommend - separating the services to dedicated nodes helps you more easily achieve redundancy for each service as well as letting you scale each service separately as your workload and use case demands. There are a couple of ways we could add more services to this cluster: removing a node and re-adding it with more services enabled; or adding yet more nodes.
+
+              1. There's a hidden option in the Vagrantfile to provision yet more nodes, so let's take advantage of that:
+
+                ```bash
+                $ export VAGRANT_CB_EXTRA_NODES=1
+                $ vagrant status
+                Couchbase Server:       http://10.150.150.101:8091/
+                Sync Gateway:           http://10.150.150.102:4984/
+                Couchbase Server:       http://10.150.150.103:8091/
+                Couchbase Server:       http://10.150.150.104:8091/
+                Sync Gateway:           http://10.150.150.105:4984/
+                NGINX :                 http://10.150.150.106:4984/
+                Couchbase Server:       http://10.150.150.107:8091/
+                Current machine states:
+
+                node1-cb                  running (virtualbox)
+                node2-sg                  running (virtualbox)
+                node3-cb                  running (virtualbox)
+                node4-cb                  running (virtualbox)
+                node5-sg                  running (virtualbox)
+                node6-nginx               running (virtualbox)
+                node7-cb                  not created (virtualbox)
+                ```
+
+              1. Volià! We've got an extra Couchbase Server node. Let's bring it up and add it to the cluster. This time, let's use the REST API to add it into the cluster.
+
+                ```bash
+                $ vagrant up node7-cb
+                Couchbase Server:       http://10.150.150.107:8091/
+                Bringing machine 'node7-cb' up with 'virtualbox' provider...
+                ```
+
+                ```bash
+                $ curl -u Administrator:password 10.150.150.101:8091/controller/addNode -d 'hostname=10.150.150.107' -d 'services=index,n1ql,fts' -d 'user=Administrator' -d 'password=password'
+
+                {"otpNode":"ns_1@10.150.150.107"}
+                ```
+
+                Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+
+              1. Once the rebalance is complete, you can open `` in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
 
   - title: Troubleshooting
     lessons:
