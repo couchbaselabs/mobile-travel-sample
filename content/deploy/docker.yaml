@@ -213,7 +213,7 @@ chapters:
                 ![](assets/rbac_role.png)
 
           - title: Configuring Sync Gateway
-
+            description: |
               Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the backend. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
               1. First we need to ssh back into the machine running Sync Gateway. Once we're ssh'd in, we can first see the Admin API for the first time:
