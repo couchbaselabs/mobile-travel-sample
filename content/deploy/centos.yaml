@@ -486,6 +486,53 @@ chapters:
                 "last_seq":"1"}
                 ```
 
+      - title: Extra Credit
+        milestones:
+          - title: Adding more Couchbase Services
+            description: |
+              When we scaled out the Couchbase Server cluster, we only used the Data Service, because it was all we really needed. For a production deployment, this is actually what we'd recommend - separating the services to dedicated nodes helps you more easily achieve redundancy for each service as well as letting you scale each service separately as your workload and use case demands. There are a couple of ways we could add more services to this cluster: removing a node and re-adding it with more services enabled; or adding yet more nodes.
+
+              1. There's a hidden option in the Vagrantfile to provision yet more nodes, so let's take advantage of that:
+
+                ```bash
+                $ export VAGRANT_CB_EXTRA_NODES=1
+                $ vagrant status
+                Couchbase Server:       http://10.150.150.101:8091/
+                Sync Gateway:           http://10.150.150.102:4984/
+                Couchbase Server:       http://10.150.150.103:8091/
+                Couchbase Server:       http://10.150.150.104:8091/
+                Sync Gateway:           http://10.150.150.105:4984/
+                NGINX :                 http://10.150.150.106:4984/
+                Couchbase Server:       http://10.150.150.107:8091/
+                Current machine states:
+
+                node1-cb                  running (virtualbox)
+                node2-sg                  running (virtualbox)
+                node3-cb                  running (virtualbox)
+                node4-cb                  running (virtualbox)
+                node5-sg                  running (virtualbox)
+                node6-nginx               running (virtualbox)
+                node7-cb                  not created (virtualbox)
+                ```
+
+              1. Volià! We've got an extra Couchbase Server node. Let's bring it up and add it to the cluster. This time, let's use the REST API to add it into the cluster.
+
+                ```bash
+                $ vagrant up node7-cb
+                Couchbase Server:       http://10.150.150.107:8091/
+                Bringing machine 'node7-cb' up with 'virtualbox' provider...
+                ```
+
+                ```bash
+                $ curl -u Administrator:password 10.150.150.101:8091/controller/addNode -d 'hostname=10.150.150.107' -d 'services=index,n1ql,fts' -d 'user=Administrator' -d 'password=password'
+
+                {"otpNode":"ns_1@10.150.150.107"}
+                ```
+
+                Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+
+              1. Once the rebalance is complete, you can open `` in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
+
   - title: Troubleshooting
     lessons:
       - title: Troubleshooting
