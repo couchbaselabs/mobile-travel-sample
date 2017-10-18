@@ -21,12 +21,12 @@ chapters:
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
               
               For the server side components, you have three options 
-              - Manual
+              - *Manual*
                 - Here, you would download and install the components on your local machine
-              - Docker (Cloud)
+              - *Docker (Local)*
                 - In this case, you would install all the server components in separate docker containers on your local machine
-              - Cloud (Rightscale)
-                - In this case, you can launch and connect to an instance of the server components running on a cloud
+              - *Cloud (Rightscale)*
+                - In this case, you can launch and connect to an instance of the server components running on a cloud Instance
 
               It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section later in the workshop
           - title: Pre-requisites
@@ -164,9 +164,71 @@ chapters:
 
           - title: Cloud
             description: |
-              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
+              Before you get started with this section, make sure your followed the instructions [here](/develop/swift#/0/1/0) to download the Travel Mobile app.
+              Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
+              - Couchbase Server
+              - Sync Gateway
+              - Travel Web Application 
+            
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+            
 
-              [DETAILS COMING SOON]
+              - Access `https://selfservice-4.rightscale.com/catalog` on your browser
+              - Log in with 'workshop@couchbase.com' and password as 'cbworkshop123'
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_login.png)
+              - From the catalog of available projects, select the "Mobile Workshop 2017" , *give it a name* and then click "Launch". 
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_selectproject.png)
+              - Once instance is running, You should see the state change to "launching". It will take several minutes to launch. So be patient!
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_launching.png)
+              - Once instance is running, You should see the state change to "running".There are two instances - one for "Develop" and  one for "Deploy". We are only interested in the "Develop" option
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_running.png)
+              - Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Sync Gateway and Web App
+                 - **Open the file** `QueryConsts.swift`. 
+                  [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift)
+
+                  Locate the `serverBackendUrl`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Travel Application. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+                  ```
+                - **Open the file** `DatabaseManager.swift` 
+                  [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+
+                  Locate the `kRemoteSyncUrl`
+                  ```swift
+                  fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
+                  ```
+               ## Try it out (Couchbase Server)
+
+               - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
+               - Log into the "Admin Console" with username as "Administrator" and password as "password"
+               - Select the "Buckets" option from the menu on the left
+               - Verify that you have around 31,000 documents in your travel-sample bucket
+
+              ## Try it out (Sync Gateway)
+
+               - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
+               - You should the following response
+                ```json
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                ```
+              
+               ## Try it out (Travel App)
+
+               - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
+               - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+           
+
 
           # - title: Docker Compose
           #   description: |
@@ -277,9 +339,72 @@ chapters:
 
           - title: Cloud
             description: |
-              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
+              Before you get started with this section, make sure your followed the instructions [here](/develop/swift#/0/1/0) to download the Travel Mobile app.
+              Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
+              - Couchbase Server
+              - Sync Gateway
+              - Travel Web Application 
+            
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+            
 
-              [DETAILS COMING SOON]
+              - Access `https://selfservice-4.rightscale.com/catalog` on your browser
+              - Log in with 'workshop@couchbase.com' and password as 'cbworkshop123'
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_login.png)
+              - From the catalog of available projects, select the "Mobile Workshop 2017" , *give it a name* and then click "Launch". 
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_selectproject.png)
+              - Once instance is running, You should see the state change to "launching". It will take several minutes to launch. So be patient!
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_launching.png)
+              - Once instance is running, You should see the state change to "running".There are two instances - one for "Develop" and  one for "Deploy". We are only interested in the "Develop" option
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_running.png)
+              - Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Sync Gateway and Web App
+                 - **Open the file** `QueryConsts.swift`. 
+                  [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift)
+
+                  Locate the `serverBackendUrl`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Travel Application. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+                  ```
+                - **Open the file** `DatabaseManager.swift` 
+                  [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+
+                  Locate the `kRemoteSyncUrl`
+                  ```swift
+                  fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
+                  ```
+               ## Try it out (Couchbase Server)
+
+               - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
+               - Log into the "Admin Console" with username as "Administrator" and password as "password"
+               - Select the "Buckets" option from the menu on the left
+               - Verify that you have around 31,000 documents in your travel-sample bucket
+
+              ## Try it out (Sync Gateway)
+
+               - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
+               - You should the following response
+                ```json
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                ```
+              
+               ## Try it out (Travel App)
+
+               - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
+               - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+           
+
+
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
@@ -416,9 +541,72 @@ chapters:
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
           - title: Cloud
             description: |
-              Use this option to connect to a private instance of Couchbase Server running on Rightscale cloud environment.
+              Before you get started with this section, make sure your followed the instructions [here](/develop/swift#/0/1/0) to download the Travel Mobile app.
+              Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
+              - Couchbase Server
+              - Sync Gateway
+              - Travel Web Application 
+            
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+            
 
-              [DETAILS COMING SOON]
+              - Access `https://selfservice-4.rightscale.com/catalog` on your browser
+              - Log in with 'workshop@couchbase.com' and password as 'cbworkshop123'
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_login.png)
+              - From the catalog of available projects, select the "Mobile Workshop 2017" , *give it a name* and then click "Launch". 
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_selectproject.png)
+              - Once instance is running, You should see the state change to "launching". It will take several minutes to launch. So be patient!
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_launching.png)
+              - Once instance is running, You should see the state change to "running".There are two instances - one for "Develop" and  one for "Deploy". We are only interested in the "Develop" option
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_running.png)
+              - Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Sync Gateway and Web App
+                 - **Open the file** `QueryConsts.swift`. 
+                  [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift)
+
+                  Locate the `serverBackendUrl`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Travel Application. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+                  ```
+                - **Open the file** `DatabaseManager.swift` 
+                  [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+
+                  Locate the `kRemoteSyncUrl`
+                  ```swift
+                  fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
+                  ```
+
+                  Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`
+                  ```swift
+                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
+                  ```
+               ## Try it out (Couchbase Server)
+
+               - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
+               - Log into the "Admin Console" with username as "Administrator" and password as "password"
+               - Select the "Buckets" option from the menu on the left
+               - Verify that you have around 31,000 documents in your travel-sample bucket
+
+              ## Try it out (Sync Gateway)
+
+               - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
+               - You should the following response
+                ```json
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                ```
+              
+               ## Try it out (Travel App)
+
+               - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
+               - Verify that you see the login screen of the Travel Sample Web App as shown below
+                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
+           
+
+
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
