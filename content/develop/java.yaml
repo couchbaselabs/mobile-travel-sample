@@ -651,32 +651,78 @@ chapters:
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create a Document
             description: |
-              Bookmarked hotels are persisted on a separate document of type `bookmarkedhotels`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document on the `bookmarkedhotels` document.
+              Bookmarked hotels are persisted on a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document on the `hotels` property and the hotel's information on a separate document.
               
               ```json
+              {
+                "_id": "hotel1",
+                "name": "San Francisco Hotel",
+                "address": "123, Park Street, San Francisco"
+              }
+              
               {
                 "type": "bookmarkedhotels",
                 "hotels": ["hotel1", "hotel2"]
               }
               ```
               
-              In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
+              In this section you will add the code to persist those two documents.
               
-              The code snippet below creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotels" document containing details of the hotel is added to the database. 
-              For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
+              **Edit the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will implement the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
               
-              **Edit the file** in `app/src/android/java/.../HotelsPresenter.java` and comment in the code to persist a new document to the database.
-              
-              First make sure to remove the `return;` statement and add the code to persist a new document.
-              
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
               
               ```java
-              document = new Document();
-              HashMap<String, Object> properties = new HashMap<>();
-              properties.put("type", "bookmarkedhotels");
-              properties.put("hotels", new ArrayList<String>());
-              document.set(properties);
+              @Override
+              public void bookmarkHotels(Map<String, Object> hotel) {
+                ...
+              }
+              ```
+              
+              First, you need to get an instance of the database.
+              
+              ```java
+              Database database = DatabaseManager.getDatabase();
+              ```
+              
+              Uncomment the following to persist the hotel information on a new document.
+              
+              ```java
+              Document hotelDoc = new Document((String) hotel.get("id"));
+              hotelDoc.set(hotel);
+              try {
+                  database.save(hotelDoc);
+              } catch (CouchbaseLiteException e) {
+                  e.printStackTrace();
+              }
+              ```
+              
+              Now you will get the document with ID `user::guest` or create a new document if it doesn't exist. The code below sets the `type` property to `bookmarkedhotels` and creates a new array to store the document ID.
+              
+              ```java
+              Document document = database.getDocument("user::guest");
+              if (document == null) {
+                  document = new Document("user::guest");
+                  HashMap<String, Object> properties = new HashMap<>();
+                  properties.put("type", "bookmarkedhotels");
+                  properties.put("hotels", new ArrayList<>());
+                  document.set(properties);
+              }
+              ```
+              
+              Next, the selected hotel's ID is added to the `hotels` array.
+               
+              ```java
+              document.setArray("hotels",
+                  document
+                      .getArray("hotels")
+                      .addString((String) hotel.get("id"))
+              );
+              ```
+              
+              Finally, you can save the document.
+              
+              ```java
               try {
                   database.save(document);
               } catch (CouchbaseLiteException e) {

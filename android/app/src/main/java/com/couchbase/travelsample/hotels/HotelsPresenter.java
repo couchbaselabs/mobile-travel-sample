@@ -110,70 +110,32 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void bookmarkHotels(Map<String, Object> hotel) {
         Database database = DatabaseManager.getDatabase();
 
-        /* Look-up Guest user document. */
-        Query searchQuery = Query
-            .select(SelectResult.expression(Expression.meta().getId()))
-            .from(DataSource.database(database))
-            .where(
-                Expression.property("type").equalTo("bookmarkedhotels")
-            );
-
-        /*
-
-        */
-
-        ResultSet rows = null;
-        try {
-            rows = searchQuery.run();
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        Document document = null;
-        Result row = null;
-        while ((row = rows.next()) != null) {
-            document = database.getDocument(row.getString("_id"));
-        }
-
-        if (document == null) {
-            /*
-             * The Guest user document doesn't exist. Create it.
-             *  {
-             *    "type": "bookmarkedhotels"
-             *    "hotels": ["hotel1","hotel2"]
-             *  }
-             */
-            document = new Document();
-            HashMap<String, Object> properties = new HashMap<>();
-            properties.put("type", "bookmarkedhotels");
-            properties.put("hotels", new ArrayList<String>());
-            document.set(properties);
-            try {
-                database.save(document);
-            } catch (CouchbaseLiteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        /* Get current list of hotels */
-        Array hotelIds = null;
-        hotelIds = document
-            .getArray("hotels")
-            .addString((String) hotel.get("id"));
-
-        document.setArray("hotels", hotelIds);
-
-        try {
-            database.save(document);
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
-
         Document hotelDoc = new Document((String) hotel.get("id"));
         hotelDoc.set(hotel);
         try {
             database.save(hotelDoc);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+
+        /* 2. Look-up Guest user document. */
+        Document document = database.getDocument("user::guest");
+        if (document == null) {
+            document = new Document("user::guest");
+            HashMap<String, Object> properties = new HashMap<>();
+            properties.put("type", "bookmarkedhotels");
+            properties.put("hotels", new ArrayList<>());
+            document.set(properties);
+        }
+
+        document.setArray("hotels",
+            document
+                .getArray("hotels")
+                .addString((String) hotel.get("id"))
+        );
+
+        try {
+            database.save(document);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
