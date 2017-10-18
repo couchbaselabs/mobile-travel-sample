@@ -620,20 +620,26 @@ chapters:
         milestones:
           - title: Create a Database
             description: |
-              In this lesson, you will be using the application as a Guest user. In this mode, the user can search for hotels using Couchbase Server Full-Text Search functionality and bookmark them for later.
-              
-              ![]()
-            
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
-        
-              [Fragment.java]()
+                
+              The snippet below creates an empty database for the `guest` user in a directory named `guest`.
+              
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
         
               ```java
-              DatabaseConfiguration config = new DatabaseConfiguration(context);
-              try {
-                database = new Database("travel-sample", config);
-              } catch (CouchbaseLiteException e) {
-                e.printStackTrace();
+              protected DatabaseManager(Context context, boolean isGuest) {
+                  if (isGuest) {
+                      DatabaseConfiguration config = new DatabaseConfiguration(context);
+                      File folder = new File(String.format("%s/guest", context.getFilesDir()));
+                      config.setDirectory(folder);
+                      try {
+                          database = new Database("travel-sample", config);
+                      } catch (CouchbaseLiteException e) {
+                          e.printStackTrace();
+                      }
+                  } else {
+                      ...
+                  }
               }
               ```
               
@@ -662,6 +668,8 @@ chapters:
               **Edit the file** in `app/src/android/java/.../HotelsPresenter.java` and comment in the code to persist a new document to the database.
               
               First make sure to remove the `return;` statement and add the code to persist a new document.
+              
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
               
               ```java
               document = new Document();
@@ -734,19 +742,28 @@ chapters:
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
-              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
-        
+              **Open the file** in `app/src/android/java/.../bookmarks/BookmarksPresenter.java`. You will implement the `removeBookmark(Map<String, Object> bookmark)` method. Remove the `return;` statement.
               
-              ```swift
-                  // Code snippets can be found in HotelPresenter.swift file in the unookmarkHotels() function. 
-                  // For brevity, some portions of the code that are not specific to document creation have been removed here.
-        
-                  if let doc = db.getDocument(idOfDocToRemove) {
-                     try db.delete(doc)
-                  }
+              [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java)
+              
+              ```java
+              @Override
+              public void removeBookmark(Map<String, Object> bookmark) {
+                  ...
+              }
               ```
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_delete_document.gif)
+              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
+              
+              ```java
+              Database database = DatabaseManager.getDatabase();
+              Document document = database.getDocument((String) bookmark.get("id"));
+              try {
+                  database.delete(document);
+              } catch (CouchbaseLiteException e) {
+                  e.printStackTrace();
+              }
+              ```
               
               ## Try it out
               
@@ -756,6 +773,9 @@ chapters:
               - You will get option to  “UnBookmark” 
               - Tap “unbookmark”
               - Verify that you see a single hotel in the list
+              
+              ![](https://cl.ly/0A0D363w3R1g/android-unbookmark.gif)
+              
       - title: Security
         milestones:
           - title: User Management
@@ -767,16 +787,16 @@ chapters:
               - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
               - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
               - You should be logged into the web app. There should be nothing created for the user.
-               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/web_user_signup.gif)
-              
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/web_user_signup.gif)
+
               ## Try it out (Couchbase Server)
               - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
               - In the search box, enter "user:demo".
               - You should see the user document that was created when you signed up via the web app.
               - Confirm that the "username" that you see is "demo"
-              
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/cb_user_auth.gif)
+
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/cb_user_auth.gif)
 
           - title: Access Control
             description: |
@@ -825,16 +845,10 @@ chapters:
               curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
               ```
               - Confirm that you see the details of the "travel-sample" database and "state" is "online"
-              
-              ## Try it out
-              
-              - Enable encryption.
-              - Find the underlying database file (using `adb pull` on Android and the app support folder on iOS).
-              - Verify the database file is indeed encrypted (using a sqlite tool from the command line on macOS/windows).
-              - Best Practices
+
       - title: Sync
         milestones:
-          - title: Channels & Data Routing
+          - title: Channels/Data Routing
             description: |
               In the lesson on [Access Control](/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
      
@@ -848,7 +862,7 @@ chapters:
 
 
               In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
-              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json. It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
+              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json. It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file.
     
               ```javascript
               /* Routing */
@@ -981,18 +995,29 @@ chapters:
               In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
               Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the Application Support directory.
               
-              Open [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java) and navigate to the database constructor. This method first checks if a database file already exists. If it doesn't exist it loads the database from the asset catalogue.
+              **Open the file** `app/src/android/java/.../util/DatabaseManager.java` and navigate to the database constructor.
+              
+              This method first checks if a database file already exists. If it doesn't exist it loads the database from the assets directory.
+              
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
               
               ```java
-              File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
-              if (!dbFile.exists()) {
-                  DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
-              }
-              DatabaseConfiguration config = new DatabaseConfiguration(context);
-              try {
-                  database = new Database("travel-sample", config);
-              } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
+              protected DatabaseManager(Context context, boolean isGuest) {
+                  if (isGuest) {
+                      ...
+                  } else {
+                      File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
+                      if (!dbFile.exists()) {
+                          DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
+                      }
+                      DatabaseConfiguration config = new DatabaseConfiguration(context);
+                      try {
+                          database = new Database("travel-sample", config);
+                          createFTSQueryIndex();
+                      } catch (CouchbaseLiteException e) {
+                          e.printStackTrace();
+                      }
+                  }
               }
               ```
             
@@ -1002,6 +1027,9 @@ chapters:
               - Tap on  "+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
               - Confirm that the first item in the dropdown list of "San Diego Intl"
+              
+              ![](https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif)
+              
       - title: Query
         milestones:
           - title: Overview
