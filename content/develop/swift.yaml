@@ -207,6 +207,7 @@ chapters:
                   ```swift
                   static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
                   ```
+               
                ## Try it out (Couchbase Server)
 
                - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
@@ -382,6 +383,7 @@ chapters:
                   ```swift
                   static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
                   ```
+               
                ## Try it out (Couchbase Server)
 
                - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
@@ -584,6 +586,7 @@ chapters:
                   ```swift
                   static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
                   ```
+               
                ## Try it out (Couchbase Server)
 
                - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
