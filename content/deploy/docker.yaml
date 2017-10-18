@@ -55,7 +55,7 @@ chapters:
                 TODO
                 ```
 
-              1. That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, Llet's check the Couchbase Server instance by going to the IP Address (`$CB1`) and port `8091`, you should be greeted with this screen:
+              1. That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, let's check the Couchbase Server instance by going to the IP Address (`$CB1`) and port `8091`, you should be greeted with this screen:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_wide.png)
 
