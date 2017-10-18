@@ -120,7 +120,7 @@ chapters:
 
                 ![](assets/welcome_focus.png)
 
-              1. The next step is pretty self explainatory. You don't need to worry too much about the cluster name, but we'll be needed the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
+              1. The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
 
                 ![](assets/cluster_init.png)
 
@@ -128,7 +128,7 @@ chapters:
 
                 ![](assets/terms_conditions.png)
 
-              1. On this page, the only things we need to do are to diable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. Everything else is fine as it is - hit *Save & Finish*.
+              1. On this page, the only things we need to do are to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. Everything else is fine as it is - hit *Save & Finish*.
 
                 ![](assets/node_init.png)
 
@@ -168,7 +168,7 @@ chapters:
 
               1. With this API, we can check the current running config:
 
-                ```
+                ```bash
                 $ curl localhost:4985/_config
                 ```
 
@@ -203,7 +203,7 @@ chapters:
 
               1. In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
 
-                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property:
+                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html):
 
                 ```json
                 "todo": {
@@ -213,9 +213,13 @@ chapters:
                   "password": "rb4c_p4ssw0rd",
                   "users": {
                     "GUEST": {"disabled": false, "admin_channels": ["*"] }
-                  }
+                  },
+                  "import_docs": "continuous",
+                  "enable_shared_bucket_access": true
                 }
                 ```
+
+                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seemlessly.
 
                 While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
 
@@ -288,7 +292,8 @@ chapters:
                     ]
                 }
                 ```
-              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+
+              1. We can confirm this in a couple of places. Firstly, we cang see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -311,7 +316,8 @@ chapters:
         milestones:
           - title: Scaling Couchbase Server
             description: |
-              Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster. Luckily, this is incredibly simple to set up with Couchbase Server. All you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
+              Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster.
+              Couchbase Server is designed to make this scaling incredibly easy; all you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
 
               1. First, we'll need some more nodes. If you've been looking over the `Vagrantfile` you might have noticed there are a few spare nodes mentioned:
 
@@ -336,6 +342,7 @@ chapters:
                 above with their current state. For more information about a specific
                 VM, run `vagrant status NAME`.
                 ```
+
               1. So we've got a couple of spare Couchbase Server nodes - let's spin those up. Unlike before, we will need to specify these by name:
 
                 ```bash
@@ -368,7 +375,7 @@ chapters:
 
                 ![](assets/pending_rebalance.png)
 
-                As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance. 
+                As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
               1. In the top right corner, click *ADD SERVER* and then fill in the IP address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
 
@@ -447,6 +454,7 @@ chapters:
                   server 10.150.150.102:4984;
                 }
                 ```
+
                 Let's add the second Sync Gateway node in:
 
                 ```nginx

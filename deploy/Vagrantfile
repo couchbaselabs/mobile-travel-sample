@@ -4,8 +4,7 @@
 ### Variable declarations - FEEL FREE TO EDIT THESE ###
 begin
 CB_VERSION = "5.0.0"
-SG_VERSION = "1.4.1-3"
-SG_VERSION_SHORT = SG_VERSION.split("-")[0]
+SG_VERSION = "1.5.0"
 
 VAGRANT_BOXES = { # Vagrant Cloud base boxes for each operating system
   "ubuntu14" => "ubuntu/trusty64",
@@ -23,8 +22,8 @@ COUCHBASE_DOWNLOAD_LINKS = {
 }
 
 SYNC_GATEWAY_DOWNLOAD_LINKS = {
-  "centos7"    => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION_SHORT}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
-  "ubuntu14"   => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION_SHORT}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
+  "centos7"    => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
+  "ubuntu14"   => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
 }
 
 DEFAULT_RAM = 1024
@@ -193,7 +192,7 @@ def configure_nodes(config, product, num_nodes, autostart)
         if product == "cb"
           v.name = "Couchbase Server #{CB_VERSION} #{$operating_system.gsub '/', '_'} Node #{num}"
         elsif product == "sg"
-          v.name = "Sync Gateway #{SG_VERSION_SHORT} #{$operating_system.gsub '/', '_'} Node #{num}"
+          v.name = "Sync Gateway #{SG_VERSION} #{$operating_system.gsub '/', '_'} Node #{num}"
         elsif product == "nginx"
           v.name = "NGINX #{$operating_system.gsub '/', '_'} Node #{num}"
         end
