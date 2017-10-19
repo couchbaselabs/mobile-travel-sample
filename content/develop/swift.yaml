@@ -824,32 +824,35 @@ chapters:
           - title: Create a Database
             description: |
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
-              The code snippet can be found in the DatabaseManager.swift file in the [openOrCreateDatabaseForGuest](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L72) function.
-              The snippet below creates an empty database for `guest` user.       
+
+              The snippet below creates an empty database for `guest` user in a directory named `guest`.
+
+              [DatabaseManager.swift] (https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
+
+              Locate the `openOrCreateDatabaseForGuest` function
+                   
               ```swift
-              // This code can be found in DatabaseManager.swift file
-              // in the openOrCreateDatabaseForGuest() function
-        
-              // Setup Database Configuration
-              var options = DatabaseConfiguration()
-              guard let defaultDBPath = _applicationSupportDirectory else {
+              func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
+                var options = DatabaseConfiguration()
+                guard let defaultDBPath = _applicationSupportDirectory else {
                     fatalError("Could not open Application Support Directory for app!")
-                    return
+                  return
                 }
                 // Create a folder for Guest Account if one does not exist
                 let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
                 let guestFolderPath = guestFolderUrl.path
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: guestFolderPath) {
-                    try fileManager.createDirectory(atPath: guestFolderPath,
-                                                    withIntermediateDirectories: true,
-                                                    attributes: nil)
-                    
-                }
+                  try fileManager.createDirectory(atPath: guestFolderPath,
+                                                withIntermediateDirectories: true,
+                                                attributes: nil)
                 
+                }
+            
                 options.directory = guestFolderPath
-                // Create / Open Database with specified options
+                // Gets handle to existing DB at specified path
                 _db = try Database(name: kGuestDBName, config: options)
+              }
               ```
               
               ## Try it out
