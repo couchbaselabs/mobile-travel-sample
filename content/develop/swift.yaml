@@ -890,7 +890,7 @@ chapters:
               ```
               **Open the file** `HotelPresenter.swift`. We will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
               
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36)
+              [HotelsPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36)
 
               ```swift
               func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
@@ -1033,7 +1033,7 @@ chapters:
               
               **Open the file** `HotelPresenter.swift`. We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
               
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L98)
+              [HotelsPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L98)
               ```swift
               func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
                 ...
@@ -1336,7 +1336,7 @@ chapters:
               
               This method first checks if a database file already exists. If it doesn't exist it loads the database from the app bundle.
               
-              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L112)
               
               ```swift
                if Database.exists(kDBName, inDirectory: userFolderPath) == false {
@@ -1392,7 +1392,7 @@ chapters:
               ```
               Often types, the same `Expression` may be required across multiple queries. This can quickly become tedious and difficult to maintain. The recommended pattern is to define constants corresponding to the Expressions and to reuse them across queries.
 
-              Open the [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift) file. This file defines the CouchbaseLite expressions that are used in the Travel App
+              Open the [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift#L15) file. This file defines the CouchbaseLite expressions that are used in the Travel App
               ```swift
                 struct _Property {
                     // Query: Property Expressions
@@ -1429,7 +1429,7 @@ chapters:
 
               **Open the file** `AirportPresenter.swift`. We will review the `fetchAirportsMatching` method.
               
-              [AirportPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift)
+              [AirportPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28)
               
               ```swift
               func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) {
@@ -1501,7 +1501,7 @@ chapters:
               
               **Open the file** `HotelPresenter.swift`. We will review the `fetchBookmarkedHotels` method.
                
-              [HotelPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift)
+              [HotelPresenter.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L154)
               
               ```swift
               func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void)
