@@ -1303,45 +1303,95 @@ chapters:
               
           - title: Advanced Query 
             description: |
-              In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
-              Open HotelPresenter.swift and navigate to the [fetchBookmarkedHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L184) method.
+              In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins.
               
-              If you recall from the Data Modeling section of "Hotels" bucket, the "bookmarkedhotels" document contains a "hotels" property which is an array of Ids of bookmarked hotels.
+              If you recall from the Data Modeling section, the document with a **type** equal to "bookmarkedhotels" contains a **hotels** property which is an array of IDs of bookmarked hotels.
               
-              The JOIN query in code snippet below fetches documents whose `Id` is included in the "hotels" property array in "bookmarkedhotels" type document.
-          
-              ```swift
-               var bookmarkedHotels:Hotels = Hotels()
-            
-              // Set aliases
-              let bookmarkDS = DataSource.database( db).as("bookmarkDS")
-              let hotelsDS = DataSource.database(db).as("hotelsDS")
-            
-              let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
-              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
-            
-              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
-              let join = Join.join(hotelsDS).on(joinExpr);
-            
-              let typeExpr = Expression.property("type").from("bookmarkDS")
-            
-              let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
-              let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
-            
-              let query = Query.select(bookmarkAllColumns, hotelsAllColumns)
-                                .from(bookmarkDS)
-                                .join(join)
-                                .where(typeExpr.equalTo("bookmarkedhotels"));
-            
-           
-              for result in try query.run() {
-                if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
-                      bookmarkedHotels.append(hotel)
-                }
+              ```json
+              {
+                "_id": "hotel1",
+                "name": "San Francisco Hotel",
+                "address": "123, Park Street, San Francisco"
               }
-               handler(bookmarkedHotels,nil)
+              
+              {
+                "type": "bookmarkedhotels",
+                "hotels": ["hotel1", "hotel2"]
+              }
               ```
-          
+              
+              We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
+              
+              **Open the file** `HotelsPresenter.java`. We will review the `fetchBookmarks()` method.
+               
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              
+              ```java
+              public void fetchBookmarks() {
+                ...
+              }
+              ```
+              
+              First, we instantiate two data sources which corresponds to the two sides of the join query.
+              
+              ```java
+              DataSource bookmarkDS = DataSource.database(database).as("bookmarkDS");
+              DataSource hotelsDS = DataSource.database(database).as("hotelDS");
+              ```
+              
+              Next we write the query expressions. The first one gets the `hotels` property on the bookmarks data source. The seconds get the document ID on the hotels data source.
+              
+              ```java
+              Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
+              Expression hotelIdExpr = Expression.meta().getId().from("hotelDS");
+              ```
+              
+              Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
+              
+              ```java
+              Expression joinExpr = Function.arrayContains(hotelsExpr, hotelIdExpr);
+              Join join = Join.join(hotelsDS).on(joinExpr);
+              ```
+              
+              Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
+              
+              ```java
+              Expression typeExpr = Expression.property("type").from("bookmarkDS");
+      
+              SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
+              SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
+      
+              LiveQuery query = Query
+                  .select(bookmarkAllColumns, hotelsAllColumns)
+                  .from(bookmarkDS)
+                  .join(join)
+                  .where(typeExpr.equalTo("bookmarkedhotels")).toLive();
+              ```
+
+              And we use the `run()` method to get the results back pass them on to the view.
+              
+              ```java
+              query.addChangeListener(new LiveQueryChangeListener() {
+                  @Override
+                  public void changed(LiveQueryChange change) {
+                      ResultSet rows = change.getRows();
+      
+                      List<Map<String, Object>> data = new ArrayList<>();
+                      Result row = null;
+                      while((row = rows.next()) != null) {
+                          Map<String, Object> properties = new HashMap<>();
+                          properties.put("name", row.getDictionary("hotelDS").getString("name"));
+                          properties.put("address", row.getDictionary("hotelDS").getString("address"));
+                          properties.put("id", row.getDictionary("hotelDS").getString("id"));
+                          data.add(properties);
+                      }
+                      mBookmarksView.showBookmarks(data);
+                  }
+              });
+      
+              query.run();
+              ```
+               
               ## Try it out
               
               - Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
@@ -1352,8 +1402,9 @@ chapters:
               - Swipe left to "bookmark" the hotel
               - Tap "Cancel" button
               - Verify that the Novatel hotel that you bookmarked earlier shows up in the list
-          
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_join_query.gif)
+
+              ![](https://cl.ly/3r243s1K2600/android-advanced-query.gif)
+
       - title: Full Text Search
         milestones:
           - title: Full Text Search
