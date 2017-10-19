@@ -1,5 +1,4 @@
 requirements: |
-  - Xcode 8 (Swift 3)
 chapters:
   - title: Installation
     lessons:
@@ -31,7 +30,7 @@ chapters:
               It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section later in the workshop
           - title: Pre-requisites
             description: |
-              To start, it is easiest if you run all the components on the same machine. 
+              To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
               #### iOS (Xcode 8.3.3 and above) 
               - Preferrable to use Xcode9
@@ -106,7 +105,7 @@ chapters:
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/createadminuser.png)
-        
+    
               - As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
               
                 ![](https://cl.ly/1o3H0t3f0d1n/cbs-services.png)
@@ -120,7 +119,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/RBAC_user.png)
         
-              - Create a Full text search index on travel-sample bucket called 'hotels'.You can do this from the "Search" menu. Just go with default index settings.
+              - Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/add_fts.png)
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/fts.png)
@@ -139,7 +138,7 @@ chapters:
                 $ docker network ls
                 $ docker network create -d bridge workshop
                 ```
-              - To run the application in a container, you will first get the docker image from Docker Cloud. Open a new terminal window and run the following.
+              - To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following.
                 ```bash
                 $ docker pull connectsv/couchbase-server:sandbox
                 ```
@@ -173,25 +172,33 @@ chapters:
               NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
             
 
-              - Access `https://selfservice-4.rightscale.com/catalog` on your browser
-              - Log in with 'workshop@couchbase.com' and password as 'cbworkshop123'
+              - Access [https://selfservice-4.rightscale.com/catalog](https://selfservice-4.rightscale.com/catalog) on your browser.
+              - Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_login.png)
-              - From the catalog of available projects, select the "Mobile Workshop 2017" , *give it a name* and then click "Launch". 
+              - From the catalog of available projects, select the **Mobile Workshop 2017**, give it a name and then click **Launch**. 
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_selectproject.png)
-              - Once instance is running, You should see the state change to "launching". It will take several minutes to launch. So be patient!
+              - Once the instance is running, You should see the state change to "launching". It will take several minutes to launch. So be patient!
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_launching.png)
-              - Once instance is running, You should see the state change to "running".There are two instances - one for "Develop" and  one for "Deploy". We are only interested in the "Develop" option
+              - Once the instance is running, You should see the state change to "running". There are two instances - one for "Develop" and  one for "Deploy". We are only interested in the "Develop" option.
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/rightscale_running.png)
-              - Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Sync Gateway and Web App
-                 - **Open the file** `QueryConsts.swift`. 
-                  [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift)
+              
+              Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
+              
+              **Open the file** `QueryConsts.swift`. You must update the `serverBackendUrl` constant which points to the Python Web Server. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
+              
+              [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift)
 
-                  Locate the `serverBackendUrl`
-                  ```swift
-                  static let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
-                  ```
+              ```swift
+              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+              ```
+              
+              Next, you will update the Sync Gateway endpoint.
+              
+              **Open the file** `DatabaseManager.swift`. You must update the `kRemoteSyncUrl` constant. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
+              
+              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
 
-                  Update the `localhost` to be the IP Address of the Travel Application. In my example (from screenshot above), that would be `54.148.83.39`
+              ```swift
                   ```swift
                   static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
                   ```

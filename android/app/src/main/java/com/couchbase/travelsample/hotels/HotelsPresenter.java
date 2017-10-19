@@ -50,7 +50,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void fetchHotels(String location, String description) {
-        String backendUrl = "http://10.0.2.2:8080/api/";
+        String backendUrl = DatabaseManager.mPythonWebServerEndpoint;
         String fullPath = null;
         try {
             String descriptionStr = description.equals("") ? "*" : URLEncoder.encode(description, "UTF-8").replace("+", "%20");

@@ -32,6 +32,8 @@ public class DatabaseManager {
     private static Database database;
     private static DatabaseManager instance = null;
     private static String dbName;
+    public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
+    private static String mSyncGatewayEndpoint = "blip://10.0.2.2:4984/travel-sample";
 
     protected DatabaseManager(Context context, boolean isGuest) {
         if (isGuest) {
@@ -137,10 +139,9 @@ public class DatabaseManager {
     }
 
     public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
-        String syncUrl = "blip://10.0.2.2:4984/travel-sample";
         URI url = null;
         try {
-            url = new URI(syncUrl);
+            url = new URI(mSyncGatewayEndpoint);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

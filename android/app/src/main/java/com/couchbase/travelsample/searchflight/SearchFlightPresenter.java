@@ -115,7 +115,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         final JSONArray[] inbounds = {new JSONArray()};
         List<List<JSONObject>> journeys = new ArrayList<>();
 
-        String backendUrl = "http://10.0.2.2:8080/api/";
+        String backendUrl = DatabaseManager.mPythonWebServerEndpoint;
 
         final String outbound;
         try {
