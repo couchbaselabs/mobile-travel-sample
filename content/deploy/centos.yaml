@@ -113,7 +113,7 @@ chapters:
         milestones:
           - title: Configuring Couchbase Server
             description: |
-              Now that we've got a VM running Couchbase Server, we need to configure it. There are a few options here, we can use the UI, the [REST API](), or the [CLI](). Let's start by looking at the UI as it gives a good sense of what we're doing and why.
+              Now that we've got a VM running Couchbase Server, we need to configure it. There are a few options here, we can use the UI, the [REST API](https://developer.couchbase.com/documentation/server/5.0/rest-api/rest-intro.html), or the [CLI](https://developer.couchbase.com/documentation/server/5.0/cli/cli-intro.html). Let's start by looking at the UI as it gives a good sense of what we're doing and why.
 
               ## Configuring Couchbase Server using the UI
               1. Open the UI in a browser - this should be at http://10.150.150.101:8091/ - and select *Setup New Cluster*
@@ -138,7 +138,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
-              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control]() is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authenication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
+              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authenication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
