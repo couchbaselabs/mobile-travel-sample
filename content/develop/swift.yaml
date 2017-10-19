@@ -1194,40 +1194,79 @@ chapters:
               
               - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
 
-              The code snippet can be found in the DatabaseManager.swift file in the [startPushAndPullReplicationForCurrentUser](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L202) function.
-              
-                - The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway. 
-                The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
+               **Open the file** `DatabaseManager.swift`. We will review the method `func startPushAndPullReplicationForCurrentUser()`
 
-                ```swift
-                var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
-                config.replicatorType = .pushAndPull
-                config.continuous = true
+              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L202)
 
-                ```
-                - The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/swift#/2/2/1) section
+              ```swift
+              func startPushAndPullReplicationForCurrentUser() {
+                ...
+                }
+              ```
+              First, you fetch the URL of the Sync Gateway
+              ```swift
+              guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
+                lastError = TravelSampleError.RemoteDatabaseNotReachable
+            
+                return
+              }
+              ```
+              Do some checks to confirm the validity of the database and user credentials 
+              ```swift
+              guard let user = self.currentUserCredentials?.user,let password =   self.currentUserCredentials?.password  else {
+                lastError = TravelSampleError.UserCredentialsNotProvided
+                return
+              }
+        
+              guard let db = db else {
+                lastError = TravelSampleError.RemoteDatabaseNotReachable
+                return
+              }
+              ```
+
+              Verify that the replicator is not already in progress
+              ```swift
+               if _pushPullRepl != nil {
+                // Replication is already started
+                return
+              }
+              ```
+
+              The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway. 
+              The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
+
+              ```swift
+              let dbUrl = remoteUrl.appendingPathComponent(kDBName)
+       
+              var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
+              config.replicatorType = .pushAndPull
+              config.continuous = true
+
+              ```
+
+              The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/swift#/2/2/1) section
           
-                ```swift
-                config.authenticator = BasicAuthenticator(username: user, password: password)
-                ```
+              ```swift
+              config.authenticator = BasicAuthenticator(username: user, password: password)
+              ```
 
-                - The Replicator is configured to only pull from current user's channels. The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the [Channels/ Data Routing](/develop/swift#/2/3/0) section
+              The Replicator is configured to only pull from current user's channels. The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the [Channels/ Data Routing](/develop/swift#/2/3/0) section
           
-                ```swift                
-                // This should match what is specified in the sync gateway config
-                // Only pull documents from this user's channel
-                let userChannel = "channel.\(user)"
-                config.channels = [userChannel]
-                ```
+              ```swift                
+              // This should match what is specified in the sync gateway config
+              // Only pull documents from this user's channel
+              let userChannel = "channel.\(user)"
+              config.channels = [userChannel]
+              ```
 
-                - The Replicator is initialized with the specified configuration 
-                ```swift
-                _pushPullRepl = Replicator.init(config: config)
-                ```
+              The Replicator is initialized with the specified configuration 
+              ```swift
+              _pushPullRepl = Replicator.init(config: config)
+              ```
 
-                 - A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
+              A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
 
-                 ``` swift
+              ``` swift
               
                   _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
                       let s = change.status
@@ -1241,11 +1280,11 @@ chapters:
                       }
                   })
                     
-                ```
-                - Replication is started
-                ```swift
-                  _pushPullRepl?.start()
-                ```
+              ```
+              Start the Replication
+              ```swift
+              _pushPullRepl?.start()
+              ```
                
               
               ## Try it out (Push Replication)
