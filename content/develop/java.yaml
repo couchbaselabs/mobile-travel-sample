@@ -1413,7 +1413,7 @@ chapters:
 
               In order to do FTS queries, an FTS index must be created.
               
-              **Edit the file** `app/src/android/java/.../util/DatabaseManager.java` and comment in the method `createFTSQueryIndex()`. This code snippet creates an FTS index on the property named `description`.
+              **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. We will review the `createFTSQueryIndex()` method. This code snippet creates an FTS index on the property named `description`.
               
               [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
               
@@ -1429,10 +1429,7 @@ chapters:
               
               Next you will write an FTS query that uses the index.
               
-              **Edit the file** `app/src/android/java/.../hotels/HotelPresenter.java`.
-              
-              You will implement the `queryHotels(String location, String description)`.
-              Remove the `return;`statement.
+              **Open the file** `app/src/android/java/.../hotels/HotelPresenter.java`. We will review the `queryHotels(String location, String description)` method.
               
               [HotelPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
 
