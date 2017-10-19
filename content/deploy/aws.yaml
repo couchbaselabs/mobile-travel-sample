@@ -27,9 +27,13 @@ chapters:
 
                 For the instance type, we should really consider the [Sizing Recomendations](), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
-                There's no other special steps we need at this point, so go head and click *TODO*.
+                Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to add the following ports `8091-8094`, `11210`, and `4984-4985` (these last two are for Sync Gateway, but this way we can reuse the same group):
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_sec_gp.png)
 
               1. You'll be prompted to select a Key Pair, if you don't already have one you have access to (or like to keep things separate), create a new one which will download the appropriate `.pem` file.
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_key_pair.png)
 
               1. From the list of instances, select the instance we just launched make a note of the Public IP Address. We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
 
