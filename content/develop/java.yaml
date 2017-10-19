@@ -838,7 +838,7 @@ chapters:
               - On Login screen select “Proceed as Guest” option. 
               - This will log you into app in Guest Mode. Signing in as Guest will create a new empty  database for “guest” account if one does not exist
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
-          - title: Create a Document
+          - title: Create and Update a Document
             description: |
               Bookmarked hotels are persisted in a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document in the `hotels` property and the hotel's information inon a separate document.
               
@@ -934,45 +934,6 @@ chapters:
               
               ![](https://cl.ly/1t38050A1T40/android-save-doc.gif)
               
-          - title: Update a Document
-            description: |
-              To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback. 
-              
-              The code below updates the list of bookmarked hotel Ids in the "hotels" property of the _"bookmarkedhotels"_ document. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created. Subsequently, every time you bookmark a hotel, the hotel Id is added to "hotels" property of the _"bookmarkedhotels"_ document.
-        
-              
-              ```java
-              Array hotelIds = null;
-              try {
-                  hotelIds = document
-                      .getArray("hotels")
-                      .addString(hotel.getString("id"));
-              } catch (JSONException e) {
-                  e.printStackTrace();
-              }
-      
-              document.setArray("hotels", hotelIds);
-      
-              try {
-                  database.save(document);
-              } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
-              }
-              ```
-              
-              ## Try it out
-              
-              - Follow the steps in [Create a Document](/develop/java#/2/0/0) section
-              - As Guest User, tap on “hotels” button
-              - In "location" text field , enter "London"
-              - You will see list of hotels. 
-              - Verify that the first hotel in the list is bookmarked. If not, make sure you follow instructions in [Create a Document]() section.
-              - Swipe right on the second hotel cell
-              - You will get option to  “Bookmark” 
-              - Tap “bookmark”
-              - This should display a "bookmark" icon on the hotel cell
-              - Tap "Cancel" button 
-              - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
           - title: Delete a Document
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
@@ -1204,7 +1165,7 @@ chapters:
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_push_sync.gif)
+              ![](https://cl.ly/3r0X2x1M3k37/android-push.gif)
 
               ## Try it out (Pull Replication)
               
@@ -1221,7 +1182,7 @@ chapters:
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”    
               - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
 
-               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_pull_sync.gif)
+              ![](https://cl.ly/2x1Q1d20303Y/android-pull.gif)
 
       - title: Pre-built database
         milestones:
@@ -1255,7 +1216,7 @@ chapters:
                   }
               }
               ```
-            
+              
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
@@ -1284,16 +1245,22 @@ chapters:
 
           - title: Simple Query
             description: |
-             The travel app has many instances of querying the database. We will discuss a simple example here.
-             The **To**/**From** fields on the search screen execute local queries to present the list of airports to the user.
+              The travel app has many instances of querying the database. We will discuss a simple example here.
+
+              **Open the file** `SearchFlightPresenter.java`. We will review the `startsWith(String prefix, String tag)` method.
               
-              ![](https://cl.ly/2b0T2g2N3c3D/airport-search-android.gif)
+              [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java)
               
-              #### Implement SearchFlightPresenter#startWith
+              ```java
+              @Override
+              public void startsWith(String prefix, String tag) {
+                ...
+              }
+              ```
               
-              Open the file [app/src/main/java/.../searchflight/SearchFlightPresenter]() and  implement the method `startsWith`. The query looks up for documents with `type` property equal to `airport` and an `faa` code that matches the input text value.
+              There are 3 different queries in this function body. The query that is ran depends on the length of the search term. You can ignore this specificity, in this section we will look at the 3rd query.
               
-              The query below `selects` the "name"" property in documents `from` database `where` the "type"" property is equal to "airport" and the "FAA" property is equaly to the search string. 
+              The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```java
               Database database = DatabaseManager.getDatabase();
@@ -1302,11 +1269,11 @@ chapters:
                   .from(DataSource.database(database))
                   .where(
                       Expression.property("type").equalTo("airport")
-                      .and(Expression.property("faa").equalTo(prefix.toUpperCase()))
+                      .and(Expression.property("airportname").like(prefix + "%"))
                   );
               ```
             
-              Next we will run the query and return immediately if the query failed for some reason.
+              Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a `RecyclerView`.
               
               ```java
               ResultSet rows = null;
@@ -1316,44 +1283,77 @@ chapters:
                   Log.e("app", "Failed to run query", e);
                   return;
               }
-              ```
-              
-              The view expects to receive a `List<String>` object, so we need to convert the query response (`ResultSet`) into a `List` object.
-              
-              ```java
+      
               Result row;
               List<String> data = new ArrayList<>();
               while ((row = rows.next()) != null) {
                   data.add(row.getString("airportname"));
               }
-              ```
-              
-              In the last step we call the View's `showAiports()` method passing the list of airport name to be displayed in the Recycler View.
-              
-              ```java
-              mSearchView.showAirports(data);
+              mSearchView.showAirports(data, tag);        
               ```
           
               ## Try it out
               
-              - display user profile.
-              - how to know if the query is using an index. (Query Index)
-              - display flights on search screen. (JOIN)
-              - display number of flights between two airports on search screen. (GROUP BY)
-              - Try it out 2
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  ‘+” button to make a flight reservation
-              - In the “From”  airport textfield, enter “San”
-              - Write down the first value you see listed in the drop down menu
-
+              - Tap on  "+"" button to make a flight reservation
+              - In the “From”  airport textfield, enter "DTW""
+              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+              
+              ![](https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif)
+              
           - title: Advanced Query 
             description: |
-              In this section you will query the hotels.
+              In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
+              Open HotelPresenter.swift and navigate to the [fetchBookmarkedHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L184) method.
               
-              ```java
-                Query q = new Query()
+              If you recall from the Data Modeling section of "Hotels" bucket, the "bookmarkedhotels" document contains a "hotels" property which is an array of Ids of bookmarked hotels.
+              
+              The JOIN query in code snippet below fetches documents whose `Id` is included in the "hotels" property array in "bookmarkedhotels" type document.
+          
+              ```swift
+               var bookmarkedHotels:Hotels = Hotels()
+            
+              // Set aliases
+              let bookmarkDS = DataSource.database( db).as("bookmarkDS")
+              let hotelsDS = DataSource.database(db).as("hotelsDS")
+            
+              let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
+              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+            
+              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+              let join = Join.join(hotelsDS).on(joinExpr);
+            
+              let typeExpr = Expression.property("type").from("bookmarkDS")
+            
+              let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
+              let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
+            
+              let query = Query.select(bookmarkAllColumns, hotelsAllColumns)
+                                .from(bookmarkDS)
+                                .join(join)
+                                .where(typeExpr.equalTo("bookmarkedhotels"));
+            
+           
+              for result in try query.run() {
+                if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
+                      bookmarkedHotels.append(hotel)
+                }
+              }
+               handler(bookmarkedHotels,nil)
               ```
+          
+              ## Try it out
               
+              - Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
+              - Tap on  "Hotels"" button 
+              - In the "Description" text field, enter "pets"
+              - In the "Location" text field, enter "London"
+              - Verify that you see the "Novotel London West" listed
+              - Swipe left to "bookmark" the hotel
+              - Tap "Cancel" button
+              - Verify that the Novatel hotel that you bookmarked earlier shows up in the list
+          
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_join_query.gif)
       - title: Full Text Search
         milestones:
           - title: Full Text Search
