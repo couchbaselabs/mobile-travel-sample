@@ -827,9 +827,9 @@ chapters:
 
               The snippet below creates an empty database for `guest` user in a directory named `guest`.
 
-              **Open the file** `DatabaseManager.swift`. You will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
+              **Open the file** `DatabaseManager.swift`. We will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
 
-              [DatabaseManager.swift] (https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
+              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
         
               ```swift
               func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
@@ -881,9 +881,9 @@ chapters:
                 "hotels": ["hotel1", "hotel2"]
               }
               ```
-              **Open the file** `HotelPresenter.swift`. You will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
+              **Open the file** `HotelPresenter.swift`. We will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
               
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36)
 
               ```swift
               func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
@@ -974,64 +974,75 @@ chapters:
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
-          - title: Update a Document
-            description: |
-              To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback.            
-              The code below updates the list of bookmarked hotel Ids in the "hotels" property of the _"bookmarkedhotels"_ document. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created. Subsequently, every time you bookmark a hotel, the hotel Id is added to "hotels" property of the _"bookmarkedhotels"_ document.
+          # - title: Update a Document
+          #   description: |
+          #     To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback.            
+          #     The code below updates the list of bookmarked hotel Ids in the "hotels" property of the _"bookmarkedhotels"_ document. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created. Subsequently, every time you bookmark a hotel, the hotel Id is added to "hotels" property of the _"bookmarkedhotels"_ document.
         
-              The code snippet can be found in the HotelPresenter.swift file in the [bookmarkHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36) function.
+          #     The code snippet can be found in the HotelPresenter.swift file in the [bookmarkHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36) function.
               
-              ```swift
-              // get existing "BookmarkedHotels" document if one exists
-              var document = try fetchGuestBookmarkDocumentFromDB(db)
+          #     ```swift
+          #     // get existing "BookmarkedHotels" document if one exists
+          #     var document = try fetchGuestBookmarkDocumentFromDB(db)
                      
-              // ....trimming other app logic code ...... 
+          #     // ....trimming other app logic code ...... 
     
-              // Update the bookmarked list with the Ids of hotels
-              var bookmarked = document?.array(forKey: "hotels")
+          #     // Update the bookmarked list with the Ids of hotels
+          #     var bookmarked = document?.array(forKey: "hotels")
                         
-              // Ideally have an API that would append elements of a native array to existing ArrayObject
-              for newId in newlyAddedIds {
-                   bookmarked = bookmarked?.addString(newId)
-              }
+          #     // Ideally have an API that would append elements of a native array to existing ArrayObject
+          #     for newId in newlyAddedIds {
+          #          bookmarked = bookmarked?.addString(newId)
+          #     }
                         
-              if let document = document {
-                // Update and save the bookmark document
-                document.setArray(bookmarked, forKey: "hotels")
-                try db.save(document)
+          #     if let document = document {
+          #       // Update and save the bookmark document
+          #       document.setArray(bookmarked, forKey: "hotels")
+          #       try db.save(document)
                    
-                // ....trimming other app logic code ...... 
-              }
-              ```
+          #       // ....trimming other app logic code ...... 
+          #     }
+          #     ```
               
-              ## Try it out
+          #     ## Try it out
               
-              - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
-              - As Guest User, tap on “hotels” button
-              - In "location" text field , enter "London"
-              - You will see list of hotels. 
-              - Verify that the first hotel in the list is bookmarked. If not, make sure you follow instructions in [Create a Document]() section.
-              - Swipe right on the second hotel cell
-              - You will get option to  “Bookmark” 
-              - Tap “bookmark”
-              - This should display a "bookmark" icon on the hotel cell
-              - Tap "Cancel" button 
-              - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
+          #     - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
+          #     - As Guest User, tap on “hotels” button
+          #     - In "location" text field , enter "London"
+          #     - You will see list of hotels. 
+          #     - Verify that the first hotel in the list is bookmarked. If not, make sure you follow instructions in [Create a Document]() section.
+          #     - Swipe right on the second hotel cell
+          #     - You will get option to  “Bookmark” 
+          #     - Tap “bookmark”
+          #     - This should display a "bookmark" icon on the hotel cell
+          #     - Tap "Cancel" button 
+          #     - Verify that you see two bookmarked hotels in the “Bookmarked Hotels” screen
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
+          #     ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_update_document.gif)
          
           - title: Delete a Document
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
-              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
-       
-              The code snippet can be found in the HotelPresenter.swift file in the [unbookmarkHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L124) function.
+              **Open the file** `HotelPresenter.swift`. We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
+              
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L98)
+              ```swift
+              func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
+                ...
+              }
+              ```
+              
+              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
               
               ```swift
-                  if let doc = db.getDocument(idOfDocToRemove) {
-                     try db.delete(doc)
-                  }
+                                 
+              // Remove unbookmarked hotel documents
+              for idOfDocToRemove in idsToRemove {
+                if let doc = db.getDocument(idOfDocToRemove) {
+                    try db.delete(doc)
+                }
+              }
               ```
                
               ## Try it out
