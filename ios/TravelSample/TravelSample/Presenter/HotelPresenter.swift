@@ -49,75 +49,49 @@ extension HotelPresenter {
                 
             }
             
-            // Get current list of bookmarked hotels. 
-            guard let arrOfCurrentIds:[String] = document?.array(forKey: "hotels")?.toArray().flatMap({ return $0 as? String }) else {
-                handler(TravelSampleError.DocumentFetchException)
-                return
-            }
-            
-            
-            // Get the Ids of all hotels that need to be bookmarked from the hotels array
+            // Get the Ids of all hotels that need to be bookmarked
             let ids:[String] = hotels.map({ (dict)  in
                 if let idVal = dict["id"] as? String {
                     return idVal
                 }
                 return ""
-             })
+            })
             
-            // Convert to Set for easy set operations
-            let setOfNewIds:Set<String> = Set(ids)
+            // Fetch the current list of bookmarked hotel Ids
+            var bookmarked = document?.array(forKey: "hotels")
             
-            // Get the delta of the new list and current Id list to identify the hotels that are not yet bookmarked
-            let newlyAddedIds = Array(setOfNewIds.subtracting(arrOfCurrentIds))
-            
-            if newlyAddedIds.count > 0 {
-                
-                // perform batch update
-                try db.inBatch {
-                    // Update the bookmarked list with the Ids of hotels
-                    var bookmarked = document?.array(forKey: "hotels")
-                    
-                    // Ideally have an API that would append elements of a native array to existing ArrayObject
-                    for newId in newlyAddedIds {
-                        bookmarked = bookmarked?.addString(newId)
-                    }
-                    
-                    if let document = document {
-                        // Update and save the bookmark document
-                        document.setArray(bookmarked, forKey: "hotels")
-                        
-                        try db.save(document)
-                        
-                        // Add the corresponding bookmarked hotels to the database
-                        let docsToAdd = hotels.filter({ (dict) -> Bool in
-                            if let idVal = dict["id"] as? String {
-                                return newlyAddedIds.contains(idVal)
-                            }
-                            return false
-                        })
-                        
-                        for hotelDoc in docsToAdd {
-                            if let idVal = hotelDoc["id"] as? String {
-                                if let doc = db.getDocument(idVal) {
-                                    doc.setDictionary(hotelDoc)
-                                    try db.save(doc)
-                                }
-                                else {
-                                    
-                                    try db.save(Document.init(idVal, dictionary: hotelDoc))
-                                }
-                            }
-                        }
-                    }
-                }
+            // Add the new hotel ids to the bookmarked hotels array
+            for newId in ids {
+                bookmarked = bookmarked?.addString(newId)
+            }
+            // Update and save the "bookmarkedhotels" document
+            if let document = document {
+                // Update and save the bookmark document
+                document.setArray(bookmarked, forKey: "hotels")
+                try db.save(document)
                 
             }
+            
+            // Add the hotel details documents
+            for hotelDoc in hotels {
+                if let idVal = hotelDoc["id"] as? String {
+                    if let doc = db.getDocument(idVal) {
+                        doc.setDictionary(hotelDoc)
+                        try db.save(doc)
+                    }
+                    else {
+                        try db.save(Document.init(idVal, dictionary: hotelDoc))
+                    }
+                }
+            }
+        
             handler(nil)
         }
         catch {
             handler(TravelSampleError.DocumentFetchException)
             return
         }
+ 
         
     }
     
@@ -132,7 +106,6 @@ extension HotelPresenter {
                 handler(TravelSampleError.DocumentFetchException)
                 return
             }
-            
             
             // Get current list of bookmarked hotels.
             guard let arrOfCurrentIds:[String] = document.array(forKey: "hotels")?.toArray().flatMap({ return $0 as? String }) else {
@@ -168,7 +141,6 @@ extension HotelPresenter {
                             try db.delete(doc)
                         }
                     }
-                    
                     
                 }
             handler(nil)

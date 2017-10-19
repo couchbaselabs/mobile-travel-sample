@@ -827,10 +827,10 @@ chapters:
 
               The snippet below creates an empty database for `guest` user in a directory named `guest`.
 
-              [DatabaseManager.swift] (https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
+              **Open the file** `DatabaseManager.swift`. You will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
 
-              Locate the `openOrCreateDatabaseForGuest` function
-                   
+              [DatabaseManager.swift] (https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
+        
               ```swift
               func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
                 var options = DatabaseConfiguration()
@@ -861,35 +861,103 @@ chapters:
               - On Login screen select “Proceed as Guest” option. 
               - This will log you into app in Guest Mode. Signing in as Guest will create a new empty  database for “guest” account if one does not exist
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
-          - title: Create a Document
+          - title: Create/ Update a Document
             description: |
-              In Couchbase Lite, the primary entity stored in a database is called a document instead of a "row" or "record". A document's body takes the form of a JSON object — a collection of key/value pairs where the values can be different types of data such as numbers, strings, arrays, dates, blobs or even nested objects. 
+              Bookmarked hotels are persisted in a separate document with `type` of `bookmarkedhotels`. 
               
-              The code snippet can be found in the HotelPresenter.swift file in the [bookmarkHotels](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36) function.
-              The snippet creates a new _"bookmarkedhotels"_ document if one does not exist. The first time a hotel is bookmarked, the _"bookmarkedhotels"_ document is created with the "hotels" property holding the bookmarked hotel Id. For every hotel Id that is added to the "hotels" property array in the _"bookmarkedhotels"_ document, the corresponding "hotels" document containing details of the hotel is added to the database. 
-              For brevity, the following code snippet only shows the creation of the _"bookmarkedhotels"_ document. The creation/addition of hotel document would be similar.
+              The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property. The hotel's information is persisted in a separate `hotels` type document. 
+
+              Subsequently, every time a hotel is bookmarked, the process repeats.
+
+              ```json
+              {
+                "_id": "hotel1",
+                "name": "San Francisco Hotel",
+                "address": "123, Park Street, San Francisco"
+              }
+              
+              {
+                "type": "bookmarkedhotels",
+                "hotels": ["hotel1", "hotel2"]
+              }
+              ```
+              **Open the file** `HotelPresenter.swift`. You will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
+              
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+
+              ```swift
+              func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
+                  ...
+              }
+              ```
+              
+              First, you need to get an instance of the database.
               
               ```swift
-             
-                // get existing "BookmarkedHotels" document if one exists
-                var document = try fetchGuestBookmarkDocumentFromDB(db)
-                         
-                if document == nil {
-                    // First time bookmark is created for guest account
-                    // Create document of type "bookmarkedhotels"
-                    document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])               
+              guard let db = dbMgr.db else {
+                   handler(TravelSampleError.DatabaseNotInitialized)
+                return
+              }
+              ```
+
+              Then fetch document of type `bookmarkedhotels`. Don't worry too much about how you query for document of specific type from the database. We will examine `queries` in a future lesson.
+
+              Create document of type `bookmarkedhotels` if one does not exist.
+              ```swift
+              var document = try fetchGuestBookmarkDocumentFromDB(db)
+            
+              if document == nil {
+                // First time bookmark is created for guest account
+                // Create document of type "bookmarkedhotels"
+                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                
+              }
+              ```
+              
+              Next, retrieve the Ids of hotels to be bookmarked and add it to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document.
+              ```swift
+              // Get the Ids of all hotels that need to be bookmarked
+              let ids:[String] = hotels.map({ (dict)  in
+                if let idVal = dict["id"] as? String {
+                    return idVal
                 }
-                // .... trimming other app logic code   ....
-        
-                if let document = document {
-                    // add the Id of the bookmarked hotel to the "hotels" property 
-                    document.setArray(bookmarked, forKey: "hotels")
-        
-                   // Save the "bookmarkedhotel" document in database    
-                   try db.save(document)
-                                
-                   // ....trimming other app logic code ......   
-               }
+                return ""
+              })
+            
+              // Fetch the current list of bookmarked hotel Ids
+              var bookmarked = document?.array(forKey: "hotels")
+            
+              // Add the new hotel ids to the bookmarked hotels array
+              for newId in ids {
+                bookmarked = bookmarked?.addString(newId)
+              }
+              ``` 
+
+              Update and save the document of type "bookmarkedhotels"
+              ```swift
+              // Update and save the "bookmarkedhotels" document
+              if let document = document {
+                // Update and save the bookmark document
+                document.setArray(bookmarked, forKey: "hotels")
+                try db.save(document)
+                
+              }
+              ```
+
+              Persist the hotel information as separate documents of type `hotels`
+              ```swift
+              // Add the hotel details documents
+              for hotelDoc in hotels {
+                if let idVal = hotelDoc["id"] as? String {
+                    if let doc = db.getDocument(idVal) {
+                        doc.setDictionary(hotelDoc)
+                        try db.save(doc)
+                    }
+                    else {
+                        try db.save(Document.init(idVal, dictionary: hotelDoc))
+                    }
+                }
+              }
               ```
               
               ## Try it out

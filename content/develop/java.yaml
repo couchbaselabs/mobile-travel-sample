@@ -843,7 +843,7 @@ chapters:
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create a Document
             description: |
-              Bookmarked hotels are persisted on a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document on the `hotels` property and the hotel's information on a separate document.
+              Bookmarked hotels are persisted in a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document in the `hotels` property and the hotel's information inon a separate document.
               
               ```json
               {
