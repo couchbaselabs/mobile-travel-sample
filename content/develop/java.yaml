@@ -969,13 +969,13 @@ chapters:
             
               ## Try it out (Web App)
               
-              - Launch travel sample web app at [http://localhost:8080](http://localhost:8080).
+              - Access the Travel Web App URL in the browser. This URL would be [http://localhost:8080](http://localhost:8080) if you installed the web app manually or via docker container. If you used Cloud based install, please  access the cloud instance of the web app.
               - Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected.
               - You should be logged into the web app. There should be nothing created for the user.
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/web_user_signup.gif)
 
               ## Try it out (Couchbase Server)
-              - Open Couchbase Server at [http://localhost:8091](http://localhost:8091).
+              - Access the Couchbase Server URL in the browser. This URL would be [http://localhost:8091](http://localhost:8091) if you installed the server  manually or via docker container. If you used the Cloud install, please access the cloud instance of the server.
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
               - In the search box, enter "user:demo".
               - You should see the user document that was created when you signed up via the web app.
@@ -1018,12 +1018,12 @@ chapters:
             
               ## Try it out
             
-              - Run the following command in yout terminal
+              - Run the following command in yout terminal. If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway.
               ```bash
               curl -X GET http://localhost:4984/travel-sample/
               ```
               - Confirm that you see an "Unauthorized" error from the server
-              -  Run the following command in yout terminal. The `authorization` header is base64 encoded value of "demo:password"
+              -  Run the following command in yout terminal. The `authorization` header is base64 encoded value of "demo:password". If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway.
               ```bash
               curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
               ```
@@ -1147,7 +1147,7 @@ chapters:
               - Tap "lookup" button
               - From list of flights, select the first flight listing
               - Select “Confirm Booking” 
-              - Access the Travel Sample Web app running on http://localhost:8080 
+              - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is unchecked
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
@@ -1156,7 +1156,7 @@ chapters:
 
               ## Try it out (Pull Replication)
               
-              - Access the Travel Sample Web app running on http://localhost:8080 
+              - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is unchecked
               - Log into the web app as “demo” user with password as “password”
               - Make a flight reservation by clicking "booking" button.
