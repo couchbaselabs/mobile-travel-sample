@@ -9,7 +9,7 @@ chapters:
           - title: Couchbase Server & Sync Gateway
             description: |
 
-              To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the backend. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
+              To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the back-end. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
 
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using CentOS 7.
 
@@ -133,7 +133,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
-              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authenication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
+              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
@@ -143,7 +143,7 @@ chapters:
 
           - title: Configuring Sync Gateway
             description: |
-              Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the backend. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
+              Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the back-end. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
               1. First we need to ssh into the machine running Sync Gateway - the credentials here are the same as in the Develop section:
 
@@ -212,7 +212,7 @@ chapters:
                 }
                 ```
 
-                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seemlessly.
+                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seamlessly.
 
                 While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
 
@@ -220,7 +220,7 @@ chapters:
                 "log": ["*"]
                 ```
 
-                Before saving, it's worth doublechecking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
+                Before saving, it's worth double-checking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
 
                 ```bash
                 $ sudo python -m json.tool /home/sync_gateway/sync_gateway.json
@@ -280,7 +280,7 @@ chapters:
                 }
                 ```
 
-              1. We can confirm this in a couple of places. Firstly, we cang see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -297,7 +297,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_docs.png)
 
-              Congratulations! Sync Gateway is now configured with a Couchbase Server backend. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
+              Congratulations! Sync Gateway is now configured with a Couchbase Server back-end. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
       - title: Scale
         milestones:
@@ -342,7 +342,7 @@ chapters:
 
           - title: Scaling Sync Gateway
             description: |
-              As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Becuase of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer. 
+              As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Because of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
 
               1. Because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node., we need to configure it in the same way as the first node. If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
 
@@ -367,7 +367,7 @@ chapters:
 
               ### Load Balancing
 
-              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in. This Rightscale setup doesn't have that readily available, but feel free to have a look at our other sections ( & ) where this is available to test with.
+              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in. This Rightscale setup doesn't have that readily available, but feel free to have a look at our other sections (*Local VMs with Vagrant* & *AWS EC2 / Bring Your Own Instances*) where this is available to test with.
 
       - title: Extra Credit
         milestones:

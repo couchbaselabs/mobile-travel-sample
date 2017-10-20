@@ -8,9 +8,9 @@ chapters:
           - title: Couchbase Server
             description: |
 
-              To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the backend. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
+              To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the back-end. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
 
-              In this lesson you'll learn how to deploy Couchbase Server on a cluster of machines. The workshop assumes you are using AWS EC2 instances for this, but any collection of machines should be fine with minimal adustment to the instructions - all Couchbase Specific instructions should not need any adaption.
+              In this lesson you'll learn how to deploy Couchbase Server on a cluster of machines. The workshop assumes you are using AWS EC2 instances for this, but any collection of machines should be fine with minimal adjustment to the instructions - all Couchbase Specific instructions should not need any adaptation.
 
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using RHEL 7.
 
@@ -25,7 +25,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_rhel.png)
 
-                For the instance type, we should really consider the [Sizing Recomendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
+                For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
                 Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to add the following ports `8091-8094`, `11210`, and `4984-4985` (these last two are for Sync Gateway, but this way we can reuse the same group):
 
@@ -35,18 +35,28 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_key_pair.png)
 
-              1. From the list of instances, select the instance we just launched make a note of the Public IP Address. We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
+              1. From the list of instances, select the instance we just launched make a note of the Public Address.
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_dns.png)
+
+              We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
 
                 ```bash
                 $ sudo chmod 600 ./Workshop_AWS.pem
-                $ ssh ec2-user@123.123.123.123 -i ./Workshop_AWS.pem
+                $ ssh ec2-user@ec2-111-111-111-111.compute-1.amazonaws.com -i ./Workshop_AWS.pem
                 ```
 
-              ### N.B. From here on, we'll use `$CB1` to represent this IP address to make following along easier.
+              ### N.B. From here on, we'll use `$CB1` to represent this address to make following along easier.
 
               ## Install Couchbase Server
 
-              1. Now we need to actually donwload Couchbase Server. This is as easy as running the following command:
+              1. Now we need to download the Couchbase Server package. If you're using the default RHEL 7 AMI, you'll need to install `wget` first:
+
+                ```bash
+                $ sudo yum install wget -y
+                ```
+
+              Then actually download the package:
 
                 ```bash
                 $ wget http://packages.couchbase.com/releases/5.0.0/couchbase-server-enterprise-5.0.0-centos7.x86_64.rpm
@@ -56,10 +66,9 @@ chapters:
 
                 ```bash
                 $ sudo rpm -i couchbase-server-enterprise-5.0.0-centos7.x86_64.rpm
-                TODO
                 ```
 
-              1. That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, let's check the Couchbase Server instance by going to the IP Address (`$CB1`) and port `8091`, you should be greeted with this screen:
+              1. That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, let's check the Couchbase Server instance by going to the Address (`$CB1`) and port `8091`, you should be greeted with this screen:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_wide.png)
 
@@ -67,7 +76,7 @@ chapters:
             description: |
               Sync Gateway is the middleman server that exposes a database API for Couchbase Lite databases to replicate to and from. It connects internally to a Couchbase Server bucket to persist the documents. Again, in a production environment you would connect it to Couchbase Server, but for now let's concentrate on getting one started.
 
-              As with the last section we'll assumes you are using AWS EC2 instances for this, but any collection of machines should be fine with minimal adustment to the instructions - all Couchbase Specific instructions should not need any adaption.
+              As with the last section we'll assumes you are using AWS EC2 instances for this, but any collection of machines should be fine with minimal adjustment to the instructions - all Couchbase Specific instructions should not need any adaptation.
 
               The steps here are much the same as for Couchbase Server:
 
@@ -81,34 +90,44 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_rhel.png)
 
-                For the instance type, we should really consider the [Sizing Recomendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
+                For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
-                There's no other special steps we need at this point, so go head and click *Review and Launch*.
+                Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to re-use the same group we created for Couchbase Server:
 
-              1. You'll be prompted to select a Key Pair, if you don't already have one you have access to (or like to keep things separate), create a new one which will download the appropriate `.pem` file.
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_sec_gp.png)
 
-              1. From the list of instances, select the instance we just launched make a note of the Public IP Address. We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
+              1. You'll be prompted to select a Key Pair. Again, it will most likely make sense to reuse the one from launching the Couchbase Server instance.
+
+              1. From the list of instances, select the instance we just launched make a note of the Public Address.
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_dns.png)
+
+              We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
 
                 ```bash
                 $ sudo chmod 600 ./Workshop_AWS.pem
-                $ ssh ec2-user@123.123.123.123 -i ./Workshop_AWS.pem
+                $ ssh ec2-user@123.123.123.123 -i ./Workshop_AWS.pem2 
                 ```
 
-              ### N.B. Similar to before, we'll use `$SG1` to represent this IP address to make following along easier.
+              ### N.B. Similar to before, we'll use `$SG1` to represent this address to make following along easier.
 
               ## Install Sync Gateway Server
 
-              1. Now we need to actually donwload Couchbase Server. This is as easy as running the following command:
+              1. As with Couchbase Server, we now need to download the Sync Gateway package. Again, if you're using the default RHEL 7 AMI, you'll need to install `wget` first:
+
+                ```bash
+                $ sudo yum install wget -y
+                ```
+
+              Then actually download and install the package:
+
 
                 ```bash
                 $ wget http://packages.couchbase.com/releases/couchbase-sync-gateway/1.5.0/couchbase-sync-gateway-enterprise_1.5.0_x86_64.rpm
                 ```
 
-              1. Finally, install the package with `rpm`:
-
                 ```bash
                 $ sudo rpm -i couchbase-sync-gateway-enterprise_1.5.0_x86_64.rpm
-                TODO
                 ```
 
               1. That's it, Sync Gateway is now running on this machine. We can check this easily either by using `curl` from the local machine (i.e. inside the `ssh` session):
@@ -209,7 +228,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
-              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authenication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
+              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
@@ -219,7 +238,7 @@ chapters:
 
           - title: Configuring Sync Gateway
             description: |
-              Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the backend. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
+              Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the back-end. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
               1. First we need to ssh back into the machine running Sync Gateway. Once we're ssh'd in, we can access the Admin API as we did before:
 
@@ -270,7 +289,7 @@ chapters:
 
                 ```json
                 "todo": {
-                  "server": "http://$CB1:8091",
+                  "server": "http://ec2-111-111-111-111.compute-1.amazonaws.com:8091",
                   "bucket": "todo",
                   "username": "sg_user",
                   "password": "rb4c_p4ssw0rd",
@@ -282,7 +301,7 @@ chapters:
                 }
                 ```
 
-                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seemlessly.
+                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seamlessly.
 
                 While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
 
@@ -290,7 +309,7 @@ chapters:
                 "log": ["*"]
                 ```
 
-                Before saving, it's worth doublechecking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
+                Before saving, it's worth double-checking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
 
                 ```bash
                 $ sudo python -m json.tool /home/sync_gateway/sync_gateway.json
@@ -330,7 +349,7 @@ chapters:
                             "name": "todo",
                             "password": "rb4c_p4ssw0rd",
                             "pool": "default",
-                            "server": "http://123.123.123.123:8091",
+                            "server": "http://ec2-111-111-111-111.compute-1.amazonaws.com:8091",
                             "username": "sg_user",
                             "users": {
                                 "GUEST": {
@@ -350,7 +369,7 @@ chapters:
                 }
                 ```
 
-              1. We can confirm this in a couple of places. Firstly, we cang see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -367,7 +386,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_docs.png)
 
-              Congratulations! Sync Gateway is now configured with a Couchbase Server backend. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
+              Congratulations! Sync Gateway is now configured with a Couchbase Server back-end. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
       - title: Scale
         milestones:
@@ -412,7 +431,7 @@ chapters:
 
           - title: Scaling Sync Gateway
             description: |
-              As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Becuase of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
+              As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Because of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
 
               1. First, we'll need some more nodes. Follow the same process we did before to bring up one more machine and install Sync Gateway on it.
 
@@ -464,7 +483,7 @@ chapters:
                             "name": "todo",
                             "password": "rb4c_p4ssw0rd",
                             "pool": "default",
-                            "server": "http://123.123.123.123:8091",
+                            "server": "http://ec2-111-111-111-111.compute-1.amazonaws.com:8091",
                             "username": "sg_user",
                             "users": {
                                 "GUEST": {
