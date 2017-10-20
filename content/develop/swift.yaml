@@ -20,12 +20,9 @@ chapters:
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
               
               For the server side components, you have three options 
-              - *Manual*
-                - Here, you would download and install the components on your local machine
-              - *Docker (Local)*
-                - In this case, you would install all the server components in separate docker containers on your local machine
-              - *Cloud (Rightscale)*
-                - In this case, you can launch and connect to an instance of the server components running on a cloud Instance
+              - **Manual**: Here, you would download and install the components on your local machine.
+              - **Docker (Local)**: In this case, you would install all the server components in separate docker containers on your local machine.
+              - **Cloud (Rightscale)**: In this case, you can launch and connect to an instance of the server components running on a cloud instance.
 
               It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section later in the workshop
           - title: Pre-requisites
@@ -35,7 +32,7 @@ chapters:
               #### iOS (Xcode 8.3.3 and above) 
               - Preferrable to use Xcode9
               - Downloadable latest version from the [Mac App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
-                
+            
               #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
               
@@ -146,7 +143,7 @@ chapters:
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server  --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                $ docker run -d --name cb-server --network workskop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
                 ```
 
               - It may take a few seconds for the server to startup. Verify that the docker image is running with following command
@@ -197,46 +194,46 @@ chapters:
               **Open the file** `DatabaseManager.swift`. You must update the `kRemoteSyncUrl` constant. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
               
               [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+              
+              ```swift
+              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+              ```
+              
+              **Open the file** `DatabaseManager.swift`. Locate the `kRemoteSyncUrl`.
+              
+              [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
+              
+              ```swift
+              fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
+              ```
+              
+              Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`.
 
               ```swift
-                  ```swift
-                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
-                  ```
-                - **Open the file** `DatabaseManager.swift` 
-                  [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift)
-
-                  Locate the `kRemoteSyncUrl`
-                  ```swift
-                  fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
-                  ```
-
-                  Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`
-                  ```swift
-                  static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
-                  ```
-               
-               ## Try it out (Couchbase Server)
-
-               - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
-               - Log into the "Admin Console" with username as "Administrator" and password as "password"
-               - Select the "Buckets" option from the menu on the left
-               - Verify that you have around 31,000 documents in your travel-sample bucket
-
-               ## Try it out (Sync Gateway)
-
-               - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
-               - You should the following response
-                ```json
-                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
-                ```
+              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
+              ```
               
-               ## Try it out (Travel App)
-
-               - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
-               - Verify that you see the login screen of the Travel Sample Web App as shown below
-                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-           
-
+              ## Try it out (Couchbase Server)
+              - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
+              - Log into the "Admin Console" with username as "Administrator" and password as "password"
+              - Select the "Buckets" option from the menu on the left
+              - Verify that you have around 31,000 documents in your travel-sample bucket
+              
+              ## Try it out (Sync Gateway)
+              - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
+              - You should the following response
+               ```json
+               {
+                "couchdb":"Welcome",
+                "vendor":{"name":"Couchbase Sync Gateway","version":1.5},
+                "version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"
+               }
+               ```
+            
+              ## Try it out (Travel App)
+              - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
+              - Verify that you see the login screen of the Travel Sample Web App as shown below
+                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
 
           # - title: Docker Compose
           #   description: |
@@ -536,7 +533,7 @@ chapters:
               
                 ```bash
                 $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-py
-                 ```
+                ```
               
                 You should then see the following in the console output.
               
@@ -544,7 +541,6 @@ chapters:
                  Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
                 ```
               ## Try it out
-              
                 - Open http://localhost:8080/ in your web browser
                 - Verify that you see the login screen of the Travel Sample Web App as shown below
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
@@ -685,7 +681,6 @@ chapters:
               
                 ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-                
                 ### Guest Bucket
                 
                 The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
@@ -696,12 +691,11 @@ chapters:
                   
                 - bookmarkedhotels 
                 - hotel
-               
-              
                 ![](https://cl.ly/2l0118183p11/guest-model.png)
+
           - title: Document Types
             description: |
-              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it "type"
+              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it "type".
               ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
               
               ## Try it out
@@ -756,7 +750,6 @@ chapters:
               curl -X GET http://localhost:4985/travel-sample/airline_137
               ```
               - Confirm that "_id" property is "airline_137"
-
 
   - title: Develop
     lessons:
@@ -868,7 +861,7 @@ chapters:
               - On Login screen select “Proceed as Guest” option. 
               - This will log you into app in Guest Mode. Signing in as Guest will create a new empty  database for “guest” account if one does not exist
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
-          - title: Create/ Update a Document
+          - title: Create and Update a Document
             description: |
               Bookmarked hotels are persisted in a separate document with `type` of `bookmarkedhotels`. 
               
@@ -1067,7 +1060,7 @@ chapters:
         milestones:
           - title: User Management
             description: |
-              User is created via the Travel sample web app. When user is created, a corresponding user profile document is created on Couchbase Server.
+              User is created via the Travel sample web app. When a user is created, a corresponding user profile document is created on Couchbase Server.
             
               ## Try it out (Web App)
               
@@ -1159,28 +1152,26 @@ chapters:
           
           - title: XAttrs
             description: |
-             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/swift#/0/4/0) section.
+              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/swift#/0/4/0) section.
 
             
-             Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
              
              
-             Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
-             In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
+              Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
+              In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
 
              
-             This can be enabled through a configuration setting in the sync gateway config file
-             Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
+              This can be enabled through a configuration setting in the sync gateway config file
+              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
 
-             ```javascript
-               "import_docs": "continuous",
-               "enable_shared_bucket_access":true
-             ```
-        
+              ```javascript
+              "import_docs": "continuous",
+              "enable_shared_bucket_access":true
+              ```
 
           - title: Replication
             description: |
-              
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
               
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
@@ -1243,7 +1234,7 @@ chapters:
               config.continuous = true
 
               ```
-
+              
               The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/swift#/2/2/1) section
           
               ```swift
@@ -1322,9 +1313,7 @@ chapters:
               - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_pull_sync.gif)
-           
 
-     
       - title: Pre-built database
         milestones:
           - title: Starting with Prebuilt Database
@@ -1346,7 +1335,7 @@ chapters:
                     
                 }
               ```
-            
+              
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”

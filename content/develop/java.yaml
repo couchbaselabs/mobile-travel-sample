@@ -20,12 +20,9 @@ chapters:
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
               
               For the server side components, you have three options 
-              - *Manual*
-                - Here, you would download and install the components on your local machine
-              - *Docker (Local)*
-                - In this case, you would install all the server components in separate docker containers on your local machine
-              - *Cloud (Rightscale)*
-                - In this case, you can launch and connect to an instance of the server components running on a cloud instance
+              - **Manual**: Here, you would download and install the components on your local machine.
+              - **Docker (Local)**: In this case, you would install all the server components in separate docker containers on your local machine.
+              - **Cloud (Rightscale)**: In this case, you can launch and connect to an instance of the server components running on a cloud instance.
 
               It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section later in the workshop
           - title: Pre-requisites
@@ -33,7 +30,6 @@ chapters:
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
               #### Android
-              
               - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
               - Android device or emulator running API level 16 or above
               - Android SDK 26
@@ -41,11 +37,9 @@ chapters:
               - JDK 8
             
               #### Python (V 2.7 and above)
-              
               - Downloadable from [python.org](https://www.python.org/downloads/)
-            
-              #### git
               
+              #### git
               - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
@@ -72,6 +66,7 @@ chapters:
               ```bash
               git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
+              
               - Open **android/build.gradle** using Android Studio
               - Build and run the project
               
@@ -81,7 +76,6 @@ chapters:
       
                 ![](https://cl.ly/0T0G2S083g41/as-login.png)
       
-       
       
       - title: Couchbase Server 5.0
         milestones:
@@ -159,7 +153,7 @@ chapters:
               - Sync Gateway
               - Travel Web Application 
             
-              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sandboxed instance.
             
 
               - Access [https://selfservice-4.rightscale.com/catalog](https://selfservice-4.rightscale.com/catalog) on your browser.
@@ -178,7 +172,7 @@ chapters:
               
               [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/687a36b19521c2ef2d2a41b2dc14991688e45dcc/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
 
-              ```swift
+              ```java
               public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
               ```
               
@@ -193,14 +187,12 @@ chapters:
               ```
                
               ## Try it out (Couchbase Server)
- 
               - Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
               - Log into the "Admin Console" with username as "Administrator" and password as "password"
               - Select the "Buckets" option from the menu on the left
               - Verify that you have around 31,000 documents in your travel-sample bucket
- 
+              
               ## Try it out (Sync Gateway)
- 
               - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
               - You should the following response
                ```json
@@ -210,13 +202,12 @@ chapters:
                 "version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"
                }
                ```
-             
+            
               ## Try it out (Travel App)
- 
               - Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
               - Verify that you see the login screen of the Travel Sample Web App as shown below
                  ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
-           
+
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
@@ -332,7 +323,7 @@ chapters:
               - Sync Gateway
               - Travel Web Application 
             
-              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sandboxed instance.
             
 
               - Access `https://selfservice-4.rightscale.com/catalog` on your browser
@@ -445,8 +436,8 @@ chapters:
               - Install `libcouchbase` which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
         
-              - Clone the 5.0 branch of Travel Sample web app repo 
-              ``` bash
+              - Clone the 5.0 branch of Travel Sample web app repo
+              ```bash
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
               ```         
 
@@ -486,7 +477,7 @@ chapters:
               - Now launch the Travel Web App
               ```bash
               python travel.py
-              * Running on http://localhost:8080/ (Press CTRL+C to quit)              
+              * Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
         
               ## Try it out
@@ -504,7 +495,7 @@ chapters:
                 $ docker network ls
                 $ docker network create -d bridge workshop
                 ```
-              -  To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
+              - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
                 $ docker pull connectsv/try-cb-py
@@ -518,7 +509,7 @@ chapters:
               
                 You should then see the following in the console output.
               
-                ```bash             
+                ```bash
                  Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
                 ```
               ## Try it out
@@ -533,7 +524,7 @@ chapters:
               - Sync Gateway
               - Travel Web Application 
             
-              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sabdboxed instance.
+              NOTE: This instance will be available for you to use for the duration of the workshop. The instance will automatically be terminated after the workshop. Every user will have their own sandboxed instance.
             
 
               - Access `https://selfservice-4.rightscale.com/catalog` on your browser
@@ -657,7 +648,7 @@ chapters:
                 - route
                 - landmark (not used in apps)
                 - user Document (created and managed by user)
-                     
+                
                 Except for the user document, most of the documents are static/semi-static in nature. 
               
                 ![](https://cl.ly/40330Z0M1k3F/models.png)
@@ -676,7 +667,7 @@ chapters:
 
           - title: Document Types
             description: |
-              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it type.
+              Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it "type".
               ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
               
               ## Try it out
@@ -706,7 +697,6 @@ chapters:
           - title: Document _id
             description: |
               When Sync Gateway processes a document, it adds relevant metadata to the document. The metadata includes an "_id" property that corresponds  to the document ID. You will see this property if you query for the document via the the Sync Gateway REST API.
-       
               
               ```json
               {
@@ -810,8 +800,10 @@ chapters:
           - title: Create a Database
             description: |
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
-                
+              
               The snippet below creates an empty database for the `guest` user in a directory named `guest`.
+              
+              **Open the file** `DatabaseManager.java`. We will review the `DatabaseManager(Context context, boolean isGuest)` constructor method.
               
               [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
         
@@ -840,7 +832,7 @@ chapters:
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create and Update a Document
             description: |
-              Bookmarked hotels are persisted in a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document in the `hotels` property and the hotel's information inon a separate document.
+              Bookmarked hotels are persisted in a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document on the `hotels` property and the hotel's information inon a separate document.
               
               ```json
               {
@@ -854,10 +846,7 @@ chapters:
                 "hotels": ["hotel1", "hotel2"]
               }
               ```
-              
-              In this section you will add the code to persist those two documents.
-              
-              **Edit the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will implement the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
+              **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will review the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
               
               [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
               
@@ -874,7 +863,7 @@ chapters:
               Database database = DatabaseManager.getDatabase();
               ```
               
-              Uncomment the following to persist the hotel information on a new document.
+              The following snippet persists the hotel instance (`Map<String, Object>`) as a new `Document` in the database. This means we will be able to access bookmarked documents while being offline.
               
               ```java
               Document hotelDoc = new Document((String) hotel.get("id"));
@@ -886,7 +875,7 @@ chapters:
               }
               ```
               
-              Now you will get the document with ID `user::guest` or create a new document if it doesn't exist. The code below sets the `type` property to `bookmarkedhotels` and creates a new array to store the document ID.
+              Now you will get the document with ID `user::guest` or create a new document if it doesn't exist. The code below sets the `type` property to `bookmarkedhotels` and creates a new `hotels` array to store document IDs.
               
               ```java
               Document document = database.getDocument("user::guest");
@@ -909,7 +898,7 @@ chapters:
               );
               ```
               
-              Finally, you can save the document.
+              Finally, you will save the document.
               
               ```java
               try {
@@ -938,7 +927,7 @@ chapters:
             description: |
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
-              **Open the file** in `app/src/android/java/.../bookmarks/BookmarksPresenter.java`. You will implement the `removeBookmark(Map<String, Object> bookmark)` method. Remove the `return;` statement.
+              **Open the file** in `app/src/android/java/.../bookmarks/BookmarksPresenter.java`. You will review the `removeBookmark(Map<String, Object> bookmark)` method.
               
               [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java)
               
@@ -1001,11 +990,9 @@ chapters:
               - Data Synchronization and Routing
               - Authorization and Access Control
               
-              In this chapter, we will focus on Authorization and Access Control.We will discuss Data Synchronization and Routing in the [Sync](/develop/java#/2/3/0) chapter.
+              In this chapter, we will focus on Authorization and Access Control. We will discuss Data Synchronization and Routing in the [Sync](/develop/swift#/2/3/0) chapter.
              
-              In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.          
-
-              A Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
+              In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
 
               Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json.
 
@@ -1022,11 +1009,11 @@ chapters:
               - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
-                // Give user read access to channel
-                if (!isDelete()) {
-                  // Deletion of user document is essentially deletion of user
-                  access(username,"channel." + username)
-                }
+              // Give user read access to channel
+              if (!isDelete()) {
+                // Deletion of user document is essentially deletion of user
+                access(username,"channel." + username)
+              }
               ```
             
               ## Try it out
@@ -1069,23 +1056,23 @@ chapters:
           
           - title: XAttrs
             description: |
-             Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/java#/0/4/0) section.
+              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/java#/0/4/0) section.
 
             
-             Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
              
              
-             Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
-             In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
+              Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
+              In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
 
              
-             This can be enabled through a configuration setting in the sync gateway config file
-             Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
+              This can be enabled through a configuration setting in the sync gateway config file
+              Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json
 
-             ```javascript
+              ```javascript
               "import_docs": "continuous",
               "enable_shared_bucket_access":true
-             ```
+              ```
 
           - title: Replication
             description: |
@@ -1102,7 +1089,7 @@ chapters:
               
               - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication.
               
-              **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. You will implement the method `startPushAndPullReplicationForCurrentUser(String username, String password)`. Remove the `return;` statement.
+              **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. We will review the method `startPushAndPullReplicationForCurrentUser(String username, String password)`.
 
               [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
               
@@ -1112,7 +1099,7 @@ chapters:
               }
               ```
               
-              First, you initialize the `URL` object which represents the Sync Gateway instance to synchronize with.
+              First, you initialize the `URL` object which points to the Sync Gateway instance to synchronize with.
               
               ```java
               String syncUrl = "blip://10.0.2.2:4984/travel-sample";
@@ -1247,7 +1234,7 @@ chapters:
             description: |
               The travel app has many instances of querying the database. We will discuss a simple example here.
 
-              **Open the file** `SearchFlightPresenter.java`. We will review the `startsWith(String prefix, String tag)` method.
+              **Open the file** `app/src/android/java/.../searchflight/SearchFlightPresenter.java`. We will review the `startsWith(String prefix, String tag)` method.
               
               [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java)
               
@@ -1322,7 +1309,7 @@ chapters:
               
               We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
               
-              **Open the file** `HotelsPresenter.java`. We will review the `fetchBookmarks()` method.
+              **Open the file** `app/src/android/java/.../hotes/HotelsPresenter.java`. We will review the `fetchBookmarks()` method.
                
               [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
               
