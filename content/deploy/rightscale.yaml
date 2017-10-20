@@ -13,7 +13,7 @@ chapters:
 
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using CentOS 7.
 
-              # Spin Up Instances with Rightscale
+              ## Spin Up Instances with Rightscale
 
               In this version of the workshop, we'll connect to private instances of Couchbase Server and Sync Gateway  running in a Rightscale cloud environment. You may have already provisioned one of these environments in the Develop workshop. If so, simply switch to the Deploy tab.
             

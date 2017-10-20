@@ -14,7 +14,7 @@ chapters:
               To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the back-end. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using CentOS 7.
 
-              # Spin Up Instances with Vagrant
+              ## Spin Up Instances with Vagrant
 
               - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up
 
