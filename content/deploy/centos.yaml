@@ -14,9 +14,9 @@ chapters:
               To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the back-end. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using CentOS 7.
 
-              ### Try it out
+              # Spin Up Instances with Vagrant
 
-              1. You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up
+              - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up
 
               ```bash
               $ vagrant up
@@ -26,23 +26,25 @@ chapters:
               Bringing machine 'node2-sg' up with 'virtualbox' provider...
               ```
 
-              1. You can make a note of the IP addresses in your output, but they should be the same as the ones above. As you might have guessed, we now have two VMs running - one with Couchbase Server and one with Sync Gateway. Let's check the Couchbase Server instance by going to the IP Address and port specified, you should be greeted with this screen:
+              - You can make a note of the IP addresses in your output, but they should be the same as the ones above. As you might have guessed, we now have two VMs running - one with Couchbase Server and one with Sync Gateway. Let's check the Couchbase Server instance by going to the IP Address and port specified, you should be greeted with this screen:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_wide.png)
 
-              1. That's it, Couchbase Server is now running on this VM. We'll get into configuring it in a minute, but let's take a look at what we did under the covers so that you can replicate this with whatever provisioning tools you prefer (or manually, if you're a purist like that!).
+              - That's it, Couchbase Server is now running on this VM. We'll get into configuring it in a minute, but let's take a look at what we did under the covers so that you can replicate this with whatever provisioning tools you prefer (or manually, if you're a purist like that!).
 
-                * The `Vagrantfile` deals with provisioning the VMs themselves. We use the `Vagrantfile` to do some basic processing of download links, but it doesn't actually use these itself; it's more concerned with spinning up the VMs, setting up hostnames and networking and so on. Essentially, when the `Vagrantfile` has done its thing, you're left with a certain number of "clean" VMs.
+                - The `Vagrantfile` deals with provisioning the VMs themselves. We use the `Vagrantfile` to do some basic processing of download links, but it doesn't actually use these itself; it's more concerned with spinning up the VMs, setting up hostnames and networking and so on. Essentially, when the `Vagrantfile` has done its thing, you're left with a certain number of "clean" VMs.
 
-                * From here, `Puppet` takes over (and is actually kicked off by Vagrant). Puppet handles downloading the Couchbase Server package, and then installing this and making sure the service is running. It also does some other miscellaneous set up to ensure everything is ready to go. You can have a closer look at what's going on in the `cb_puppet.pp` file if you're interested.
+                - From here, `Puppet` takes over (and is actually kicked off by Vagrant). Puppet handles downloading the Couchbase Server package, and then installing this and making sure the service is running. It also does some other miscellaneous set up to ensure everything is ready to go. You can have a closer look at what's going on in the `cb_puppet.pp` file if you're interested.
 
-                * If you're more than a little bit interested, check out our full repo of Vagrants at https://github.com/couchbaselabs/vagrants - these can be really handy when testing various configurations. It's worth noting though that although the repo is actively maintained, it's provided as-is and is not a supported product in it's own right. PRs are very welcome though!
+                - If you're more than a little bit interested, check out our full repo of Vagrants at https://github.com/couchbaselabs/vagrants - these can be really handy when testing various configurations. It's worth noting though that although the repo is actively maintained, it's provided as-is and is not a supported product in it's own right. PRs are very welcome though!
 
           - title: Sync Gateway
             description: |
               Sync Gateway is the middleman server that exposes a database API for Couchbase Lite databases to replicate to and from. It connects internally to a Couchbase Server bucket to persist the documents. Again, in a production environment you would connect it to Couchbase Server, but for now let's have a quick look at the one we just started.
 
-              1. We already started the VM in the last step, and in the same way `cb_puppet.pp` is used to install and start Couchbase Server, `sg_puppet.pp` was used for this VM to install and start Sync Gateway. We can check this easily either by using `curl`:
+              ## Connect to Sync Gateway
+
+              - We already started the VM in the last step, and in the same way `cb_puppet.pp` is used to install and start Couchbase Server, `sg_puppet.pp` was used for this VM to install and start Sync Gateway. We can check this easily either by using `curl`:
 
                 ```bash
                 $ curl http://10.150.150.102:4984/
@@ -54,9 +56,9 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/sg_browser.png)
 
-              1. Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
+              - Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
 
-                * First, check the database is really there:
+                - First, check the database is really there:
 
                   ```bash
                   $ curl http://10.150.150.102:4984/db/
@@ -64,7 +66,7 @@ chapters:
                   {"committed_update_seq":1,"compact_running":false,"db_name":"db","disk_format_version":0,"instance_start_time":1507203061736649,"purge_seq":0,"state":"Online","update_seq":1
                   ```
 
-                * Now let's check the changes feed:
+                - Now let's check the changes feed:
 
                   ```bash
                   $ curl http://10.150.150.102:4984/db/_changes
@@ -75,7 +77,7 @@ chapters:
                   "last_seq":"1"}
                   ```
 
-                * Not too much there yet, but we can easily add some documents:
+                - Not too much there yet, but we can easily add some documents:
 
                   ```bash
                   $ curl -X PUT http://10.150.150.102:4984/db/test_doc -d '{"I am a document": "with a specific name"}' -H 'Content-type: application/json'
@@ -100,7 +102,7 @@ chapters:
                   "last_seq":"3"}
                   ```
 
-              1. You'll notice that Sync Gateway's Admin Port (`4985`) isn't accessible:
+              - You'll notice that Sync Gateway's Admin Port (`4985`) isn't accessible:
 
                 ```bash
                 $ curl http://10.150.150.102:4985
@@ -115,42 +117,48 @@ chapters:
             description: |
               Now that we've got a VM running Couchbase Server, we need to configure it. There are a few options here, we can use the UI, the [REST API](https://developer.couchbase.com/documentation/server/5.0/rest-api/rest-intro.html), or the [CLI](https://developer.couchbase.com/documentation/server/5.0/cli/cli-intro.html). Let's start by looking at the UI as it gives a good sense of what we're doing and why.
 
-              ## Configuring Couchbase Server using the UI
-              1. Open the UI in a browser - this should be at http://10.150.150.101:8091/ - and select *Setup New Cluster*
+              ## Initialise a Couchbase Server Cluster
+
+              - Open the UI in a browser (as you did when you first started the cluster) and select *Setup New Cluster*.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
-              1. The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
+              - The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/cluster_init.png)
 
-              1. For the next step, you'll need to accept the Terms and Conditions, and then click *Configure Disk, Memory, Services* (we don't want the defaults in this case).
+              - For the next step, you'll need to accept the Terms and Conditions, and then click *Configure Disk, Memory, Services* (we don't want the defaults in this case).
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/terms_conditions.png)
 
-              1. On this page, the only things we need to do are to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. Everything else is fine as it is - hit *Save & Finish*.
+              - On this page, we want to to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. As well as this, we want to copy in the Public Address. Everything else is fine as it is - hit *Save & Finish*.
 
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init_aws.png)
 
-              1. Welcome to the Couchbase Server UI! You can see at the moment we have one node running the Data Service, and not much else going on - so let's add a bucket. Click *Buckets* on the left hand bar, then *ADD BUCKET* in the top right corner. In this case, we'll call our bucket `todo` and stick with the defaults for everything else. You can of course pick a different name for your bucket, but be aware that some of the examples in later lessons may need tweaking to match.
+              ## Create a Bucket
+
+              - Welcome to the Couchbase Server UI! You can see at the moment we have one node running the Data Service, and not much else going on - so let's add a bucket. Click *Buckets* on the left hand bar, then *ADD BUCKET* in the top right corner. In this case, we'll call our bucket `todo` and stick with the defaults for everything else. You can of course pick a different name for your bucket, but be aware that some of the examples in later lessons may need tweaking to match.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/main_ui.png)
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
-              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
+              ## Create a User
+
+              - With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
-              1. As for the roles themselves, we want to give `sg_user` the *Bucket Full Access* role for the `todo` bucket.
+              - As for the roles themselves, we want to give `sg_user` the *Bucket Full Access* role for the `todo` bucket.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_role.png)
-
           - title: Configuring Sync Gateway
             description: |
               Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the back-end. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
-              1. First we need to ssh into the VM running Sync Gateway - Vagrant makes this as easy as running one command:
+              ## Check the Current Config
+
+              - First we need to ssh into the VM running Sync Gateway - Vagrant makes this as easy as running one command:
 
                 ```bash
                 $ vagrant ssh node2-sg
@@ -158,7 +166,7 @@ chapters:
                 [vagrant@node2-centos7 ~]$
                 ```
 
-              1. Once we're ssh'd in, we can first see the Admin API for the first time:
+              - Once we're ssh'd in, we can first see the Admin API for the first time:
 
                 ```bash
                 $ curl localhost:4985
@@ -166,7 +174,7 @@ chapters:
                 {"ADMIN":true,"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
                 ```
 
-              1. With this API, we can check the current running config:
+              - With this API, we can check the current running config:
 
                 ```bash
                 $ curl localhost:4985/_config
@@ -201,7 +209,9 @@ chapters:
                 }
                 ```
 
-              1. In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
+              ## Add a New Database
+
+              - In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
 
                 `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html):
 
@@ -240,7 +250,9 @@ chapters:
                 Expecting , delimiter: line 3 column 2 (char 17)
                 ```
 
-              1. With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
+              ## Load the New Config
+
+              - With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
 
                 ```bash
                 $ sudo service sync_gateway restart
@@ -293,7 +305,7 @@ chapters:
                 }
                 ```
 
-              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+              - We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -319,7 +331,7 @@ chapters:
               Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster.
               Couchbase Server is designed to make this scaling incredibly easy; all you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
 
-              1. First, we'll need some more nodes. If you've been looking over the `Vagrantfile` you might have noticed there are a few spare nodes mentioned:
+              - First, we'll need some more nodes. If you've been looking over the `Vagrantfile` you might have noticed there are a few spare nodes mentioned:
 
                 ```bash
                 $ vagrant status
@@ -343,7 +355,7 @@ chapters:
                 VM, run `vagrant status NAME`.
                 ```
 
-              1. So we've got a couple of spare Couchbase Server nodes - let's spin those up. Unlike before, we will need to specify these by name:
+              - So we've got a couple of spare Couchbase Server nodes - let's spin those up. Unlike before, we will need to specify these by name:
 
                 ```bash
                 $ vagrant up node3-cb node4-cb
@@ -357,41 +369,49 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
-              1. For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
+              ## Join the Cluster with a New Node
 
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster.png)
+              - For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
 
-                Before we click through, we also want to only have the Data Service running on this node, we can do this in the same way we did last time under the *Configure Services & Settings For This Node* section:
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_aws.png)
+
+              - Before we click through, we also want to only have the Data Service running on this node, we can do this in the same way we did last time under the *Configure Services & Settings For This Node* section:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_detail.png)
 
-                Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
+              - Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/joined_cluster.png)
 
-                It's worth noting at this point that you can access and administer the cluster from any of the nodes - you'll notice we're still on `10.150.150.102`.
+              - It's worth noting at this point that you can access and administer the cluster from any of the nodes - you'll notice we're still on the second node.
 
-              1. We've got one more node to add, let's do it from the cluster itself, rather than from the new node. Click the *Servers* section on the left hand bar, and you can now see the last node we added:
+              ## Add a Third Node to the Cluster
+
+              - We've got one more node to add, let's do it from the cluster itself, rather than from the new node. Click the *Servers* section on the left hand bar, and you can now see the last node we added:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/pending_rebalance.png)
 
                 As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
-              1. In the top right corner, click *ADD SERVER* and then fill in the IP address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
+              - In the top right corner, click *ADD SERVER* and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/add_node.png)
 
-              1. Finally, start a rebalance with the *Rebalance* button and watch it progress.
+              ## Rebalance the Cluster
+
+              - Finally, start a rebalance with the *Rebalance* button and watch it progress.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rebalancing.png)
 
-                The key thing to note here is that everything is totally online. All data is available during the rebalance.
+              - The key thing to note here is that everything is totally online. All data is available during the rebalance.
 
           - title: Scaling Sync Gateway
             description: |
               As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Because of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
 
-              1. As you might've noticed in the last section, there's a spare Sync Gateway node just waiting to be provisioned. Before we get to that though, it's worth considering configuration again. Because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node. If you've looked over `sg_puppet.pp`, you might've seen this section:
+              ## Configure the New Sync Gateway
+
+              - As you might've noticed in the last section, there's a spare Sync Gateway node just waiting to be provisioned. Before we get to that though, it's worth considering configuration again. Because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node. If you've looked over `sg_puppet.pp`, you might've seen this section:
 
                 ```ruby
                 # Copy config if one supplied
@@ -405,7 +425,7 @@ chapters:
 
                 Essentially this will copy in a supplied `sync_gateway.json` and restart Sync Gateway during the provisioning process. This gets copied from the `/vagrant/` directory inside the VM - this directory is actually mapped directly to the host's directory that the Vagrant was started from. This gives us an opportunity to save some time.
 
-              1. If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
+              - If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
 
                 ```bash
                 $ vagrant ssh node2-sg
@@ -415,7 +435,7 @@ chapters:
 
                 Now the next node we spin up will pull in this config automatically.
 
-              1. Now it's just a simple matter of running `vagrant up` on the new Sync Gateway node:
+              - Now it's just a simple matter of running `vagrant up` on the new Sync Gateway node:
 
                 ```bash
                 $ vagrant up node5-sg
@@ -423,7 +443,7 @@ chapters:
                 Bringing machine 'node5-sg' up with 'virtualbox' provider...
                 ```
 
-              1. Now, unlike last time, we should be able to access the Admin port directly as we enabled it in the config that got copied across.
+              - Now, unlike last time, we should be able to access the Admin port directly as we enabled it in the config that got copied across.
 
                 ```bash
                 $ curl 10.150.150.105:4985
@@ -431,11 +451,11 @@ chapters:
                 {"ADMIN":true, ...
                 ```
 
-              ### Load Balancing
+              ## Load Balancing
 
               In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in.
 
-              1. There's one final Vagrant that we haven't touched yet - and you might've guessed from the name what it does. Before we spin it up though, let's take a look at `nginx_puppet.pp`. Just like `sg_puppet.pp`, there's a section that copies in a config file and restarts the service:
+              - There's one final Vagrant that we haven't touched yet - and you might've guessed from the name what it does. Before we spin it up though, let's take a look at `nginx_puppet.pp`. Just like `sg_puppet.pp`, there's a section that copies in a config file and restarts the service:
 
                 ```ruby
                 # Copy config if one supplied
@@ -447,7 +467,7 @@ chapters:
                 }
                 ```
 
-              1. Let's have a look at `nginx.conf` to see what we're copying in. First, we've got the list of upstream servers, which currently only has the first Sync Gateway node:
+              - Let's have a look at `nginx.conf` to see what we're copying in. First, we've got the list of upstream servers, which currently only has the first Sync Gateway node:
 
                 ```nginx
                 upstream sync_gateway {
@@ -468,7 +488,7 @@ chapters:
 
                 The rest of the file deals with how we want NGINX to proxy the requests generally, whether that's to one server or many. It's a little outside the scope of this workshop, but you can find more details in our [documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/nginx/index.html).
 
-              1. With `nginx.conf` updated and saved, we can now spin up the final VM as we have for the others:
+              - With `nginx.conf` updated and saved, we can now spin up the final VM as we have for the others:
 
                 ```bash
                 $ vagrant up node6-nginx
@@ -476,7 +496,7 @@ chapters:
                 Bringing machine 'node6-nginx' up with 'virtualbox' provider...
                 ```
 
-              1. Once this is complete, you should be able to make requests to the NGINX VM as though it were Sync Gateway:
+              - Once this is complete, you should be able to make requests to the NGINX VM as though it were Sync Gateway:
 
                 ```bash
                 $ curl 10.150.150.106:4984/todo/_changes
@@ -492,7 +512,7 @@ chapters:
             description: |
               When we scaled out the Couchbase Server cluster, we only used the Data Service, because it was all we really needed. For a production deployment, this is actually what we'd recommend - separating the services to dedicated nodes helps you more easily achieve redundancy for each service as well as letting you scale each service separately as your workload and use case demands. There are a couple of ways we could add more services to this cluster: removing a node and re-adding it with more services enabled; or adding yet more nodes.
 
-              1. There's a hidden option in the Vagrantfile to provision yet more nodes, so let's take advantage of that:
+              - There's a hidden option in the Vagrantfile to provision yet more nodes, so let's take advantage of that:
 
                 ```bash
                 $ export VAGRANT_CB_EXTRA_NODES=1
@@ -515,7 +535,7 @@ chapters:
                 node7-cb                  not created (virtualbox)
                 ```
 
-              1. Volià! We've got an extra Couchbase Server node. Let's bring it up and add it to the cluster. This time, let's use the REST API to add it into the cluster.
+              - Volià! We've got an extra Couchbase Server node. Let's bring it up and add it to the cluster. This time, let's use the REST API to add it into the cluster.
 
                 ```bash
                 $ vagrant up node7-cb
@@ -531,7 +551,7 @@ chapters:
 
                 Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
-              1. Once the rebalance is complete, you can open the [Query tab](http://10.150.150.107:8091/ui/index.html#!/query/workbench) in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
+              - Once the rebalance is complete, you can open the [Query tab](http://10.150.150.107:8091/ui/index.html#!/query/workbench) in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
 
   - title: Troubleshooting
     lessons:

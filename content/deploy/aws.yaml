@@ -17,58 +17,58 @@ chapters:
 
               ## Spin Up A Machine 
 
-              1. If you're using AWS EC2, this should be as simple as clicking *Launch Instance*:
+              - If you're using AWS EC2, this should be as simple as clicking *Launch Instance*:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_launch.png)
 
-                Let's use the basic RHEL 7 AMI:
+              - Let's use the basic RHEL 7 AMI:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_rhel.png)
 
-                For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
+              - For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
-                Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to add the following ports `8091-8094`, `11210`, and `4984-4985` (these last two are for Sync Gateway, but this way we can reuse the same group):
+              - Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to add the following ports `8091-8094`, `11210`, and `4984-4985` (these last two are for Sync Gateway, but this way we can reuse the same group):
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_sec_gp.png)
 
-              1. You'll be prompted to select a Key Pair, if you don't already have one you have access to (or like to keep things separate), create a new one which will download the appropriate `.pem` file.
+              - You'll be prompted to select a Key Pair, if you don't already have one you have access to (or like to keep things separate), create a new one which will download the appropriate `.pem` file.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_key_pair.png)
 
-              1. From the list of instances, select the instance we just launched make a note of the Public Address.
+              - From the list of instances, select the instance we just launched make a note of the Public Address.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_dns.png)
 
               We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
 
-                ```bash
-                $ sudo chmod 600 ./Workshop_AWS.pem
-                $ ssh ec2-user@ec2-111-111-111-111.compute-1.amazonaws.com -i ./Workshop_AWS.pem
-                ```
+              ```bash
+              $ sudo chmod 600 ./Workshop_AWS.pem
+              $ ssh ec2-user@ec2-111-111-111-111.compute-1.amazonaws.com -i ./Workshop_AWS.pem
+              ```
 
-              ### N.B. From here on, we'll use `$CB1` to represent this address to make following along easier.
+              **N.B. From here on, we'll use `$CB1` to represent this address to make following along easier.**
 
               ## Install Couchbase Server
 
-              1. Now we need to download the Couchbase Server package. If you're using the default RHEL 7 AMI, you'll need to install `wget` first:
+              - Now we need to download the Couchbase Server package. If you're using the default RHEL 7 AMI, you'll need to install `wget` first:
 
                 ```bash
                 $ sudo yum install wget -y
                 ```
 
-              Then actually download the package:
+              - Then actually download the package:
 
                 ```bash
                 $ wget http://packages.couchbase.com/releases/5.0.0/couchbase-server-enterprise-5.0.0-centos7.x86_64.rpm
                 ```
 
-              1. Finally, install the package with `rpm`:
+              - Finally, install the package with `rpm`:
 
                 ```bash
                 $ sudo rpm -i couchbase-server-enterprise-5.0.0-centos7.x86_64.rpm
                 ```
 
-              1. That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, let's check the Couchbase Server instance by going to the Address (`$CB1`) and port `8091`, you should be greeted with this screen:
+              - That's it, Couchbase Server is now running on this machine. We'll get into configuring it in the next lesson. For now, let's check the Couchbase Server instance by going to the Address (`$CB1`) and port `8091`, you should be greeted with this screen:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_wide.png)
 
@@ -82,44 +82,44 @@ chapters:
 
               ## Spin Up A Machine 
 
-              1. If you're using AWS EC2, this should be as simple as clicking *Launch Instance*:
+              - If you're using AWS EC2, this should be as simple as clicking *Launch Instance*:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_launch.png)
 
-                Let's use the basic RHEL 7 AMI:
+              - Let's use the basic RHEL 7 AMI:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_rhel.png)
 
-                For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
+              - For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
-                Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to re-use the same group we created for Couchbase Server:
+              - Click through the various *Next:...* options until you reach *Step 6: Configure Security Group*. Here you want to re-use the same group we created for Couchbase Server:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_sec_gp.png)
 
-              1. You'll be prompted to select a Key Pair. Again, it will most likely make sense to reuse the one from launching the Couchbase Server instance.
+              - You'll be prompted to select a Key Pair. Again, it will most likely make sense to reuse the one from launching the Couchbase Server instance.
 
-              1. From the list of instances, select the instance we just launched make a note of the Public Address.
+              - From the list of instances, select the instance we just launched make a note of the Public Address.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_dns.png)
 
-              We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
+              - We can then use this and the `.pem` from the previous step to `ssh` into our new instance:
 
                 ```bash
                 $ sudo chmod 600 ./Workshop_AWS.pem
-                $ ssh ec2-user@123.123.123.123 -i ./Workshop_AWS.pem2 
+                $ ssh ec2-user@ec2-111-111-111-112.compute-1.amazonaws.com -i ./Workshop_AWS.pem
                 ```
 
-              ### N.B. Similar to before, we'll use `$SG1` to represent this address to make following along easier.
+              **N.B. Similar to before, we'll use `$SG1` to represent this address to make following along easier.**
 
-              ## Install Sync Gateway Server
+              ## Install Sync Gateway
 
-              1. As with Couchbase Server, we now need to download the Sync Gateway package. Again, if you're using the default RHEL 7 AMI, you'll need to install `wget` first:
+              - As with Couchbase Server, we now need to download the Sync Gateway package. Again, if you're using the default RHEL 7 AMI, you'll need to install `wget` first:
 
                 ```bash
                 $ sudo yum install wget -y
                 ```
 
-              Then actually download and install the package:
+              - Then actually download and install the package:
 
 
                 ```bash
@@ -130,7 +130,9 @@ chapters:
                 $ sudo rpm -i couchbase-sync-gateway-enterprise_1.5.0_x86_64.rpm
                 ```
 
-              1. That's it, Sync Gateway is now running on this machine. We can check this easily either by using `curl` from the local machine (i.e. inside the `ssh` session):
+              ## Connect to Sync Gateway
+
+              - That's it, Sync Gateway is now running on this machine. We can check this easily either by using `curl` from the local machine (i.e. inside the `ssh` session):
 
                 ```bash
                 $ curl http://localhost:4984/
@@ -142,10 +144,10 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/sg_browser.png)
 
-              1. Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
+              - Although we still need to configure Sync Gateway to connect to Couchbase Server, it's already running with the default config. That includes an in memory (`walrus:`) database called `db`. We can have a quick play with this to confirm everything is working as expected.
 
 
-                * First, check the database is really there:
+                - First, check the database is really there:
 
                   ```bash
                   $ curl http://localhost:4984/db/
@@ -153,7 +155,7 @@ chapters:
                   {"committed_update_seq":1,"compact_running":false,"db_name":"db","disk_format_version":0,"instance_start_time":1507203061736649,"purge_seq":0,"state":"Online","update_seq":1
                   ```
 
-                * Now let's check the changes feed:
+                - Now let's check the changes feed:
 
                   ```bash
                   $ curl http://localhost:4984/db/_changes
@@ -164,7 +166,7 @@ chapters:
                   "last_seq":"1"}
                   ```
 
-                * Not too much there yet, but we can easily add some documents:
+                - Not too much there yet, but we can easily add some documents:
 
                   ```bash
                   $ curl -X PUT http://localhost:4984/db/test_doc -d '{"I am a document": "with a specific name"}' -H 'Content-type: application/json'
@@ -189,7 +191,7 @@ chapters:
                   "last_seq":"3"}
                   ```
 
-              1. As we're connecting through `localhost`, you'll notice that Sync Gateway's Admin Port (`4984`) is accessible too:
+              - As we're connecting through `localhost`, you'll notice that Sync Gateway's Admin Port (`4984`) is accessible too:
 
                 ```bash
                 $ curl http://localhost:4985
@@ -205,34 +207,39 @@ chapters:
             description: |
               Now that we've got a Docker container running Couchbase Server, we need to configure it. There are a few options here, we can use the UI, the [REST API](https://developer.couchbase.com/documentation/server/5.0/rest-api/rest-intro.html), or the [CLI](https://developer.couchbase.com/documentation/server/5.0/cli/cli-intro.html). Let's start by looking at the UI as it gives a good sense of what we're doing and why.
 
-              ## Configuring Couchbase Server using the UI
-              1. Open the UI in a browser - this should be at http://$CB1:8091/ - and select *Setup New Cluster*
+              ## Initialise a Couchbase Server Cluster
+
+              - Open the UI in a browser - this should be at http://$CB1:8091/ - and select *Setup New Cluster*
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
-              1. The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
+              - The next step is pretty self explanatory. You don't need to worry too much about the cluster name, but we'll be needing the credentials later. All the examples here are going to use `Administrator` and `password`, so use these yourself if you want to be able to copy and paste. If you're using Couchbase Mobile for anything more sensitive than this workshop, maybe try something a bit more secure!
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/cluster_init.png)
 
-              1. For the next step, you'll need to accept the Terms and Conditions, and then click *Configure Disk, Memory, Services* (we don't want the defaults in this case).
+              - For the next step, you'll need to accept the Terms and Conditions, and then click *Configure Disk, Memory, Services* (we don't want the defaults in this case).
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/terms_conditions.png)
 
-              1. On this page, we want to to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. As well as this, we want to copy in the Public Address. Everything else is fine as it is - hit *Save & Finish*.
+              - On this page, we want to to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. As well as this, we want to copy in the Public Address. Everything else is fine as it is - hit *Save & Finish*.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init_aws.png)
 
-              1. Welcome to the Couchbase Server UI! You can see at the moment we have one node running the Data Service, and not much else going on - so let's add a bucket. Click *Buckets* on the left hand bar, then *ADD BUCKET* in the top right corner. In this case, we'll call our bucket `todo` and stick with the defaults for everything else. You can of course pick a different name for your bucket, but be aware that some of the examples in later lessons may need tweaking to match.
+              ## Create a Bucket
+
+              - Welcome to the Couchbase Server UI! You can see at the moment we have one node running the Data Service, and not much else going on - so let's add a bucket. Click *Buckets* on the left hand bar, then *ADD BUCKET* in the top right corner. In this case, we'll call our bucket `todo` and stick with the defaults for everything else. You can of course pick a different name for your bucket, but be aware that some of the examples in later lessons may need tweaking to match.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/main_ui.png)
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_init.png)
 
-              1. With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
+              ## Create a User
+
+              - With the bucket created, the last bit of configuration we need to do on the Couchbase Server side is to create a user that Sync Gateway will authenticate with. That might sound like a bit of a strange concept - this isn't front end user, it's just going to be used by Sync Gateway itself. Starting in Couchbase Server 5.0, [Role Based Access Control](https://developer.couchbase.com/documentation/server/5.0/security/security-authorization.html#authorization) is used to control access to all features and functions of the cluster, Sync Gateway therefore needs to authenticate against Couchbase Server just like any other client would. Click *Security* in the left hand bar, then *ADD USER* in the top right corner. We want to use `Couchbase` as the *Authentication Domain* in this workshop. As with the Administrator credentials, you can pick anything here, but if you want to copy and paste the credentials we will be using are `sg_user` and `rb4c_p4ssw0rd`.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_user.png)
 
-              1. As for the roles themselves, we want to give `sg_user` the *Bucket Full Access* role for the `todo` bucket.
+              - As for the roles themselves, we want to give `sg_user` the *Bucket Full Access* role for the `todo` bucket.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rbac_role.png)
 
@@ -240,7 +247,9 @@ chapters:
             description: |
               Previously, we were able to access the Sync Gateway VM we set up and perform some CRUD operations against it; however we were only using a local, in-memory `walrus` instance as the back-end. Now that we've got Couchbase Server set up, let's configure Sync Gateway to connect directly to it.
 
-              1. First we need to ssh back into the machine running Sync Gateway. Once we're ssh'd in, we can access the Admin API as we did before:
+              ## Check the Current Config
+
+              - First we need to ssh back into the machine running Sync Gateway. Once we're ssh'd in, we can access the Admin API as we did before:
 
                 ```bash
                 $ curl localhost:4985
@@ -248,7 +257,7 @@ chapters:
                 {"ADMIN":true,"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
                 ```
 
-              1. With this API, we can check the current running config:
+              - With this API, we can check the current running config:
 
                 ```bash
                 $ curl localhost:4985/_config
@@ -283,9 +292,11 @@ chapters:
                 }
                 ```
 
-              1. In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `ec2-user` user you're logged in as will have passwordless `sudo` access.
+              ## Add a New Database
 
-                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html).
+              - In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `ec2-user` user you're logged in as will have passwordless `sudo` access.
+
+              - `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html).
 
                 ```json
                 "todo": {
@@ -301,22 +312,24 @@ chapters:
                 }
                 ```
 
-                The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seamlessly.
+              - The last two settings (`import_docs` and `enable_shared_bucket_access`) allow us to take advantage of the new features in Couchbase Server 5.0 and Sync Gateway 1.5. In short, this lets you use the [Couchbase SDKs](https://developer.couchbase.com/documentation/server/4.6/sdk/development-intro.html) to access the same data seamlessly.
 
-                While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
+              - While we're here, let's up the logging output to `*` so we can see more of what's going on in the logs:
 
                 ```json
                 "log": ["*"]
                 ```
 
-                Before saving, it's worth double-checking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
+              - Before saving, it's worth double-checking that the file is valid json - commas in particular! `python` has a nice way of doing this inside the VM - any errors will look something like this:
 
                 ```bash
                 $ sudo python -m json.tool /home/sync_gateway/sync_gateway.json
                 Expecting , delimiter: line 3 column 2 (char 17)
                 ```
 
-              1. With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
+              ## Load the New Config
+
+              - With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
 
                 ```bash
                 $ sudo service sync_gateway restart
@@ -369,7 +382,7 @@ chapters:
                 }
                 ```
 
-              1. We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
+              - We can confirm this in a couple of places. Firstly, we can see that there's now a collection of `/todo/` endpoints (although not much in there yet):
 
                 ```bash
                 $ curl localhost:4984/todo/_all_docs
@@ -378,15 +391,15 @@ chapters:
                 "total_rows":0,"update_seq":1}
                 ```
 
-                We can also check and see that Sync Gateway has connected to Couchbase Server. If you go to the *Buckets* section, you can click *Documents* to view the contents of the `todo` bucket.
+              - We can also check and see that Sync Gateway has connected to Couchbase Server. If you go to the *Buckets* section, you can click *Documents* to view the contents of the `todo` bucket.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_bucket.png)
 
-                Here you should now see a handful of documents holding Sync Gateway's metadata:
+              - Here you should now see a handful of documents holding Sync Gateway's metadata:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/todo_docs.png)
 
-              Congratulations! Sync Gateway is now configured with a Couchbase Server back-end. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
+              - Congratulations! Sync Gateway is now configured with a Couchbase Server back-end. At this point, you can start connecting apps and persisting the data to Couchbase Server. You've got the basis to build a robust production deployment - more about that in the next lesson!
 
       - title: Scale
         milestones:
@@ -395,62 +408,71 @@ chapters:
               Having one Couchbase Server node is all well and good, but for High Availability and improved performance, you'll need a cluster.
               Couchbase Server is designed to make this scaling incredibly easy; all you need are a few extra VMs running Couchbase Server and you can scale out the cluster straight from the UI.
 
-              1. First, we'll need some more nodes. Follow the same process we did before to bring up two more machines and install Couchbase Server on them. Once this completes, you should see the familiar UI on those new nodes:
+              - First, we'll need some more nodes. Follow the same process we did before to bring up two more machines and install Couchbase Server on them. Once this completes, you should see the familiar UI on those new nodes:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/welcome_focus.png)
 
-              1. For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node by it's Public Address, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
+              ## Join the Cluster with a New Node
+
+              - For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node by it's Public Address, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_aws.png)
 
-                Before we click through, we also want to only have the Data Service running on this node, we can do this in the same way we did last time under the *Configure Services & Settings For This Node* section:
+              - Before we click through, we also want to only have the Data Service running on this node, we can do this in the same way we did last time under the *Configure Services & Settings For This Node* section:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_detail.png)
 
-                Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
+              - Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/joined_cluster.png)
 
-                It's worth noting at this point that you can access and administer the cluster from any of the nodes - you'll notice we're still on the second node.
+              - It's worth noting at this point that you can access and administer the cluster from any of the nodes - you'll notice we're still on the second node.
 
-              1. We've got one more node to add, let's do it from the cluster itself, rather than from the new node. Click the *Servers* section on the left hand bar, and you can now see the last node we added:
+              ## Add a Third Node to the Cluster
+
+              - We've got one more node to add, let's do it from the cluster itself, rather than from the new node. Click the *Servers* section on the left hand bar, and you can now see the last node we added:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/pending_rebalance.png)
 
                 As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
-              1. In the top right corner, click *ADD SERVER* and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
+              - In the top right corner, click *ADD SERVER* and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/add_node.png)
 
-              1. Finally, start a rebalance with the *Rebalance* button and watch it progress.
+              ## Rebalance the Cluster
+
+              - Finally, start a rebalance with the *Rebalance* button and watch it progress.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/rebalancing.png)
 
-                The key thing to note here is that everything is totally online. All data is available during the rebalance.
+              - The key thing to note here is that everything is totally online. All data is available during the rebalance.
 
           - title: Scaling Sync Gateway
             description: |
               As with Couchbase Server, having on Sync Gateway running is fine, but you'll eventually want to scale out to ensure you have High Availability for a production deployment. Because of the way they're deployed and the functions they serve, Couchbase Server and Sync Gateway scale in different ways. Scaling Sync Gateway requires a Load Balancer in front of it, but as Sync Gateway is essentially stateless we don't need to worry about adding it to a cluster - only adding it behind the Load Balancer.
 
-              1. First, we'll need some more nodes. Follow the same process we did before to bring up one more machine and install Sync Gateway on it.
+              - First, we'll need some more nodes. Follow the same process we did before to bring up one more machine and install Sync Gateway on it.
 
-              1. Once Sync Gateway is installed and running, we need to configure it in the same way as the first node (because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node). If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
+              ## Configure the New Sync Gateway
+
+              - Once Sync Gateway is installed and running, we need to configure it in the same way as the first node (because unlike Couchbase Server, Sync Gateway is not inherently clustered, we need to make sure that the same configuration is used on each node). If we ssh into the current running Sync Gateway node, we can copy out the config we already modified in the last lesson:
 
                 ```bash
                 $ ssh ec2-user@$SG1 -i ./Workshop_AWS.pem
                 $ sudo cat /home/sync_gateway/sync_gateway.json
                 ```
 
-              1. We can then update the config on the new node:
+              - We can then update the config on the new node:
 
                 ```bash
                 $ ssh ec2-user@$SG2 -i ./Workshop_AWS.pem
                 $ sudo vi /home/sync_gateway/sync_gateway.json
                 ```
 
+              ## Load the New Config
 
-              1. With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
+              - With the config file updated and syntax error free, we need to restart Sync Gateway to pick it up:
 
                 ```bash
                 $ sudo service sync_gateway restart
@@ -503,6 +525,6 @@ chapters:
                 }
                 ```
 
-              ### Load Balancing
+              ## Load Balancing
 
               TODO
