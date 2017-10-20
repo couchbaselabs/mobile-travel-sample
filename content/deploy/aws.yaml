@@ -527,4 +527,76 @@ chapters:
 
               ## Load Balancing
 
-              TODO
+              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in.
+
+              - As before, we'll want to create a new instance for the load balancer. We can follow the same process and specification for this.
+
+              ## Install NGINX
+
+              - We'll use NGINX as a load balancer for this workshop. First, then, we need to install it on our new instance:
+
+                ```bash
+                $ sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+                ```
+
+                ```bash
+                $ sudo yum install nginx -y
+                ```
+
+              ## Configure NGINX
+
+              - With NGINX installed, we need to give it a configuration to work from. Open a new file:
+
+                ```bash
+                $ sudo vi /etc/nginx/conf.d/sync_gateway_nginx.conf
+                ```
+
+              - First, let's define the list of servers we want to route requests to:
+
+                Let's add the second Sync Gateway node in:
+
+                ```nginx
+                upstream sync_gateway {
+                  server ec2-111-111-111-123.compute-1.amazonaws.com:4984;
+                  server ec2-111-111-111-124.compute-1.amazonaws.com:4984;
+                }
+                ```
+
+                This allows NGINX to balance requests between the two nodes.
+
+                The rest of the file deals with how we want NGINX to proxy the requests generally, whether that's to one server or many. It's a little outside the scope of this workshop, but you can find more details in our [documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/nginx/index.html). Copy the following into the file:
+
+                ```nginx
+                server {
+                    access_log /var/log/nginx/access_log combined;
+                    listen 4984;
+                    client_max_body_size 21m;
+                    location / {
+                        proxy_pass              http://sync_gateway;
+                        proxy_pass_header       Accept;
+                        proxy_pass_header       Server;
+                        proxy_http_version      1.1;
+                        keepalive_requests      1000;
+                        keepalive_timeout       360s;
+                        proxy_read_timeout      360s;
+                    }
+                }
+                ```
+
+              ## Load the New Config
+
+              - With `sync_gateway_nginx.conf` updated and saved, we can now start the NGINX service:
+
+                ```bash
+                $ sudo service nginx start
+                ```
+
+              - Once this is complete, you should be able to make requests to the NGINX instance as though it were Sync Gateway:
+
+                ```bash
+                $ curl localhost:4984/todo/_changes
+                {"results":[
+                {"seq":1,"id":"_user/GUEST","changes":[]}
+                ],
+                "last_seq":"1"}
+                ```
