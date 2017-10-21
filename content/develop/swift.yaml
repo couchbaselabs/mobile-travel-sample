@@ -755,7 +755,7 @@ chapters:
               ```bash
               curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
               ```
-              - Confirm that "_id" property is "airline_137"
+              - Confirm that "_id" property in the JSON response is "airline_137"
 
   - title: Develop
     lessons:
@@ -836,29 +836,36 @@ chapters:
               **Open the file** `DatabaseManager.swift`. We will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
 
               [DatabaseManager.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81)
-        
-              ```swift
+              ```swift 
               func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
-                var options = DatabaseConfiguration()
-                guard let defaultDBPath = _applicationSupportDirectory else {
-                    fatalError("Could not open Application Support Directory for app!")
-                  return
-                }
-                // Create a folder for Guest Account if one does not exist
-                let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
-                let guestFolderPath = guestFolderUrl.path
-                let fileManager = FileManager.default
-                if !fileManager.fileExists(atPath: guestFolderPath) {
-                  try fileManager.createDirectory(atPath: guestFolderPath,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-                
-                }
-            
-                options.directory = guestFolderPath
-                // Gets handle to existing DB at specified path
-                _db = try Database(name: kGuestDBName, config: options)
+                ...
               }
+              ```
+              We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object
+              ```swift
+              var options = DatabaseConfiguration()
+              guard let defaultDBPath = _applicationSupportDirectory else {
+                  fatalError("Could not open Application Support Directory for app!")
+                return
+              }
+              // Create a folder for Guest Account if one does not exist
+              let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
+              let guestFolderPath = guestFolderUrl.path
+              let fileManager = FileManager.default
+              if !fileManager.fileExists(atPath: guestFolderPath) {
+                try fileManager.createDirectory(atPath: guestFolderPath,
+                                              withIntermediateDirectories: true,
+                                              attributes: nil)
+              
+              }
+          
+              options.directory = guestFolderPath
+              ```
+              The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object
+              ```swift
+              // Gets handle to existing DB at specified path
+              _db = try Database(name: kGuestDBName, config: options)
+              
               ```
               
               ## Try it out

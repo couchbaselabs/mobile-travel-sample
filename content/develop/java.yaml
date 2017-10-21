@@ -811,23 +811,32 @@ chapters:
               
               **Open the file** `DatabaseManager.java`. We will review the `DatabaseManager(Context context, boolean isGuest)` constructor method.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
-        
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L36)
               ```java
               protected DatabaseManager(Context context, boolean isGuest) {
-                  if (isGuest) {
-                      DatabaseConfiguration config = new DatabaseConfiguration(context);
-                      File folder = new File(String.format("%s/guest", context.getFilesDir()));
-                      config.setDirectory(folder);
-                      try {
-                          database = new Database("travel-sample", config);
-                      } catch (CouchbaseLiteException e) {
-                          e.printStackTrace();
-                      }
-                  } else {
-                      ...
-                  }
+                ...
               }
+              ```
+              We create a folder for the `guest` user database and specify that as the database `directory` in the `DatabaseConfiguration` object
+              ```java
+              if (isGuest) {
+                  DatabaseConfiguration config = new DatabaseConfiguration(context);
+                  File folder = new File(String.format("%s/guest", context.getFilesDir()));
+                  config.setDirectory(folder);
+              ```
+ 
+              The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object
+             
+              ```java
+              try {
+                    database = new Database("travel-sample", config);
+                  } catch (CouchbaseLiteException e) {
+                    e.printStackTrace();
+                  }
+               } else {
+                      ...
+               }
+              
               ```
               
               ## Try it out
