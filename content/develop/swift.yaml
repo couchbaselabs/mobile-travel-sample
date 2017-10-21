@@ -299,8 +299,11 @@ chapters:
             
               ## Try it out
 
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
+              - Access this URL `http://localhost:4984` in your browser
+              - Verify that you get back a JSON response similar to one below
+              ```json
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              ```
 
 
           - title: Docker (Local)
@@ -339,8 +342,11 @@ chapters:
 
               ### Try it out
               
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
+              - Access this URL `http://localhost:4984` in your browser
+              - Verify that you get back a JSON response similar to one below
+              ```json
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              ```
 
           - title: Cloud
             description: |
@@ -398,7 +404,7 @@ chapters:
                ## Try it out (Sync Gateway)
 
                - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
-               - You should the following response
+               - Verify that you get JSON response similar to one below 
                 ```json
                 {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
                 ```
@@ -745,9 +751,9 @@ chapters:
               ## Try it out
               
               - Confirm that the sync gateway is running
-              - Run the following `curl` command on your terminal
+              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/develop/swift#/2/2/1) section
               ```bash
-              curl -X GET http://localhost:4985/travel-sample/airline_137
+              curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
               ```
               - Confirm that "_id" property is "airline_137"
 
@@ -1288,7 +1294,7 @@ chapters:
               - Tap "lookup" button
               - From list of flights, select the first flight listing
               - Select “Confirm Booking” 
-              - Access the Travel Sample Web app. The URL would be running on http://localhost:8080 
+              - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is unchecked
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
@@ -1299,7 +1305,7 @@ chapters:
               
               ## Try it out (Pull Replication)
               
-              - Access the Travel Sample Web app running on http://localhost:8080 
+              - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is unchecked
               - Log into the web app as “demo” user with password as “password”
               - Make a flight reservation by clicking "booking" button.

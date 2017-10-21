@@ -272,8 +272,11 @@ chapters:
             
               ## Try it out
 
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
+              - Access this URL `http://localhost:4984` in your browser
+              - Verify that you get JSON response similar to one below 
+                ```json
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                ```
 
 
           - title: Docker (Local)
@@ -312,8 +315,11 @@ chapters:
 
               ### Try it out
               
-              - Access this URL `http://localhost:4985/travel-sample` in your browser
-              - Verify that you get back a JSON response
+              - Access this URL `http://localhost:4984` in your browser
+              - Verify that you get JSON response similar to one below 
+                ```json
+                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                ```
 
           - title: Cloud
             description: |
@@ -572,10 +578,10 @@ chapters:
                ## Try it out (Sync Gateway)
 
                - Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
-               - You should the following response
-                ```json
-                {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
-                ```
+               - Verify that you get JSON response similar to one below 
+               ```json
+               {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+               ```
               
                ## Try it out (Travel App)
 
@@ -717,11 +723,11 @@ chapters:
               ## Try it out
               
               - Confirm that the sync gateway is running
-              - Run the following `curl` command on your terminal
+              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/develop/java#/2/2/1) section
               ```bash
-              curl -X GET http://localhost:4985/travel-sample/airline_137
+              curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
               ```
-              - Confirm that "_id" property is "airline_137"
+              - Confirm that "_id" property in the JSON response is "airline_137"
 
   - title: Develop
     lessons:
