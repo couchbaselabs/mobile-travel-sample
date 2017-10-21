@@ -863,7 +863,7 @@ chapters:
               ```
               **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will review the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
               
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java#L110)
               
               ```java
               @Override
@@ -878,7 +878,7 @@ chapters:
               Database database = DatabaseManager.getDatabase();
               ```
               
-              The following snippet persists the hotel instance (`Map<String, Object>`) as a new `Document` in the database. This means we will be able to access bookmarked documents while being offline.
+              The following snippet persists the hotel instance (`Map<String, Object>`) as a new `Document` in the database. This will allow us to access bookmarked hotel documents while being offline.
               
               ```java
               Document hotelDoc = new Document((String) hotel.get("id"));
@@ -890,7 +890,7 @@ chapters:
               }
               ```
               
-              Now you will get the document with ID `user::guest` or create a new document if it doesn't exist. The code below sets the `type` property to `bookmarkedhotels` and creates a new `hotels` array to store document IDs.
+              Now you will get the document with ID `user::guest` or create one if it doesn't exist. The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels.
               
               ```java
               Document document = database.getDocument("user::guest");
@@ -929,11 +929,7 @@ chapters:
               - In "location" text field , enter "London"
               - You will see list of hotels. 
               - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
-              - Swipe right on the first hotel cell
-              - You will get option to  “Bookmark” 
-              - Tap “bookmark”
-              - This should display a "bookmark" icon on the hotel cell
-              - Tap "Cancel" button
+              - Tap on the first hotel cell to bookmark it
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
               
               ![](https://cl.ly/1t38050A1T40/android-save-doc.gif)
