@@ -940,7 +940,7 @@ chapters:
               
               **Open the file** in `app/src/android/java/.../bookmarks/BookmarksPresenter.java`. You will review the `removeBookmark(Map<String, Object> bookmark)` method.
               
-              [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java)
+              [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L77)
               
               ```java
               @Override
@@ -949,7 +949,8 @@ chapters:
               }
               ```
               
-              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
+              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
+              
               
               ```java
               Database database = DatabaseManager.getDatabase();
@@ -965,9 +966,7 @@ chapters:
               
               - Follow the steps in [Update a Document]() section
               - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
-              - Swipe right on first Hotel cell
-              - You will get option to  “UnBookmark” 
-              - Tap “unbookmark”
+              - Swipe left on first Hotel cell to unbookmark/remove the cell
               - Verify that you see a single hotel in the list
               
               ![](https://cl.ly/0A0D363w3R1g/android-unbookmark.gif)

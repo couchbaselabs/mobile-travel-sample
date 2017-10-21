@@ -979,7 +979,7 @@ chapters:
               - In "location" text field , enter "London"
               - You will see list of hotels. 
               - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
-              - Swipe right on the first hotel cell
+              - Swipe left on the first hotel cell
               - You will get option to  “Bookmark” 
               - Tap “bookmark”
               - This should display a "bookmark" icon on the hotel cell
@@ -1046,7 +1046,7 @@ chapters:
               }
               ```
               
-              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. 
+              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
               
               ```swift
                                  
@@ -1062,7 +1062,7 @@ chapters:
               
               - Follow the steps in [Update a Document]() section
               - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
-              - Swipe right on first Hotel cell
+              - Swipe left on first Hotel cell
               - You will get option to  “UnBookmark” 
               - Tap “unbookmark”
               - Verify that you see a single hotel in the list
