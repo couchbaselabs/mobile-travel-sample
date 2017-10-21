@@ -1,5 +1,6 @@
 package com.couchbase.travelsample.bookmarks;
 
+import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
@@ -79,6 +80,20 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         Document document = database.getDocument((String) bookmark.get("id"));
         try {
             database.delete(document);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+
+        Document guestDoc = database.getDocument("user::guest");
+        Array hotelIds = guestDoc.getArray("hotels");
+        for (int i = 0; i < hotelIds.count(); i++) {
+            if (hotelIds.getString(i).equals((String) bookmark.get("id"))) {
+                hotelIds.remove(i);
+            }
+        }
+        guestDoc.setArray("hotels", hotelIds);
+        try {
+            database.save(guestDoc);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }

@@ -901,7 +901,7 @@ chapters:
               }
               ```
               
-              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
+              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked.
               
               
               ```java
@@ -909,6 +909,24 @@ chapters:
               Document document = database.getDocument((String) bookmark.get("id"));
               try {
                   database.delete(document);
+              } catch (CouchbaseLiteException e) {
+                  e.printStackTrace();
+              }
+              ```
+              
+              In addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
+              
+              ```java
+              Document guestDoc = database.getDocument("user::guest");
+              Array hotelIds = guestDoc.getArray("hotels");
+              for (int i = 0; i < hotelIds.count(); i++) {
+                  if (hotelIds.getString(i).equals((String) bookmark.get("id"))) {
+                      hotelIds.remove(i);
+                  }
+              }
+              guestDoc.setArray("hotels", hotelIds);
+              try {
+                  database.save(guestDoc);
               } catch (CouchbaseLiteException e) {
                   e.printStackTrace();
               }
