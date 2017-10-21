@@ -130,7 +130,7 @@ chapters:
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                $ docker run -it --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
                 ```
 
               - It may take a few seconds for the server to startup. Verify that the docker image is running with following command
@@ -305,7 +305,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -it -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
 
               - Verify that the docker container named "sync-gateway" is running with the following command in the terminal window
