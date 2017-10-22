@@ -1215,7 +1215,7 @@ chapters:
 
               **Open the file** `app/src/android/java/.../searchflight/SearchFlightPresenter.java`. We will review the `startsWith(String prefix, String tag)` method.
               
-              [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java)
+              [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53)
               
               ```java
               @Override
@@ -1223,9 +1223,6 @@ chapters:
                 ...
               }
               ```
-              
-              There are 3 different queries in this function body. The query that is ran depends on the length of the search term. You can ignore this specificity, in this section we will look at the 3rd query.
-              
               The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```java
@@ -1262,7 +1259,7 @@ chapters:
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "+"" button to make a flight reservation
-              - In the “From”  airport textfield, enter "DTW""
+              - In the “From”  airport textfield, enter "Detroit""
               - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
               
               ![](https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif)
