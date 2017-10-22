@@ -1285,9 +1285,9 @@ chapters:
               
               We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
               
-              **Open the file** `app/src/android/java/.../hotes/HotelsPresenter.java`. We will review the `fetchBookmarks()` method.
+              **Open the file** `app/src/android/java/.../hotes/BookmarksPresenter.java`. We will review the `fetchBookmarks()` method.
                
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [BookmarksPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L32)
               
               ```java
               public void fetchBookmarks() {
