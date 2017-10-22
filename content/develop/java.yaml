@@ -1161,7 +1161,7 @@ chapters:
               
               This method first checks if a database file already exists. If it doesn't exist it loads the database from the assets directory.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L49)
               
               ```java
               protected DatabaseManager(Context context, boolean isGuest) {
@@ -1186,9 +1186,9 @@ chapters:
               ## Try it out
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  "+” button to make a flight reservation
+              - Tap on  "Airplane” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
-              - Confirm that the first item in the dropdown list of "San Diego Intl"
+              - Confirm that the first item in the dropdown list of "San Francisco Intl"
               
               ![](https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif)
               
