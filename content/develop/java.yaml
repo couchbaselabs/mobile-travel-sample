@@ -170,7 +170,7 @@ chapters:
               
               **Open the file** `DatabaseManager.java`. You must update the `mPythonWebServerEndpoint` constant which points to the Python Web Server. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/687a36b19521c2ef2d2a41b2dc14991688e45dcc/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
 
               ```java
               public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
@@ -180,7 +180,7 @@ chapters:
               
               **Open the file** `DatabaseManager.java`. You must update the `mSyncGatewayEndpoint` constant. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/687a36b19521c2ef2d2a41b2dc14991688e45dcc/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
 
               ```java
               private static String mSyncGatewayEndpoint = "blip://54.148.83.39:4984/travel-sample";
@@ -763,7 +763,7 @@ chapters:
               
               **Open the file** `DatabaseManager.java`. We will review the `DatabaseManager(Context context, boolean isGuest)` constructor method.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L36)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L38)
               ```java
               protected DatabaseManager(Context context, boolean isGuest) {
                 ...
@@ -815,7 +815,7 @@ chapters:
               ```
               **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will review the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
               
-              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/c4320ecba4cabde622f8c78cfe58158c4b2df62b/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java#L110)
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java#L110)
               
               ```java
               @Override
@@ -892,7 +892,7 @@ chapters:
               
               **Open the file** in `app/src/android/java/.../bookmarks/BookmarksPresenter.java`. You will review the `removeBookmark(Map<String, Object> bookmark)` method.
               
-              [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/652beaab02b34c72e07a0c1a15aaf101f247b4e4/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L77)
+              [BookmarksPresenter](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L77)
               
               ```java
               @Override
@@ -1071,7 +1071,7 @@ chapters:
               
               **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. We will review the method `startPushAndPullReplicationForCurrentUser(String username, String password)`.
 
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L131)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L131)
               
               ```java
               public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
@@ -1215,7 +1215,7 @@ chapters:
 
               **Open the file** `app/src/android/java/.../searchflight/SearchFlightPresenter.java`. We will review the `startsWith(String prefix, String tag)` method.
               
-              [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/97c88a1266e8da5317c8af2fdf1ba7f6b5375a7e/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53)
+              [SearchFlightPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53)
               
               ```java
               @Override
@@ -1287,7 +1287,7 @@ chapters:
               
               **Open the file** `app/src/android/java/.../hotes/BookmarksPresenter.java`. We will review the `fetchBookmarks()` method.
                
-              [BookmarksPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L32)
+              [BookmarksPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L32)
               
               ```java
               public void fetchBookmarks() {
@@ -1378,7 +1378,7 @@ chapters:
               
               **Open the file** `app/src/android/java/.../util/DatabaseManager.java`. We will review the `createFTSQueryIndex()` method. This code snippet creates an FTS index on the property named `description`.
               
-              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
+              [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L76)
               
               ```java
               private void createFTSQueryIndex() {
@@ -1394,7 +1394,7 @@ chapters:
               
               **Open the file** `app/src/android/java/.../hotels/HotelPresenter.java`. We will review the `queryHotels(String location, String description)` method.
               
-              [HotelPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/3c6cb5b32bfbef3bf3848838251cc2ec56aab619/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [HotelPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
 
               ```java
               @Override
