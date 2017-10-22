@@ -105,7 +105,12 @@ extension BookingTableViewController {
         if bookingPresenter.bookings.count > indexPath.section {
             let booking = bookingPresenter.bookings[indexPath.section]
             cell.airlineValue = "\(booking["name"] ?? "") : \(booking["flight"] ?? "")"
-            cell.fareValue = "$ \(String(describing: booking["price"] as! Float))"
+            if let price = booking["price"] as? String {
+                cell.fareValue = "$ \(price)"
+            }
+            else if let price = booking["price"] as? Float{
+                cell.fareValue = "$ \(price))"
+            }
             cell.departureAirportValue = booking["sourceairport"] as? String
             cell.arrivalAirportValue = booking["destinationairport"] as? String
             cell.dateValue = booking["date"] as? String
