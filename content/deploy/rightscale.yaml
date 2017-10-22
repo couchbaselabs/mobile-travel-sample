@@ -425,15 +425,7 @@ chapters:
               - Once this has completed, go through the *Add Node* process to add it back to the cluster, this time selecting all 4 services:
 
                 ![]()
-              
-                Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+
+              - Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
               - Once the rebalance is complete, you can access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
-
-  - title: Troubleshooting
-    lessons:
-      - title: Troubleshooting
-        milestones:
-          - title: TODO
-            description: |
-              TODO
