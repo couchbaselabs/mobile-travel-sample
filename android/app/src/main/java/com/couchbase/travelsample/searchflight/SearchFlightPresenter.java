@@ -91,7 +91,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
                 properties.put("date", flights.get(i).getString("utc"));
                 properties.put("destinationairport", flights.get(i).getString("destinationairport"));
                 properties.put("flight", flights.get(i).getString("flight"));
-                properties.put("price", flights.get(i).getInt("price"));
+                properties.put("price", flights.get(i).getDouble("price"));
                 properties.put("name", flights.get(i).getString("name"));
                 properties.put("sourceairport", flights.get(i).getString("sourceairport"));
             } catch (JSONException e) {
