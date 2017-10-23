@@ -109,7 +109,7 @@ extension BookingTableViewController {
                 cell.fareValue = "$ \(price)"
             }
             else if let price = booking["price"] as? Float{
-                cell.fareValue = "$ \(price))"
+                cell.fareValue = "$ \(price)"
             }
             cell.departureAirportValue = booking["sourceairport"] as? String
             cell.arrivalAirportValue = booking["destinationairport"] as? String
