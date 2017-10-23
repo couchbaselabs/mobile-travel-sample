@@ -702,7 +702,7 @@ chapters:
           - title: Document Types
             description: |
               Unlike tables, in Couchbase, all the documents are stored in the same namespace. So you typically use an additional property to differentiate between each entity. Let’s call it "type".
-              ![](https://cl.ly/3K0a0K3P0v0k/document-types.gif)
+              ![](https://cl.ly/1w2D1Z2J0p47/document-types.png)
               
               ## Try it out
               
