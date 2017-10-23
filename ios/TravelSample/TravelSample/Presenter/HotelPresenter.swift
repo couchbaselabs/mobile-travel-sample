@@ -40,35 +40,35 @@ extension HotelPresenter {
         }
         
         do {
-            var document = try fetchGuestBookmarkDocumentFromDB(db)
+            var bookmarkedHotelsDoc = try fetchGuestBookmarkDocumentFromDB(db)
             
-            if document == nil {
+            if bookmarkedHotelsDoc == nil {
                 // First time bookmark is created for guest account
                 // Create document of type "bookmarkedhotels"
-                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                bookmarkedHotelsDoc = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
                 
             }
             
             // Get the Ids of all hotels that need to be bookmarked
-            let ids:[String] = hotels.map({ (dict)  in
-                if let idVal = dict["id"] as? String {
+            let hotelIds:[String] = hotels.map({ (hotelDict)  in
+                if let idVal = hotelDict["id"] as? String {
                     return idVal
                 }
                 return ""
             })
             
             // Fetch the current list of bookmarked hotel Ids
-            var bookmarked = document?.array(forKey: "hotels")
+            var bookmarked = bookmarkedHotelsDoc?.array(forKey: "hotels")
             
             // Add the new hotel ids to the bookmarked hotels array
-            for newId in ids {
+            for newId in hotelIds {
                 bookmarked = bookmarked?.addString(newId)
             }
             // Update and save the "bookmarkedhotels" document
-            if let document = document {
+            if let bookmarkedHotelsDoc = bookmarkedHotelsDoc {
                 // Update and save the bookmark document
-                document.setArray(bookmarked, forKey: "hotels")
-                try db.save(document)
+                bookmarkedHotelsDoc.setArray(bookmarked, forKey: "hotels")
+                try db.save(bookmarkedHotelsDoc)
                 
             }
             
