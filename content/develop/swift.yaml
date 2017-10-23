@@ -836,7 +836,7 @@ chapters:
               }
               ```
 
-              Persist the hotel information as separate documents of type `hotels`
+              Persist the hotel information as separate documents of type `hotels`. First, determine if the document with specified hotel Id already exists. If so, update it with the selected hotel details.  If not, create a new hotel document.
               ```swift
               // Add the hotel details documents
               for hotelDoc in hotels {
