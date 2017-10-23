@@ -585,7 +585,7 @@ chapters:
               
               ## Try it out
               
-              - Log into the "Admin Console" of Couchbase Server with appropriate Administrator credentials you created during installation
+              - Log into the "Admin Console" of Couchbase Server with same Administrator credentials you used during installation
               - Select the "buckets" option from menu on left
               - Click on "Documents" under the travel-sample bucket
               - Search for document with ID "hotel_10025"
