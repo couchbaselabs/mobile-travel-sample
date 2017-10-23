@@ -46,6 +46,7 @@ public class FlightSearchAdapter extends RecyclerView.Adapter<FlightSearchAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.flight_search_list_item, parent, false);
+        view.setPadding(20, 20, 20, 20);
         return new ViewHolder(view);
     }
 
