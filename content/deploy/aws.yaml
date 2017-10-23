@@ -600,3 +600,41 @@ chapters:
                 ],
                 "last_seq":"1"}
                 ```
+
+      - title: Extra Credit
+        milestones:
+          - title: Adding more Couchbase Services
+            description: |
+              When we scaled out the Couchbase Server cluster, we only used the Data Service, because it was all we really needed. For a production deployment, this is actually what we'd recommend - separating the services to dedicated nodes helps you more easily achieve redundancy for each service as well as letting you scale each service separately as your workload and use case demands. There are a couple of ways we could add more services to this cluster: removing a node and re-adding it with more services enabled; or adding yet more nodes, depending on whether or not you wish to spin up any more nodes in AWS. Ideally, in a production environment, the goal would be to have each service running in isolation on a set of nodes; however this workshop is here to teach about a production environment, not necessarily create a perfect one, so we'll address both options here:
+
+              ## Adding a new node
+
+              - Once you have a new node with Couchbase Server installed, it's as simple as adding this to the cluster in the same way as before, only this time selecting the Index, Search, and Query services instead of the Data Service.
+
+              - If you wanted to try something a bit different, you can use the REST API to add this new node as follows (where `$CB1` is a node in the cluster already and `$CB4` is the new node):
+
+                ```bash
+                $ curl -u Administrator:password $CB1:8091/controller/addNode -d 'hostname=$CB4' -d 'services=index,n1ql,fts' -d 'user=Administrator' -d 'password=password'
+
+                {"otpNode":"ns_1@$CB4"}
+                ```
+
+              - Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+
+              ## Re-purposing an existing node
+
+              - If taking this option, let's simply remove one of them and re-add it to the cluster with other services enabled. From the UI of any node, click *Remove* for the third node:
+
+                ![]()
+
+              - The node is still serving data, so start a rebalance to remove it from the cluster:
+
+                ![]()
+
+              - Once this has completed, go through the *Add Node* process to add it back to the cluster, this time selecting all 4 services:
+
+                ![]()
+
+                Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+
+              - Once the rebalance is complete, you can access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.

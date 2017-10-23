@@ -549,14 +549,6 @@ chapters:
                 {"otpNode":"ns_1@10.150.150.107"}
                 ```
 
-                Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
+              - Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
               - Once the rebalance is complete, you can open the [Query tab](http://10.150.150.107:8091/ui/index.html#!/query/workbench) in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
-
-  - title: Troubleshooting
-    lessons:
-      - title: Troubleshooting
-        milestones:
-          - title: TODO
-            description: |
-              TODO
