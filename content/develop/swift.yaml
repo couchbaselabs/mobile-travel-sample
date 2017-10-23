@@ -545,38 +545,42 @@ chapters:
           milestones:
           - title: Introduction
             description: |
-              Progressive disclosure of the data model in the travel sample bucket and the guest bucket. The Travel Sample bucket is synchronized between the mobile clients and the Couchbase Server. The guest bucket is a local-only database that is embedded in the mobile client.
-                
-                In this lesson you will learn how to model the data for an application and the relationships between the different models.
-                
-                Couchbase stores data in documents rather than in table rows. A document is a JSON object containing a number of key-value pairs that are typically correlated. This means that it can take any form as long as it is valid JSON. The following represents the same schema as the table above but in JSON format.
-               
-                ### Travel Sample Bucket
-                
-                The Travel Sample Bucket hosts the following types of documents
-                  
-                - airline
-                - airport
-                - hotel
-                - route
-                - landmark (not used in apps)
-                - user Document (created and managed by user)
-                
-                Except for the user document, most of the documents are static/semi-static in nature. 
+              Before diving into the document schemas, let's take a look again at the mobile app. When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen:
               
-                ![](https://cl.ly/40330Z0M1k3F/models.png)
+              ![](https://cl.ly/1r1Y3H3w2i1I/ios-login.png)
+              
+              - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
+              - **Guest mode**: no user credentials are required for this option. This is a local only mode.
+              
+              Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
+              
+              ### Sync mode
+              
+              Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types:
+              
+              - `airline`
+              - `airport`
+              - `hotel`
+              - `route`
+              - `landmark`
+              - `user`
+              
+              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              
+              ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-                ### Guest Bucket
+              ### Guest mode
                 
-                The guest database is used as a local-only store within the Travel Sample Mobile app. It is a simple database for locally storing the list of bookmarked hotels. 
+              In guest mode, the mobile app creates a new database for the anonymous user. It is an empty database for storing the list of bookmarked hotels locally. 
 
-                It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trips reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
+              It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up. They could bookmark these hotels and later add them to their trip reservations. These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
 
-                The Guest Bucket hosts the following types of documents
+              In guest mode, the Couchbase Lite database hosts the following types of documents:
                   
-                - bookmarkedhotels 
-                - hotel
-                ![](https://cl.ly/2l0118183p11/guest-model.png)
+              - `bookmarkedhotels` 
+              - `hotel`
+                
+              ![](https://cl.ly/2l0118183p11/guest-model.png)
 
           - title: Document Types
             description: |
@@ -585,7 +589,7 @@ chapters:
               
               ## Try it out
               
-              - Log into the "Admin Console" of Couchbase Server with appropriate Administrator credentials you created during installation
+              - Log into the "Admin Console" of Couchbase Server with same Administrator credentials you used during installation
               - Select the "buckets" option from menu on left
               - Click on "Documents" under the travel-sample bucket
               - Search for document with ID "hotel_10025"
