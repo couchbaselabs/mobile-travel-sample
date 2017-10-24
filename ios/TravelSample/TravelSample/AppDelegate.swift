@@ -94,8 +94,8 @@ extension AppDelegate {
     
     func loadHotelBookmarkViewController() {
         
-        if let flightVC = flightBookingsViewController {
-            window?.rootViewController = flightVC
+        if let bookmarkVC = hotelsNavigationViewController {
+            window?.rootViewController = bookmarkVC
         }
         else {
             let storyboard = UIStoryboard.getStoryboard(.Main)
