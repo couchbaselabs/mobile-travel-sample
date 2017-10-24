@@ -8,6 +8,34 @@ chapters:
     lessons:
       - title: Spin Up & Install
         milestones:
+          - title: Installing preliminaries
+            description: |
+              If you're running through this workshop on the day at Couchbase Connect Silicon Valley, you'll be able to take advantage of pre-loading some files needed to speed up the process and avoid having to wait for downloads.
+
+              ## Installing Virtualbox and Vagrant
+
+              Installers are available for compatible version of Virtualbox and Vagrant for both macOS and Windows. You can install these as you would any other piece of software.
+
+              ## Adding the Vagrant Base Box
+
+              The file `connect_sv.box` is a copy of the Vagrant Base Box used by default for this workshop, `puppetlabs/centos-7.0-64-puppet`. In order to save having to download this we can tell Vagrant to use `connect_sv` instead of the *real* `puppetlabs/centos-7.0-64-puppet`.
+
+              - First, we need to add the box to Vagrant:
+
+              ```bash
+              $ vagrant box add connect_sv.box --name connect_sv
+              ```
+
+              - Then we need to set the environment variable `VAGRANT_OS` to ensure we use this in the rest of the workshop:
+
+              ```bash
+              $ export VAGRANT_OS="pre-supplied"
+              ```
+
+              ## Adding the Couchbase Server and Sync Gateway Packages
+
+              Once the packages for Couchbase Server and Sync Gateway have been downloaded once, they'll be reused by subsequent vagrants. If they're already present, they never need to be downloaded in the first place. All that needs to be done here is to copy the files into the same directory as the `Vagrantfile`.
+
           - title: Couchbase Server
             description: |
 
@@ -16,7 +44,7 @@ chapters:
 
               ## Spin Up Instances with Vagrant
 
-              - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up
+              - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up. If you're using the pre-supplied basebox remember to set the environment variable `VAGRANT_OS="pre-supplied"`.
 
               ```bash
               $ vagrant up
