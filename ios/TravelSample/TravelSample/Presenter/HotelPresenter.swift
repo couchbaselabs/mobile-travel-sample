@@ -165,16 +165,20 @@ extension HotelPresenter {
             // in the "hotels" property, fetch the corresponding hotel document
             var bookmarkedHotels:Hotels = Hotels()
             
-            // Set aliases
+            // First, we instantiate two data sources which corresponds to the two sides of the join query.
             let bookmarkDS = DataSource.database( db).as("bookmarkDS")
             let hotelsDS = DataSource.database(db).as("hotelsDS")
             
+            // Next we write the query expressions. The first one gets the hotels property on the
+            // bookmarks data source. The seconds get the document ID on the hotels data source.
             let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
             let hotelIdExpr = Expression.meta().id.from("hotelsDS")
             
+            // Next, we use a function expression to find document's whose _id property is in the hotels array. And build the join expression.
             let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
             let join = Join.join(hotelsDS).on(joinExpr);
             
+            // Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
             let typeExpr = Expression.property("type").from("bookmarkDS")
             
             let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
