@@ -7,6 +7,7 @@ CB_VERSION = "5.0.0"
 SG_VERSION = "1.5.0"
 
 VAGRANT_BOXES = { # Vagrant Cloud base boxes for each operating system
+  "pre-supplied" => "connect_sv",
   "ubuntu14" => "ubuntu/trusty64",
   "centos7"  => { "box_name" => "puppetlabs/centos-7.0-64-puppet",
                   "box_version" => "1.0.1"
@@ -17,11 +18,13 @@ COUCHBASE_RELEASES = "http://packages.couchbase.com/releases"
 SYNC_GATEWAY_RELEASES = "#{COUCHBASE_RELEASES}/couchbase-sync-gateway"
 
 COUCHBASE_DOWNLOAD_LINKS = {
+  "pre-supplied" => "#{COUCHBASE_RELEASES}/#{CB_VERSION}/couchbase-server-enterprise-#{CB_VERSION}-centos7.x86_64",
   "centos7"    => "#{COUCHBASE_RELEASES}/#{CB_VERSION}/couchbase-server-enterprise-#{CB_VERSION}-centos7.x86_64",
   "ubuntu14"   => "#{COUCHBASE_RELEASES}/#{CB_VERSION}/couchbase-server-enterprise_#{CB_VERSION}-ubuntu14.04_amd64",
 }
 
 SYNC_GATEWAY_DOWNLOAD_LINKS = {
+  "pre-supplied" => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
   "centos7"    => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
   "ubuntu14"   => "#{SYNC_GATEWAY_RELEASES}/#{SG_VERSION}/couchbase-sync-gateway-enterprise_#{SG_VERSION}_x86_64",
 }
@@ -47,9 +50,9 @@ else
 end
 
 unless ENV['VAGRANT_OS'].nil?
-  unless ["centos7", "ubuntu14"].include? ENV['VAGRANT_OS']
+  unless ["centos7", "ubuntu14", "pre-supplied"].include? ENV['VAGRANT_OS']
     puts "VAGRANT_OS `#{ENV['VAGRANT_OS']}` is invalid."
-    puts "Available OSs are `centos7` and `ubuntu14`"
+    puts "Available OSs are `centos7`, `ubuntu14` or `pre-supplied`"
     abort
   else
     $operating_system = ENV['VAGRANT_OS']

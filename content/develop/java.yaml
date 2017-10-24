@@ -268,11 +268,19 @@ chapters:
               "password": "password",
               ```
               - Launch the Sync Gateway
+              
+              **macOS**
               ``` bash
               $ cd /path/to/couchbase-sync-gateway/bin
               $ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
               ```
-            
+              **Windows**
+              ```bash
+              PS> & 'C:\Program Files (x86)\Couchbase\sync_gateway.exe' /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+              ```
+              
+              **Note on Windows:** The Sync Gateway service might be running on Windows which will prevent this command from succeeding with the message 'FATAL: Failed to start HTTP server on 127.0.0.1:4985: listen tcp 127.0.0.1:4985: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.' To get around this, stop the 'Couchbase Sync Gateway' service in 'services.msc'.
+              
               ## Try it out
 
               - Access this URL `http://localhost:4984` in your browser
@@ -1139,10 +1147,10 @@ chapters:
           
               ## Try it out
               
-              - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  "+"" button to make a flight reservation
-              - In the “From”  airport textfield, enter "Detroit""
-              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+              - Log into the Travel Sample Mobile app as "demo" user and password as "password"
+              - Tap the "Flights" button to make a flight reservation
+              - In the "From" airport textfield, enter "Detroit"
+              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co"
               
               ![](https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif)
               
