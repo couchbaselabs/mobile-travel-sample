@@ -1139,10 +1139,10 @@ chapters:
           
               ## Try it out
               
-              - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  "+"" button to make a flight reservation
-              - In the “From”  airport textfield, enter "Detroit""
-              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+              - Log into the Travel Sample Mobile app as "demo" user and password as "password"
+              - Tap the "Flights" button to make a flight reservation
+              - In the "From" airport textfield, enter "Detroit"
+              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co"
               
               ![](https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif)
               
