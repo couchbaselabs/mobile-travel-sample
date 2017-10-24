@@ -92,7 +92,7 @@ chapters:
 
               - For the instance type, we should really consider the [Sizing Recommendations](https://developer.couchbase.com/documentation/server/5.0/install/sizing-general.html), however we probably don't want to be spinning up a lot of huge instances just for this workshop, so `t2.micro` should be fine for our purposes today.
 
-              - Click through the various **Next:...** options until you reach *Step 6: Configure Security Group*. Here you want to re-use the same group we created for Couchbase Server:
+              - Click through the various **Next:...** options until you reach **Step 6: Configure Security Group**. Here you want to re-use the same group we created for Couchbase Server:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/ec2_sec_gp.png)
 
@@ -436,7 +436,7 @@ chapters:
 
                 As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
-              - In the top right corner, click **ADD SERVER** and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
+              - In the top right corner, click **ADD SERVER** and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click **Add Server**:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/add_node.png)
 

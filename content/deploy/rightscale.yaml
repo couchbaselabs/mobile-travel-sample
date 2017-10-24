@@ -140,7 +140,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/terms_conditions.png)
 
-              - On this page, we want to to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. As well as this, we want to copy in the Public Address. Everything else is fine as it is - hit *Save & Finish*.
+              - On this page, we want to to disable the Index, Search, and Query Services. We don't need them for now, but there's always the opportunity to add them to the cluster later. As well as this, we want to copy in the Public Address. Everything else is fine as it is - hit **Save & Finish**.
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init_aws.png)
 
@@ -341,7 +341,7 @@ chapters:
 
               ## Join the Cluster with a New Node
 
-              - For the first node, let's add it to the cluster from here. First (as you might have guessed), click *Join Existing Cluster*. Here we want to specify the first node, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
+              - For the first node, let's add it to the cluster from here. First (as you might have guessed), click **Join Existing Cluster**. Here we want to specify the first node, which is the only node so far in the cluster we want to join, and the Administrator credentials we set earlier (`Administrator`, `password` if you're following along):
 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_aws.png)
 
@@ -349,7 +349,7 @@ chapters:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/join_cluster_detail_aws.png)
 
-              - Finally, click *Join With Custom Configuration*. You should be greeted with a very familiar UI, only now with 2 nodes:
+              - Finally, click **Join With Custom Configuration**. You should be greeted with a very familiar UI, only now with 2 nodes:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/joined_cluster.png)
 
@@ -363,7 +363,7 @@ chapters:
 
                 As the message suggests, this needs Rebalancing into the cluster before it starts taking traffic, but let's wait until we've got both nodes ready before starting the rebalance.
 
-              - In the top right corner, click **ADD SERVER** and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click *Add Server*:
+              - In the top right corner, click **ADD SERVER** and then fill in the Public Address of the last node. As this node has not been initialised yet, it doesn't actually have Administrator credentials and we can ignore this. Again, let's add only the Data Service and finally click **Add Server**:
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/add_node.png)
 
@@ -406,7 +406,7 @@ chapters:
 
               ## Load Balancing
 
-              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in. This Rightscale setup doesn't have that readily available, but feel free to have a look at our other sections (*Local VMs with Vagrant* & *AWS EC2 / Bring Your Own Instances*) where this is available to test with.
+              In theory, we could stop here - we've got two Sync Gateways connected to the same Couchbase Server cluster. For some deployments, this might actually be preferable so you can manually partition your traffic by pointing apps at different Sync Gateways (particularly if you're deploying Couchbase Lite in a handful of static locations). For most deployments though, you'll want to be able to dynamically partition traffic across your Sync Gateway nodes - this is where a Load Balancer comes in. This Rightscale setup doesn't have that readily available, but feel free to have a look at our other sections (**Local VMs with Vagrant* & **AWS EC2 / Bring Your Own Instances**) where this is available to test with.
 
       - title: Extra Credit
         milestones:
