@@ -12,6 +12,8 @@ chapters:
             description: |
               If you're running through this workshop on the day at Couchbase Connect Silicon Valley, you'll be able to take advantage of pre-loading some files needed to speed up the process and avoid having to wait for downloads.
 
+              **If you're not running this on the day of Couchbase Connect, or don't want to take advantage of the pre-supplied files and instead let them get downloaded automatically, skip this section and move on to Spin Up & Install: Couchbase Server**
+
               ## Installing Virtualbox and Vagrant
 
               Installers are available for compatible version of Virtualbox and Vagrant for both macOS and Windows. You can install these as you would any other piece of software.
