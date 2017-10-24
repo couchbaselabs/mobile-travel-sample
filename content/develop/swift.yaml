@@ -969,7 +969,7 @@ chapters:
               ## Try it out (Couchbase Server)
               - Access the Couchbase Server URL in the browser. This URL would be [http://localhost:8091](http://localhost:8091) if you installed the server  manually or via docker container. If you used the Cloud install, please access the cloud instance of the server.
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
-              - In the search box, enter "user:demo".
+              - In the search box, enter "user::demo".
               - You should see the user document that was created when you signed up via the web app.
               - Confirm that the "username" that you see is "demo"
 
@@ -1515,7 +1515,7 @@ chapters:
               
              
               let hotelSearchQuery = Query
-                  .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
+                  .select(_SelectColumn.ALLRESULT) 
                   .from(DataSource.database(db))
                   .where(
                       _Property.TYPE.equalTo("hotel")
