@@ -244,6 +244,10 @@ extension HotelsTableViewController {
     }
     
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        if inGuestMode == false {
+            return []
+        }
         guard let cell = tableView.cellForRow(at: indexPath) as? HotelCell  else {
             return nil
         }

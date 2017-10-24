@@ -27,10 +27,18 @@ public protocol PresenterProtocol: class {
 // default implementation of PresentingViewProtocol
 extension PresentingViewProtocol {
     public func dataStartedLoading() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        DispatchQueue.main.async {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+
+        }
     }
+
     public func dataFinishedLoading() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        DispatchQueue.main.async {
+        
+             UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+        }
     }
     
 }
