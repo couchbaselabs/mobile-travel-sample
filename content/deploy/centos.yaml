@@ -23,7 +23,7 @@ chapters:
               - First, we need to add the box to Vagrant:
 
               ```bash
-              $ vagrant box add connect_sv.box --name connect_sv
+              $ vagrant box add /path/to/pre-supplied/connect_sv.box --name connect_sv
               ```
 
               - Then we need to set the environment variable `VAGRANT_OS` to ensure we use this in the rest of the workshop:
