@@ -91,7 +91,7 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
                 hotelIds.remove(i);
             }
         }
-        guestDoc.setArray("hotels", hotelIds);
+
         try {
             database.save(guestDoc);
         } catch (CouchbaseLiteException e) {
