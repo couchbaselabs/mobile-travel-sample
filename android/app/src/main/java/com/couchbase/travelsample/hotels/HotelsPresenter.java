@@ -4,7 +4,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
-import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
@@ -128,11 +127,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             document.set(properties);
         }
 
-        document.setArray("hotels",
-            document
-                .getArray("hotels")
-                .addString((String) hotel.get("id"))
-        );
+        document.getArray("hotels").addString((String) hotel.get("id"));
 
         try {
             database.save(document);
