@@ -789,7 +789,7 @@ chapters:
               }
               ```
               
-              The code below deletes the "hotels" document from the database every time a hotel is unbookmarked.
+              When searching for hotels in **Guest mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server. Then, if a hotel is bookmarked, it gets inserted in the Couchbase Lite database for offline access. So when the user unbookmarks a hotel, the document needs to be removed from the database. That's what the code below is doing.
               
               
               ```java
@@ -802,7 +802,7 @@ chapters:
               }
               ```
               
-              In addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
+              In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document.
               
               ```java
               Document guestDoc = database.getDocument("user::guest");
@@ -812,7 +812,7 @@ chapters:
                       hotelIds.remove(i);
                   }
               }
-              guestDoc.setArray("hotels", hotelIds);
+              
               try {
                   database.save(guestDoc);
               } catch (CouchbaseLiteException e) {
