@@ -16,6 +16,20 @@ chapters:
 
               Installers are available for compatible version of Virtualbox and Vagrant for both macOS and Windows. You can install these as you would any other piece of software.
 
+              ## Cloning the Repo
+
+              The files you need for this workshop are all contained in the GitHub repo [couchbaselabs/connect_mobile_deploy](https://github.com/couchbaselabs/connect_mobile_deploy). These files are all quite small so we don't need to worry about the download time. Simply clone this repo to your local machine:
+
+              ```bash
+              git clone https://github.com/couchbaselabs/connect_mobile_deploy.git
+              ```
+
+              or
+
+              ```bash
+              $ git clone git@github.com:couchbaselabs/connect_mobile_deploy.git
+              ```
+
               **If you're not running this on the day of Couchbase Connect, or don't want to take advantage of the pre-supplied files and instead let them get downloaded automatically, skip the rest of this section and move on to Spin Up & Install: Couchbase Server**
 
               ## Adding the Vagrant Base Box
@@ -46,7 +60,7 @@ chapters:
 
               ## Spin Up Instances with Vagrant
 
-              - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up. If you're using the pre-supplied basebox remember to set the environment variable `VAGRANT_OS="pre-supplied"`.
+              - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the directory of the repo you cloned earlier and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up. If you're using the pre-supplied basebox remember to set the environment variable `VAGRANT_OS="pre-supplied"`.
 
               ```bash
               $ vagrant up
