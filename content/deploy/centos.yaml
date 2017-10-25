@@ -582,3 +582,38 @@ chapters:
               - Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
               - Once the rebalance is complete, you can open the [Query tab](http://10.150.150.107:8091/ui/index.html#!/query/workbench) in a browser to access the [Query Workbench](https://developer.couchbase.com/documentation/server/5.0/tools/query-workbench.html) on the new node.
+
+          - title: Deploying the Develop Section
+            description: |
+              In the Develop section of the workshop, you created and *"deployed"* a full Couchbase Mobile app. Let's change "deployed" into Deployed and actually deploy this into a production ready environment.
+
+              Luckily, we've already covered most of the steps for this. At a high level, these are:
+
+              - Load the `travel-sample` bucket on the Couchbase Server cluster.
+              - Create a Sync Gateway database that points to the `travel-sample` bucket.
+              - Update the app to point to the new Sync Gateway (or, more precisely, Sync Gateways via the Load Balancer)
+
+              There are a few caveats here, and things we haven't covered. Depending on how you performed the previous steps, you might encounter a few complexities in your environment:
+
+              ## Server Quotas, Bucket Quotas, and Other Numbers
+
+              You may recall when we first initialised the cluster, we set a quota for the Data Service:
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_init_aws.png)
+
+              - This sets the upper limit for the total quota of every bucket in the cluster. When we created the `todo` bucket, we used up all of this quota with the one bucket, so we have nothing left for `travel-sample`. There are a couple of ways to approach this problem:
+
+                - Delete the `todo` bucket and associated Sync Gateway database.
+                - Adjust `todo`'s quota and add `travel-sample` alongside it.
+
+              To do either of these, we need to go to the **Buckets** page in the Couchbase Server UI and click on the `todo` bucket. From here we have the option to **Delete** or **Edit** the bucket:
+
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/bucket_detail.png)
+
+              - The choice is yours, and this being the Extra Credit section, we'll be a bit more sparse with the instructions - we believe in you! (Do feel free to ask though!)
+
+              ## A New Database
+
+              - Either way, you'll need to update the Sync Gateway config file to add the new database. Again, we're sure you can manage to add in the database from the [config file used in Develop](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/sync-gateway-config-travelsample.json) but do ask if you have questions! Be sure to either set up a user in Couchbase Server that has access to the correct bucket - either by adding this permission to the `sg_user` user we used previously, or by creating a new user for this new bucket and database.
+
+              - Once this is updated, and pointing to the correct Couchbase Server cluster with all the correct permissions, we need to have each Sync Gateway load this new config. We did this in a slightly different way before - using Puppet to automatically load the new config as we bring a node up. We could destroy the nodes and recreate them, having updated the config file on the host (`$ vagrant destroy node2-sg node5-sg && vagrant up node2-sg node5-sg`); but it's more lightweight to simply ssh into each instance in turn, update the config, and restart the Sync Gateway as we did the first time we changed the config. With more of a production focus, you may well want to utilise a load balancer in front of Sync Gateway to implement the change over, ensuring that at any one time requests are only getting routed to one particular version of the config. You want to avoid a situation where a load balancer may route alternate requests to different Sync Gateways with different configs!
