@@ -7,7 +7,7 @@ chapters:
           - title: Components
             description: |
               This is the high level architecture of the system that we will be running
-              ![](https://raw.githubusercontent.com/couchbaselabs/couchbase_mobile_blogs/master/travelsample_mobile/travelsampleapp-arch.png?token=AAnYg2D_RWF1NrKsEgtIti0P52joLSA1ks5Z756YwA%3D%3D)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/travelsampleapp-arch.png)
 
               It includes the following components -
               - Client Side 
