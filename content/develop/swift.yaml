@@ -1456,7 +1456,7 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-senstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
+              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
 
               In order to do FTS queries, an FTS index must be created.
               
