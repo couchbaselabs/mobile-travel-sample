@@ -43,7 +43,11 @@ chapters:
 
               To deploy Couchbase Mobile to production you must first get familiar with Couchbase Server. While it's certainly possible to run Sync Gateway in isolation for quick and agile development and testing, any production deployment needs Couchbase Server as the back-end. Luckily, connecting the two is incredibly easy. Even more luckily, both Couchbase Server and Sync Gateway are designed to be able to scale out easily and with zero downtime, meaning that we can start with a very small deployment and scale it up later to something that's production ready.
               Couchbase Server can deployed on a whole host of [operating systems](http://www.couchbase.com/nosql-databases/downloads), but for this workshop we'll focus on using CentOS 7.
-
+              
+              ### Pre-requisites
+              
+              - Vagrant 5.0.10 (download it [here](https://www.virtualbox.org/wiki/Download_Old_Builds_5_0_pre18))
+              
               ## Spin Up Instances with Vagrant
 
               - You should already have [Vagrant](https://www.vagrantup.com/) installed, so simply navigate to the `deploy` directory and run the command `vagrant up`. You should get a fairly verbose output that starts by detailing the two machines we're about to bring up. If you're using the pre-supplied basebox remember to set the environment variable `VAGRANT_OS="pre-supplied"`.
@@ -243,7 +247,7 @@ chapters:
 
               - In the config we can see that there is one Sync Gateway database defined: `db`. Let's add another! We could use the Admin REST API for this, but we really want the config to persist across reboots, so it's better to edit the config file on disk at `/home/sync_gateway/sync_gateway.json`. By default the VM won't have much choice in terms of editors, so if you'd rather not use `vi`, feel free to install something you're more comfortable with - the `vagrant` user you're logged in as will have passwordless `sudo` access.
 
-                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonable self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html):
+                `sync_gateway.json` will have a very similar structure to the output of the `_config` endpoint, but with fewer entries (many are added as defaults at runtime). We just need to add another database under the `databases` property. All the properties here should be reasonably self explanatory, but you can find the full list of options and descriptions in [our documentation](https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/config-properties/index.html):
 
                 ```json
                 "todo": {
