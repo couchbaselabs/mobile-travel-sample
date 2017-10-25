@@ -127,7 +127,9 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             document.set(properties);
         }
 
-        document.getArray("hotels").addString((String) hotel.get("id"));
+        document
+            .getArray("hotels")
+            .addString((String) hotel.get("id"));
 
         try {
             database.save(document);
