@@ -7,7 +7,7 @@
 //
 
 import UIKit
-class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewingDelegate{
+class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewingDelegate, PresentingViewProtocol{
     
     lazy var hotelPresenter:HotelPresenter = HotelPresenter()
     fileprivate var descriptionSearchBar:UISearchBar!
@@ -15,18 +15,19 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
     fileprivate var searchButton:UIButton!
     var hotels:Hotels?
     
+    var inGuestMode:Bool = false
+    var bookmarkedHotels:Hotels? // Used only in guest mode to mark ones that were bookmarked
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = NSLocalizedString("Hotels", comment: "")
         registerForPreviewing(with: self, sourceView: self.tableView)
         self.initializeTable()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -47,7 +48,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.rowHeight = 70
+        self.tableView.rowHeight = 80
         self.tableView.sectionHeaderHeight = 10.0
         self.tableView.sectionFooterHeight = 10.0
         self.tableView.tableHeaderView = searchHeaderView()
@@ -88,6 +89,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
     }
 
+   
     @IBAction func onCancelTapped(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -98,16 +100,31 @@ extension HotelsTableViewController {
         guard let locationStr = locationSearchBar.text else {
             return
         }
-        self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, handler: { [weak self](hotels, error) in
-            switch error {
-            case nil:
-                self?.hotels = hotels
-                self?.tableView.reloadData()
-            default:
-                print("Error when fetching hotels \(error?.localizedDescription)")
+        if inGuestMode == false {
+            self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: true, handler: { [weak self](hotels, error) in
+                switch error {
+                case nil:
+                    self?.hotels = hotels
+                    self?.tableView.reloadData()
+                default:
+                    print("Error when fetching hotels \(error?.localizedDescription)")
                 
-            }
-        })
+                }
+            })
+        }
+        else {
+            self.hotelPresenter.fetchHotelsMatchingDescription(descriptionSearchBar.text, location: locationStr, fromLocalStore: false, handler: { [weak self](hotels, error) in
+                switch error {
+                case nil:
+                    self?.hotels = hotels
+                    self?.tableView.reloadData()
+                default:
+                    print("Error when fetching hotels \(error?.localizedDescription)")
+                    
+                }
+            })
+            
+        }
         
     }
 }
@@ -115,7 +132,7 @@ extension HotelsTableViewController {
 extension HotelsTableViewController:UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         let searchText = searchBar.text
-        print("FTS on bookings for \(String(describing: searchText))")
+        print("FTS on hotels for \(String(describing: searchText))")
     }
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -147,15 +164,25 @@ extension HotelsTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:HotelCell = tableView.dequeueReusableCell(withIdentifier: "HotelCell", for: indexPath) as! HotelCell
+        
         guard let hotels = self.hotels else {
             return cell
         }
         if hotels.count > indexPath.section {
             let hotel = hotels[indexPath.section]
+            let isBookmarked = bookmarkedHotels?.filter({ (dict) -> Bool in
+                if let id1 = dict["id"] as? String, let id2 = hotel["id"] as? String{
+                    return id1 == id2
+                }
+                return false
+            })
             
             cell.name.text = hotel["name"] as? String
             cell.address.text = hotel["address"] as? String
-             cell.phone.text = hotel["phone"] as? String
+            cell.phone.text = hotel["phone"] as? String
+            if let count = isBookmarked?.count {
+                cell.isBookmarked = count > 0 ? true: false
+            }
         }
         cell.selectionStyle = .none
         return cell
@@ -214,6 +241,61 @@ extension HotelsTableViewController {
             self.navigationController?.pushViewController(detailVC, animated: true)
             
         }
+    }
+    
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let cell = tableView.cellForRow(at: indexPath) as? HotelCell  else {
+            return nil
+        }
+        let actionType = cell.isBookmarked == true ? NSLocalizedString("UnBookmark", comment: ""): NSLocalizedString("Bookmark", comment: "")
+        let actionStyle:UITableViewRowActionStyle  = cell.isBookmarked == true ? .normal :.default
+        
+        switch actionType {
+            case "Bookmark":
+                let bookmarkAction = UITableViewRowAction(style: actionStyle, title: actionType, handler: { [weak self] (action, indexPath) in
+                    // bookmark hotel document at index
+                    if let hotelToBM = self?.hotels?[indexPath.section] {
+                        
+                        self?.hotelPresenter.bookmarkHotels([hotelToBM], handler: { (error) in
+                            if let error = error {
+                                self?.showAlertWithTitle(NSLocalizedString("Failed to Bookmark!", comment: ""), message: error.localizedDescription)
+                            }
+                            else {
+                                cell.isBookmarked = !cell.isBookmarked
+                                
+                            }
+                            tableView.setEditing(false, animated: true)
+                        })
+                        
+                        
+                    }
+                })
+                return [bookmarkAction]
+            case "UnBookmark":
+                let bookmarkAction = UITableViewRowAction(style: actionStyle, title: actionType, handler: { [weak self] (action, indexPath) in
+                    // bookmark hotel document at index
+                    if let hotelToUBM = self?.hotels?[indexPath.section] {
+                        
+                        self?.hotelPresenter.unbookmarkHotels([hotelToUBM], handler: { (error) in
+                            if let error = error {
+                                self?.showAlertWithTitle(NSLocalizedString("Failed to UnBookmark!", comment: ""), message: error.localizedDescription)
+                            }
+                            else {
+                                cell.isBookmarked = !cell.isBookmarked
+                                
+                            }
+                            tableView.setEditing(false, animated: true)
+                        })
+                        
+                        
+                    }
+                })
+                return [bookmarkAction]
+            
+        default:
+            return nil
+        }
+        
     }
 
 }

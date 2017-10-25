@@ -17,13 +17,15 @@ extension UIStoryboard {
     enum StoryboardSegue {
         case addFlightBooking
         case searchFlight
-        
+        case searchHotelInGuestMode
         var identifier:String {
             switch self {
             case .addFlightBooking:
                 return "AddBookingSegue"
             case .searchFlight:
                 return "SearchFlightSegue"
+            case .searchHotelInGuestMode:
+                return "SearchHotelInGuestModeSegue"
                 
             }
         }

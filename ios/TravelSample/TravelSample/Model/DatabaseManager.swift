@@ -9,6 +9,8 @@
 import Foundation
 import CouchbaseLiteSwift
 
+
+
 class DatabaseManager {
     
     // public
@@ -17,6 +19,8 @@ class DatabaseManager {
             return _db
         }
     }
+    
+    
     // For demo purposes only. In prod apps, credentials must be stored in keychain
     public fileprivate(set) var currentUserCredentials:(user:String,password:String)?
     
@@ -25,14 +29,16 @@ class DatabaseManager {
 
     // fileprivate
     fileprivate let kDBName:String = "travel-sample"
+    fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
     fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
-    
+   // fileprivate let kRemoteSyncUrl = "blip://54.148.83.39:4984"
+   
     
     fileprivate var _db:Database?
     
-
+    
     fileprivate var _pushPullRepl:Replicator?
     fileprivate var _pushPullReplListener:NSObjectProtocol?
     
@@ -42,12 +48,14 @@ class DatabaseManager {
     fileprivate var _applicationSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).last
     
     static let shared:DatabaseManager = {
+        
         let instance = DatabaseManager()
         instance.initialize()
         return instance
     }()
     
     func initialize() {
+       //  enableCrazyLevelLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
@@ -69,6 +77,38 @@ class DatabaseManager {
 // MARK: Public
 extension DatabaseManager {
    
+    
+    func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
+        do {
+            var options = DatabaseConfiguration()
+            guard let defaultDBPath = _applicationSupportDirectory else {
+                fatalError("Could not open Application Support Directory for app!")
+                return
+            }
+            // Create a folder for Guest Account if one does not exist
+            let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
+            let guestFolderPath = guestFolderUrl.path
+            let fileManager = FileManager.default
+            if !fileManager.fileExists(atPath: guestFolderPath) {
+                try fileManager.createDirectory(atPath: guestFolderPath,
+                                                withIntermediateDirectories: true,
+                                                attributes: nil)
+                
+            }
+            
+            options.directory = guestFolderPath
+            // Gets handle to existing DB at specified path
+            _db = try Database(name: kGuestDBName, config: options)
+
+            handler(nil)
+        }catch {
+            
+            lastError = error
+            handler(lastError)
+        }
+    }
+
+    
     func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
             var options = DatabaseConfiguration()
@@ -92,8 +132,7 @@ extension DatabaseManager {
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                    let destinationDBPath = userFolderPath.appending("/\(kDBName).cblite2")
-                    try fileManager.copyItem(atPath: prebuiltPath, toPath: destinationDBPath)
+                     try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", config: options)
                     
                 }
                 // Get handle to DB  specified path
@@ -121,10 +160,21 @@ extension DatabaseManager {
         do {
             print(#function)
             // Get handle to DB  specified path
-            stopAllReplicationForCurrentUser()
-            try _db?.close()
+            if let db = self.db {
+                switch db.name {
+                case kDBName:
+                        stopAllReplicationForCurrentUser()
+                        try _db?.close()
+                        _db = nil
+                case kGuestDBName:
+                    try _db?.close()
+                    _db = nil
+                default:
+                    return false
+                }
+              
+            }
             
-            _db = nil
           
             return true
             
@@ -134,16 +184,18 @@ extension DatabaseManager {
         }
     }
     
+    
     func createDatabaseIndexes() throws{
         // For searches on type property
-        try _db?.createIndex(["type"])
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
+        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
+
     
         // For Full text search on airports and hotels
-        try _db?.createIndex(["airportname"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+        try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
         
-        try _db?.createIndex(["description"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
-        
-         try _db?.createIndex(["name"], options: IndexOptions.fullTextIndex(language: nil, ignoreDiacritics: false))
+   
     }
 
     
@@ -173,8 +225,6 @@ extension DatabaseManager {
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
         var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
-        
-        //TODO: Set push filter to avoid pushing up the static docs related to airline, airport, route, hotel
         config.replicatorType = .pushAndPull
         config.continuous = true
         config.authenticator = BasicAuthenticator(username: user, password: password)
@@ -243,9 +293,9 @@ extension DatabaseManager {
 // MARK: Utils
 extension DatabaseManager {
     
-    private func enableCrazyLevelLogging() {
+    fileprivate func enableCrazyLevelLogging() {
    
-    
+        Database.setLogLevel(.verbose, domain: .query)
     }
     
 }

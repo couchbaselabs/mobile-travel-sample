@@ -10,14 +10,8 @@ import Foundation
 
 
 class FlightPresenter:FlightPresenterProtocol {
-    // Example query:http://localhost:8080/api/flightPaths/Heathrow/San%20Diego%20Intl?leave=05/04/2017&return=leave=05/04/2017
     
-    let serverBackendUrl:URL? = URL.init(string: "http://localhost:8080/api/")
-    
-       
-    weak var associatedView: PresentingViewProtocol?
-
-    
+    weak var associatedView: PresentingViewProtocol?    
 }
 
 
@@ -31,8 +25,10 @@ extension FlightPresenter {
         return formatter
     }
     
+    
     func fetchFlightsForCurrentUserWithSource( _ source:FlightSearchCriteria,destination:FlightSearchCriteria,handler:@escaping (_ flights:Flights?, _ error:Error?)->Void) {
-      
+        // Example query:http://localhost:8080/api/flightPaths/Heathrow/San%20Diego%20Intl?leave=05/04/2017&return=leave=05/04/2017
+        
         self.associatedView?.dataStartedLoading()
         let session = URLSession.shared
         var leaveDate = ""
@@ -43,7 +39,7 @@ extension FlightPresenter {
         let escapedSearchPath = searchPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         let fullPath = "flightPaths/\(String(describing: escapedSearchPath!))?leave=\(leaveDate)"
         
-        if let url = URL.init(string: fullPath, relativeTo: serverBackendUrl) {
+        if let url = URL.init(string: fullPath, relativeTo: TravelSampleWebService.serverBackendUrl) {
             let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in
                 self?.associatedView?.dataFinishedLoading()
                 

@@ -52,8 +52,6 @@ class LoginViewController:UIViewController {
         self.passwordTextEntry.text = nil
     }
     
-    
-    
 }
 
 
@@ -99,6 +97,21 @@ extension LoginViewController {
                 }
             })
         }
+        
+    }
+    
+    @IBAction func onGuestLoginTapped(_ sender: UIButton) {
+        let cbMgr = DatabaseManager.shared
+        cbMgr.openOrCreateDatabaseForGuest(handler: { (error) in
+            switch error {
+            case nil:
+                NotificationCenter.default.post(Notification.notificationForGuestLoginSuccess())
+                
+            default:
+                NotificationCenter.default.post(Notification.notificationForLoginFailure("guest"))
+                
+            }
+        })
         
     }
     

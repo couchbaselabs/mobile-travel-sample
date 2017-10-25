@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Travel Sample</string>
+    <string name="flying_from">Flying from</string>
+    <string name="flying_to">Flying To</string>
+    <string name="departing">Departing</string>
+    <string name="returning">Returning</string>
+    <string name="look_up">Look up</string>
+    <string name="title_activity_bookmarks">BookmarksActivity</string>
+    <string name="hotels">Hotels</string>
+    <string name="sign_in">Sign in</string>
+    <string name="proceed_as_guest">Proceed as Guest</string>
+    <string name="hintFrom">01/12/2017</string>
+    <string name="hintTo">05/12/2017</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="guest_field">IS_GUEST</string>
+    <string name="heathrow">Heathrow</string>
+    <string name="san_francisco_intl">San Francisco Intl</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+</resources>

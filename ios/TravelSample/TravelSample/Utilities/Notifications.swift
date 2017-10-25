@@ -47,6 +47,9 @@ enum AppNotifications {
     enum replicationOffline:String {
         case name = "Offline"
     }
+    enum guestLoginSuccess : String{
+        case name = "GuestLoginSuccess"
+    }
 }
 
 extension Notification {
@@ -93,5 +96,9 @@ extension Notification {
         
     }
     
+    public static func notificationForGuestLoginSuccess()-> Notification {
+         return Notification(name: Notification.Name(rawValue: AppNotifications.guestLoginSuccess.name.rawValue), object: nil, userInfo: nil)
+        
+    }
     
 }

@@ -41,10 +41,8 @@ class HotelDetailViewController:UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelBreakfastCell")
         self.tableView.register(HotelCell.self, forCellReuseIdentifier: "HotelDetailCell")
         
-        
     }
 
-    
 }
 
 // MARK: UITableViewDataSource
@@ -79,81 +77,7 @@ extension HotelDetailViewController {
         case internet = 3
         case parking = 4
     }
-    /*
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return TableViewSections.count
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case TableViewSections.name.rawValue:
-            return TableViewSections.name.rows
-        case TableViewSections.overview.rawValue :
-           return TableViewSections.overview.rows
-        case TableViewSections.description.rawValue :
-          return TableViewSections.description.rows
-        default:
-            return 0
-            
-        }
-
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch indexPath.section {
-        case TableViewSections.name.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HotelNameCell", for: indexPath)
-            cell.textLabel?.text = hotelDesc?["title"] as? String ?? ""
-            cell.detailTextLabel?.text = hotelDesc?["url"] as? String ?? ""
-            cell.selectionStyle = .none
-            return cell 
-        case TableViewSections.overview.rawValue :
-            switch indexPath.row {
-                case OverviewRowIndex.address.rawValue:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "HotelAddressCell", for: indexPath)
-                    cell.textLabel?.text =  "\(hotelDesc?["address"] as? String ?? "") ,\(hotelDesc?["city"] as? String ?? "") ,\(hotelDesc?["country"] as? String ?? "")"
-                    cell.detailTextLabel?.text = hotelDesc?["email"] as? String ?? ""
-                    cell.selectionStyle = .none
-
-                    return cell
-
-            case OverviewRowIndex.pet.rawValue:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "HotelPetsCell", for: indexPath)
-                cell.detailTextLabel?.text = hotelDesc?["pets_ok"] as? Bool == true ? "true" : "false"
-                cell.selectionStyle = .none
-            case OverviewRowIndex.breakfast.rawValue:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "HotelBreakfastCell", for: indexPath)
-                cell.detailTextLabel?.text = hotelDesc?["free_breakfast"] as? Bool == true ? "true" : "false"
-                cell.selectionStyle = .none
-            case OverviewRowIndex.internet.rawValue:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "HotelInternetCell", for: indexPath)
-                cell.detailTextLabel?.text = hotelDesc?["free_internet"] as? Bool == true ? "true" : "false"
-                cell.selectionStyle = .none
-            case OverviewRowIndex.parking.rawValue:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "HotelParkingCell", for: indexPath)
-                cell.detailTextLabel?.text = hotelDesc?["free_parking"] as? Bool == true ? "true" : "false"
-                cell.selectionStyle = .none
-            default:
-               return UITableViewCell()
-                
-            }
-        case TableViewSections.description.rawValue :
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HotelDetailCell", for: indexPath) as? HotelDetailCell
-            cell?.detailTextView.text = hotelDesc?["description"] as? String ?? ""
-            cell?.selectionStyle = .none
-            return cell ?? UITableViewCell()
-
-        
-        default:
-            return UITableViewCell()
-        
-        
-        }
-        return UITableViewCell()
-    }
- */
-    
+       
     fileprivate func updateUI() {
         if let titleLabel = self.titleLabel {
             titleLabel.text = hotelDesc?["title"] as? String ?? ""

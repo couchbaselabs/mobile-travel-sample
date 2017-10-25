@@ -14,6 +14,11 @@ class HotelCell: UITableViewCell {
     @IBOutlet weak var address:UILabel!
     @IBOutlet weak var phone:UITextView!
     
+    @IBOutlet weak var bookmarkImageView: UIImageView! {
+        didSet {
+            isBookmarked = false
+        }
+    }
     var nameValue:String? {
         didSet {
             updateUI()
@@ -30,6 +35,11 @@ class HotelCell: UITableViewCell {
         }
     }
   
+    var isBookmarked:Bool = false{
+        didSet {
+            updateUI()
+        }
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
@@ -47,6 +57,9 @@ class HotelCell: UITableViewCell {
         
         if let phoneValue = phoneValue {
             self.phone.text = phoneValue
+        }
+        if bookmarkImageView != nil {
+            self.bookmarkImageView.isHidden = isBookmarked == false ? true : false
         }
         
     }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar"
+    tools:context="com.couchbase.travelsample.hotels.HotelsActivity"
+    tools:layout_editor_absoluteY="81dp" tools:layout_editor_absoluteX="0dp">
+
+    <com.google.android.flexbox.FlexboxLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/forecast"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        app:alignItems="center"
+        app:flexWrap="wrap"
+        app:justifyContent="space_around"
+        android:layout_marginRight="8dp" app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp" app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_fromInput"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            app:layout_flexBasisPercent="50%"
+            android:ems="10"
+            android:text="@string/heathrow"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_toInput"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            app:layout_flexBasisPercent="50%"
+            android:ems="10"
+            android:text="@string/san_francisco_intl"/>
+
+        <TextView
+            android:id="@+id/departDate"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:hint="@string/hintFrom"
+            app:layout_flexBasisPercent="50%"
+            android:textSize="@dimen/date"
+            android:textAlignment="center"
+            android:onClick="showDatePicker" />
+        <TextView
+            android:id="@+id/arriveDate"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:hint="@string/hintTo"
+            app:layout_flexBasisPercent="50%"
+            android:textSize="@dimen/date"
+            android:textAlignment="center"
+            android:onClick="showDatePicker" />
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            app:layout_flexBasisPercent="50%"
+            android:onClick="onFlightLookupTap"
+            android:text="@string/look_up"
+            android:textColor="#1E91D6" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <View
+        android:layout_width="368dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toTopOf="@+id/resultList" android:layout_marginTop="0dp"
+        android:layout_marginLeft="8dp" app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp" app:layout_constraintRight_toRightOf="parent"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/resultList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecast" app:layout_constraintVertical_bias="0.0"
+        tools:listItem="@layout/flight_search_list_item"/>
+
+</android.support.constraint.ConstraintLayout>
