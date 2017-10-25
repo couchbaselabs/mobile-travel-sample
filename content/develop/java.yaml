@@ -748,11 +748,9 @@ chapters:
               Next, the selected hotel's ID is added to the `hotels` array.
                
               ```java
-              document.setArray("hotels",
-                  document
-                      .getArray("hotels")
-                      .addString((String) hotel.get("id"))
-              );
+              document
+                  .getArray("hotels")
+                  .addString((String) hotel.get("id"));
               ```
               
               Finally, you will save the document.
