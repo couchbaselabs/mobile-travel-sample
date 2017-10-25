@@ -416,15 +416,15 @@ chapters:
 
               - Given that we've only got 3 nodes at the moment, let's simply remove one of them and re-add it to the cluster with other services enabled. From the UI of any node, click **Remove** for the third node:
 
-                ![]()
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_remove_aws.png)
 
               - The node is still serving data, so start a rebalance to remove it from the cluster:
 
-                ![]()
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_remove_pending_rebalance_aws.png)
 
               - Once this has completed, go through the **Add Node** process to add it back to the cluster, this time selecting all 4 services:
 
-                ![]()
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_add_all_services_mds.png)
 
               - Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
