@@ -635,7 +635,7 @@ chapters:
 
               - Once this has completed, go through the **Add Node** process to add it back to the cluster, this time selecting all 4 services:
 
-                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_add_all_services_mds.png)
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/deploy/assets/node_add_all_services.png)
 
                 Now we just need to start a rebalance. We could do this again through the [REST API](https://developer.couchbase.com/documentation/server/4.6/rest-api/rest-cluster-rebalance.html), or through the UI like we have before.
 
