@@ -86,3 +86,4 @@ deploy/.vagrant/
 .DS_Store
 
 .vscode/
+.vs/

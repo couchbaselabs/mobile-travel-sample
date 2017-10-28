@@ -1,0 +1,28 @@
+﻿<local:LoginPageAbstract
+    x:Class="TravelSample.UWP.Views.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:TravelSample.UWP.Views"
+    mc:Ignorable="d">
+
+    <Grid Background="LightBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Image Source="ms-appx:///Assets/CBTravel.LOGO.png" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="None" />
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" Padding="40,0">
+            <TextBox PlaceholderText="User Name" Background="White" Text="{Binding Username, Mode=TwoWay}" />
+            <PasswordBox PlaceholderText="Password" Margin="0,20,0,0" Background="White" Password="{Binding Password, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+            <Button Background="DeepSkyBlue" Foreground="White" Content="Sign In" HorizontalAlignment="Center" Padding="45,10"
+                Command="{Binding LoginCommand}" IsEnabled="{Binding LoginEnabled}" />
+            <Button Background="DeepSkyBlue" Foreground="White" Content="Proceed As Guest" Margin="0,10,0,0" Padding="10,10" HorizontalAlignment="Center"
+                    Command="{Binding GuestLoginCommand}" />
+        </StackPanel>
+    </Grid>
+</local:LoginPageAbstract>

@@ -1,0 +1,51 @@
+﻿<local:BookmarkedHotelPageAbstract
+    x:Class="TravelSample.UWP.Views.BookmarkedHotelView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TravelSample.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="GrayBG" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+        <Style x:Key="WhiteBG" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <local:BackgroundColorStyleSelector x:Key="FlightBGSelector" GrayBackground="{StaticResource GrayBG}"
+                                            WhiteBackground="{StaticResource WhiteBG}" />
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <CommandBar>
+            <AppBarButton Icon="Home" Label="Hotels" Command="{Binding ShowHotelsCommand}" />
+            <CommandBar.Content>
+                <TextBlock Text="Bookmarked Hotels" Margin="12,14" />
+            </CommandBar.Content>
+        </CommandBar>
+        <ListView ItemsSource="{Binding HotelsList}" ItemContainerStyleSelector="{StaticResource FlightBGSelector}"
+                  RightTapped="OnRightTap" Grid.Row="1">
+            <ListView.Resources>
+                <MenuFlyout x:Name="CellFlyout">
+                    <MenuFlyout.Items>
+                        <MenuFlyoutItem x:Name="Unbookmark" Text="UnBookmark" />
+                    </MenuFlyout.Items>
+                </MenuFlyout>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Margin="0,10" />
+                        <TextBlock Text="{Binding Address}" TextWrapping="WrapWholeWords" />
+                        <TextBlock Text="{Binding PhoneNumber}" Foreground="DeepSkyBlue" Margin="0,10" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</local:BookmarkedHotelPageAbstract>
