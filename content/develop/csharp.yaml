@@ -30,7 +30,7 @@ chapters:
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
               #### Visual Studio 
-              To Add
+              UPDATE FOR CSHARP
               
             
               #### Python (V 2.7 and above)
@@ -59,6 +59,7 @@ chapters:
           
           - title: Travel Sample Mobile App
             description: |
+              UPDATE FOR CSHARP
               - Clone the "connect_sv" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
               ```bash
               git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
@@ -695,6 +696,7 @@ chapters:
         milestones:
           - title: Create a Database
             description: |
+              UPDATE FOR CSHARP
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
 
               The snippet below creates an empty database for `guest` user in a directory named `guest`.
@@ -742,6 +744,7 @@ chapters:
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create and Update a Document
             description: |
+              UPDATE FOR CSHARP
               Bookmarked hotels are persisted in a separate document with `type` of `bookmarkedhotels`. 
               
               The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property. The hotel's information is persisted in a separate `hotels` type document. 
@@ -901,6 +904,7 @@ chapters:
          
           - title: Delete a Document
             description: |
+              UPDATE FOR CSHARP
               A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
               **Open the file** `HotelPresenter.csharp`. We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
@@ -1051,6 +1055,7 @@ chapters:
 
           - title: Replication
             description: |
+              UPDATE FOR CSHARP
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
               
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
@@ -1197,6 +1202,7 @@ chapters:
         milestones:
           - title: Starting with Prebuilt Database
             description: |
+              UPDATE FOR CSHARP
               In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
               Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the Application Support directory.
               
@@ -1293,6 +1299,7 @@ chapters:
 
           - title: Simple Query
             description: |
+              UPDATE FOR CSHARP
               The travel app has many instances of querying the database. We will discuss a simple example here.
 
               **Open the file** `AirportPresenter.csharp`. We will review the `fetchAirportsMatching` method.
@@ -1348,6 +1355,7 @@ chapters:
               
           - title: Advanced Query 
             description: |
+              UPDATE FOR CSHARP
               In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins.
               
               If you recall from the Data Modeling section, the document with a **type** equal to "bookmarkedhotels" contains a **hotels** property which is an array of IDs of bookmarked hotels.
@@ -1439,6 +1447,7 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
+              UPDATE FOR CSHARP
               Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
 
               In order to do FTS queries, an FTS index must be created.
