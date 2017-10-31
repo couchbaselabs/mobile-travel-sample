@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage x:TypeArguments="viewModels:BookmarkedHotelViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TravelSample.Core.Pages"
+             xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
+             x:Class="TravelSample.Core.Pages.BookmarkedHotelPage"
+             NavigationPage.BackButtonTitle="Logout"
+             Title="Bookmarked Hotels">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ListView ItemsSource="{Binding HotelsList}" Grid.Row="1" HasUnevenRows="True" x:Name="HotelsListView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="UnBookmark" Command="{Binding BindingContext.RemoveBookmarkCommand, Source={x:Reference HotelsListView}}"
+                                      CommandParameter="{Binding}" />
+                        </ViewCell.ContextActions>
+                        <Grid VerticalOptions="Fill">
+                            <Frame Margin="10,0" OutlineColor="LightGray">
+                                <StackLayout VerticalOptions="Fill">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold"  />
+                                    <Label Text="{Binding Address}" LineBreakMode="WordWrap" />
+                                    <Label Text="{Binding PhoneNumber}" TextColor="DeepSkyBlue" />
+                                </StackLayout>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</local:BasePage>

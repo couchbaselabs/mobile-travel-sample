@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage x:TypeArguments="viewModels:LoginViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TravelSample"
+             xmlns:pages="clr-namespace:TravelSample.Core.Pages;assembly=TravelSample.Core"
+             xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels;assembly=TravelSample.Core"
+             x:Class="TravelSample.Core.Pages.LoginPage"
+             Title="Login">
+    <ContentPage.Content>
+        <Grid BackgroundColor="LightBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Image x:Name="LogoImage" Source="{Binding Logo}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+            <StackLayout Grid.Row="1" VerticalOptions="Center" Padding="40,0">
+                <Entry Placeholder="User Name" BackgroundColor="White" Text="{Binding Username, Mode=TwoWay}" />
+                <Entry IsPassword="True" Placeholder="Password" Margin="0,20,0,0" BackgroundColor="White"
+                             Text="{Binding Password, Mode=TwoWay}" />
+            </StackLayout>
+            <StackLayout Grid.Row="2">
+                <Button BackgroundColor="DeepSkyBlue" TextColor="White" Text="Sign In" HorizontalOptions="Center"
+                        Command="{Binding LoginCommand}" IsEnabled="{Binding LoginEnabled}" WidthRequest="160" />
+                <Button BackgroundColor="DeepSkyBlue" TextColor="White" Text="Proceed As Guest" Margin="0,10,0,0"
+                        HorizontalOptions="Center" WidthRequest="160"
+                        Command="{Binding GuestLoginCommand}" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</pages:BasePage>

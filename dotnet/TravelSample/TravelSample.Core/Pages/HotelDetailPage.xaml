@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage x:TypeArguments="viewModels:HotelDetailViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:pages="clr-namespace:TravelSample.Core.Pages"
+                xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
+                x:Class="TravelSample.Core.Pages.HotelDetailPage"
+                Title="Hotel Details"
+                NavigationPage.BackButtonTitle="Back">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame OutlineColor="Gray" Margin="10,40">
+                    <StackLayout Margin="10,0">
+                        <Label Text="{Binding Name}" FontSize="18" />
+                        <Label Text="{Binding Website}" FontSize="12" />
+                    </StackLayout>
+                </Frame>
+                <Label TextColor="Gray" Text="OVERVIEW" Margin="10,0,0,10" />
+                <Frame OutlineColor="Gray" Margin="10,0" x:Name="MiddleSection">
+                    <StackLayout>
+                        <Label Text="{Binding Address}" FontSize="18" Margin="0,10" />
+                        <BoxView HeightRequest="0.5" BindingContext="{x:Reference MiddleSection}"
+                                 WidthRequest="{Binding Path=Width}" BackgroundColor="LightGray" />
+                        <Grid Margin="0,10,20,10">
+                            <Label Text="Pets OK?" FontSize="18" />
+                            <Label Text="{Binding PetsOk}" TextColor="Gray" HorizontalOptions="End" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" BindingContext="{x:Reference MiddleSection}"
+                                 WidthRequest="{Binding Path=Width}" BackgroundColor="LightGray" />
+                        <Grid Margin="0,10,20,10">
+                            <Label Text="Free Breakfast?" FontSize="18" />
+                            <Label Text="{Binding FreeBreakfast}" TextColor="Gray" HorizontalOptions="End" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" BindingContext="{x:Reference MiddleSection}"
+                                 WidthRequest="{Binding Path=Width}" BackgroundColor="LightGray" />
+                        <Grid Margin="0,10,20,10">
+                            <Label Text="Free Internet?" FontSize="18" />
+                            <Label Text="{Binding FreeInternet}" TextColor="Gray" HorizontalOptions="End" />
+                        </Grid>
+                        <BoxView HeightRequest="0.5" BindingContext="{x:Reference MiddleSection}" 
+                                 WidthRequest="{Binding Path=Width}" BackgroundColor="LightGray" />
+                        <Grid Margin="0,10,20,10">
+                            <Label Text="Free Parking?" FontSize="18" />
+                            <Label Text="{Binding FreeParking}" TextColor="Gray" HorizontalOptions="End" />
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+                <Label TextColor="Gray" Text="DESCRIPTION" Margin="10,40,0,10" />
+                <Frame OutlineColor="Gray" Margin="10,0">
+                    <Label LineBreakMode="WordWrap" Margin="10,0" Text="{Binding Description}" />
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</pages:BasePage>

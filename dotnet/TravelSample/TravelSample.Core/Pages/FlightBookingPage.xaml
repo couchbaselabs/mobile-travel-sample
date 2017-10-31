@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage x:TypeArguments="viewModels:FlightBookingViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:pages="clr-namespace:TravelSample.Core.Pages"
+                xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
+                x:Class="TravelSample.Core.Pages.FlightBookingPage"
+                Title="My Bookings">
+    <ContentPage.Content>
+        <Grid>
+            <ListView x:Name="BookingsView" ItemsSource="{Binding BookingsList}" RowHeight="150">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Delete" Command="{Binding BindingContext.RemoveBookingCommand, Source={x:Reference BookingsView}}"
+                                          CommandParameter="{Binding}"/>
+                            </ViewCell.ContextActions>
+                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Fill">
+                                <Frame OutlineColor="LightGray" Margin="10,10" VerticalOptions="Fill" HorizontalOptions="FillAndExpand">
+                                    <Grid VerticalOptions="Fill" HorizontalOptions="FillAndExpand">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Date}" Grid.ColumnSpan="2" FontAttributes="Bold" FontSize="17" />
+                                        <Label Text="{Binding Flight}" Grid.ColumnSpan="2" Grid.Row="1" FontAttributes="Bold"
+                                           FontSize="16" />
+                                        <StackLayout Grid.Row="2" Orientation="Horizontal">
+                                            <Label Text="Departure: " FontSize="17" />
+                                            <Label Text="{Binding DepartureAirport}" FontSize="17" />
+                                            <Label Text="Arrival: " FontSize="17" Margin="10,0,0,0" />
+                                            <Label Text="{Binding ArrivalAirport}" FontSize="17" />
+                                        </StackLayout>
+                                        <StackLayout Grid.Row="3" Orientation="Horizontal">
+                                            <Label Text="Fare: " FontSize="16" />
+                                            <Label Text="{Binding FarePrice}" Margin="5,0,0,0" FontSize="16" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</pages:BasePage>

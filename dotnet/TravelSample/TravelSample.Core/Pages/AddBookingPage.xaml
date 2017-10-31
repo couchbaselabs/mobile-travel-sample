@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage x:TypeArguments="viewModels:AddBookingViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:pages="clr-namespace:TravelSample.Core.Pages"
+                xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
+                x:Class="TravelSample.Core.Pages.AddBookingPage"
+                Title="Flight Search"
+                NavigationPage.BackButtonTitle="Back">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <StackLayout Margin="10,0">
+                    <Label Text="Flying From" />
+                    <pages:AutoCompleteView Placeholder="Origin" Text="{Binding OriginSearch, Mode=TwoWay}"
+                                            Suggestions="{Binding OriginSuggestions, Mode=TwoWay}" />
+                    <Label Text="Departing" />
+                    <Entry Placeholder="mm/dd/yyyy" Text="{Binding DepartureDateSearch, Mode=TwoWay}"
+                             TextColor="{Binding DepartureColor}" />
+                </StackLayout>
+                <StackLayout Grid.Column="1" Margin="10,0">
+                    <Label Text="Flying To" />
+                    <pages:AutoCompleteView Placeholder="Destination" Text="{Binding DestinationSearch, Mode=TwoWay}"
+                                            Suggestions="{Binding DestinationSuggestions, Mode=TwoWay}" />
+                    <Label Text="Returning" />
+                    <Entry Placeholder="mm/dd/yyyy" Text="{Binding ReturnDateSearch, Mode=TwoWay}"
+                             TextColor="{Binding ReturnColor}" />
+                </StackLayout>
+                <Button Grid.ColumnSpan="2" BackgroundColor="LightSkyBlue" Text="Lookup" Grid.Row="1"
+                        HorizontalOptions="FillAndExpand" TextColor="White" Command="{Binding PerformSearch}" />
+            </Grid>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="1">
+                <Label Text="Outbound" />
+                <Switch IsToggled="{Binding ReturnSelected, Mode=TwoWay}" />
+                <Label Text="Return" />
+            </StackLayout>
+            <ListView Grid.Row="2" ItemsSource="{Binding FlightsList}" SelectedItem="{Binding SelectedFlight, Mode=TwoWay}"
+                      RowHeight="125">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Frame OutlineColor="LightGray" Margin="10,10" VerticalOptions="Fill">
+                                    <Grid BackgroundColor="Transparent" VerticalOptions="Fill">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Airline}" />
+                                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Flight}"
+                                       HorizontalOptions="End" />
+                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding DepartureTime}" />
+                                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Fare}"
+                                       HorizontalOptions="End" />
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button BackgroundColor="LightSkyBlue" HorizontalOptions="FillAndExpand" Text="Confirm Booking"
+                    TextColor="White" Grid.Row="3"
+                    Command="{Binding ConfirmBookingCommand}" />
+        </Grid>
+    </ContentPage.Content>
+</pages:BasePage>

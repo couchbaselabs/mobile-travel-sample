@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage x:TypeArguments="viewModels:HotelListViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:TravelSample.Core.Pages"
+             xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
+             x:Class="TravelSample.Core.Pages.HotelListPage"
+             Title="Hotel Search"
+             NavigationPage.BackButtonTitle="Back">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Margin="10,0">
+                <Entry Placeholder="Description (Optional)" Text="{Binding DescriptionSearch, Mode=TwoWay}" />
+                <Entry Margin="0,5,0,0" Placeholder="Location: Eg.'France', 'London'"
+                         Text="{Binding LocationSearch, Mode=TwoWay}" />
+                <Button Margin="0,5,0,0" BackgroundColor="LightSkyBlue" Text="Lookup" TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding LookupCommand}" />
+            </StackLayout>
+            <ListView Grid.Row="1" ItemsSource="{Binding HotelsList}"
+                      ItemSelected="OnItemSelected" x:Name="HotelsListView" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="{Binding BookmarkText}" 
+                                          Command="{Binding BindingContext.ToggleBookmarkCommand, Source={x:Reference HotelsListView}}"
+                                          CommandParameter="{Binding}"/>
+                            </ViewCell.ContextActions>
+                            <Grid VerticalOptions="Fill">
+                                <Frame OutlineColor="LightGray" Margin="10,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout>
+                                            <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                            <Label Text="{Binding Address}" />
+                                            <Label TextColor="DeepSkyBlue" Text="{Binding PhoneNumber}" />
+                                        </StackLayout>
+                                        <Image Source="{Binding BookmarkImage}" Grid.Column="1" />
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</pages:BasePage>
