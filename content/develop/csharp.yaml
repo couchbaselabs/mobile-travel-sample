@@ -11,7 +11,7 @@ chapters:
 
               It includes the following components -
               - Client Side 
-                - Travel Mobile App -  An iOS App in .Net that is linked with Couchbase Lite 2.0 (Developer Preview)
+                - Travel Mobile App -  A Xamarin Forms app (iOS, Android, UWP) that is linked with Couchbase Lite 2.0 (Developer Preview)
               - Server Side
                 - Couchbase Server v5.0
                 - Sync Gateway v1.5
@@ -30,8 +30,7 @@ chapters:
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
               
               #### Visual Studio 
-              UPDATE FOR CSHARP
-              
+              - Downloadable from [visualstudio.com](https://www.visualstudio.com/downloads/)
             
               #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
@@ -59,7 +58,6 @@ chapters:
           
           - title: Travel Sample Mobile App
             description: |
-              UPDATE FOR CSHARP
               - Clone the "connect_sv" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
               ```bash
               git clone -b connect_sv --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
@@ -68,9 +66,9 @@ chapters:
               
               ## Try it out
               
-              - Open the `TravelSample.xcodeproj` using Xcode
-              - Build and run the project using simulator 
-              - Verify that the login screen appears in the simulator
+              - Open the `TravelSample.sln` using Visual Studio
+              - Build and run the project on your platform of choice
+              - Verify that the login screen appears
       
       
       
@@ -170,36 +168,24 @@ chapters:
               
               Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
               
-              **Open the file** `QueryConsts.csharp`. You must update the `serverBackendUrl` constant which points to the Python Web Server. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
+              **Open the file** `Constants.cs`. You must update the `ServerBackendUrl` constant which points to the Python Web Server. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
               
-              [QueryConsts.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Utilities/QueryConsts.csharp)
+              [Constants.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Util)
 
               ```csharp
-              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
+              public static readonly Uri ServerBackendUrl = new Uri("http://54.148.83.39:8080/api/")
               ```
               
               Next, you will update the Sync Gateway endpoint.
               
-              **Open the file** `DatabaseManager.csharp`. You must update the `kRemoteSyncUrl` constant. Replace the hostname with the IP Address of the Rightscale instance. In the example above that would be `54.148.83.39` but yours will be different.
+              **Open the file** `LoginModel.cs`. You must update the `SyncUrl` constant. Replace the hostname with the IP Address of the Sync Gateway instance. In the example above that would be `54.148.83.39` but yours will be different.
               
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp)
-              
-              ```csharp
-              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:8080/api/")
-              ```
-              
-              **Open the file** `DatabaseManager.csharp`. Locate the `kRemoteSyncUrl`.
-              
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp)
-              
-              ```csharp
-              fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
-              ```
+              [LoginModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs)
               
               Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`.
 
               ```csharp
-              static let serverBackendUrl:URL? = URL.init(string: "http://54.148.83.39:4984")
+              private static readonly Uri SyncUrl = new Uri("blip://54.148.83.39:4984")
               ```
               
               ## Try it out (Couchbase Server)
@@ -626,29 +612,15 @@ chapters:
 
   - title: Develop
     lessons:
-      - title: MVP Architecture
+      - title: MVVM Architecture
         milestones:
           - title: Overview
             description: |
-              ### The Model-View-Presenter pattern
+              ### The Model-View-ViewModel pattern
               
-              In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view.
+              In our app, we follow the MVVM pattern, which decouples the retrieval of data, view logic, and presentation into three distinct areas.
               
               ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
-              
-              #### Protocols
-              In the Travel app, we define two sets of protocols. The `PresenterProtocol` protocol that must be implemented by all Presenter objects and `PresentingViewProtocol` must be implemented by the corresponding "view" objects. 
-              The `PresenterProtocol` and `PresentingViewProtocol` may be optionally extended to support capabilities of specific presenter/view 
-             
-              The app defines following PresenterProtocols that extend the PresenterProtocol` protocol 
-              - _BookingPresenterProtocol_ defines methods to be implemented by the Booking Presenter
-              - _FlightPresenterProtocol_ defines methods to be implemented by the Flight Presenter
-              - _AirportPresenterProtocol_ defines methods to be implemented by the Airport Presenter
-              - _HotelPresenterProtocol_ defines methods to be implemented by the Hotel Presenter
-
-              The app defines following PresentingViewProtocols that extend the PresentingViewProtocol` protocol 
-              - _BookingPresentingViewProtocol_ defines methods to be implemented by the Booking View 
-
 
               #### Model
               
@@ -660,79 +632,62 @@ chapters:
               - _Airport_ which represents airport name
               - _Hotel_ which represents hotel details
 
-              In addition, the `DatabaseManager.csharp` is a singleton class that is used to manage the common database operations such as Database Creation/Deletion and Replication.
+              In addition, the `CouchbaseSession` class is used to keep state through multiple pages.
               
               
               #### View
               
-              In the Travel app, the  `UIView` and the `UIViewController` classes represent the "view" in MVP. It handles user input and forwards requests to the Presenter. It updates the UI based on response from the Presenter. The view object holds a weak reference to the corresponding Presenter object that implements the corresponding `PresenterProtocol`.
+              In the Travel app, the  `ContentPage` class represents the "view" in MVVM. It handles user input and forwards requests to the VIew Model. It updates the UI based on response from the View Model.
               
-              The app implements the following ViewControllers
-              - _LoginViewController_ which represents the login UI
-              - _BookmarkedHotelsTableViewController_ which represents the UI that lists bookmarked hotels
-              - _BookingTableViewController_ which represents the flight reservations UI
-              - _FlightListingTableViewController_ which represents the UI that lists of flight details
-              - _FlightSearchViewController_ which represents flight search UI
-              - _HotelsTableViewController_ which represents the UI that lists hotels
-              - _HotelDetailViewController_ which represents the UI that lists hotel details
+              The app implements the following Views
+              - _LoginPage which represents the login UI
+              - _BookmarkedHotelsPage_ which represents the UI that lists bookmarked hotels
+              - _FlightBookingsPage_ which represents the flight reservations UI
+              - _HotelsListPage_ which represents the UI that lists hotels
+              - _HotelDetailsPage_ which represents the UI that lists hotel details
+                           
+              #### View Model
               
-              In addition, there are custom UITableViewCells 
+              The VIew Model acts as the intermediary between the View and the Model. It is responsible for interacting with the model and updating its state to indicate how the view should present itself.  There is one view model per view and is named according to the view
 
-               
-              #### Presenter
-              
-              The Presenter acts as the intermediary between the View and the Model. It holds a weak reference to the corresponding view object that implements appropriate `PresentingViewProtocol`.
-
-
-              The app implements the following Presenters
-              - _BookingPresenter_ which implements the  `BookingPresenterProtocol`
-              - _FlightPresenter_ which implements the  `FlightPresenterProtocol`
-              - _AirportPresenter_ which implements the  `AirportPresenterProtocol`
-              - _HotelPresenter_ which implements the `HotelPresenterProtocol`
-                   
-              In addition, there are some simple custom UI widgets like custom UITableViewCells 
+              - _LoginViewModel_
+              - _BookmarkedHotelsViewModel_
+              - _FlightBookingsViewModel_
+              - _HotelsListViewModel_
+              - _HotelDetailsViewModel_
 
       - title: The Basics
         milestones:
           - title: Create a Database
             description: |
-              UPDATE FOR CSHARP
               There is no limit to how many databases can be created or opened on the device. You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern).
 
-              The snippet below creates an empty database for `guest` user in a directory named `guest`.
+              The snippet below creates an empty database for a given user in a directory with the same name as the username.
 
-              **Open the file** `DatabaseManager.csharp`. We will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
+              **Open the file** `LoginModel.cs`. We will review the `Task<CouchbaseSession> StartSessionAsync(string username, string password)` method. 
 
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp#L81)
+              [LoginModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L54)
               ```csharp 
-              func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
+              public async Task<CouchbaseSession> StartSessionAsync(string username, string password) {
                 ...
               }
               ```
-              We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object
+              We create a folder for the user database if one does not exist and specify that as the database `Directory` in the `DatabaseConfiguration` object.  Note the use of the service provider to find the default directory for the platform.
               ```csharp
-              var options = DatabaseConfiguration()
-              guard let defaultDBPath = _applicationSupportDirectory else {
-                  fatalError("Could not open Application Support Directory for app!")
-                return
-              }
-              // Create a folder for Guest Account if one does not exist
-              let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
-              let guestFolderPath = guestFolderUrl.path
-              let fileManager = FileManager.default
-              if !fileManager.fileExists(atPath: guestFolderPath) {
-                try fileManager.createDirectory(atPath: guestFolderPath,
-                                              withIntermediateDirectories: true,
-                                              attributes: nil)
-              
+              var options = new DatabaseConfiguration();
+               
+              // Borrow this functionality from Couchbase Lite
+              var defaultDirectory = Service.Provider.GetService<IDefaultDirectoryResolver>().DefaultDirectory();
+              var userFolder = Path.Combine(defaultDirectory, username);
+              if (!Directory.Exists(userFolder)) {
+                  Directory.CreateDirectory(userFolder);
               }
           
-              options.directory = guestFolderPath
+              options.Directory = userFolder;
               ```
               The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object
               ```csharp
-              // Gets handle to existing DB at specified path
-              _db = try Database(name: kGuestDBName, config: options)
+              db = new Database(DbName, options);
               
               ```
               
@@ -744,7 +699,6 @@ chapters:
               - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
           - title: Create and Update a Document
             description: |
-              UPDATE FOR CSHARP
               Bookmarked hotels are persisted in a separate document with `type` of `bookmarkedhotels`. 
               
               The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property. The hotel's information is persisted in a separate `hotels` type document. 
@@ -763,82 +717,60 @@ chapters:
                 "hotels": ["hotel1", "hotel2"]
               }
               ```
-              **Open the file** `HotelPresenter.csharp`. We will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
+              **Open the file** `HotelListModel.cs`. We will review the `void ToggleBookmark(HotelListCellModel hotel)` method. 
               
-              [HotelsPresenter.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.csharp#L36)
+              [HotelListModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/HotelListModel.cs#L90)
 
               ```csharp
-              func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
+              public void ToggleBookmark(HotelListCellModel hotel) {
                   ...
               }
-              ```
-              
-              First, you need to get an instance of the database.
-              
-              ```csharp
-              guard let db = dbMgr.db else {
-                   handler(TravelSampleError.DatabaseNotInitialized)
-                return
-              }
+
               ```
 
-              Then fetch document of type `bookmarkedhotels`. Don't worry too much about how you query for document of specific type from the database. We will examine `queries` in a future lesson.
+              Fetch a document of type `bookmarkedhotels`. Don't worry too much about how you query for document of specific type from the database. We will examine `queries` in a future lesson.
 
               Create document of type `bookmarkedhotels` if one does not exist.
               ```csharp
-              var document = try fetchGuestBookmarkDocumentFromDB(db)
-            
-              if document == nil {
-                // First time bookmark is created for guest account
-                // Create document of type "bookmarkedhotels"
-                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
-                
+              using (var document = UserSession.FetchGuestBookmarkDocument()) {
+                var doc = document;
+                if (document == null) {
+                    ...
+                    doc = new Document(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
+                }
+                ...
               }
               ```
               
-              Next, retrieve the Ids of hotels to be bookmarked and add it to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document.
+              Next, add the ID of the passed hotel to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document, or remove it based on the current action.
               ```csharp
-              // Get the Ids of all hotels that need to be bookmarked
-              let ids:[String] = hotels.map({ (dict)  in
-                if let idVal = dict["id"] as? String {
-                    return idVal
-                }
-                return ""
-              })
+              var bookmarked = doc.GetArray("hotels") ?? new ArrayObject();)
             
-              // Fetch the current list of bookmarked hotel Ids
-              var bookmarked = document?.array(forKey: "hotels")
-            
-              // Add the new hotel ids to the bookmarked hotels array
-              for newId in ids {
-                bookmarked = bookmarked?.addString(newId)
+              if (hotel.IsBookmarked) {
+                  // Remove the bookmark
+                  for (int i = 0; i < bookmarked.Count; i++) {
+                      if (bookmarked[i].ToString() == hotel.Source["id"] as string) {
+                          bookmarked.RemoveAt(i);
+                          break;
+                      }
+                  }
+              } else {
+                  bookmarked.Add(hotel.Source["id"] as string);
               }
-              ``` 
 
-              Update and save the document of type "bookmarkedhotels"
-              ```csharp
-              // Update and save the "bookmarkedhotels" document
-              if let document = document {
-                // Update and save the bookmark document
-                document.setArray(bookmarked, forKey: "hotels")
-                try db.save(document)
-                
-              }
+              doc.Set("hotels", bookmarked);
+              UserSession.Database.Save(doc);
               ```
 
-              Persist the hotel information as separate documents of type `hotels`. First, determine if the document with specified hotel Id already exists. If so, update it with the selected hotel details.  If not, create a new hotel document.
+              Persist the hotel information as separate documents of type `hotels` (or delete it if this is a bookmark removal). First, determine if the document with specified hotel Id already exists. If so, update it with the selected hotel details.  If not, create a new hotel document.
               ```csharp
-              // Add the hotel details documents
-              for hotelDoc in hotels {
-                if let idVal = hotelDoc["id"] as? String {
-                    if let doc = db.getDocument(idVal) {
-                        doc.setDictionary(hotelDoc)
-                        try db.save(doc)
-                    }
-                    else {
-                        try db.save(Document.init(idVal, dictionary: hotelDoc))
-                    }
-                }
+              // Add the hotel details document
+              var id = hotel.Source["id"] as string;
+              if (id != null) {
+                  using (var detailDoc = UserSession.Database.GetDocument(id) ?? new Document(id)) {
+                      detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
+                      UserSession.Database.Save(detailDoc);
+                  }
               }
               ```
               
@@ -852,7 +784,7 @@ chapters:
               - You will get option to  “Bookmark” 
               - Tap “bookmark”
               - This should display a "bookmark" icon on the hotel cell
-              - Tap "Cancel" button
+              - Tap "Back" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/basics_add_document.gif)
@@ -904,8 +836,8 @@ chapters:
          
           - title: Delete a Document
             description: |
-              UPDATE FOR CSHARP
-              A document can be deleted using the `delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
+              UPDATE FOR CSHARP (needs slight source change)
+              A document can be deleted using the `Delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
               **Open the file** `HotelPresenter.csharp`. We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
               
@@ -1055,7 +987,6 @@ chapters:
 
           - title: Replication
             description: |
-              UPDATE FOR CSHARP
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
               
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
@@ -1069,96 +1000,75 @@ chapters:
               
               - In “One shot” mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
 
-               **Open the file** `DatabaseManager.csharp`. We will review the method `func startPushAndPullReplicationForCurrentUser()`
+               **Open the file** `LoginModel.cs`. We will review the method `StartReplication(string username, string password, Database db)`
 
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp#L202)
+              [LoginModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L103)
 
               ```csharp
-              func startPushAndPullReplicationForCurrentUser() {
+              private Replicator StartReplication(string username, string password, Database db)
                 ...
-                }
-              ```
-              First, you fetch the URL of the Sync Gateway
-              ```csharp
-              guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
-                lastError = TravelSampleError.RemoteDatabaseNotReachable
-            
-                return
               }
               ```
-              Do some checks to confirm the validity of the database and user credentials 
+              First, Do some checks to confirm the validity of the user credentials 
               ```csharp
-              guard let user = self.currentUserCredentials?.user,let password =   self.currentUserCredentials?.password  else {
-                lastError = TravelSampleError.UserCredentialsNotProvided
-                return
-              }
-        
-              guard let db = db else {
-                lastError = TravelSampleError.RemoteDatabaseNotReachable
-                return
+              if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)) {
+                throw new InvalidOperationException("User credentials not provided");
               }
               ```
-
-              Verify that the replicator is not already in progress
+              Create the URL of the Sync Gateway
               ```csharp
-               if _pushPullRepl != nil {
-                // Replication is already started
-                return
-              }
+              var dbUrl = new Uri(SyncUrl, DbName);
               ```
 
               The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway. 
-              The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
+              The `ReplicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `PushAndPull` indicating that both push and pull replication is enabled. The `Continuous` mode is set to `true` in the Travel app.
 
               ```csharp
-              let dbUrl = remoteUrl.appendingPathComponent(kDBName)
-       
-              var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
-              config.replicatorType = .pushAndPull
-              config.continuous = true
-
+              var config = new ReplicatorConfiguration(db, dbUrl) {
+                  ReplicatorType = ReplicatorType.PushAndPull,
+                  Continuous = true,
+                  ...
+              };
               ```
               
               The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/csharp#/2/2/1) section
           
               ```csharp
-              config.authenticator = BasicAuthenticator(username: user, password: password)
+              var config = new ReplicatorConfiguration(db, dbUrl) {
+                  ...
+                  Authenticator = new BasicAuthenticator(username, password),
+                  ...
+              };
               ```
 
               The Replicator is configured to only pull from current user's channels. The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the [Channels/ Data Routing](/develop/csharp#/2/3/0) section
           
               ```csharp                
-              // This should match what is specified in the sync gateway config
-              // Only pull documents from this user's channel
-              let userChannel = "channel.\(user)"
-              config.channels = [userChannel]
+              var config = new ReplicatorConfiguration(db, dbUrl) {
+                  ...
+                  Channels = new[] {$"channel.{username}"}
+              };
               ```
 
               The Replicator is initialized with the specified configuration 
               ```csharp
-              _pushPullRepl = Replicator.init(config: config)
+              var repl = new Replicator(config);
               ```
 
               A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
 
               ``` csharp
-              
-                  _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
-                      let s = change.status
-                      print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
-          
-                      if s.progress.completed == s.progress.total {
-                          self?.postNotificationOnReplicationState(.idle)
-                      }
-                      else {
-                          self?.postNotificationOnReplicationState(s.activity)
-                      }
-                  })
+              repl.StatusChanged += (sender, args) =>
+              {
+                  var s = args.Status;
+                  Debug.WriteLine(
+                      $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {args.LastError?.Message ?? "<none>"}, activity = {s.Activity}");
+              };
                     
               ```
               Start the Replication
               ```csharp
-              _pushPullRepl?.start()
+              repl.Start();
               ```
                
               
@@ -1202,23 +1112,24 @@ chapters:
         milestones:
           - title: Starting with Prebuilt Database
             description: |
-              UPDATE FOR CSHARP
               In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application. It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch. Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
-              Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the Application Support directory.
+              Here, you will use a pre-built database that contains only airport and hotel documents. The code below moves the pre-built database from the bundled location to the platform default directory defined by Couchbase.
               
-              **Open the file** `DatabaseManager.csharp` and navigate to the `openOrCreateDatabaseForUser` method.
+              **Open the file** `LoginModel.cs` and navigate to the `StartSessionAsync` method.
               
-              This method first checks if a database file already exists. If it doesn't exist it loads the database from the app bundle.
+              This method first checks if a database file already exists. If it doesn't exist it loads the database according to the logic for the platform (UWP from the Assets folder, iOS from the main bundle, Android from Assets)
               
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp#L112)
+              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L54)
               
               ```csharp
-               if Database.exists(kDBName, inDirectory: userFolderPath) == false {
-                // Load prebuilt database from App Bundle and copy over to Applications support path
-                if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                     try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", config: options)
-                    
-                }
+               if (!Database.Exists(DbName, userFolder)) {
+                  // Load prebuilt database to path
+                  var copier = Service.Provider.GetService<IDatabaseSeedService>();
+                  await copier.CopyDatabaseAsync(userFolder);
+
+                  db = new Database(DbName, options);
+                  CreateDatabaseIndexes(db);
+              }
               ```
               
               ## Try it out
@@ -1226,7 +1137,7 @@ chapters:
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
-              - Confirm that the first item in the dropdown list of "San Diego Intl"
+              - Confirm that the first item in the dropdown list of "San Diego Intl" (Note that this is not currently functioning in iOS since there is no custom view written)
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/ios_prebuilt.gif)
               
@@ -1299,15 +1210,14 @@ chapters:
 
           - title: Simple Query
             description: |
-              UPDATE FOR CSHARP
               The travel app has many instances of querying the database. We will discuss a simple example here.
 
-              **Open the file** `AirportPresenter.csharp`. We will review the `fetchAirportsMatching` method.
+              **Open the file** `AddBookingModel.cs`. We will review the `FetchMatchingAirports` method.
               
-              [AirportPresenter.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/AirportPresenter.csharp#L28)
+              [AddBookingModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/AddBookingModel.cs#L124)
               
               ```csharp
-              func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) {
+              public Airports FetchMatchingAirports(string searchStr) {
                 ...
               }
               ```
@@ -1318,30 +1228,22 @@ chapters:
           
               ```csharp
               searchQuery = Query
-                  .select(_SelectColumn.AIRPORTNAMERESULT)
-                  .from(DataSource.database(db))
-                  .where(_Property.TYPE
-                      .equalTo("airport")
-                      .and (Expression.property("airportname")
-                      .like("\(searchStr)%")))
+                      .Select(AirportNameResult)
+                      .From(DataSource.Database(UserSession.Database))
+                      .Where(TypeProperty
+                          .EqualTo("airport")
+                          .And(AirportNameProperty
+                              .Like($"{searchStr}%")));
               ```
             
-              Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
+              Next, the query is executed using the `Run()` method. Each row in the result will contain a single property called "airportname".
               
               ```csharp
-              if let searchQuery = searchQuery {
-                var matches:Airports = []
-                do {
-                  for row in try searchQuery.run() {
-                    if let match = row.string(forKey: "airportname") {
-                        matches.append( match)
-                    }
-                  }
-                handler(matches,nil)
+              using (var results = searchQuery.Run()) {
+                  return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
               }
-              catch {
-                handler(nil,error)
-              }          
+
+              // Don't forget to Dispose the query object when finished       
               ```
           
               ## Try it out
@@ -1355,7 +1257,6 @@ chapters:
               
           - title: Advanced Query 
             description: |
-              UPDATE FOR CSHARP
               In this section we will discuss the JOIN query. JOIN Queries in Couchbase Lite 2.0 are intra-database joins.
               
               If you recall from the Data Modeling section, the document with a **type** equal to "bookmarkedhotels" contains a **hotels** property which is an array of IDs of bookmarked hotels.
@@ -1375,13 +1276,12 @@ chapters:
               
               We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
               
-              **Open the file** `HotelPresenter.csharp`. We will review the `fetchBookmarkedHotels` method.
+              **Open the file** `BookmarkedHotelModel.cs`. We will review the `FetchBookmarkedHotels` method.
                
-              [HotelPresenter.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/ios/TravelSample/TravelSample/Presenter/HotelPresenter.csharp#L154)
+              [BookmarkedHotelModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnetios/TravelSample/TravelSample.Core/Models/BookmarkedHotelModel.cs#L76)
               
               ```csharp
-              func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void)
-                  {
+              public Hotels FetchBookmarkedHotels() {
                   ...
               }
               ```
@@ -1389,45 +1289,48 @@ chapters:
               First, we instantiate two data sources which corresponds to the two sides of the join query.
               
               ```csharp
-              let bookmarkDS = DataSource.database(db).as("bookmarkDS")
-              let hotelsDS = DataSource.database(db).as("hotelsDS")
+              var bookmarkSource = DataSource.Database(UserSession.Database).As(BookmarkDbName);
+              var hotelsSource = DataSource.Database(UserSession.Database).As(HotelsDbName);
               ```
               
-              Next we write the query expressions. The first one gets the `hotels` property on the bookmarks data source. The seconds get the document ID on the hotels data source.
+              Next we use query expressions. The first one gets the `hotels` property on the bookmarks data source. The seconds get the document ID on the hotels data source.
               
               ```csharp
-              let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
-              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+              // Static variables of the class
+              private static readonly IExpression HotelsProperty = Expression.Property("hotels").From(BookmarkDbName);
+              private static readonly IExpression HotelIdProperty = Expression.Meta().ID.From(HotelsDbName);
               ```
               
               Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
               
               ```csharp
-              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
-              let join = Join.join(hotelsDS).on(joinExpr);
+              // Static variable of the class
+              private static readonly IFunction JoinExpression = Function.ArrayContains(HotelsProperty, HotelIdProperty);
+
+              // In the function
+              var join = Join.DefaultJoin(hotelsSource).On(JoinExpression);
               ```
               
               Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
               
               ```csharp
-              let typeExpr = Expression.property("type").from("bookmarkDS")
-              
-              let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
-              let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
-              
-              let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
+              var query = Query
+                  .Select(AllBookmarks, AllHotels)
+                  .From(bookmarkSource)
+                  .Joins(join)
+                  .Where(TypeProperty.EqualTo("bookmarkedhotels"))
               ```
 
-              And we use the `run()` method to get the results back pass them on to the view.
+              And we use the `Run()` method to get the results back pass them on to the view.
               
               ```csharp
-              for result in try query.run() {
-                  print ("RESULT IS \(result.toDictionary())")
-                  if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
-                        bookmarkedHotels.append(hotel)
+              using (var results = query.Run()) {
+                  foreach (var result in results) {
+                      // Workaround https://github.com/couchbase/couchbase-lite-net/issues/922 by adding '.' 
+                      // Remove once updated to DB019
+                      bookmarkedHotels.Add(result.GetDictionary(HotelsDbName + ".").ToDictionary(x => x.Key, x => x.Value));
                   }
-              }
-              handler(bookmarkedHotels,nil)
+               }
               ```
                
               ## Try it out
@@ -1447,91 +1350,72 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              UPDATE FOR CSHARP
               Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
 
               In order to do FTS queries, an FTS index must be created.
               
-              **Open the file** `DatabaseManager.csharp`. We will review the method `createDatabaseIndexes()`. This code snippet creates an FTS index on the property named `description`.
+              **Open the file** `LoginModel.cs`. We will review the method `CreateDatabaseIndexes`. This code snippet creates an FTS index on the property named `description`.
               
-              [DatabaseManager.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/85243b8d3b185da8f57e50d7861e951422b6eb50/ios/TravelSample/TravelSample/Model/DatabaseManager.csharp#L137-L147)
+              [LoginModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L88-L101)
               
               ```csharp
-              func createDatabaseIndexes() throws{
-                ...
-        
-            
-                // For Full text search on airports and hotels
-                try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
+              private void CreateDatabaseIndexes(Database db)
+              {
+                  ...
+
+                  db.CreateIndex("description",
+                      Index.FTSIndex().On(FTSIndexItem.Expression(Expression.Property("description"))));
+                  
+                  ...
               }
               ```
               
               Next you will write an FTS query that uses the index.
               
-              **Open the file** `HotelPresenter.csharp`. You will review the `fetchHotelsFromLocalDatabaseMatchingDescription` method.
+              **Open the file** `HotelListModel.cs`. You will review the `FetchHotelsFromLocalAsync` method.
               
-              [HotelPresenter.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/ios/TravelSample/TravelSample/Presenter/HotelPresenter.csharp#L208)
+              [HotelListModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/connect_sv/dotnet/TravelSample/TravelSample.Core/Models/HotelListModel.cs#L133)
 
               ```csharp
-              fileprivate func fetchHotelsFromLocalDatabaseMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
+              private Task<Hotels> FetchHotelsFromLocalAsync(string description, string location) {
                 ...
               }
               ```
-
-              First, you get an instance of the database.
+              
+              First, you will create an FTS `Expressions` using the `Match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `Match` expression is logically ANDed with an `EqualTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `Where` clause of the query the usual way.
               
               ```csharp
-              guard let db = dbMgr.db else {
-                  fatalError("db is not initialized at this point!")
-              }
-              ```
-              
-              Next, you will create an FTS `Expressions` using the `match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `where` clause of the query the usual way.
-              
-              ```csharp
-              var descExp:Expression?
-              if let descriptionStr = descriptionStr , descriptionStr != ""{
-                  descExp = _Property.DESCRIPTION.match(descriptionStr)
+              IExpression descExp = null;
+              if (!String.IsNullOrWhiteSpace(description)) {
+                  descExp = DescriptionProperty.Match(description);
               }
               
               
-              let locationExp = _Property.COUNTRY.like("%\(locationStr)%")
-                  .or(_Property.CITY.like("%\(locationStr)%"))
-                  .or(_Property.STATE.like("%\(locationStr)%"))
-                  .or(_Property.ADDRESS.like("%\(locationStr)%"))
+              var locationExp = CountryProperty.Like($"%{location}%")
+                  .Or(CityProperty.Like($"%{location}%"))
+                  .Or(StateProperty.Like($"%{location}%"))
+                  .Or(AddressProperty.Like($"%{location}%"));
               
-              var searchExp:Expression = locationExp
-              if  let descExp = descExp {
-                  searchExp = descExp.and(locationExp)
+              var searchExp = locationExp;
+              if (descExp != null) {
+                  searchExp = descExp.And(locationExp);
               }
               
              
-              let hotelSearchQuery = Query
-                  .select(_SelectColumn.ALLRESULT) 
-                  .from(DataSource.database(db))
-                  .where(
-                      _Property.TYPE.equalTo("hotel")
-                       .and(searchExp)
-                      )
+              using (var hotelSearchQuery = Query
+                  .Select(SelectResult.All())
+                  .From(DataSource.Database(UserSession.Database))
+                  .Where(TypeProperty.EqualTo("hotel").And(searchExp))) {
+                  ...
+              }
               ```
               
-              We build the query using the different expressions from above and transform the `ResultSet` object into a `Map` object that is passed to the `TableView`.
+              We build the query using the different expressions from above and transform the `ResultSet` object into a `List` object that is passed to the `ListView`.
               
               ```csharp
-              var matches:Hotels = []
-              do {
-                  for (_,row) in try hotelSearchQuery.run().enumerated() {
-                      
-                      if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
-                          
-                          matches.append(match.toDictionary())
-                      }
-                      
-                  }
-                  handler(matches,nil)
-              }
-              catch {
-                  handler(nil,error)
+              using (var results = hotelSearchQuery.Run()) {
+                  var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
+                  return Task.FromResult(hotels);
               }
               ```
               
