@@ -44,7 +44,7 @@
             </Grid>
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="1">
                 <Label Text="Outbound" />
-                <Switch IsToggled="{Binding ReturnSelected, Mode=TwoWay}" />
+                <Switch x:Name="OutboundSelection" IsToggled="{Binding ReturnSelected, Mode=TwoWay}" />
                 <Label Text="Return" />
             </StackLayout>
             <ListView Grid.Row="2" ItemsSource="{Binding FlightsList}" SelectedItem="{Binding SelectedFlight, Mode=TwoWay}"

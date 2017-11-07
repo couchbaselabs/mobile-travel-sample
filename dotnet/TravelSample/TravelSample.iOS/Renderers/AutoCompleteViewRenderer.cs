@@ -65,6 +65,10 @@ namespace TravelSample.iOS.Renderers
         {
             base.OnElementChanged(e);
 
+            if (Element == null) {
+                return;
+            }
+
             if (Control == null) {
                 SetNativeControl(new UITextField() {
                     BorderStyle = UITextBorderStyle.RoundedRect

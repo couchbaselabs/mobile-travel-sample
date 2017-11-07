@@ -28,11 +28,16 @@ namespace TravelSample.Core.Pages
 	{
 	    #region Constructors
 
+	    public AddBookingPage()
+	    {
+	        InitializeComponent();
+        }
+
 	    public AddBookingPage (AddBookingViewModel viewModel)
             : base(viewModel)
-		{
-			InitializeComponent ();
-		}
+	    {
+	        InitializeComponent();
+	    }
 
 	    #endregion
 	}

@@ -87,3 +87,4 @@ deploy/.vagrant/
 
 .vscode/
 .vs/
+*.user
