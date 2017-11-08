@@ -39,7 +39,7 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private const string DbName = "travel-sample";
-        private static readonly Uri SyncUrl = new Uri("blip://192.168.1.3:4984");
+        private static readonly Uri SyncUrl = new Uri("blip://10.0.2.2:4984");
 
         #endregion
 

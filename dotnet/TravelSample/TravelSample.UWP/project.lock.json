@@ -28,10 +28,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -46,7 +46,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -2514,7 +2514,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -2547,10 +2547,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -2565,7 +2565,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -5066,7 +5066,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -5099,10 +5099,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -5117,7 +5117,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -7654,7 +7654,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -7687,10 +7687,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -7705,7 +7705,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -10215,7 +10215,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -10248,10 +10248,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -10266,7 +10266,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -12812,7 +12812,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -12845,10 +12845,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -12863,7 +12863,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -15373,7 +15373,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -15406,10 +15406,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0-db018": {
+      "Couchbase.Lite/2.0.0-db019": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0-db018]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0-db019]",
           "Microsoft.Extensions.DependencyInjection": "1.1.1",
           "Microsoft.Extensions.Logging": "1.1.2",
           "NETStandard.Library": "1.6.0",
@@ -15424,7 +15424,7 @@
           "lib/netstandard1.4/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0-db018": {
+      "Couchbase.Lite.Support.UWP/2.0.0-db019": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.1",
@@ -17970,7 +17970,7 @@
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0-db018",
+          "Couchbase.Lite": "2.0.0-db019",
           "NETStandard.Library": "1.6.1",
           "Xamarin.Forms": "2.4.0.280"
         }
@@ -18051,25 +18051,25 @@
         "lib/wpa81/Coding4Fun.Toolkit.pri"
       ]
     },
-    "Couchbase.Lite/2.0.0-db018": {
-      "sha512": "JamUxE1r8NB9XpTutQ+VfC7+WX5xRjH9+smHW0Obmqx6F1Pde4Fr06ovcoam/jPDsyWG/z0vw4pdta/pZZBDrA==",
+    "Couchbase.Lite/2.0.0-db019": {
+      "sha512": "qIpbPWm5/S57VEoMxd/avRRWZttbD0lTOSTe0IX0y96uCKIXVJ1E3ppqIz0wT6B5TFnShpxxRDzXRu5kWs04EQ==",
       "type": "package",
-      "path": "couchbase.lite/2.0.0-db018",
+      "path": "couchbase.lite/2.0.0-db019",
       "files": [
-        "couchbase.lite.2.0.0-db018.nupkg.sha512",
+        "couchbase.lite.2.0.0-db019.nupkg.sha512",
         "couchbase.lite.nuspec",
         "lib/netstandard1.4/Couchbase.Lite.dll",
         "lib/netstandard1.4/Couchbase.Lite.pdb",
         "lib/netstandard1.4/Couchbase.Lite.xml"
       ]
     },
-    "Couchbase.Lite.Support.UWP/2.0.0-db018": {
-      "sha512": "uqKfeOMoiJ9297RQ5yBC1bF7/7bF7/lF5nOUCHzZUkJXA5+Aqofbhu7w1IeLM/Fu+lxQY3uTolFkQ78/zlqFWA==",
+    "Couchbase.Lite.Support.UWP/2.0.0-db019": {
+      "sha512": "rPrvQQKyIPtBuKFCRkIRVqZwieLcwGto2YG4Wl4WtgxEgpQIogjJs6GcLRP/Q4Lt00flDgh574R/SAXF1i40KA==",
       "type": "package",
-      "path": "couchbase.lite.support.uwp/2.0.0-db018",
+      "path": "couchbase.lite.support.uwp/2.0.0-db019",
       "files": [
         "build/Couchbase.Lite.Support.UWP.targets",
-        "couchbase.lite.support.uwp.2.0.0-db018.nupkg.sha512",
+        "couchbase.lite.support.uwp.2.0.0-db019.nupkg.sha512",
         "couchbase.lite.support.uwp.nuspec",
         "lib/uap10.0/Couchbase.Lite.Support.UWP.dll",
         "lib/uap10.0/Couchbase.Lite.Support.UWP.pdb",
@@ -24837,48 +24837,47 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Couchbase.Lite >= 2.0.0-db018",
-      "Couchbase.Lite.Support.UWP >= 2.0.0-db018",
+      "Couchbase.Lite >= 2.0.0-db019",
+      "Couchbase.Lite.Support.UWP >= 2.0.0-db019",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.2.2",
       "Xamarin.Forms >= 2.4.0.280"
     ],
     "UAP,Version=v10.0.10586": []
   },
   "packageFolders": {
-    "C:\\Users\\borrr\\.nuget\\packages\\": {}
+    "C:\\Users\\priya\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
+      "projectUniqueName": "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
       "projectName": "TravelSample.UWP",
-      "projectPath": "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
-      "projectJsonPath": "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\project.json",
-      "packagesPath": "C:\\Users\\borrr\\.nuget\\packages\\",
-      "outputPath": "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\obj\\",
+      "projectPath": "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
+      "projectJsonPath": "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\project.json",
+      "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\obj\\",
       "projectStyle": "ProjectJson",
       "configFilePaths": [
-        "C:\\Users\\borrr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "http://mobile.nuget.couchbase.com/nuget/CI/": {},
-        "http://mobile.nuget.couchbase.com/nuget/Developer/": {},
+        "http://mobile.nuget.couchbase.com/nuget/Developer": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "uap10.0.10586": {
           "projectReferences": {
-            "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj": {
-              "projectPath": "D:\\Development\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj"
+            "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj": {
+              "projectPath": "C:\\Users\\priya\\projects\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj"
             }
           }
         }
       }
     },
     "dependencies": {
-      "Couchbase.Lite": "2.0.0-db018",
-      "Couchbase.Lite.Support.UWP": "2.0.0-db018",
+      "Couchbase.Lite": "2.0.0-db019",
+      "Couchbase.Lite.Support.UWP": "2.0.0-db019",
       "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
       "Xamarin.Forms": "2.4.0.280"
     },
@@ -24911,7 +24910,7 @@
       "code": "NU1605",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package downgrade: Microsoft.NETCore.UniversalWindowsPlatform from 5.3.3 to 5.2.2. Reference the package directly from the project to select a different version. \r\n TravelSample.UWP -> Couchbase.Lite.Support.UWP 2.0.0-db018 -> Microsoft.NETCore.UniversalWindowsPlatform (>= 5.3.3) \r\n TravelSample.UWP -> Microsoft.NETCore.UniversalWindowsPlatform (>= 5.2.2)",
+      "message": "Detected package downgrade: Microsoft.NETCore.UniversalWindowsPlatform from 5.3.3 to 5.2.2. Reference the package directly from the project to select a different version. \r\n TravelSample.UWP -> Couchbase.Lite.Support.UWP 2.0.0-db019 -> Microsoft.NETCore.UniversalWindowsPlatform (>= 5.3.3) \r\n TravelSample.UWP -> Microsoft.NETCore.UniversalWindowsPlatform (>= 5.2.2)",
       "libraryId": "Microsoft.NETCore.UniversalWindowsPlatform",
       "targetGraphs": [
         "UAP,Version=v10.0.10586",

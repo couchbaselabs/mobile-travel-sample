@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
-    "Couchbase.Lite": "2.0.0-db018",
-    "Couchbase.Lite.Support.UWP": "2.0.0-db018",
+    "Couchbase.Lite": "2.0.0-db019",
+    "Couchbase.Lite.Support.UWP": "2.0.0-db019",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Xamarin.Forms": "2.4.0.280"
   },
