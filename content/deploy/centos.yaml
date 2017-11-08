@@ -633,3 +633,316 @@ chapters:
               - Once this is updated, and pointing to the correct Couchbase Server cluster with all the correct permissions, we need to have each Sync Gateway load this new config. We did this in a slightly different way before - using Puppet to automatically load the new config as we bring a node up. We could destroy the nodes and recreate them, having updated the config file on the host (`$ vagrant destroy node2-sg node5-sg && vagrant up node2-sg node5-sg`); but it's more lightweight to simply ssh into each instance in turn, update the config, and restart the Sync Gateway as we did the first time we changed the config.
 
               - With more of a production focus, you may well want to utilise a load balancer in front of Sync Gateway to implement the change over, ensuring that at any one time requests are only getting routed to one particular version of the config. You want to avoid a situation where a load balancer may route alternate requests to different Sync Gateways with different configs!
+          - title: Upgrading
+            description: |
+              In this section of the workshop, we will perform a rolling upgrade to the latest release. To start with a running cluster, we will install the previous versions of Sync Gateway (1.4.1) and Couchbase Server (4.6) on the various VMs. Then from there, we will go through each step to upgrade the system to use Sync Gateway (1.5) and Couchbase Server (5.0) without any downtime.
+              
+              If you've followed the previous sections, you will first need to stop the running VMs.
+              
+              ```bash
+              $ vagrant destroy node1-cb node2-sg node3-cb node4-cb node5-sg node6-nginx
+              ```
+              
+              In order to re-provision an earlier version, open **Vagranfile** and update the `CB_VERSION` and `SG_VERSION` with the following:
+              
+              ```bash
+              CB_VERSION = "4.6.3"
+              SG_VERSION = "1.4.1-3"
+              ```
+              
+              Save your edits. Next, let's re-provision the software on each VM.
+              
+              ```bash
+              $ vagrant destroy node1-cb node2-sg node3-cb node4-cb node5-sg node6-nginx
+              ```
+              
+              Next, we need to configure the software again and make sure that the mobile-travel-sample application is running smoothly with this version.
+              
+              SSH onto **node1-cb** and initialize Couchbase Server.
+              
+              ```bash
+              $ vagrant ssh node1-cb
+              $ /opt/couchbase/bin/couchbase-cli cluster-init \
+                  -c 127.0.0.1 \
+                  --cluster-init-username=Administrator \
+                  --cluster-init-password=password \
+                  --cluster-init-ramsize=600 -u Administrator -p password
+              ```
+              
+              Open [http://10.150.150.101:8091/](http://10.150.150.101:8091/) in a browser and log in using the credentials used above (**Administrator** and **password**). Next, you'll need to create a new bucket with the travel data. Select the **Settings > Sample Buckets**, check the **travel-sample** box and click **Create**.
+              
+              ![](https://cl.ly/0T1E2j1R2G2H/Screen%20Shot%202017-11-08%20at%2016.42.34.png)
+              
+              Return to the **node1-cb** SSH prompt and add **node3-cb** and **node4-cb**.
+              
+              ```bash
+              $ /opt/couchbase/bin/couchbase-cli server-add \
+                  -c 127.0.0.1 \
+                  -u Administrator \
+                  -p password \
+                  --server-add 10.150.150.103:8091 \
+                  --server-add-username Administrator \
+                  --server-add-password password \
+                  --services data
+              
+              $ /opt/couchbase/bin/couchbase-cli server-add \
+                  -c 127.0.0.1 \
+                  -u Administrator \
+                  -p password \
+                  --server-add 10.150.150.104:8091 \
+                  --server-add-username Administrator \
+                  --server-add-password password \
+                  --services data
+              ```
+              
+              Run the rebalance command to include the 2 additional Couchbase Server nodes in the cluster.
+              
+              ```bash
+              $ /opt/couchbase/bin/couchbase-cli rebalance \
+                  -c 127.0.0.1 \
+                  -u Administrator \
+                  -p password
+              ```
+              
+              This may take a few minutes. Now, you can open [http://10.150.150.101:8091/](http://10.150.150.101:8091/) and all 3 nodes should be displayed on the UI.
+              
+              // image
+              
+              Next, you will setup the 2 Sync Gateway nodes. SSH onto **node2-cb** and update the configuration file located under **/home/sync_gateway/sync_gateway.json**.
+              
+              ```bash
+              {
+                "log": ["HTTP+"],
+                "adminInterface": "127.0.0.1:4985",
+                "interface": "0.0.0.0:4984",
+                "databases": {
+                  "db": {
+                    "server": "http://10.150.150.101:8091",
+                    "bucket": "travel-sample",
+                    "users": {
+                      "GUEST": {"disabled": false, "admin_channels": ["*"] }
+                    }
+                  }
+                }
+              }
+              ```
+              
+              You can edit the configuration file using `vi`.
+              
+              ```bash
+              $ sudo vi /home/sync_gateway/sync_gateway.json
+              ```
+              
+              Restart the Sync Gateway service.
+              
+              ```bash
+              $ sudo service sync_gateway restart
+              ```
+              
+              Query 10 documents to make sure the documents were imported successfully by Sync Gateway.
+              
+              ```bash
+              $ curl 'http://10.150.150.102:4984/travel-sample/_all_docs?limit=10'
+              ```
+              
+              Repeat the same steps for the **node5-sg**.
+              
+              Next, you will update the load balancer configuration. SSH into **node6-nginx** and open the NGINX config file.
+              
+              ```bash
+              $ vagrant ssh node6-nginx
+              $ sudo vi /etc/nginx/conf.d/sync_gateway_nginx.conf
+              ```
+              
+              Update the config the IP address of **node5-sg**.
+              
+              ```bash
+              upstream sync_gateway {
+                server 10.150.150.102:4984;
+                server 10.150.150.105:4984;
+              }
+              ```
+              
+              Restart the NGINX service.
+              
+              ```bash
+              $ sudo service nginx restart
+              ```
+              
+              Verify that the same 10 documents queried previously are accessible through the NGINX endpoint.
+              
+              ```bash
+              $ curl 'http://10.150.150.106:4984/travel-sample/_all_docs?limit=10'
+              ```
+              
+              Congratulations! You have successfully deployed Sync Gateway 1.4.1 and Couchbase 4.6 on Virtual VMs. In the next section you will begin the rolling upgrade to Sync Gateway 1.5 and Couchbase Server 5.0.
+              
+              ## Upgrading Sync Gateway
+              
+              To perform a rolling upgrade you must first redirect the traffic from NGINX to a single Sync Gateway node. SSH into **node6-nginx** and open the NGINX configuration file.
+              
+              ```bash
+              $ vagrant ssh node6-nginx
+              $ sudo vi /etc/nginx/conf.d/sync_gateway_nginx.conf
+              ```
+              
+              Update the config by removing the IP **node2-sg**.
+
+              ```bash
+              upstream sync_gateway {
+                server 10.150.150.105:4984;
+              }
+              ```
+              
+              Restart the NGINX service.
+              
+              ```bash
+              $ sudo service nginx restart
+              ```
+              
+              SSH into **node2-sg** and update this VM to use Sync Gateway 1.5.
+              
+              ```bash
+              $ vagrant ssh node2-sg
+              [node2] $ sudo systemctl stop sync_gateway
+              [node2] $ sudo rpm -e couchbase-sync-gateway-1.4.1-3.x86_64
+              [node2] $ wget https://packages.couchbase.com/releases/couchbase-sync-gateway/1.5.0/couchbase-sync-gateway-enterprise_1.5.0_x86_64.rpm
+              [node2] $ sudo rpm -i couchbase-sync-gateway-enterprise_1.5.0_x86_64.rpm
+              ```
+              
+              Stop Sync Gateway and open the configuration file.
+              
+              ```bash
+              [node2] $ sudo systemctl stop sync_gateway
+              [node2] $ sudo vi /home/sync_gateway/sync_gateway.json
+              ```
+              
+              Update the configuration to use the following. Don't forget to restart the Sync Gateway service.
+                            
+              ```bash
+              {
+                "log": ["HTTP+"],
+                "adminInterface": "127.0.0.1:4985",
+                "interface": "0.0.0.0:4984",
+                "databases": {
+                  "travel-sample": {
+                    "server": "http://10.150.150.101,10.150.150.103,10.150.150.104:8091",
+                    "bucket": "travel-sample",
+                    "users": {
+                      "GUEST": {"disabled": false, "admin_channels": ["*"] }
+                    }
+                  }
+                }
+              }
+              ```
+              
+              Note that we are specifying multiple Couchbase Server URLs in this config, that's a new feature that was introduced in Sync Gateway 1.5. But we haven't enabled the extended attribute feature introduced in Sync Gateway 1.5 yet. We will first need to upgrade Couchbase Server to 5.0 in order to do so.
+              
+              Start the Sync Gateway service.
+              
+              ```bash
+              $ sudo systemctl start sync_gateway
+              ```
+              
+              Update the NGINX node to include route traffic to **node2-sg** and **node5-sg**. Query the NGINX endpoint, you should notice that the `version` returned in the JSON response switches between `1.4` and `1.5`.
+              
+              ```bash
+              $ curl 'http://10.150.150.106:4984/'
+              ```
+              
+              Repeat the same steps to upgrade Sync Gateway to 1.5 on **node5-sg**.
+              
+              ## Upgrade Couchbase Server
+              
+              In this example, you will run a **Regular Rebalance** to upgrade Couchbase Server. Other upgrade paths can be found in the Couchbase Server [documentation](https://developer.couchbase.com/documentation/server/current/install/upgrade-strategies.html).
+              
+              SSH into **node1-cb** and remove it from the cluster.
+              
+              ```bash
+              $ vagrant ssh node1-cb
+              [node1] $ /opt/couchbase/bin/couchbase-cli rebalance \
+                          -c 127.0.0.1 \
+                          -u Administrator \
+                          -p password \
+                          --server-remove 10.150.150.101:8091
+              ```
+              
+              Documents should still be accessible from the NGINX endpoint [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10).
+              
+              Back in the **node1** command prompt, stop the service and upgrade it Couchbase Server 5.0.
+              
+              ```bash
+              [node1] $ sudo systemctl stop couchbase-server
+              [node1] $ sudo rpm -e couchbase-server-4.6.3-4136.x86_64
+              [node1] $ wget https://packages.couchbase.com/releases/5.0.0/couchbase-server-community-5.0.0-centos7.x86_64.rpm
+              [node1] $ sudo rpm -i couchbase-server-community-5.0.0-centos7.x86_64.rpm
+              ```
+              
+              Add **node1-cb** back to the cluster.
+              
+              ```bash
+              [node1] $ /opt/couchbase/bin/couchbase-cli server-add \
+                  -c 10.150.150.103 \
+                  -u Administrator \
+                  -p password \
+                  --server-add 10.150.150.101:8091 \
+                  --server-add-username Administrator \
+                  --server-add-password password \
+                  --services data
+              ```
+              
+              Rebalance the cluster.
+              
+              ```bash
+              [node1] $ /opt/couchbase/bin/couchbase-cli rebalance \
+                  -c 127.0.0.1 \
+                  -u Administrator \
+                  -p password
+              ```
+              
+              Next, you can remove **node3-cb** and **node4-cb** from the cluster, upgrade each instance to 5.0 and re-add them to the cluster.
+              
+              In this case, you don't have to create an RBAC user. RBAC is new feature that introduced in Couchbase Server 5.0 but it doesn't apply to buckets that have been upgraded (see [legacy bucket](https://developer.couchbase.com/documentation/server/current/security/security-rbac-upgrade.html) docs).
+              
+              ## Enabling Extended Attributes
+              
+              To enable the interoporibility between Couchbase Mobile and Server SDKs we will update the Sync Gateway config on both instances.
+              
+              First, we will need to run an import process on all the documents to migrate over the `_sync` document metadata to the extended attribute feature in Couchbase Server 5.0.
+              
+              SSH into **node2-sg** and stop the service.
+              
+              ```bash
+              $ vagrant ssh node2-sg
+              [node2] $ sudo systemctl stop sync_gateway
+              ```
+              
+              Update the configuration file with the following.
+              
+              ```bash
+              {
+                "log": ["HTTP+"],
+                "adminInterface": "127.0.0.1:4985",
+                "interface": "0.0.0.0:4984",
+                "databases": {
+                  "travel-sample": {
+                    "server": "http://10.150.150.101,10.150.150.103,10.150.150.104:8091",
+                    "bucket": "travel-sample",
+                    "import_docs": "continuous",
+                    "enable_shared_bucket_access": true,
+                    "users": {
+                      "GUEST": {"disabled": false, "admin_channels": ["*"] }
+                    }
+                  }
+                }
+              }
+              ```
+              
+              The import process may take a moment. You can monitor the progress in the logs.
+              
+              ```bash
+              [node2] $ sudo cat /home/sync_gateway/logs/sync_gateway_error.log
+              ```
+              
+              couchbase-cli server-list -c 127.0.0.1 --username Administrator \
+               --password password
