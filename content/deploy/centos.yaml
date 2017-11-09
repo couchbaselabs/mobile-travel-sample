@@ -633,7 +633,9 @@ chapters:
               - Once this is updated, and pointing to the correct Couchbase Server cluster with all the correct permissions, we need to have each Sync Gateway load this new config. We did this in a slightly different way before - using Puppet to automatically load the new config as we bring a node up. We could destroy the nodes and recreate them, having updated the config file on the host (`$ vagrant destroy node2-sg node5-sg && vagrant up node2-sg node5-sg`); but it's more lightweight to simply ssh into each instance in turn, update the config, and restart the Sync Gateway as we did the first time we changed the config.
 
               - With more of a production focus, you may well want to utilise a load balancer in front of Sync Gateway to implement the change over, ensuring that at any one time requests are only getting routed to one particular version of the config. You want to avoid a situation where a load balancer may route alternate requests to different Sync Gateways with different configs!
-          - title: Upgrading
+      - title: Upgrade
+        milestones:
+          - title: Sync Gateway 1.4/Couchbase Server 5.0
             description: |
               In this section of the workshop, we will perform a rolling upgrade to the latest release. To start with a running cluster, we will install the previous versions of Sync Gateway (1.4.1) and Couchbase Server (4.6) on the various VMs. Then from there, we will go through each step to upgrade the system to use Sync Gateway (1.5) and Couchbase Server (5.0) without any downtime.
               
@@ -808,7 +810,8 @@ chapters:
               Open [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10) to verify that the same 10 documents queried previously are accessible through NGINX.
               
               Congratulations! You have successfully deployed Sync Gateway 1.4.1 and Couchbase 4.6 on Virtual VMs. In the next section you will begin the rolling upgrade to Sync Gateway 1.5 and Couchbase Server 5.0.
-              
+          - title: Sync Gateway 1.5
+            description: |
               ## Upgrading Sync Gateway
               
               SSH into **node2-sg** and update this VM to use Sync Gateway 1.5.
@@ -859,7 +862,8 @@ chapters:
               Query the NGINX endpoint on [http://10.150.150.106:4984](http://10.150.150.106:4984), you should notice that the `version` returned in the JSON response switches between `1.4` and `1.5`.
               
               Repeat the same steps to upgrade Sync Gateway to 1.5 on **node5-sg**.
-              
+          - title: Couchbase Server 5.0
+            description: |
               ## Upgrade Couchbase Server
               
               In this example, you will run a **Regular Rebalance** to upgrade Couchbase Server. Other upgrade paths can be found in the Couchbase Server [documentation](https://developer.couchbase.com/documentation/server/current/install/upgrade-strategies.html).
@@ -971,9 +975,8 @@ chapters:
               In this case, you don't have to create an RBAC user. RBAC is new feature that introduced in Couchbase Server 5.0 but it doesn't apply to buckets that have been upgraded (see [legacy bucket](https://developer.couchbase.com/documentation/server/current/security/security-rbac-upgrade.html) docs).
               
               Query the documents on the NGINX endpoint once more [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10).
-              
-              ## Enabling Extended Attributes
-              
+          - title: Shared Access
+            description: |
               To enable the interoporibility between Couchbase Mobile and Server SDKs we will update the Sync Gateway config on both instances.
               
               First, we will need to run an import process on all the documents to migrate over the `_sync` document metadata to the extended attribute feature in Couchbase Server 5.0.
