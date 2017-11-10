@@ -13,7 +13,7 @@ chapters:
 
               ## Spin Up Instances with Rightscale
 
-              NOTE: The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
+              *NOTE:* The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
 
               In this version of the workshop, we'll connect to private instances of Couchbase Server and Sync Gateway  running in a Rightscale cloud environment. You may have already provisioned one of these environments in the Develop workshop. If so, simply switch to the Deploy tab.
 
