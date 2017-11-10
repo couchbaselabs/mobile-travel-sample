@@ -637,6 +637,8 @@ chapters:
         milestones:
           - title: Sync Gateway 1.4/Couchbase Server 4.6
             description: |
+              ## Install Sync Gateway 1.4/Couchbase Server 4.6
+            
               In this section of the workshop, we will perform a rolling upgrade to the latest release. To start with a running cluster, we will install the previous versions of Sync Gateway (1.4.1) and Couchbase Server (4.6) on the various VMs. Then from there, we will go through each step to upgrade the system to Sync Gateway (1.5) and Couchbase Server (5.0) with minimal downtime incurred on the applications.
               
               If you've followed the previous sections, you will first need to stop the running VMs.
@@ -836,7 +838,7 @@ chapters:
               Congratulations! You have successfully deployed Sync Gateway 1.4.1 and Couchbase 4.6 on vagrant VMs. In the next section you will begin the rolling upgrade to Sync Gateway 1.5 and Couchbase Server 5.0.
           - title: Sync Gateway 1.5
             description: |
-              ## Upgrading Sync Gateway
+              ## Upgrade Sync Gateway
               
               SSH into **node2-sg** and update this VM to use Sync Gateway 1.5.
               
@@ -1044,6 +1046,8 @@ chapters:
               Congratulations! You've successfully upgraded all 3 Couchbase Server nodes to 5.0. In the next section, you will enabled the shared bucket access feature introduced in Sync Gateway 1.5.
           - title: Shared Access
             description: |
+              ## Enable Bucket Shared Access
+            
               To enable the shared bucket access between Couchbase Mobile, N1QL and Server SDKs we will update the Sync Gateway configuration on both Sync Gateway instances.
               
               First, we will need to run an import process on all the documents to migrate over the `_sync` document metadata currently embedded in the document body to the extended attributes which is a new feature that was introduced in Couchbase Server 5.0.
