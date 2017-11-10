@@ -963,7 +963,7 @@ chapters:
                               --server-add 10.150.150.101:8091 \
                               --server-add-username Administrator \
                               --server-add-password password \
-                              --services data
+                              --services data,index,query
               ```
               
               Rebalance the cluster.
@@ -975,9 +975,13 @@ chapters:
                               -p password
               ```
               
-              Open the Console on **node1-cb** at []() and otice the orange banner that points out that the cluster is the **4.6 Compatibility mode**. As 
+              Open the Console on **node1-cb** at []() and notice the orange banner that points out that the cluster is in **4.6 Compatibility mode**.
               
-              Next, you can remove **node3-cb** and **node4-cb** from the cluster, upgrade each instance to 5.0 and re-add them to the cluster.
+              ![](https://cl.ly/402n0f2d3v0o/compat-mode.png)
+              
+              Only 1 out of the 3 Couchbase Server nodes has been updated to 5.0. New features introduced in 5.0 such as RBAC will not be available for use until all nodes have been upgraded (at which point the orange banner will not be shown anymore).
+              
+              Let's upgrade **node3-cb** and **node4-cb** in the cluster with the following commands.
               
               ```bash
               $ vagrant ssh node3-cb
@@ -1029,22 +1033,22 @@ chapters:
               [node4-cb] $ exit
               ```
               
-              At this point, you should see the 3 nodes in the 5.0 Couchbase Server Console UI [http://10.150.150.101:8091/ui/index.html#!/servers/list](http://10.150.150.101:8091/ui/index.html#!/servers/list).
+              At this point, you should see the 3 nodes in Console UI [http://10.150.150.101:8091/ui/index.html#!/servers/list](http://10.150.150.101:8091/ui/index.html#!/servers/list) as you did previously before the upgrade.
               
-              // image
+              ![](https://cl.ly/0k472s1a3F0m/post-cbs-upgrade.png)
               
-              Notice that the 4.6 compatibility mode isn't being displayed anymore. On the **Security** tab, a new user was automatically created with **travel-sample** as the username and **password** as the password. Those correspond to the bucket name and bucket password set on the 4.6 version. 
+              Notice that the **4.6 compatibility mode** isn't being displayed anymore. On the **Security** tab, a new user was automatically created with **travel-sample** as the username and **password** as the password (see [Legacy Buckets on the Standard Port](https://developer.couchbase.com/documentation/server/5.0/security/security-rbac-upgrade.html#story-h2-3)). Those correspond to the bucket name and bucket password that was set previously in the 4.6 version of the cluster.
               
-              In this case, you don't have to create an RBAC user. RBAC is new feature that introduced in Couchbase Server 5.0 but it doesn't apply to buckets that have been upgraded (see [legacy bucket](https://developer.couchbase.com/documentation/server/current/security/security-rbac-upgrade.html) docs).
+              We used those same credentials in the Sync Gateway configuration file previously, thus Sync Gateway continues to have access to the bucket as the **travel-sample**/**password** user. You can verify this by opening [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10) in a browser window.
               
-              Query the documents on the NGINX endpoint once more [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10).
+              Congratulations! You've successfully upgraded all 3 Couchbase Server nodes to 5.0. In the next section, you will enabled the shared bucket access feature introduced in Sync Gateway 1.5.
           - title: Shared Access
             description: |
-              To enable the interoporibility between Couchbase Mobile and Server SDKs we will update the Sync Gateway config on both instances.
+              To enable the shared bucket access between Couchbase Mobile, N1QL and Server SDKs we will update the Sync Gateway configuration on both Sync Gateway instances.
               
-              First, we will need to run an import process on all the documents to migrate over the `_sync` document metadata to the extended attribute feature in Couchbase Server 5.0.
+              First, we will need to run an import process on all the documents to migrate over the `_sync` document metadata currently embedded in the document body to the extended attributes which is a new feature that was introduced in Couchbase Server 5.0.
               
-              SSH into **node2-sg** and stop the service.
+              SSH into **node2-sg** to edit the configuration file.
               
               ```bash
               $ vagrant ssh node2-sg
@@ -1066,7 +1070,6 @@ chapters:
                     "password": "password",
                     "import_docs": "continuous",
                     "enable_shared_bucket_access": true,
-                    "import_filter": `function(doc) { if (doc.type == "airport") {return true} return false }`,
                     "users": {
                       "GUEST": {"disabled": false, "admin_channels": ["*"] }
                     }
@@ -1075,7 +1078,12 @@ chapters:
               }
               ```
               
-              Here we are using the `Import+` log tag so we can monitor the import process. Restart the Sync Gateway node.
+              We introduced two new properties here. You can follow the links below to understand what each one does:
+              
+              - [enable_shared_bucket_access](https://developer.couchbase.com/documentation/mobile/1.5/guides/sync-gateway/config-properties/index.html#1.5/databases-foo_db-enable_shared_bucket_access)
+              - [import_docs](https://developer.couchbase.com/documentation/mobile/1.5/guides/sync-gateway/config-properties/index.html#1.5/databases-foo_db-import_docs)
+              
+              Restart the Sync Gateway node.
               
               ```bash
               [node2-sg] $ sudo systemctl restart sync_gateway
@@ -1087,9 +1095,40 @@ chapters:
               [node2-sg] $ sudo tail -n 50 -f /home/sync_gateway/logs/sync_gateway_error.log
               ```
               
+              You should see log messages similar to the following.
+              
+              ```bash
+              2017-11-10T10:00:36.596Z Import+: Attempting to import doc "route_3673"...
+              2017-11-10T10:00:36.597Z Import+: Attempting to import doc "route_57612"...
+              2017-11-10T10:00:36.598Z Import+: Attempting to import doc "route_54528"...
+              2017-11-10T10:00:36.599Z Import+: Attempting to import doc "route_36462"...
+              2017-11-10T10:00:36.600Z Import+: Attempting to import doc "route_59526"...
+              2017-11-10T10:00:36.600Z Import+: Attempting to import doc "route_21790"...
+              2017-11-10T10:00:36.602Z Import+: Attempting to import doc "route_4576"...
+              2017-11-10T10:00:36.612Z Import+: Attempting to import doc "route_57863"...
+              ...
+              ```
+              
+              Once the import process has completed you can verify that the mobile metadata previously embedded in the `_sync` property of the document body has been moved out.
+              
+              ![](https://cl.ly/0p3q362W262G/post-import.png)
+              
+              That mobile metadata now lives in the document's extended attributes. In Couchbase Server 5.0, there is currently no way to view those extended attributes through the Console UI but they are access on the Sync Gateway's `/{db}/_raw/{id}` Admin REST API endpoint.
+              
+              ```bash
+              $ vagrant ssh node2-sg
+              [node2-sg] $ curl 'localhost:4985/travel-sample/_raw/airport_5568'
+              ```
+              
+              As expected, this time, the response contains the mobile metadata under the `_sync` property.
+              
+              ```bash
+              {"_id":"airport_5568","_rev":"1-660749e2cc7ade88365c78845f5963ad","_sync":{"rev":"1-660749e2cc7ade88365c78845f5963ad","sequence":1087,"history":{"revs":["1-660749e2cc7ade88365c78845f5963ad"],"parents":[-1],"channels":[null]},"cas":"0x0000b5ba1eb1f514","time_saved":"0001-01-01T00:00:00Z"},"airportname":"Stronsay Airport","city":"Stronsay","country":"United Kingdom","faa":"SOY","geo":{"alt":39,"lat":59.1553,"lon":-2.64139},"icao":"EGER","id":5568,"type":"airport","tz":"Europe/London"}
+              ```
+              
               Query the documents **node2-sg** again at [http://10.150.150.102:4984/travel-sample/_all_docs?limit=10](http://10.150.150.102:4984/travel-sample/_all_docs?limit=10).
               
-              Perform the same steps on **node5-sg**. But this time, the `import_docs` property should not because only 1 Sync Gateway node should be assigned the task of generating the mobile metadata for incoming documents.
+              Perform the same steps on **node5-sg**. But this time, the `import_docs` property should not be used because only 1 Sync Gateway node should be assigned the task of generating the mobile metadata for incoming documents inserted through N1QL or the Server SDKs.
               
               ```bash
               $ vagrant ssh node5-sg
@@ -1123,4 +1162,6 @@ chapters:
               [node5-sg] $ sudo tail -n 50 -f /home/sync_gateway/logs/sync_gateway_error.log
               ```
               
-              Query the same documents on the NGINX endpoint [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10).
+              Query the same documents on **node5-sg** [http://10.150.150.105:4984/travel-sample/_all_docs?limit=10](http://10.150.150.105:4984/travel-sample/_all_docs?limit=10) and **node6-nginx** [http://10.150.150.106:4984/travel-sample/_all_docs?limit=10](http://10.150.150.106:4984/travel-sample/_all_docs?limit=10) to verify everything the documents can be access on the second Sync Gateway node and through NGINX.
+              
+              Congratulations! You have successfully performed a rolling upgrade of the 2 Sync Gateway + 3 Couchbase Server 4.6 cluster to 5.0 and can now use the N1QL, Server and Mobile SDKs on the same bucket.
