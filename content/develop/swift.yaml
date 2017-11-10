@@ -165,6 +165,11 @@ chapters:
 
           - title: Cloud
             description: |
+              
+              NOTE: The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
+             
+              The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshop.
+            
               Before you get started with this section, make sure your followed the instructions [here](/develop/swift#/0/1/0) to download the Travel Mobile app.
               Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
               - Couchbase Server
@@ -359,7 +364,10 @@ chapters:
 
           - title: Cloud
             description: |
-              If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
+              
+            NOTE: The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
+             
+             If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
 
           # - title: Docker Compose
           #   description: |
@@ -496,8 +504,8 @@ chapters:
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/connect_sv/content/assets/try_cb_login.png)
           - title: Cloud
             description: |
-              If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
-
+              NOTE: The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
+             
           # - title: Docker Compose
           #   description: |
           #     Alternatively, you can use Docker compose to install all of the three server side components 
