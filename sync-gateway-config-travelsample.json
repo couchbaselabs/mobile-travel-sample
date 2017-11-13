@@ -11,6 +11,17 @@
       "bucket":"travel-sample",
       "server": "http://localhost:8091",
       "enable_shared_bucket_access":true,
+      "import_filter": `
+        function(doc) {
+          /* Just ignore all the static travel-sample files */
+
+           if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+             return false
+           } 
+         
+          return true
+        }
+        `,
       "username": "admin",
       "password": "password",
       "users":{
@@ -18,14 +29,12 @@
           "demo": {"password": "password"},
           "tester": {"password": "password"}
       },
+
     "sync": `
 function sync(doc, oldDoc) {
 
-/* Just ignore all the static travel-sample files */
   var type = getType();
-  if (type == "landmark" || type == "hotel" || type == "airport" || type =="airline" || type == "route") {
-         return;
-  } 
+
   /* validation */
    var username = getUserName();
    // Verify the user making the request is the same as the one in doc's username
