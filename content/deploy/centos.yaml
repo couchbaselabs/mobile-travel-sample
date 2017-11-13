@@ -637,11 +637,13 @@ chapters:
         milestones:
           - title: Sync Gateway 1.4/Couchbase Server 4.6
             description: |
-              ## Install Sync Gateway 1.4/Couchbase Server 4.6
-            
               In this section of the workshop, we will perform a rolling upgrade to the latest release. To start with a running cluster, we will install the previous versions of Sync Gateway (1.4.1) and Couchbase Server (4.6) on the various VMs. Then from there, we will go through each step to upgrade the system to Sync Gateway (1.5) and Couchbase Server (5.0) with minimal downtime incurred on the applications.
               
               The [compatibility matrix](https://developer.couchbase.com/documentation/mobile/1.5/installation/index.html) lists the versions that can be used between Couchbase Lite, Sync Gateway and Couchbase Server. Mobile clients running previous versions of Couchbase Lite will continue to synchronize with Sync Gateway 1.5.
+              
+              Once the upgrade is completed, you may also wish to enable the new replication protocol which is currently in developer preview in Sync Gateway 1.5 (see the Couchbase Lite 2.0 [replication guide](https://developer.couchbase.com/documentation/mobile/2.0/guides/couchbase-lite/native-api/replication/index.html)).
+              
+              ## Install Sync Gateway 1.4/Couchbase Server 4.6
               
               If you've followed the previous sections, you will first need to stop the running VMs.
               
