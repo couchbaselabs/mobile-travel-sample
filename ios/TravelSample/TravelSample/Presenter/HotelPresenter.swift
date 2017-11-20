@@ -40,12 +40,12 @@ extension HotelPresenter {
         }
         
         do {
-            var document = try fetchGuestBookmarkDocumentFromDB(db)
+            var document = try fetchGuestBookmarkDocumentFromDB(db)?.toMutable()
             
             if document == nil {
                 // First time bookmark is created for guest account
                 // Create document of type "bookmarkedhotels"
-                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                document = MutableDocument.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
                 
             }
             
@@ -65,7 +65,7 @@ extension HotelPresenter {
                 bookmarked = bookmarked?.addString(newId)
             }
             // Update and save the "bookmarkedhotels" document
-            if let document = document {
+            if let document = document?.toMutable() {
                 // Update and save the bookmark document
                 document.setArray(bookmarked, forKey: "hotels")
                 try db.save(document)
@@ -75,12 +75,12 @@ extension HotelPresenter {
             // Add the hotel details documents
             for hotelDoc in hotels {
                 if let idVal = hotelDoc["id"] as? String {
-                    if let doc = db.getDocument(idVal) {
+                    if let doc = db.getDocument(idVal)?.toMutable() {
                         doc.setDictionary(hotelDoc)
                         try db.save(doc)
                     }
                     else {
-                        try db.save(Document.init(idVal, dictionary: hotelDoc))
+                        try db.save(MutableDocument.init(idVal, dictionary: hotelDoc))
                     }
                 }
             }
@@ -102,7 +102,7 @@ extension HotelPresenter {
         }
         
         do {
-            guard let document = try fetchGuestBookmarkDocumentFromDB(db) else {
+            guard let document = try fetchGuestBookmarkDocumentFromDB(db)?.toMutable() else {
                 handler(TravelSampleError.DocumentFetchException)
                 return
             }
@@ -130,7 +130,7 @@ extension HotelPresenter {
             let IdToRemain = Array(setOfCurrentBookmarkedIds.subtracting(idsToRemove))
          
             // Update the bookmarked Id list
-            document.setArray(ArrayObject.init(array: IdToRemain), forKey: "hotels")
+            document.setArray(MutableArrayObject.init(array: IdToRemain), forKey: "hotels")
             // Save updated version of bookmarkedhotels document
             try db.save(document)
                     

@@ -215,7 +215,7 @@ extension BookingPresenter {
             return
         }
       
-        if var flightDocument = db.getDocument(docId) {
+        if var flightDocument = db.getDocument(docId)?.toMutable() {
         
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings.append(contentsOf: flights)
@@ -235,10 +235,11 @@ extension BookingPresenter {
                 try db.save(flightDocument)
                   handler(nil)
             }
-            catch {
+            catch{
                 handler(error)
                 return
             }
+           
         }
         else {
             handler(nil)
@@ -261,7 +262,7 @@ extension BookingPresenter {
         }
         
         
-        if let flightDocument = db.getDocument(docId) {
+        if let flightDocument = db.getDocument(docId)?.toMutable() {
             
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings = _bookings.filter({ (booking) -> Bool in
