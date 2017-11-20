@@ -809,12 +809,13 @@ chapters:
 
               Create document of type `bookmarkedhotels` if one does not exist.
               ```swift
-              var document = try fetchGuestBookmarkDocumentFromDB(db)
+              var document = try fetchGuestBookmarkDocumentFromDB(db)?.toMutable()
+     
             
               if document == nil {
-                // First time bookmark is created for guest account
-                // Create document of type "bookmarkedhotels"
-                document = Document.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                  // First time bookmark is created for guest account
+                  // Create document of type "bookmarkedhotels"
+                  document = MutableDocument.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
                 
               }
               ```
@@ -841,10 +842,10 @@ chapters:
               Update and save the document of type "bookmarkedhotels"
               ```swift
               // Update and save the "bookmarkedhotels" document
-              if let document = document {
-                // Update and save the bookmark document
-                document.setArray(bookmarked, forKey: "hotels")
-                try db.save(document)
+              if let document = document?.toMutable() {
+                  // Update and save the bookmark document
+                  document.setArray(bookmarked, forKey: "hotels")
+                  try db.save(document)
                 
               }
               ```
@@ -854,12 +855,12 @@ chapters:
               // Add the hotel details documents
               for hotelDoc in hotels {
                 if let idVal = hotelDoc["id"] as? String {
-                    if let doc = db.getDocument(idVal) {
+                    if let doc = db.getDocument(idVal)?.toMutable() {
                         doc.setDictionary(hotelDoc)
                         try db.save(doc)
                     }
                     else {
-                        try db.save(Document.init(idVal, dictionary: hotelDoc))
+                        try db.save(MutableDocument.init(idVal, dictionary: hotelDoc))
                     }
                 }
               }
