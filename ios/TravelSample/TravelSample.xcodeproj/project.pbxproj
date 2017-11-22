@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5F0FEB6C1FC370B300C34D83 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; };
+		5F0FEB751FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; };
+		5F0FEB761FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD90F1EDDB5620069F12C /* AppDelegate.swift */; };
 		5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9131EDDB5620069F12C /* Main.storyboard */; };
 		5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9181EDDB5620069F12C /* LaunchScreen.storyboard */; };
@@ -53,6 +55,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				5F0FEB761FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F0FEB751FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Frameworks */,
 				5F0FEB6C1FC370B300C34D83 /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
