@@ -87,9 +87,7 @@ namespace TravelSample.Core.Models
                 .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
                 using (var results = query.Run()) {
                     foreach (var result in results) {
-                        // Workaround https://github.com/couchbase/couchbase-lite-net/issues/922 by adding '.' 
-                        // Remove once updated to DB019
-                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName + ".").ToDictionary(x => x.Key, x => x.Value));
+                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
                     }
                 }
             }
@@ -103,7 +101,7 @@ namespace TravelSample.Core.Models
         /// <param name="bookmark">The item from the bookmarked hotels list to remove</param>
         public void RemoveBookmark(HotelListCellModel bookmark)
         {
-            using (var document = UserSession.FetchGuestBookmarkDocument()) {
+            using (var document = UserSession.FetchGuestBookmarkDocument()?.ToMutable()) {
                 if (document == null) {
                     throw new InvalidOperationException("Bookmark document not found");
                 }
@@ -122,8 +120,7 @@ namespace TravelSample.Core.Models
 
                 document.Set("hotels", currentIds);
                 UserSession.Database.Save(document);
-                var idToRemove = bookmark.Source["id"] as string;
-                if (idToRemove != null) {
+                if (bookmark.Source["id"] is string idToRemove) {
                     var doc = UserSession.Database.GetDocument(idToRemove);
                     if (doc != null) {
                         UserSession.Database.Delete(doc);

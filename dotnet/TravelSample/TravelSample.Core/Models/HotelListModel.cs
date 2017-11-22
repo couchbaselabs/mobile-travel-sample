@@ -89,17 +89,17 @@ namespace TravelSample.Core.Models
         /// <param name="hotel">The item from the hotel list to operate on</param>
         public void ToggleBookmark(HotelListCellModel hotel)
         {
-            using (var document = UserSession.FetchGuestBookmarkDocument()) {
+            using (var document = UserSession.FetchGuestBookmarkDocument()?.ToMutable()) {
                 var doc = document;
                 if (document == null) {
                     if (hotel.IsBookmarked) {
                         throw new InvalidOperationException("Guest bookmark document not found");
                     }
 
-                    doc = new Document(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
+                    doc = new MutableDocument(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
                 }
 
-                var bookmarked = doc.GetArray("hotels") ?? new ArrayObject();
+                var bookmarked = doc.GetArray("hotels") ?? new MutableArray();
                 if (hotel.IsBookmarked) {
                     // Remove the bookmark
                     for (int i = 0; i < bookmarked.Count; i++) {
@@ -116,9 +116,8 @@ namespace TravelSample.Core.Models
                 UserSession.Database.Save(doc);
 
                 // Add the hotel details document
-                var id = hotel.Source["id"] as string;
-                if (id != null) {
-                    using (var detailDoc = UserSession.Database.GetDocument(id) ?? new Document(id)) {
+                if (hotel.Source["id"] is string id) {
+                    using (var detailDoc = UserSession.Database.GetDocument(id).ToMutable() ?? new MutableDocument(id)) {
                         detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
                         UserSession.Database.Save(detailDoc);
                     }

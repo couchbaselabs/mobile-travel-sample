@@ -147,8 +147,8 @@ namespace TravelSample.Core.Models
                 throw new InvalidOperationException("Cannot find current user!");
             }
 
-            using (var flightDocument = UserSession.Database.GetDocument(userDocId)) {
-                var documentBookings = flightDocument.GetArray("flights") ?? new ArrayObject();
+            using (var flightDocument = UserSession.Database.GetDocument(userDocId).ToMutable()) {
+                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArray();
                 for (int i = 0; i < documentBookings.Count; i++) {
                     if (IsEqualBooking(documentBookings.GetDictionary(i), booking.Source)) {
                         documentBookings.RemoveAt(i);
@@ -176,7 +176,7 @@ namespace TravelSample.Core.Models
             return Math.Abs(left.Value - right.Value) < Single.Epsilon;
         }
 
-        private static bool IsEqualBooking(IReadOnlyDictionary left, IReadOnlyDictionary right)
+        private static bool IsEqualBooking(IDictionaryObject left, IDictionaryObject right)
         {
             return left["destinationairport"].ToString() == right["destinationairport"].ToString() &&
                    left["equipment"].ToString() == right["equipment"].ToString() &&
@@ -188,7 +188,7 @@ namespace TravelSample.Core.Models
                    left["utc"].ToString() == right["utc"].ToString();
         }
 
-        private IEnumerable<BookingCellModel> EnumerateBookings(IReadOnlyArray bookings)
+        private IEnumerable<BookingCellModel> EnumerateBookings(IArray bookings)
         {
             for (var i = 0; i < bookings.Count; i++) {
                 var booking = bookings.GetDictionary(i);

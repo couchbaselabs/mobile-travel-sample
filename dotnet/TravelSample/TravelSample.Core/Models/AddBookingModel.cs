@@ -80,8 +80,8 @@ namespace TravelSample.Core.Models
                 throw new InvalidOperationException("Unable to find current user!");
             }
 
-            using (var flightDocument = UserSession.Database.GetDocument(userDocID)) {
-                var documentBookings = flightDocument.GetArray("flights") ?? new ArrayObject();
+            using (var flightDocument = UserSession.Database.GetDocument(userDocID).ToMutable()) {
+                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArray();
                 foreach (var b in bookings) {
                     b.Source["date"] = $"{b.DepartureDate} {b.Source["utc"]}";
                     documentBookings.Add(b.Source);
