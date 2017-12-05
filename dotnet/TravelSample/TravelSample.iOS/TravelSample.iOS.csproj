@@ -109,10 +109,10 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>6.5.1</Version>
     </PackageReference>
-    <PackageReference Include="Couchbase.Lite">
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
+    <PackageReference Include="Couchbase.Lite.Support.iOS">
       <Version>2.0.0-db020</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

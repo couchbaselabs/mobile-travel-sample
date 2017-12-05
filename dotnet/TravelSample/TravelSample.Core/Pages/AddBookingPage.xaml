@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <pages:BasePage x:TypeArguments="viewModels:AddBookingViewModel" xmlns="http://xamarin.com/schemas/2014/forms"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:pages="clr-namespace:TravelSample.Core.Pages"
@@ -25,7 +25,7 @@
                 </Grid.RowDefinitions>
                 <StackLayout Margin="10,0">
                     <Label Text="Flying From" />
-                    <pages:AutoCompleteView Placeholder="Origin" Text="{Binding OriginSearch, Mode=TwoWay}"
+                    <pages:AutoCompleteView Placeholder="Detroit Metro Wayne Co" Text="{Binding OriginSearch, Mode=TwoWay}"
                                             Suggestions="{Binding OriginSuggestions, Mode=TwoWay}" />
                     <Label Text="Departing" />
                     <Entry Placeholder="mm/dd/yyyy" Text="{Binding DepartureDateSearch, Mode=TwoWay}"
@@ -33,8 +33,8 @@
                 </StackLayout>
                 <StackLayout Grid.Column="1" Margin="10,0">
                     <Label Text="Flying To" />
-                    <pages:AutoCompleteView Placeholder="Destination" Text="{Binding DestinationSearch, Mode=TwoWay}"
-                                            Suggestions="{Binding DestinationSuggestions, Mode=TwoWay}" />
+                    <pages:AutoCompleteView Placeholder="San Francisco Intl" Text="{Binding DestinationSearch, Mode=TwoWay}"
+                                             Suggestions="{Binding DestinationSuggestions, Mode=TwoWay}" />
                     <Label Text="Returning" />
                     <Entry Placeholder="mm/dd/yyyy" Text="{Binding ReturnDateSearch, Mode=TwoWay}"
                              TextColor="{Binding ReturnColor}" />
