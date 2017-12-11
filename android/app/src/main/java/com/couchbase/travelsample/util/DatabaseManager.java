@@ -2,6 +2,7 @@ package com.couchbase.travelsample.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -11,6 +12,8 @@ import com.couchbase.lite.Expression;
 import com.couchbase.lite.FTSIndexItem;
 import com.couchbase.lite.Index;
 import com.couchbase.lite.Replicator;
+import com.couchbase.lite.ReplicatorChange;
+import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
 
 import java.io.BufferedInputStream;
@@ -152,6 +155,21 @@ public class DatabaseManager {
         config.setAuthenticator(new BasicAuthenticator(username, password));
 
         Replicator replicator = new Replicator(config);
+        replicator.addChangeListener(new ReplicatorChangeListener() {
+            @Override
+            public void changed(ReplicatorChange change) {
+
+                if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.IDLE)) {
+
+                    Log.e("Replication Comp Log", "Schedular Completed");
+
+                }
+                if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.OFFLINE)) {
+                    // stopReplication();
+                    Log.e("Rep schedular  Log", "ReplicationTag Stopped");
+                }
+            }
+        });
         replicator.start();
     }
 
