@@ -50,11 +50,15 @@ namespace TravelSample.Droid.Renderers
         {
             base.OnElementChanged(e);
 
-            if (Control == null) {
-                SetNativeControl(new AutoCompleteTextView(Context));
+            if (Element == null) {
+                return;
             }
 
-            Control.TextChanged += OnTextChanged;
+            if (Control == null) {
+                SetNativeControl(new AutoCompleteTextView(Context));
+                Control.TextChanged += OnTextChanged;
+            }
+            
             Control.Hint = e.NewElement.Placeholder;
             Control.Adapter = new ArrayAdapter(Context, Android.Resource.Layout.SimpleExpandableListItem1, e.NewElement.Suggestions.Cast<string>().ToArray());
         }

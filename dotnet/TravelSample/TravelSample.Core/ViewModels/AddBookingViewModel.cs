@@ -141,10 +141,10 @@ namespace TravelSample.Core.ViewModels
         private readonly ObservableCollection<FlightCellModel> _outboundFlights = new ObservableCollection<FlightCellModel>();
         private readonly ObservableCollection<FlightCellModel> _returnFlights = new ObservableCollection<FlightCellModel>();
         private string _departureDateSearch;
-        private string _destinationSearch;
+        private string _destinationSearch = "San Francisco Intl";
         private List<string> _destinationSuggestions;
         private bool _justSwitchedList;
-        private string _originSearch;
+        private string _originSearch = "Detroit Metro Wayne Co";
         private List<string> _originSuggestions;
         private string _returnDateSearch;
         private bool _returnSelected;

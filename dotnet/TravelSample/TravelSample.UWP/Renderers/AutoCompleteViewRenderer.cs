@@ -49,11 +49,15 @@ namespace TravelSample.UWP.Renderers
         {
             base.OnElementChanged(e);
 
-            if (Control == null) {
-                SetNativeControl(new AutoSuggestBox());
+            if (Element == null) {
+                return;
             }
 
-            Control.TextChanged += OnTextChanged;
+            if (Control == null) {
+                SetNativeControl(new AutoSuggestBox());
+                Control.TextChanged += OnTextChanged;
+            }
+            
             Control.PlaceholderText = e.NewElement.Placeholder;
             Control.ItemsSource = e.NewElement.Suggestions;
         }

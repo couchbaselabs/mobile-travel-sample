@@ -68,7 +68,7 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the raw information about the flight
         /// </summary>
-        public IReadOnlyDictionary Source { get; }
+        public IDictionaryObject Source { get; }
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace TravelSample.Core.ViewModels
         /// Constructor
         /// </summary>
         /// <param name="source">The source information for the flight</param>
-        public BookingCellModel(IReadOnlyDictionary source)
+        public BookingCellModel(IDictionaryObject source)
         {
             Source = source;
         }
@@ -189,7 +189,7 @@ namespace TravelSample.Core.ViewModels
 
         public DesignFlightBookingViewModel()
         {
-            var data = new DictionaryObject()
+            var data = new MutableDictionary()
                 .Set("destinationairport", "BBB")
                 .Set("sourceairport", "AAA")
                 .Set("date", DateTime.Now.ToString())
