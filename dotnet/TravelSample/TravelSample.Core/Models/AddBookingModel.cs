@@ -84,10 +84,10 @@ namespace TravelSample.Core.Models
                 var documentBookings = flightDocument.GetArray("flights") ?? new MutableArray();
                 foreach (var b in bookings) {
                     b.Source["date"] = $"{b.DepartureDate} {b.Source["utc"]}";
-                    documentBookings.Add(b.Source);
+                    documentBookings.AddValue(b.Source);
                 }
 
-                flightDocument.Set("flights", documentBookings);
+                flightDocument.SetArray("flights", documentBookings);
                 UserSession.Database.Save(flightDocument);
             }
         }
@@ -160,7 +160,7 @@ namespace TravelSample.Core.Models
             }
 
             try {
-                using (var results = searchQuery.Run()) {
+                using (var results = searchQuery.Execute()) {
                     return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
                 }
             } finally {

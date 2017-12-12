@@ -34,8 +34,8 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private static readonly IExpression HotelsProperty = Expression.Property("hotels").From(BookmarkDbName);
-        private static readonly IExpression HotelIdProperty = Expression.Meta().ID.From(HotelsDbName);
-        private static readonly IFunction JoinExpression = Function.ArrayContains(HotelsProperty, HotelIdProperty);
+        private static readonly IExpression HotelIdProperty = Meta.ID.From(HotelsDbName);
+        private static readonly IExpression JoinExpression = ArrayFunction.Contains(HotelsProperty, HotelIdProperty);
         private static readonly IExpression TypeProperty = Expression.Property("type").From(BookmarkDbName);
         private static readonly ISelectResult AllBookmarks = SelectResult.All().From(BookmarkDbName);
         private static readonly ISelectResult AllHotels = SelectResult.All().From(HotelsDbName);
@@ -85,7 +85,7 @@ namespace TravelSample.Core.Models
                 .From(bookmarkSource)
                 .Joins(join)
                 .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
-                using (var results = query.Run()) {
+                using (var results = query.Execute()) {
                     foreach (var result in results) {
                         bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
                     }
@@ -118,7 +118,7 @@ namespace TravelSample.Core.Models
                     }
                 }
 
-                document.Set("hotels", currentIds);
+                document.SetArray("hotels", currentIds);
                 UserSession.Database.Save(document);
                 if (bookmark.Source["id"] is string idToRemove) {
                     var doc = UserSession.Database.GetDocument(idToRemove);

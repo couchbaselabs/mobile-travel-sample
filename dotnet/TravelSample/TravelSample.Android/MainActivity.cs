@@ -25,7 +25,6 @@ using Android.OS;
 using Microsoft.Extensions.DependencyInjection;
 using TravelSample.Core.Services;
 using TravelSample.Droid.Services;
-using Xamarin.Forms;
 
 namespace TravelSample.Droid
 {
@@ -47,7 +46,7 @@ namespace TravelSample.Droid
             {
                 collection.AddSingleton<IDatabaseSeedService>(p => new DatabaseSeedService(ApplicationContext));
             });
-            UserDialogs.Init(() => (Activity) Forms.Context);
+            UserDialogs.Init(() => (Activity) ApplicationContext);
             LoadApplication(new App());
         }
 
