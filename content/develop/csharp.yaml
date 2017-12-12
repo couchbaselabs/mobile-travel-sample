@@ -521,7 +521,7 @@ chapters:
             description: |
               Before diving into the document schemas, let's take a look again at the mobile app. When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen:
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login_sync)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login_sync.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
               - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
@@ -624,7 +624,8 @@ chapters:
               
               In our app, we follow the MVVM pattern, which decouples the retrieval of data, view logic, and presentation into three distinct areas.
               
-              ![](https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_mvvm.png)
+   
 
               #### Model
               
@@ -644,7 +645,7 @@ chapters:
               In the Travel app, the  `ContentPage` class represents the "view" in MVVM. It handles user input and forwards requests to the VIew Model. It updates the UI based on response from the View Model.
               
               The app implements the following Views
-              - _LoginPage which represents the login UI
+              - _LoginPage_ which represents the login UI
               - _BookmarkedHotelsPage_ which represents the UI that lists bookmarked hotels
               - _FlightBookingsPage_ which represents the flight reservations UI
               - _HotelsListPage_ which represents the UI that lists hotels
@@ -652,7 +653,7 @@ chapters:
                            
               #### View Model
               
-              The VIew Model acts as the intermediary between the View and the Model. It is responsible for interacting with the model and updating its state to indicate how the view should present itself.  There is one view model per view and is named according to the view
+              The View Model acts as the intermediary between the View and the Model. It is responsible for interacting with the model and updating it's state to indicate how the view should present itself.  There is one view model per view and is named according to the view
 
               - _LoginViewModel_
               - _BookmarkedHotelsViewModel_
