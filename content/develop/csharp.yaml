@@ -521,10 +521,10 @@ chapters:
             description: |
               Before diving into the document schemas, let's take a look again at the mobile app. When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen:
               
-              ![](https://cl.ly/1r1Y3H3w2i1I/ios-login.png)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login_sync)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
               
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
@@ -543,7 +543,7 @@ chapters:
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-              ### Guest mode
+              ### Guest/Non Sync mode
                 
               In guest mode, the mobile app creates a new database for the anonymous user. It is an empty database for storing the list of bookmarked hotels locally. 
 

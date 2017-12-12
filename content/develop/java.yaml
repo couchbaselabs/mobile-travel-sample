@@ -536,7 +536,7 @@ chapters:
               ![](https://cl.ly/1s2L2Q372d2m/android-login.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.
               
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
@@ -555,7 +555,7 @@ chapters:
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-              ### Guest mode
+              ### Guest / Non Sync mode
                 
               In guest mode, the mobile app creates a new database for the anonymous user. It is an empty database for storing the list of bookmarked hotels locally. 
 
