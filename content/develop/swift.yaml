@@ -97,7 +97,7 @@ chapters:
             description: |
               In this lesson, you will install and launch version 5.0 of the Couchbase Server.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/3/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/swift#/0/3/1) section**
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
@@ -170,7 +170,7 @@ chapters:
           
               The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshop.
             
-              Before you get started with this section, make sure your followed the instructions [here](/develop/swift#/0/1/0) to download the Travel Mobile app.
+              Before you get started with this section, make sure your followed the instructions [here](/tutorials/travel-sample/develop/swift#/0/1/0) to download the Travel Mobile app.
               Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
               - Couchbase Server
               - Sync Gateway
@@ -263,7 +263,7 @@ chapters:
           #         "server": "http://192.168.1.121:8091"
           #         ```
 
-          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/develop/swift#/0/0/1) guide.
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/tutorials/travel-sample/develop/swift#/0/0/1) guide.
           #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
           #       ```yaml
@@ -295,7 +295,7 @@ chapters:
               **If you would prefer to use a docker container instead, please proceed to the [docker](/swift#/0/4/1) section**
              
               - Install Sync Gateway 1.5 from [here](https://www.couchbase.com/downloads) on your platform of choice
-              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/swift#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
+              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
               "username": "admin",
@@ -318,7 +318,7 @@ chapters:
 
           - title: Docker (Local)
             description: |
-              *NOTE* : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well. If not, please follow instructions [here](/develop/swift#/0/2/1) to install the server container.
+              *NOTE* : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well. If not, please follow instructions [here](/tutorials/travel-sample/develop/swift#/0/2/1) to install the server container.
 
               - Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command
                 ```bash
@@ -329,7 +329,7 @@ chapters:
                 ```bash
                 $ docker pull connectsv/sync-gateway-internal:1.5.0-community
                 ```
-              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
+              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
               - For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server". Replace the `localhost` in the file with  `cb-server` and save
                 
@@ -387,7 +387,7 @@ chapters:
           #         "server": "http://192.168.1.121:8091"
           #         ```
 
-          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/tutorials/travel-sample/develop/swift#/0/0/1) guide.
           #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
           #         ```
@@ -417,7 +417,7 @@ chapters:
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/swift#/0/2/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/swift#/0/2/1) section**
         
               - Install `libcouchbase` which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
@@ -474,7 +474,7 @@ chapters:
           - title: Docker (Local)
             description: |
               
-              *NOTE* : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well. If not, please follow instructions [here](/develop/swift#/0/2/1) to install the server container and [here](/develop/swift#/0/3/1) to install sync gateway container.
+              *NOTE* : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well. If not, please follow instructions [here](/tutorials/travel-sample/develop/swift#/0/2/1) to install the server container and [here](/tutorials/travel-sample/develop/swift#/0/3/1) to install sync gateway container.
 
               - Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command
                 ```bash
@@ -525,7 +525,7 @@ chapters:
           #         "server": "http://192.168.1.121:8091"
           #         ```
 
-          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/swift#/0/0/1) guide.
+          #     - Locate the `docker-componse.yml` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/tutorials/travel-sample/develop/swift#/0/0/1) guide.
           #     - Open the  `docker-componse.yml` and review it (TO CHANGE WITH FINAL IMAGES AVAILABLE)
               
           #        ````
@@ -643,7 +643,7 @@ chapters:
               ## Try it out
               
               - Confirm that the sync gateway is running
-              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/develop/swift#/2/2/1) section
+              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
               ```bash
               curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
               ```
@@ -912,7 +912,7 @@ chapters:
               
           #     ## Try it out
               
-          #     - Follow the steps in [Create a Document](/develop/swift#/2/0/0) section
+          #     - Follow the steps in [Create a Document](/tutorials/travel-sample/develop/swift#/2/0/0) section
           #     - As Guest User, tap on “hotels” button
           #     - In "location" text field , enter "London"
           #     - You will see list of hotels. 
@@ -953,8 +953,8 @@ chapters:
                
               ## Try it out
               
-              - Follow the steps in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/2/1/1) section to bookmark a hotel
-              - Confirm that you see the bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/2/1/1) section 
+              - Follow the steps in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1) section to bookmark a hotel
+              - Confirm that you see the bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1) section 
               - Swipe left on first Hotel cell
               - You will get option to  “UnBookmark” 
               - Tap “unbookmark”
@@ -992,7 +992,7 @@ chapters:
               - Data Synchronization and Routing
               - Authorization and Access Control
               
-              In this chapter, we will focus on Authorization and Access Control. We will discuss Data Synchronization and Routing in the [Sync](/develop/swift#/2/3/0) chapter.
+              In this chapter, we will focus on Authorization and Access Control. We will discuss Data Synchronization and Routing in the [Sync](/tutorials/travel-sample/develop/swift#/2/3/0) chapter.
              
               In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file. The Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
 
@@ -1008,7 +1008,7 @@ chapters:
                 }
               ```
 
-              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/develop/swift#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/tutorials/travel-sample/develop/swift#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
                 // Give user read access to channel
@@ -1058,7 +1058,7 @@ chapters:
           
           - title: XAttrs
             description: |
-              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/swift#/0/4/0) section.
+              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/tutorials/travel-sample/develop/swift#/0/4/0) section.
 
             
               Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
@@ -1141,13 +1141,13 @@ chapters:
 
               ```
               
-              The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/develop/swift#/2/2/1) section
+              The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
           
               ```swift
               config.authenticator = BasicAuthenticator(username: user, password: password)
               ```
 
-              The Replicator is configured to only pull from current user's channels. The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the [Channels/ Data Routing](/develop/swift#/2/3/0) section
+              The Replicator is configured to only pull from current user's channels. The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the [Channels/ Data Routing](/tutorials/travel-sample/develop/swift#/2/3/0) section
           
               ```swift                
               // This should match what is specified in the sync gateway config
