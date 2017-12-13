@@ -733,24 +733,22 @@ chapters:
 
               ```
 
-              Fetch a document of type `bookmarkedhotels`. Don't worry too much about how you query for document of specific type from the database. We will examine `queries` in a future lesson.
+              Fetch the document of type `bookmarkedhotels`. Don't worry too much about how you query for document of specific type from the database. We will examine `queries` in a future lesson.
 
               Create document of type `bookmarkedhotels` if one does not exist.
               ```csharp
-              using (var document = UserSession.FetchGuestBookmarkDocument()) {
+              using (var document = UserSession.FetchGuestBookmarkDocument()?.ToMutable()) {
                 var doc = document;
                 if (document == null) {
                     ...
-                    doc = new Document(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
+
+                    doc = new MutableDocument(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
                 }
-                ...
-              }
               ```
               
               Next, add the ID of the passed hotel to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document, or remove it based on the current action.
               ```csharp
-              var bookmarked = doc.GetArray("hotels") ?? new ArrayObject();)
-            
+              var bookmarked = doc.GetArray("hotels") ?? new MutableArray();
               if (hotel.IsBookmarked) {
                   // Remove the bookmark
                   for (int i = 0; i < bookmarked.Count; i++) {
@@ -760,7 +758,7 @@ chapters:
                       }
                   }
               } else {
-                  bookmarked.Add(hotel.Source["id"] as string);
+                    bookmarked.Add(hotel.Source["id"] as string);
               }
 
               doc.Set("hotels", bookmarked);
@@ -770,9 +768,8 @@ chapters:
               Persist the hotel information as separate documents of type `hotels` (or delete it if this is a bookmark removal). First, determine if the document with specified hotel Id already exists. If so, update it with the selected hotel details.  If not, create a new hotel document.
               ```csharp
               // Add the hotel details document
-              var id = hotel.Source["id"] as string;
-              if (id != null) {
-                  using (var detailDoc = UserSession.Database.GetDocument(id) ?? new Document(id)) {
+              if (hotel.Source["id"] is string id) {
+                  using (var detailDoc = UserSession.Database.GetDocument(id).ToMutable() ?? new MutableDocument(id)) {
                       detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
                       UserSession.Database.Save(detailDoc);
                   }
@@ -785,14 +782,16 @@ chapters:
               - In "location" text field , enter "London"
               - You will see list of hotels. 
               - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
-              - Swipe left on the first hotel cell
-              - You will get option to  “Bookmark” 
+              - Right click/tap on the first hotel cell
+              - You will see the button to  “Bookmark” 
               - Tap “bookmark”
               - This should display a "bookmark" icon on the hotel cell
               - Tap "Back" button
               - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/basics_add_document.gif)
+              The screen capture is for UWP version of the app.
+              
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_basics_add_document.gif)
           # - title: Update a Document
           #   description: |
           #     To update a document, you must retrieve it from the database, modify the desired properties and write them back to the database. The update method does this operation for you in the form of a callback.            
@@ -841,40 +840,41 @@ chapters:
          
           - title: Delete a Document
             description: |
-              UPDATE FOR CSHARP (needs slight source change)
               A document can be deleted using the `Delete` method. This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients.
               
-              **Open the file** `HotelPresenter.csharp`. We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
+              **Open the file** `BookmarkedHotelModel.cs`. We will review the `public void RemoveBookmark(HotelListCellModel bookmark)` method. 
               
-              [HotelsPresenter.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/HotelPresenter.csharp#L98)
+              [BookmarkedHotelModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/BookmarkedHotelModel.cs#L102)
               ```csharp
-              func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
+              public void RemoveBookmark(HotelListCellModel bookmark) {
                 ...
               }
               ```
               
-              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id `hotels` array.
+              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id from the `hotels` array.
               
               ```csharp
                                  
-              // Remove unbookmarked hotel documents
-              for idOfDocToRemove in idsToRemove {
-                if let doc = db.getDocument(idOfDocToRemove) {
-                    try db.delete(doc)
-                }
+              if (bookmark.Source["id"] is string idToRemove) {
+                  var doc = UserSession.Database.GetDocument(idToRemove);
+                  if (doc != null) {
+                      UserSession.Database.Delete(doc);
+                  }
               }
               ```
                
               ## Try it out
               
-              - Follow the steps in [Update a Document]() section
-              - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
-              - Swipe left on first Hotel cell
-              - You will get option to  “UnBookmark” 
+              - Follow the steps in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/csharp/#/2/1/1) section to bookmark a hotel
+              - Confirm that you see the bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/csharp/#/2/1/1) section 
+              - Right click/tap on the first Hotel cell
+              - You will get button to  “UnBookmark” 
               - Tap “unbookmark”
-              - Verify that you see a single hotel in the list
+              - Verify that the unbookmarked hotel does not show up in list
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/basics_delete_document.gif)
+              The screen capture is for UWP version of the app.
+
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_basics_delete_document.gif)
              
       - title: Security
         milestones:

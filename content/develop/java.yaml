@@ -829,8 +829,8 @@ chapters:
               
               ## Try it out
               
-              - Follow the steps in [Update a Document]() section
-              - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
+              - Follow the steps in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/java/#/2/1/1) section to bookmark a hotel
+              - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/develop/java/#/2/1/1) section 
               - Swipe left on first Hotel cell to unbookmark/remove the cell
               - Verify that you see a single hotel in the list
               
