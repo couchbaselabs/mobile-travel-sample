@@ -84,7 +84,7 @@ chapters:
             description: |
               In this lesson, you will install and launch version 5.0 of the Couchbase Server.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](#/0/3/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/java#/0/3/1) section**
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
