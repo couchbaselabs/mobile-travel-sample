@@ -11,7 +11,7 @@ chapters:
 
               It includes the following components -
               - **Client Side **
-                - Travel Mobile App -  A Xamarin Forms app (iOS, Android, UWP) that is linked with Couchbase Lite 2.0 (Developer Preview)
+                - Travel Mobile App : This is a .Net app (UWP + Xamarin for iOS and Android) that is linked with Couchbase Lite 2.0 (Developer Preview)
               - **Server Side **
                 - Couchbase Server v5.0
                 - Sync Gateway v1.5
