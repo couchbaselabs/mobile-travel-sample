@@ -1420,4 +1420,5 @@ chapters:
               - In the Location text field enter "London"
               - Verify that you see one hotel listed named "Novotel London West"
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_fts_query.gif)
+              The screen recording is for UWP version of the app
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_fts_query.gif)
