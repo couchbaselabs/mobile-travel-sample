@@ -1139,13 +1139,17 @@ chapters:
               }
               ```
               
-              ## Try it out
+              ## Try it out 
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "+” button to make a flight reservation
               - In the “From”  airport textfield, enter “San”
-              - Confirm that the first item in the dropdown list of "San Diego Intl" (Note that this is not currently functioning in iOS since there is no custom view written)
+              - Confirm that the first item in the dropdown list of "San Diego Intl" 
               
+              ** Note ** that this is not currently functioning in Xamarin iOS since the custom drop down view has not been implemented
+              
+              The screen recording is for UWP app.
+
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_prebuilt.gif)
               
       - title: Query
@@ -1168,50 +1172,28 @@ chapters:
               #### Implementation Pattern
               The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type. Consider the following query 
               ``` csharp
-              let hotelSearchQuery = Query
-                                .select(SelectResult.expression(Expression.meta().id),
-                                        SelectResult.expression(Expression.property("name"))) 
-                                .from(DataSource.database(db))
-                                .where(
-                                    Expression.property("description").like("%\(descriptionStr)%")
-                                   .and(Expression.property("type").equalTo("hotel"))
-                                   .and(Expression.property("country").equalTo(locationStr)
-                                   .or(Expression.property("city").equalTo(locationStr))
-                                   .or(Expression.property("state").equalTo(locationStr))
-                                   .or(Expression.property("address").equalTo(locationStr))))
+              var hotelSearchQuery = Query
+                                .Select(SelectResult.Expression(Expression.Meta().ID),
+                                        SelectResult.Expression(Expression.Property("name"))) 
+                                .From(DataSource.Database(UserSession.Database))
+                                .Where(
+                                    Expression.Property("description").Like("%\(descriptionStr)%")
+                                   .And(Expression.Property("type").EqualTo("hotel"))
+                                   .And(Expression.Property("country").EqualTo(locationStr)
+                                   .Or(Expression.Property("city").EqualTo(locationStr))
+                                   .Or(Expression.Property("state").EqualTo(locationStr))
+                                   .Or(Expression.Property("address").EqualTo(locationStr))))
  
 
               ```
               Often types, the same `Expression` may be required across multiple queries. This can quickly become tedious and difficult to maintain. The recommended pattern is to define constants corresponding to the Expressions and to reuse them across queries.
 
-              Open the [QueryConsts.csharp](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.csharp#L15) file. This file defines the CouchbaseLite expressions that are used in the Travel App
+              As an example, Open the [AddBookingModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/AddBookingModel.cs#L43) file. This file defines some of the CouchbaseLite expressions that are used for flight reservations
               ```csharp
-                struct _Property {
-                    // Query: Property Expressions
-                    static let DOCID        = Expression.meta().id
-                    static let TYPE         = Expression.property("type")
-                    static let USERNAME     = Expression.property("username")
-                    static let FLIGHTS      = Expression.property("flights")
-                    static let DESCRIPTION  = Expression.property("description")
-                    static let NAME         = Expression.property("name")
-                    static let COUNTRY      = Expression.property("country")
-                    static let CITY         = Expression.property("city")
-                    static let STATE        = Expression.property("state")
-                    static let ADDRESS      = Expression.property("address")
-                    static let FAA          = Expression.property("faa")
-                    static let ICAO         = Expression.property("icao")
-                    static let AIRPORTNAME  = Expression.property("airportname")
-                }
-
-                struct _SelectColumn {    
-                    // Query: Select Results
-                    static let NAMERESULT         = SelectResult.expression(_Property.NAME)
-                    static let AIRPORTNAMERESULT  = SelectResult.expression(_Property.AIRPORTNAME)
-                    static let FLIGHTSRESULT      = SelectResult.expression(_Property.FLIGHTS)
-                    static let DOCIDRESULT        = SelectResult.expression(_Property.DOCID)
-                    static let COUNTRESULT        = SelectResult.expression(Function.count(1))
-                    static let ALLRESULT          = SelectResult.all()
-                }
+                private static readonly IExpression AirportNameProperty = Expression.Property("airportname");
+                private static readonly ISelectResult AirportNameResult = SelectResult.Expression(AirportNameProperty);
+                private static readonly IExpression FaaProperty = Expression.Property("faa");
+                private static readonly IExpression IcaoProperty = Expression.Property("icao");
 
               ```
 
@@ -1257,10 +1239,14 @@ chapters:
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "+"" button to make a flight reservation
-              - In the “From”  airport textfield, enter "DTW""
-              - Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+              - In the “From”  airport textfield, enter "San""
+              - Verify that the first item in the drop down list is "San Diego Intl"
+
+              ** Note ** that this is not currently functioning in Xamarin iOS since the custom drop down view has not been implemented
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_simple_query.gif)
+              The screen recording is for UWP app.
+              
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_prebuilt.gif)
               
           - title: Advanced Query 
             description: |
@@ -1285,7 +1271,7 @@ chapters:
               
               **Open the file** `BookmarkedHotelModel.cs`. We will review the `FetchBookmarkedHotels` method.
                
-              [BookmarkedHotelModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnetios/TravelSample/TravelSample.Core/Models/BookmarkedHotelModel.cs#L76)
+              [BookmarkedHotelModel.cs](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/BookmarkedHotelModel.cs#L76)
               
               ```csharp
               public Hotels FetchBookmarkedHotels() {
@@ -1333,8 +1319,6 @@ chapters:
               ```csharp
               using (var results = query.Run()) {
                   foreach (var result in results) {
-                      // Workaround https://github.com/couchbase/couchbase-lite-net/issues/922 by adding '.' 
-                      // Remove once updated to DB019
                       bookmarkedHotels.Add(result.GetDictionary(HotelsDbName + ".").ToDictionary(x => x.Key, x => x.Value));
                   }
                }
@@ -1343,15 +1327,17 @@ chapters:
               ## Try it out
               
               - Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
-              - Tap on  "Hotels"" button 
+              - Tap on  "Hotels" button 
               - In the "Description" text field, enter "pets"
               - In the "Location" text field, enter "London"
               - Verify that you see the "Novotel London West" listed
-              - Swipe left to "bookmark" the hotel
-              - Tap "Cancel" button
+              - Right click/tap on the hotel cell. The "Bookmark" button should appear.
+              - Tap/click "bookmark" button
+              - Tap/click "back" button
               - Verify that the Novatel hotel that you bookmarked earlier shows up in the list
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_join_query.gif)
+              The screen recording is for UWP version of app
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_join_query.gif)
 
       - title: Full Text Search
         milestones:
