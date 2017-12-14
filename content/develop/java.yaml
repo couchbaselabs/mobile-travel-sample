@@ -1022,7 +1022,7 @@ chapters:
               - Tap "lookup" button
               - From list of flights, select the first flight listing. This automatically confirms the booking.
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
@@ -1031,7 +1031,7 @@ chapters:
               ## Try it out (Pull Replication)
               
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Make a flight reservation by clicking "booking" button.
               - Enter “From” airport as "San" and select the airport from drop down menu.

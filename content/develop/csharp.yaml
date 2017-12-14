@@ -1081,37 +1081,39 @@ chapters:
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "+" button to make a flight reservation
-              - Enter “From” airport as SFO and select the airport from drop down menu
-              - Enter “To” airport as DTW and select the airport from drop down menu
-              - Enter From and Return Dates
+              - Leave the default airport in the “From” field
+              - Leave the default airport in the "To" field
+              - Enter From and/or Return Dates
               - Tap "lookup" button
               - From list of flights, select the first flight listing
               - Select “Confirm Booking” 
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_push_sync.gif)
+              The screen recording is for UWP version of the app
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_push_replication.gif)
            
              
               
               ## Try it out (Pull Replication)
               
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Make a flight reservation by clicking "booking" button.
-              - Enter “From” airport as "San" and select the airport from drop down menu.
-              - Enter “To” airport as "SFO" and select the airport from drop down menu.
-              - Enter From and Return Travel Dates
+              - Enter “From” airport as "JFK" and select the airport from drop down menu.
+              - Enter “To” airport as "DTW" and select the airport from drop down menu.
+              - Enter From and/or Return Travel Dates
               - Click on "Find Flights" button
               - From list of flights, select the first flight listing
               - Confirm the booking by clicking on the shopping cart icon and click on “Book” button
-              - Log into the Travel Sample Mobile app as “demo” user and password as “password”    
+              - If you are not already logged into the mobile app, Log into the Travel Sample Mobile app as “demo” user and password as “password”    
               - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
 
-               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_pull_sync.gif)
+              The screen recording is for UWP version of the app
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_pull_replication.gif)
 
       - title: Pre-built database
         milestones:
