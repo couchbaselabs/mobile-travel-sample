@@ -1146,7 +1146,7 @@ chapters:
               - In the “From”  airport textfield, enter “San”
               - Confirm that the first item in the dropdown list of "San Diego Intl" (Note that this is not currently functioning in iOS since there is no custom view written)
               
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_prebuilt.gif)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_prebuilt.gif)
               
       - title: Query
         milestones:
