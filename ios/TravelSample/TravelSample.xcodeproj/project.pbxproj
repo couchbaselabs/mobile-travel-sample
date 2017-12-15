@@ -10,6 +10,10 @@
 		5F0FEB6C1FC370B300C34D83 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; };
 		5F0FEB751FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; };
 		5F0FEB761FC4FBD500C34D83 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F10E4301FE412F100DE18D9 /* UserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F10E42F1FE412F100DE18D9 /* UserTableViewController.swift */; };
+		5F10E4321FE4148D00DE18D9 /* UserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F10E4311FE4148D00DE18D9 /* UserPresenter.swift */; };
+		5F10E4341FE414C400DE18D9 /* UserPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F10E4331FE414C400DE18D9 /* UserPresenterProtocols.swift */; };
+		5F10E4361FE414F000DE18D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F10E4351FE414F000DE18D9 /* User.swift */; };
 		5F2CD9101EDDB5620069F12C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD90F1EDDB5620069F12C /* AppDelegate.swift */; };
 		5F2CD9151EDDB5620069F12C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9131EDDB5620069F12C /* Main.storyboard */; };
 		5F2CD91A1EDDB5620069F12C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F2CD9181EDDB5620069F12C /* LaunchScreen.storyboard */; };
@@ -64,6 +68,10 @@
 
 /* Begin PBXFileReference section */
 		5F0FEB6B1FC370B300C34D83 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
+		5F10E42F1FE412F100DE18D9 /* UserTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewController.swift; sourceTree = "<group>"; };
+		5F10E4311FE4148D00DE18D9 /* UserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPresenter.swift; sourceTree = "<group>"; };
+		5F10E4331FE414C400DE18D9 /* UserPresenterProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPresenterProtocols.swift; sourceTree = "<group>"; };
+		5F10E4351FE414F000DE18D9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5F2CD90C1EDDB5620069F12C /* TravelSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F2CD90F1EDDB5620069F12C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F2CD9141EDDB5620069F12C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 				5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */,
 				5FEB6B2A1EE8B01300A6CC18 /* HotelsTableViewController.swift */,
 				5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */,
+				5F10E42F1FE412F100DE18D9 /* UserTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -212,6 +221,7 @@
 				5F9180731F7D30880067E2C6 /* Flight.swift */,
 				5F9180751F7D309A0067E2C6 /* Airport.swift */,
 				5F9180771F7D30AC0067E2C6 /* Hotel.swift */,
+				5F10E4351FE414F000DE18D9 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -223,6 +233,7 @@
 				5FC6ADC71EE25B4600CED153 /* FlightPresenter.swift */,
 				5FF733C01EE8865400ECC392 /* AirportPresenter.swift */,
 				5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */,
+				5F10E4311FE4148D00DE18D9 /* UserPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -235,6 +246,7 @@
 				5FB636D01F7D3BC300301B8A /* FlightPresenterProtocols.swift */,
 				5FB636D11F7D3BC300301B8A /* HotelPresenterProtocols.swift */,
 				5FB636D21F7D3BC300301B8A /* PresenterProtocols.swift */,
+				5F10E4331FE414C400DE18D9 /* UserPresenterProtocols.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -358,10 +370,14 @@
 				5FB636D31F7D3BC300301B8A /* AirportPresenterProtocols.swift in Sources */,
 				5FE6ECAF1EEED14B006AD07C /* DictionaryExtension.swift in Sources */,
 				5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */,
+				5F10E4321FE4148D00DE18D9 /* UserPresenter.swift in Sources */,
+				5F10E4301FE412F100DE18D9 /* UserTableViewController.swift in Sources */,
 				5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */,
 				5FB636D41F7D3BC300301B8A /* BookingPresenterProtocols.swift in Sources */,
 				5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */,
 				5FC6ADB21EDEFD9D00CED153 /* BookingPresenter.swift in Sources */,
+				5F10E4341FE414C400DE18D9 /* UserPresenterProtocols.swift in Sources */,
+				5F10E4361FE414F000DE18D9 /* User.swift in Sources */,
 				5FC6ADC21EE1F7F300CED153 /* AddBookingContainerViewController.swift in Sources */,
 				5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */,
 				5F9180721F7D30450067E2C6 /* Booking.swift in Sources */,
