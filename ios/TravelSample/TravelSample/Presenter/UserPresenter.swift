@@ -93,11 +93,28 @@ extension UserPresenter {
             let blob = Blob.init(contentType: "image/jpeg", data: imageData)
             userDocument.setBlob(blob, forKey: "imageprofile")
             
-          
-          
             do {
-                try db.save(userDocument)
-                handler(nil)
+                // Set this flag to true to simulate a conflict by delaying the application of the change
+                // To simulate conflict, do the following
+                // 1. Set flag to true
+                // 2. Run app in two devices simultaneously
+                // 3. Update the profile image from both devices. Tap Save
+                // 4. There would be a race condition for when the document would get updated
+                // 5. This would result in a conflict triggering the resolver
+                let testingConflicts = false
+                
+                if testingConflicts {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10000)) {
+                        try? db.save(userDocument)
+                        handler(nil)
+                    }
+                    
+                }
+                else {
+                    try db.save(userDocument)
+                    handler(nil)
+                }
+                
             }
             catch{
                 handler(error)
