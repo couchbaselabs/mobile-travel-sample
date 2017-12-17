@@ -147,6 +147,22 @@ extension DatabaseManager {
                  _db = try Database(name: kDBName, config: options)
                 
             }
+            
+            // Add change listener
+            /***** Uncomment for optional testing
+            _db?.addChangeListener({ [weak self](change) in
+                guard let `self` = self else {
+                    return
+                }
+                for docId in change.documentIDs   {
+                    if let docString = docId as? String {
+                        let doc = self._db?.getDocument(docString)
+                       
+                        print("doc.isDeleted = \(doc?.isDeleted)")
+                    }
+                }
+                
+            })*****/
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -303,6 +319,7 @@ extension DatabaseManager {
     
 }
 
+// MARK: Custom conflict resolver
 extension DatabaseManager:ConflictResolver {
     public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.Document? {
         print(#function)
