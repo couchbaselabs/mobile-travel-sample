@@ -84,7 +84,7 @@ chapters:
             description: |
               In this lesson, you will install and launch version 5.0 of the Couchbase Server.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/java#/0/3/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/java#/0/3/1) section**
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
@@ -150,9 +150,9 @@ chapters:
 
           - title: Cloud
             description: |
-              *NOTE:* The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
               
-              Before you get started with this section, make sure your followed the instructions [here](/develop/java#/0/1/0) to download the Travel Mobile app.
+              Before you get started with this section, make sure your followed the instructions [here](/tutorials/travel-sample/develop/java#/0/1/0) to download the Travel Mobile app.
               Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
               - Couchbase Server
               - Sync Gateway
@@ -294,7 +294,7 @@ chapters:
 
           - title: Docker (Local)
             description: |
-              *NOTE* : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well. If not, please follow instructions [here](/develop/java#/0/2/1) to install the server container.
+              *NOTE* : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well. If not, please follow instructions [here](/tutorials/travel-sample/develop/java#/0/2/1) to install the server container.
 
               - Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command
                 ```bash
@@ -305,7 +305,7 @@ chapters:
                 ```bash
                 $ docker pull connectsv/sync-gateway-internal:1.5.0-community
                 ```
-              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/java#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
+              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/java#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
               - For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server". Replace the `localhost` in the file with  `cb-server` and save
                 
@@ -342,8 +342,8 @@ chapters:
           - title: Cloud
             description: |
               
-              *NOTE:* The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
-             
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
+          
               If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
 
           # - title: Docker Compose
@@ -393,7 +393,7 @@ chapters:
             description: |
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/java#/0/2/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/java#/0/2/1) section**
         
               - Install `libcouchbase` which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
@@ -450,7 +450,7 @@ chapters:
           - title: Docker (Local)
             description: |
               
-              *NOTE* : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well. If not, please follow instructions [here](/develop/java#/0/2/1) to install the server container and [here](/develop/java#/0/3/1) to install sync gateway container.
+              *NOTE* : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well. If not, please follow instructions [here](/tutorials/travel-sample/develop/java#/0/2/1) to install the server container and [here](/tutorials/travel-sample/develop/java#/0/3/1) to install sync gateway container.
 
               - Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command
                 ```bash
@@ -480,8 +480,8 @@ chapters:
                   ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png)
           - title: Cloud
             description: |
-              *NOTE:* The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshops.
-             
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
+          
               If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
 
           # - title: Docker Compose
@@ -492,7 +492,7 @@ chapters:
           #       - Sync Gateway 1.5.
 
 
-          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
+          #     - Locate the `sync-gateway-config-travelsample.json` file at the root of the Travel Sample Mobile App Github repo that you cloned as per the instructions in the [Travel Sample Mobile Install](http://docs-build.sc.couchbase.com:9000/tutorials/travel-sample/develop/java#/0/0/1) guide. For the app to connect to the Couchbase Server, the  IP Address of the the server needs to be specified. Since the Couchbase Server is running locally on your machine, this would be the local IP Address of your machine.
           #       -  Identify the local IP Address of your machine. On a Linux or macOS system, type in the following command in terminal
           #         ``` bash
           #         $ ifconfig
@@ -536,7 +536,7 @@ chapters:
               ![](https://cl.ly/1s2L2Q372d2m/android-login.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.
               
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
@@ -555,7 +555,7 @@ chapters:
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
-              ### Guest mode
+              ### Guest / Non Sync mode
                 
               In guest mode, the mobile app creates a new database for the anonymous user. It is an empty database for storing the list of bookmarked hotels locally. 
 
@@ -620,7 +620,7 @@ chapters:
               ## Try it out
               
               - Confirm that the sync gateway is running
-              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/develop/java#/2/2/1) section
+              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/tutorials/travel-sample/develop/java#/2/2/1) section
               ```bash
               curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
               ```
@@ -829,8 +829,8 @@ chapters:
               
               ## Try it out
               
-              - Follow the steps in [Update a Document]() section
-              - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document]() section 
+              - Follow the steps in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/java/#/2/1/1) section to bookmark a hotel
+              - Confirm that you see two bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in [Update a Document](http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/java/#/2/1/1) section 
               - Swipe left on first Hotel cell to unbookmark/remove the cell
               - Verify that you see a single hotel in the list
               
@@ -881,7 +881,7 @@ chapters:
                 }
               ```
 
-              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+              - The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the ["Sync"](/tutorials/travel-sample/develop/java#/2/3/0) section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
 
               ``` JavaScript
               // Give user read access to channel
@@ -908,7 +908,7 @@ chapters:
         milestones:
           - title: Channels/Data Routing
             description: |
-              In the lesson on [Access Control](/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
+              In the lesson on [Access Control](/tutorials/travel-sample/develop/java#/2/2/1) we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions. In this lesson we discuss how it can be used for Data Synchronization and Routing.
      
               A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
 
@@ -931,7 +931,7 @@ chapters:
           
           - title: XAttrs
             description: |
-              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/develop/java#/0/4/0) section.
+              Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/tutorials/travel-sample/develop/java#/0/4/0) section.
 
             
               Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
@@ -1022,7 +1022,7 @@ chapters:
               - Tap "lookup" button
               - From list of flights, select the first flight listing. This automatically confirms the booking.
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
@@ -1031,7 +1031,7 @@ chapters:
               ## Try it out (Pull Replication)
               
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
-              - Make sure that the "New User" checkbox is unchecked
+              - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
               - Make a flight reservation by clicking "booking" button.
               - Enter “From” airport as "San" and select the airport from drop down menu.

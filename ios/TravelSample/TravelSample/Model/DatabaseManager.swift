@@ -128,6 +128,7 @@ extension DatabaseManager {
             }
             
             options.directory = userFolderPath
+            options.conflictResolver = self
             print("WIll open/create DB  at path \(userFolderPath)")
             if Database.exists(kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
@@ -146,6 +147,22 @@ extension DatabaseManager {
                  _db = try Database(name: kDBName, config: options)
                 
             }
+            
+            // Add change listener
+            /***** Uncomment for optional testing
+            _db?.addChangeListener({ [weak self](change) in
+                guard let `self` = self else {
+                    return
+                }
+                for docId in change.documentIDs   {
+                    if let docString = docId as? String {
+                        let doc = self._db?.getDocument(docString)
+                       
+                        print("doc.isDeleted = \(doc?.isDeleted)")
+                    }
+                }
+                
+            })*****/
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {
@@ -287,6 +304,8 @@ extension DatabaseManager {
         }
     }
     
+   
+    
     
 }
 
@@ -298,6 +317,40 @@ extension DatabaseManager {
         Database.setLogLevel(.verbose, domain: .query)
     }
     
+}
+
+// MARK: Custom conflict resolver
+extension DatabaseManager:ConflictResolver {
+    public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.Document? {
+        print(#function)
+        // To implement custom resolver
+        let mine = conflict.mine
+        let theirs = conflict.theirs
+        if let _ = mine.toDictionary()["type"] as? String {
+            // All documents except the user document has a type.
+            // In theory, none of these documents would never be updated
+            // If you want to, then you can change the airline documents on server and change the SG config file filter
+            // function to sync to clients
+            
+            // Just use the default resolver
+            
+            return DatabaseConfiguration().conflictResolver?.resolve(conflict: conflict)
+            
+        }
+        else {
+            // This is the user document and is the only document that can be updated by clients. It has no type
+            
+            if theirs.isDeleted {
+                return theirs
+            }
+            else if mine.isDeleted {
+                return mine
+            }
+            print("Implemented custom resolver for user type")
+            return mine
+        }
+    
+    }
 }
 
 

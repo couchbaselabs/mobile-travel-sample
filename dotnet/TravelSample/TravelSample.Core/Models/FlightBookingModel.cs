@@ -190,9 +190,13 @@ namespace TravelSample.Core.Models
 
         private IEnumerable<BookingCellModel> EnumerateBookings(IArray bookings)
         {
-            for (var i = 0; i < bookings.Count; i++) {
-                var booking = bookings.GetDictionary(i);
-                yield return new BookingCellModel(booking);
+            if (bookings != null)
+            {
+                for (var i = 0; i < bookings.Count; i++)
+                {
+                    var booking = bookings.GetDictionary(i);
+                    yield return new BookingCellModel(booking);
+                }
             }
         }
 

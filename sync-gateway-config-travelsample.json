@@ -9,17 +9,19 @@
         "replicator_2":true
       },
       "bucket":"travel-sample",
-      "server": "http://localhost:8091",
+      "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,
       "import_filter": `
         function(doc) {
           /* Just ignore all the static travel-sample files */
-
+           if (doc._deleted == true ) {
+	      return true;
+        }
            if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
-             return false
+             return false;
            } 
          
-          return true
+          return true;
         }
         `,
       "username": "admin",
@@ -32,8 +34,13 @@
 
     "sync": `
 function sync(doc, oldDoc) {
+  /* sanity check */
+  // check if document was removed from server or via SDK
+  // In this case, just return 
+  if (isRemoved()) {
+    return;
+  } 
 
-  var type = getType();
 
   /* validation */
    var username = getUserName();
@@ -91,6 +98,11 @@ function sync(doc, oldDoc) {
 
   function isUpdate() {
     return (!isCreate() && !isDelete());
+  }
+
+  // This is when document is removed via SDK or directly on server
+  function isRemoved() {
+    return( isDelete() && oldDoc == null);
   }
 
   function isDelete() {

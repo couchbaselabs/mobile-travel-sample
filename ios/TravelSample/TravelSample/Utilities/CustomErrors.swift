@@ -14,4 +14,6 @@ enum TravelSampleError:Error {
     case DataParseError
     case UserCredentialsNotProvided
     case DocumentFetchException
+    case ImageProcessingFailure
+    case ImageTooBig
 }
