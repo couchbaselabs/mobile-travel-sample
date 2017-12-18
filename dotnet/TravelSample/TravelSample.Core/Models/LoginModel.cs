@@ -114,13 +114,13 @@ namespace TravelSample.Core.Models
             };
 
             var repl = new Replicator(config);
-            repl.StatusChanged += (sender, args) =>
+            repl.AddChangeListener((sender, args) =>
             {
                 var s = args.Status;
                 Debug.WriteLine(
-                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {args.LastError?.Message ?? "<none>"}, activity = {s.Activity}");
+                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {s.Error?.Message ?? "<none>"}, activity = {s.Activity}");
 
-            };
+            });
 
             repl.Start();
             return repl;

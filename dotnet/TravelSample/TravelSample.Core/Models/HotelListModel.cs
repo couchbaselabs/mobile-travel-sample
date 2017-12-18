@@ -118,7 +118,7 @@ namespace TravelSample.Core.Models
                 // Add the hotel details document
                 if (hotel.Source["id"] is string id) {
                     using (var detailDoc = UserSession.Database.GetDocument(id)?.ToMutable() ?? new MutableDocument(id)) {
-                        detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
+                        detailDoc.SetData(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
                         UserSession.Database.Save(detailDoc);
                     }
                 }

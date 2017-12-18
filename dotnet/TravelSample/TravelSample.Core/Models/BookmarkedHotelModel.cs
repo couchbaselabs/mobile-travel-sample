@@ -83,7 +83,7 @@ namespace TravelSample.Core.Models
             using (var query = Query
                 .Select(AllBookmarks, AllHotels)
                 .From(bookmarkSource)
-                .Joins(join)
+                .Join(join)
                 .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
                 using (var results = query.Execute()) {
                     foreach (var result in results) {
