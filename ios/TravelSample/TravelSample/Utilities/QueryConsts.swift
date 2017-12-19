@@ -16,18 +16,18 @@ struct _Property {
     // Query: Property Expressions
     static let DOCID        = Meta.id
     
-    static let TYPE         = PropertyExpression.property("type")
-    static let USERNAME     = PropertyExpression.property("username")
-    static let FLIGHTS      = PropertyExpression.property("flights")
-    static let DESCRIPTION  = PropertyExpression.property("description")
-    static let NAME         = PropertyExpression.property("name")
-    static let COUNTRY      = PropertyExpression.property("country")
-    static let CITY         = PropertyExpression.property("city")
-    static let STATE        = PropertyExpression.property("state")
-    static let ADDRESS      = PropertyExpression.property("address")
-    static let FAA          = PropertyExpression.property("faa")
-    static let ICAO         = PropertyExpression.property("icao")
-    static let AIRPORTNAME  = PropertyExpression.property("airportname")
+    static let TYPE         = Expression.property("type")
+    static let USERNAME     = Expression.property("username")
+    static let FLIGHTS      = Expression.property("flights")
+    static let DESCRIPTION  = Expression.property("description")
+    static let NAME         = Expression.property("name")
+    static let COUNTRY      = Expression.property("country")
+    static let CITY         = Expression.property("city")
+    static let STATE        = Expression.property("state")
+    static let ADDRESS      = Expression.property("address")
+    static let FAA          = Expression.property("faa")
+    static let ICAO         = Expression.property("icao")
+    static let AIRPORTNAME  = Expression.property("airportname")
 }
 
 struct _SelectColumn {    
