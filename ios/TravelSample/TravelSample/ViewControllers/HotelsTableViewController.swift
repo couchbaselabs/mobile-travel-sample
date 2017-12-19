@@ -136,8 +136,8 @@ extension HotelsTableViewController:UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let length = (searchBar.text?.characters.count)! - range.length + text.characters.count
-        let locationLength = (searchBar == self.locationSearchBar) ? length : self.locationSearchBar.text?.characters.count
+        let length = (searchBar.text?.count)! - range.length + text.count
+        let locationLength = (searchBar == self.locationSearchBar) ? length : self.locationSearchBar.text?.count
         
         self.searchButton.isEnabled = (locationLength! > 0 )
         

@@ -40,7 +40,7 @@ class DatabaseManager {
     
     
     fileprivate var _pushPullRepl:Replicator?
-    fileprivate var _pushPullReplListener:NSObjectProtocol?
+    fileprivate var _pushPullReplListener:ListenerToken?
     
     
     fileprivate var _applicationDocumentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
@@ -130,10 +130,10 @@ extension DatabaseManager {
             options.directory = userFolderPath
             options.conflictResolver = self
             print("WIll open/create DB  at path \(userFolderPath)")
-            if Database.exists(kDBName, inDirectory: userFolderPath) == false {
+            if Database.exists(withName: kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
                 if let prebuiltPath = Bundle.main.path(forResource: kDBName, ofType: "cblite2") {
-                     try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", config: options)
+                    try Database.copy(fromPath: prebuiltPath, toDatabase: "\(kDBName)", withConfig: options)
                     
                 }
                 // Get handle to DB  specified path
@@ -204,13 +204,14 @@ extension DatabaseManager {
     
     func createDatabaseIndexes() throws{
         // For searches on type property
-        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
-        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
-        try _db?.createIndex(Index.valueIndex().on(ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
+    
+        try _db?.createIndex(Index.valueIndex(withItems: ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
+        try _db?.createIndex(Index.valueIndex(withItems:ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
+        try _db?.createIndex(Index.valueIndex(withItems:ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
 
     
         // For Full text search on airports and hotels
-        try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
+        try _db?.createIndex(Index.fullTextIndex(withItems: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
         
    
     }
@@ -241,7 +242,8 @@ extension DatabaseManager {
         
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
-        var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
+        var config = ReplicatorConfiguration(withDatabase: db, targetURL: dbUrl)
+    
         config.replicatorType = .pushAndPull
         config.continuous = true
         config.authenticator = BasicAuthenticator(username: user, password: password)
@@ -252,7 +254,7 @@ extension DatabaseManager {
         config.channels = [userChannel]
         
         
-        _pushPullRepl = Replicator.init(config: config)
+        _pushPullRepl = Replicator.init(withConfig: config)
         
         _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
             let s = change.status
@@ -277,7 +279,7 @@ extension DatabaseManager {
         _pushPullRepl?.stop()
         if let pushPullReplListener = _pushPullReplListener{
             print(#function)
-            _pushPullRepl?.removeChangeListener(pushPullReplListener)
+            _pushPullRepl?.removeChangeListener(withToken:  pushPullReplListener)
             _pushPullRepl = nil
             _pushPullReplListener = nil
         }

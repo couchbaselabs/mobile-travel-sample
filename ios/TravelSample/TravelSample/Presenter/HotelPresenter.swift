@@ -45,7 +45,7 @@ extension HotelPresenter {
             if document == nil {
                 // First time bookmark is created for guest account
                 // Create document of type "bookmarkedhotels"
-                document = MutableDocument.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                document = MutableDocument.init(withData: ["type":"bookmarkedhotels","hotels":[String]()])
                 
             }
             
@@ -68,19 +68,20 @@ extension HotelPresenter {
             if let document = document?.toMutable() {
                 // Update and save the bookmark document
                 document.setArray(bookmarked, forKey: "hotels")
-                try db.save(document)
+                try db.saveDocument(document)
                 
             }
             
             // Add the hotel details documents
             for hotelDoc in hotels {
                 if let idVal = hotelDoc["id"] as? String {
-                    if let doc = db.getDocument(idVal)?.toMutable() {
-                        doc.setDictionary(hotelDoc)
-                        try db.save(doc)
+                    if let doc = db.document(withID: idVal)?.toMutable() {
+                        doc.setData(hotelDoc)
+                        try db.saveDocument(doc)
                     }
                     else {
-                        try db.save(MutableDocument.init(idVal, dictionary: hotelDoc))
+                        try db.saveDocument(MutableDocument.init(withID: idVal, data: hotelDoc))
+                    
                     }
                 }
             }
@@ -130,14 +131,14 @@ extension HotelPresenter {
             let IdToRemain = Array(setOfCurrentBookmarkedIds.subtracting(idsToRemove))
          
             // Update the bookmarked Id list
-            document.setArray(MutableArrayObject.init(array: IdToRemain), forKey: "hotels")
+            document.setArray(MutableArrayObject.init(withData: IdToRemain), forKey: "hotels")
             // Save updated version of bookmarkedhotels document
-            try db.save(document)
+            try db.saveDocument(document)
                     
             // Remove unbookmarked hotel documents
             for idOfDocToRemove in idsToRemove {
-                if let doc = db.getDocument(idOfDocToRemove) {
-                    try db.delete(doc)
+                if let doc = db.document(withID: idOfDocToRemove) {
+                    try db.deleteDocument(doc)
                 }
             }
                 
@@ -170,9 +171,9 @@ extension HotelPresenter {
             let hotelsDS = DataSource.database(db).as("hotelsDS")
             
             let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
-            let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+            let hotelIdExpr = Meta.id.from("hotelsDS")
             
-            let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+            let joinExpr = ArrayFunction.contains(hotelsExpr, value: hotelIdExpr)
             let join = Join.join(hotelsDS).on(joinExpr);
             
             let typeExpr = Expression.property("type").from("bookmarkDS")
@@ -182,10 +183,10 @@ extension HotelPresenter {
             
             let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
             
-            print (try? query.explain())
-            for result in try query.run() {
+           // print (try? query.explain())
+            for result in try query.execute() {
                 print ("RESULT IS \(result.toDictionary())")
-                if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
+                if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() as? Hotel{
                       bookmarkedHotels.append(hotel)
                 }
             }
@@ -217,7 +218,7 @@ extension HotelPresenter {
 
         var descExp:Expression?
         if let descriptionStr = descriptionStr , descriptionStr != ""{
-            descExp = _Property.DESCRIPTION.match(descriptionStr)
+            descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
         }
         
         
@@ -243,7 +244,7 @@ extension HotelPresenter {
         
         var matches:Hotels = []
         do {
-            for (_,row) in try hotelSearchQuery.run().enumerated() {
+            for (_,row) in try hotelSearchQuery.execute().enumerated() {
                 
                 if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
                     
@@ -339,10 +340,10 @@ extension HotelPresenter {
  
         */
         
-        for row in try searchQuery.run() {
+        for row in try searchQuery.execute() {
             print("Bookmarked doc is \(row.toDictionary())")
             if let docId = row.string(forKey: "id") {
-                return db.getDocument(docId)
+                return db.document(withID:docId)
             }
         }
         

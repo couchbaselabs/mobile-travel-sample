@@ -35,7 +35,7 @@ class HotelDetailViewController:UITableViewController {
     private func registerCells() {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelNameCell")
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelAddressCell")
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelPetsCell")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelCell")
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelParkingCell")
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelInternetCell")
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HotelBreakfastCell")

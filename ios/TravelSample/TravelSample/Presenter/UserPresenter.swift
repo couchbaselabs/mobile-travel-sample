@@ -45,7 +45,7 @@ extension UserPresenter {
         do {
             // V1.0. There should be only one document for a user.
                 
-            for (_, row) in try userQuery.run().enumerated() {
+            for (_, row) in try userQuery.execute().enumerated() {
                 // There isnt a convenience API to get to documentId from Result. So use "id" key
                 // Tracking - https://github.com/couchbaselabs/couchbase-lite-apiv2/issues/123
                     userDocId = row.string(forKey: "id")
@@ -76,7 +76,7 @@ extension UserPresenter {
             return
         }
         
-        if var userDocument = db.getDocument(userDocId)?.toMutable() {
+        if var userDocument = db.document(withID: userDocId)?.toMutable() {
             
             let maxUploadImageSize = 20000000 // 20MB
             
@@ -105,13 +105,13 @@ extension UserPresenter {
                 
                 if testingConflicts {
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10000)) {
-                        try? db.save(userDocument)
+                        try? db.saveDocument(userDocument)
                         handler(nil)
                     }
                     
                 }
                 else {
-                    try db.save(userDocument)
+                    try db.saveDocument(userDocument)
                     handler(nil)
                 }
                 
