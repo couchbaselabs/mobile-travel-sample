@@ -1,6 +1,7 @@
 package com.couchbase.travelsample.bookmarks;
 
 import com.couchbase.lite.Array;
+import com.couchbase.lite.ArrayFunction;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
@@ -8,13 +9,16 @@ import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.Function;
 import com.couchbase.lite.Join;
-import com.couchbase.lite.LiveQuery;
-import com.couchbase.lite.LiveQueryChange;
-import com.couchbase.lite.LiveQueryChangeListener;
+import com.couchbase.lite.Meta;
+import com.couchbase.lite.MutableArray;
+import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
+import com.couchbase.lite.internal.query.LiveQuery;
+import com.couchbase.lite.query.QueryChange;
+import com.couchbase.lite.query.QueryChangeListener;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 import java.util.ArrayList;
@@ -37,9 +41,9 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         DataSource hotelsDS = DataSource.database(database).as("hotelDS");
 
         Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
-        Expression hotelIdExpr = Expression.meta().getId().from("hotelDS");
+        Expression hotelIdExpr = Meta.id.from("hotelDS");
 
-        Expression joinExpr = Function.arrayContains(hotelsExpr, hotelIdExpr);
+        Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
         Join join = Join.join(hotelsDS).on(joinExpr);
 
         Expression typeExpr = Expression.property("type").from("bookmarkDS");
@@ -47,15 +51,15 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
         SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
 
-        LiveQuery query = Query
+        Query query = Query
             .select(bookmarkAllColumns, hotelsAllColumns)
             .from(bookmarkDS)
             .join(join)
-            .where(typeExpr.equalTo("bookmarkedhotels")).toLive();
+            .where(typeExpr.equalTo("bookmarkedhotels"));
 
-        query.addChangeListener(new LiveQueryChangeListener() {
+        query.addChangeListener(new QueryChangeListener() {
             @Override
-            public void changed(LiveQueryChange change) {
+            public void changed(QueryChange change) {
                 ResultSet rows = change.getRows();
 
                 List<Map<String, Object>> data = new ArrayList<>();
@@ -71,7 +75,11 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
             }
         });
 
-        query.run();
+        try {
+            query.execute();
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -84,8 +92,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
             e.printStackTrace();
         }
 
-        Document guestDoc = database.getDocument("user::guest");
-        Array hotelIds = guestDoc.getArray("hotels");
+        MutableDocument guestDoc = database.getDocument("user::guest").toMutable();
+        MutableArray hotelIds = guestDoc.getArray("hotels").toMutable();
         for (int i = 0; i < hotelIds.count(); i++) {
             if (hotelIds.getString(i).equals((String) bookmark.get("id"))) {
                 hotelIds.remove(i);

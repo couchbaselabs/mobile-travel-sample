@@ -12,6 +12,9 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Dictionary;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
+import com.couchbase.lite.MutableArray;
+import com.couchbase.lite.MutableDictionary;
+import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
@@ -62,7 +65,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
 
         ResultSet rows = null;
         try {
-            rows = searchQuery.run();
+            rows = searchQuery.execute();
         } catch (CouchbaseLiteException e) {
             Log.e("app", "Failed to run query", e);
             return;
@@ -80,10 +83,10 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
     public void saveFlight(List<JSONObject> flights) {
         String docId = "user::demo";
         Database database = DatabaseManager.getDatabase();
-        Document document = database.getDocument(docId);
-        Array bookings = document.getArray("flights");
+        MutableDocument document = database.getDocument(docId).toMutable();
+        MutableArray bookings = document.getArray("flights").toMutable();
         if (bookings == null) {
-            bookings = new Array();
+            bookings = new MutableArray();
         }
         for (int i = 0; i < flights.size(); i++) {
             HashMap<String, Object> properties = new HashMap<>();
@@ -97,7 +100,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            bookings.addDictionary(new Dictionary(properties));
+            bookings.addDictionary(new MutableDictionary(properties));
         }
         document.setArray("flights", bookings);
         try {

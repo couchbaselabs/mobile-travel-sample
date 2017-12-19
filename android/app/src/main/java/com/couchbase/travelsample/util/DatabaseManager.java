@@ -9,7 +9,7 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.Expression;
-import com.couchbase.lite.FTSIndexItem;
+import com.couchbase.lite.FullTextIndexItem;
 import com.couchbase.lite.Index;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorChange;
@@ -78,7 +78,7 @@ public class DatabaseManager {
 
     private void createFTSQueryIndex() {
         try {
-            database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
+            database.createIndex("descFTSIndex", Index.fullTextIndex(FullTextIndexItem.property("description")));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }

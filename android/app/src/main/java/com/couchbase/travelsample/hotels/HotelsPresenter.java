@@ -7,12 +7,13 @@ import android.support.annotation.RequiresApi;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
-import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
+import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
+import com.couchbase.lite.query.FullTextExpression;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 import org.json.JSONArray;
@@ -109,8 +110,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void bookmarkHotels(Map<String, Object> hotel) {
         Database database = DatabaseManager.getDatabase();
 
-        Document hotelDoc = new Document((String) hotel.get("id"));
-        hotelDoc.set(hotel);
+        MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
         try {
             database.save(hotelDoc);
         } catch (CouchbaseLiteException e) {
@@ -118,17 +118,17 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         }
 
         /* 2. Look-up Guest user document. */
-        Document document = database.getDocument("user::guest");
+        MutableDocument document = database.getDocument("user::guest").toMutable();
         if (document == null) {
-            document = new Document("user::guest");
             HashMap<String, Object> properties = new HashMap<>();
             properties.put("type", "bookmarkedhotels");
             properties.put("hotels", new ArrayList<>());
-            document.set(properties);
+            document = new MutableDocument("user::guest", properties);
         }
 
         document
             .getArray("hotels")
+            .toMutable()
             .addString((String) hotel.get("id"));
 
         try {
@@ -142,7 +142,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void queryHotels(String location, String description) {
         Database database = DatabaseManager.getDatabase();
 
-        Expression descExp = Expression.property("description").match(description);
+        Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
 
         Expression locationExp = Expression.property("country")
             .like("%" + location + "%")
@@ -162,7 +162,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
 
         ResultSet rows = null;
         try {
-            rows = hotelSearchQuery.run();
+            rows = hotelSearchQuery.execute();
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             return;
