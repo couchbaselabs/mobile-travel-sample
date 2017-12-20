@@ -4,6 +4,6 @@ cd Frameworks
 rm -rf iOS
 rm -rf macOS
 rm -rf tvOS
-curl http://couchbase-docs.s3.amazonaws.com/workshop/db20-xcode8/couchbase-lite-swift_db20_xcode8_community.zip > cbl.zip
-unzip -n cbl.zip -d iOS
+curl http://couchbase-docs.s3.amazonaws.com/workshop/db21-xcode8/couchbase-lite-swift_db21_xcode8_community.zip > cbl.zip
+unzip -n cbl.zip 
 rm -rf cbl.zip
