@@ -1173,7 +1173,7 @@ chapters:
               The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type. Consider the following query 
               ``` csharp
               var hotelSearchQuery = Query
-                                .Select(SelectResult.Expression(Expression.Meta().ID),
+                                .Select(SelectResult.Expression(Meta.ID),
                                         SelectResult.Expression(Expression.Property("name"))) 
                                 .From(DataSource.Database(UserSession.Database))
                                 .Where(
@@ -1228,7 +1228,7 @@ chapters:
               Next, the query is executed using the `Run()` method. Each row in the result will contain a single property called "airportname".
               
               ```csharp
-              using (var results = searchQuery.Run()) {
+              using (var results = searchQuery.Execute()) {
                   return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
               }
 
@@ -1291,7 +1291,7 @@ chapters:
               ```csharp
               // Static variables of the class
               private static readonly IExpression HotelsProperty = Expression.Property("hotels").From(BookmarkDbName);
-              private static readonly IExpression HotelIdProperty = Expression.Meta().ID.From(HotelsDbName);
+              private static readonly IExpression HotelIdProperty = Meta.ID.From(HotelsDbName);
               ```
               
               Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
@@ -1317,11 +1317,11 @@ chapters:
               And we use the `Run()` method to get the results back pass them on to the view.
               
               ```csharp
-              using (var results = query.Run()) {
-                  foreach (var result in results) {
-                      bookmarkedHotels.Add(result.GetDictionary(HotelsDbName + ".").ToDictionary(x => x.Key, x => x.Value));
-                  }
-               }
+              using (var results = query.Execute()) {
+                    foreach (var result in results) {
+                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
+                    }
+              }
               ```
                
               ## Try it out
@@ -1357,7 +1357,7 @@ chapters:
                   ...
 
                   db.CreateIndex("description",
-                      Index.FTSIndex().On(FTSIndexItem.Expression(Expression.Property("description"))));
+                      Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("description"))));
                   
                   ...
               }
@@ -1406,9 +1406,9 @@ chapters:
               We build the query using the different expressions from above and transform the `ResultSet` object into a `List` object that is passed to the `ListView`.
               
               ```csharp
-              using (var results = hotelSearchQuery.Run()) {
-                  var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
-                  return Task.FromResult(hotels);
+              using (var results = hotelSearchQuery.Execute()) {
+                    var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
+                    return Task.FromResult(hotels);
               }
               ```
               
