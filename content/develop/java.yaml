@@ -677,7 +677,7 @@ chapters:
               The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object
              
               ```java
-              try {
+                  try {
                     database = new Database("travel-sample", config);
                   } catch (CouchbaseLiteException e) {
                     e.printStackTrace();
@@ -742,13 +742,20 @@ chapters:
               Now you will get the document with ID `user::guest` or create one if it doesn't exist. The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels.
               
               ```java
-              Document document = database.getDocument("user::guest");
+              MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
+              try {
+                  database.save(hotelDoc);
+              } catch (CouchbaseLiteException e) {
+                  e.printStackTrace();
+              }
+      
+              /* 2. Look-up Guest user document. */
+              MutableDocument document = database.getDocument("user::guest").toMutable();
               if (document == null) {
-                  document = new Document("user::guest");
                   HashMap<String, Object> properties = new HashMap<>();
                   properties.put("type", "bookmarkedhotels");
                   properties.put("hotels", new ArrayList<>());
-                  document.set(properties);
+                  document = new MutableDocument("user::guest", properties);
               }
               ```
               
@@ -757,17 +764,18 @@ chapters:
               ```java
               document
                   .getArray("hotels")
+                  .toMutable()
                   .addString((String) hotel.get("id"));
               ```
               
               Finally, you will save the document.
               
               ```java
-              try {
-                  database.save(document);
-              } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
-              }
+                try {
+                    database.save(document);
+                } catch (CouchbaseLiteException e) {
+                    e.printStackTrace();
+                }
               ```
               
               ## Try it out
@@ -812,14 +820,14 @@ chapters:
               In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document.
               
               ```java
-              Document guestDoc = database.getDocument("user::guest");
-              Array hotelIds = guestDoc.getArray("hotels");
+              MutableDocument guestDoc = database.getDocument("user::guest").toMutable();
+              MutableArray hotelIds = guestDoc.getArray("hotels").toMutable();
               for (int i = 0; i < hotelIds.count(); i++) {
                   if (hotelIds.getString(i).equals((String) bookmark.get("id"))) {
                       hotelIds.remove(i);
                   }
               }
-              
+      
               try {
                   database.save(guestDoc);
               } catch (CouchbaseLiteException e) {
@@ -977,10 +985,9 @@ chapters:
               First, you initialize the `URL` object which points to the Sync Gateway instance to synchronize with.
               
               ```java
-              String syncUrl = "blip://10.0.2.2:4984/travel-sample";
               URI url = null;
               try {
-                  url = new URI(syncUrl);
+                  url = new URI(mSyncGatewayEndpoint);
               } catch (URISyntaxException e) {
                   e.printStackTrace();
               }
@@ -1136,7 +1143,7 @@ chapters:
               ```java
               ResultSet rows = null;
               try {
-                  rows = searchQuery.run();
+                  rows = searchQuery.execute();
               } catch (CouchbaseLiteException e) {
                   Log.e("app", "Failed to run query", e);
                   return;
@@ -1147,7 +1154,7 @@ chapters:
               while ((row = rows.next()) != null) {
                   data.add(row.getString("airportname"));
               }
-              mSearchView.showAirports(data, tag);        
+              mSearchView.showAirports(data, tag);       
               ```
           
               ## Try it out
@@ -1201,13 +1208,13 @@ chapters:
               
               ```java
               Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
-              Expression hotelIdExpr = Expression.meta().getId().from("hotelDS");
+              Expression hotelIdExpr = Meta.id.from("hotelDS");
               ```
               
               Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
               
               ```java
-              Expression joinExpr = Function.arrayContains(hotelsExpr, hotelIdExpr);
+              Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
               Join join = Join.join(hotelsDS).on(joinExpr);
               ```
               
@@ -1219,19 +1226,19 @@ chapters:
               SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
               SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
       
-              LiveQuery query = Query
+              Query query = Query
                   .select(bookmarkAllColumns, hotelsAllColumns)
                   .from(bookmarkDS)
                   .join(join)
-                  .where(typeExpr.equalTo("bookmarkedhotels")).toLive();
+                  .where(typeExpr.equalTo("bookmarkedhotels"));
               ```
 
               And we use the `run()` method to get the results back pass them on to the view.
               
               ```java
-              query.addChangeListener(new LiveQueryChangeListener() {
+              query.addChangeListener(new QueryChangeListener() {
                   @Override
-                  public void changed(LiveQueryChange change) {
+                  public void changed(QueryChange change) {
                       ResultSet rows = change.getRows();
       
                       List<Map<String, Object>> data = new ArrayList<>();
@@ -1247,7 +1254,11 @@ chapters:
                   }
               });
       
-              query.run();
+              try {
+                  query.execute();
+              } catch (CouchbaseLiteException e) {
+                  e.printStackTrace();
+              }
               ```
                
               ## Try it out
@@ -1278,7 +1289,7 @@ chapters:
               ```java
               private void createFTSQueryIndex() {
                   try {
-                      database.createIndex("descFTSIndex", Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))));
+                      database.createIndex("descFTSIndex", Index.fullTextIndex(FullTextIndexItem.property("description")));
                   } catch (CouchbaseLiteException e) {
                       e.printStackTrace();
                   }
@@ -1307,7 +1318,7 @@ chapters:
               Next, you will create an FTS `Expressions` using the `match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `where` clause of the query the usual way.
               
               ```java
-              Expression descExp = Expression.property("description").match(description);
+              Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
       
               Expression locationExp = Expression.property("country")
                   .like("%" + location + "%")
@@ -1316,7 +1327,7 @@ chapters:
                   .or(Expression.property("address").like("%" + location + "%"));
       
               Expression searchExp = descExp.and(locationExp);
-              
+      
               Query hotelSearchQuery = Query
                   .select(SelectResult.all())
                   .from(DataSource.database(database))
@@ -1331,7 +1342,7 @@ chapters:
               ```java
               ResultSet rows = null;
               try {
-                  rows = hotelSearchQuery.run();
+                  rows = hotelSearchQuery.execute();
               } catch (CouchbaseLiteException e) {
                   e.printStackTrace();
                   return;
