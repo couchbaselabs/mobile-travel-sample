@@ -88,16 +88,15 @@ namespace TravelSample.Core.Models
         private void CreateDatabaseIndexes(Database db)
         {
             // For searches on type property
-            db.CreateIndex("type", Index.ValueIndex()
-                .On(ValueIndexItem.Expression(Expression.Property("type"))));
+            db.CreateIndex("type", Index.ValueIndex(ValueIndexItem.Expression(Expression.Property("type"))));
 
             // For full text searches on airports and hotels
             db.CreateIndex("airportName",
-                Index.FTSIndex().On(FTSIndexItem.Expression(Expression.Property("airportname"))));
+                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("airportname"))));
             db.CreateIndex("description",
-                Index.FTSIndex().On(FTSIndexItem.Expression(Expression.Property("description"))));
+                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("description"))));
             db.CreateIndex("name", 
-                Index.FTSIndex().On(FTSIndexItem.Expression(Expression.Property("name"))));
+                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("name"))));
         }
 
         private Replicator StartReplication(string username, string password, Database db)
@@ -115,13 +114,13 @@ namespace TravelSample.Core.Models
             };
 
             var repl = new Replicator(config);
-            repl.StatusChanged += (sender, args) =>
+            repl.AddChangeListener((sender, args) =>
             {
                 var s = args.Status;
                 Debug.WriteLine(
-                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {args.LastError?.Message ?? "<none>"}, activity = {s.Activity}");
+                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {s.Error?.Message ?? "<none>"}, activity = {s.Activity}");
 
-            };
+            });
 
             repl.Start();
             return repl;

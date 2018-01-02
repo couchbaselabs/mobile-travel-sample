@@ -36,7 +36,7 @@ namespace TravelSample.Core.Models
     {
         #region Constants
 
-        private static readonly ISelectResult DocIdResult = SelectResult.Expression(Expression.Meta().ID);
+        private static readonly ISelectResult DocIdResult = SelectResult.Expression(Meta.ID);
 
         #endregion
 
@@ -121,7 +121,7 @@ namespace TravelSample.Core.Models
                 .Select(DocIdResult)
                 .From(DataSource.Database(Database))
                 .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
-                using (var results = searchQuery.Run()) {
+                using (var results = searchQuery.Execute()) {
                     var docID = results.FirstOrDefault()?.GetString("id");
                     return docID != null ? Database.GetDocument(docID) : null;
                 }
@@ -138,7 +138,7 @@ namespace TravelSample.Core.Models
                 .Select(DocIdResult)
                 .From(DataSource.Database(Database))
                 .Where(UsernameProperty.EqualTo(Username))) {
-                using (var results = userQuery.Run()) {
+                using (var results = userQuery.Execute()) {
                     return results.FirstOrDefault()?.GetString("id");
                 }
             }

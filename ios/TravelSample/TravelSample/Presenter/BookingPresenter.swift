@@ -16,8 +16,8 @@ class BookingPresenter:BookingPresenterProtocol {
     weak var associatedView: BookingPresentingViewProtocol?
     fileprivate var dbMgr:DatabaseManager = DatabaseManager.shared
     fileprivate var _bookings:Bookings = Bookings()
-    fileprivate var _liveQueryListener:NSObjectProtocol?
-    fileprivate var _bookingQuery:LiveQuery?
+    fileprivate var _liveQueryListener:ListenerToken?
+    fileprivate var _bookingQuery:Query?
     // Uncomment below and comment above declaration if doing live queries
     //fileprivate var _bookingQuery:Query?
     var bookings:Bookings {
@@ -42,7 +42,7 @@ class BookingPresenter:BookingPresenterProtocol {
         if _userDocId == nil {
             do {
                 
-                for (_, row) in try userQuery.run().enumerated() {
+                for (_, row) in try userQuery.execute().enumerated() {
                     // V1.0. There should be only one document for a user.
                     // There isnt a convenience API to get to documentId from Result. So use "id" key
                     // Tracking - https://github.com/couchbaselabs/couchbase-lite-apiv2/issues/123
@@ -73,11 +73,11 @@ class BookingPresenter:BookingPresenterProtocol {
         _bookingQuery = Query
             .select(_SelectColumn.FLIGHTSRESULT)
             .from(DataSource.database(db))
-            .where(_Property.USERNAME.equalTo(user)).toLive() // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
+            .where(_Property.USERNAME.equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
        // try! print(bookingQuery.explain())
            
      
-        // Register for live query changes
+        // Register for live query changes. This will run the query
         _liveQueryListener = _bookingQuery?.addChangeListener({ [weak self](change) in
             self?.associatedView?.dataFinishedLoading()
             
@@ -104,8 +104,8 @@ class BookingPresenter:BookingPresenterProtocol {
 
         })
   
-        // Run query
-        _bookingQuery?.start()
+       
+        
  /******/
         // Until  BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816 is resolved, use regular query
         /**** LIVE QUERY SWITCH . Uncomment the Query Request below if doing LiveQuery
@@ -158,7 +158,7 @@ class BookingPresenter:BookingPresenterProtocol {
         // LIVE QUERY SWITCH: Comment block below if we are not doing live query
         if let liveQueryListener = _liveQueryListener {
             print(#function)
-            _bookingQuery?.removeChangeListener(liveQueryListener)
+            _bookingQuery?.removeChangeListener(withToken:liveQueryListener)
             _bookingQuery = nil
             _liveQueryListener = nil
         }
@@ -215,7 +215,7 @@ extension BookingPresenter {
             return
         }
       
-        if var flightDocument = db.getDocument(docId)?.toMutable() {
+        if var flightDocument = db.document(withID:docId)?.toMutable() {
         
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings.append(contentsOf: flights)
@@ -232,7 +232,7 @@ extension BookingPresenter {
             })
             flightDocument.setValue(_bookings, forKey: "flights")
             do {
-                try db.save(flightDocument)
+                try db.saveDocument(flightDocument)
                   handler(nil)
             }
             catch{
@@ -262,7 +262,7 @@ extension BookingPresenter {
         }
         
         
-        if let flightDocument = db.getDocument(docId)?.toMutable() {
+        if let flightDocument = db.document(withID:docId)?.toMutable() {
             
             _bookings = flightDocument.array(forKey: "flights")?.toArray() as? Bookings ?? []
             _bookings = _bookings.filter({ (booking) -> Bool in
@@ -273,7 +273,7 @@ extension BookingPresenter {
             print("Updated booking after delete is \(_bookings)")
             flightDocument.setValue(_bookings, forKey: "flights")
             do {
-                try db.save(flightDocument)
+                try db.saveDocument(flightDocument)
                 handler(nil)
             }
             catch {

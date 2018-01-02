@@ -14,7 +14,8 @@ struct TravelSampleWebService {
 }
 struct _Property {
     // Query: Property Expressions
-    static let DOCID        = Expression.meta().id
+    static let DOCID        = Meta.id
+    
     static let TYPE         = Expression.property("type")
     static let USERNAME     = Expression.property("username")
     static let FLIGHTS      = Expression.property("flights")

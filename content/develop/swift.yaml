@@ -813,9 +813,9 @@ chapters:
      
             
               if document == nil {
-                  // First time bookmark is created for guest account
-                  // Create document of type "bookmarkedhotels"
-                  document = MutableDocument.init(dictionary: ["type":"bookmarkedhotels","hotels":[String]()])
+                // First time bookmark is created for guest account
+                // Create document of type "bookmarkedhotels"
+                document = MutableDocument.init(withData: ["type":"bookmarkedhotels","hotels":[String]()])
                 
               }
               ```
@@ -843,9 +843,9 @@ chapters:
               ```swift
               // Update and save the "bookmarkedhotels" document
               if let document = document?.toMutable() {
-                  // Update and save the bookmark document
-                  document.setArray(bookmarked, forKey: "hotels")
-                  try db.save(document)
+                // Update and save the bookmark document
+                document.setArray(bookmarked, forKey: "hotels")
+                try db.saveDocument(document)
                 
               }
               ```
@@ -855,12 +855,13 @@ chapters:
               // Add the hotel details documents
               for hotelDoc in hotels {
                 if let idVal = hotelDoc["id"] as? String {
-                    if let doc = db.getDocument(idVal)?.toMutable() {
-                        doc.setDictionary(hotelDoc)
-                        try db.save(doc)
+                    if let doc = db.document(withID: idVal)?.toMutable() {
+                        doc.setData(hotelDoc)
+                        try db.saveDocument(doc)
                     }
                     else {
-                        try db.save(MutableDocument.init(idVal, dictionary: hotelDoc))
+                        try db.saveDocument(MutableDocument.init(withID: idVal, data: hotelDoc))
+                    
                     }
                 }
               }
@@ -942,11 +943,10 @@ chapters:
               The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id from the `hotels` array.
               
               ```swift
-                                 
               // Remove unbookmarked hotel documents
               for idOfDocToRemove in idsToRemove {
-                if let doc = db.getDocument(idOfDocToRemove) {
-                    try db.delete(doc)
+                if let doc = db.document(withID: idOfDocToRemove) {
+                    try db.deleteDocument(doc)
                 }
               }
               ```
@@ -1271,7 +1271,7 @@ chapters:
               The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type. Consider the following query 
               ``` swift
               let hotelSearchQuery = Query
-                                .select(SelectResult.expression(Expression.meta().id),
+                                .select(SelectResult.expression(Meta.id),
                                         SelectResult.expression(Expression.property("name"))) 
                                 .from(DataSource.database(db))
                                 .where(
@@ -1289,20 +1289,21 @@ chapters:
               Open the [QueryConsts.swift](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift#L15) file. This file defines the CouchbaseLite expressions that are used in the Travel App
               ```swift
                 struct _Property {
-                    // Query: Property Expressions
-                    static let DOCID        = Expression.meta().id
-                    static let TYPE         = Expression.property("type")
-                    static let USERNAME     = Expression.property("username")
-                    static let FLIGHTS      = Expression.property("flights")
-                    static let DESCRIPTION  = Expression.property("description")
-                    static let NAME         = Expression.property("name")
-                    static let COUNTRY      = Expression.property("country")
-                    static let CITY         = Expression.property("city")
-                    static let STATE        = Expression.property("state")
-                    static let ADDRESS      = Expression.property("address")
-                    static let FAA          = Expression.property("faa")
-                    static let ICAO         = Expression.property("icao")
-                    static let AIRPORTNAME  = Expression.property("airportname")
+                // Query: Property Expressions
+                static let DOCID        = Meta.id
+                
+                static let TYPE         = Expression.property("type")
+                static let USERNAME     = Expression.property("username")
+                static let FLIGHTS      = Expression.property("flights")
+                static let DESCRIPTION  = Expression.property("description")
+                static let NAME         = Expression.property("name")
+                static let COUNTRY      = Expression.property("country")
+                static let CITY         = Expression.property("city")
+                static let STATE        = Expression.property("state")
+                static let ADDRESS      = Expression.property("address")
+                static let FAA          = Expression.property("faa")
+                static let ICAO         = Expression.property("icao")
+                static let AIRPORTNAME  = Expression.property("airportname")
                 }
 
                 struct _SelectColumn {    
@@ -1349,18 +1350,19 @@ chapters:
               
               ```swift
               if let searchQuery = searchQuery {
-                var matches:Airports = []
-                do {
-                  for row in try searchQuery.run() {
-                    if let match = row.string(forKey: "airportname") {
-                        matches.append( match)
-                    }
+              var matches:Airports = []
+              do {
+                  for row in try searchQuery.execute() {
+                      if let match = row.string(forKey: "airportname") {
+                          matches.append( match)
+                      }
                   }
-                handler(matches,nil)
+                  handler(matches,nil)
               }
               catch {
-                handler(nil,error)
-              }          
+                  handler(nil,error)
+                }
+              }         
               ```
           
               ## Try it out
@@ -1439,11 +1441,10 @@ chapters:
               And we use the `run()` method to get the results back pass them on to the view.
               
               ```swift
-              for result in try query.run() {
-                  print ("RESULT IS \(result.toDictionary())")
-                  if let hotel = result.toDictionary()["hotelsDS"] as? Hotel{
-                        bookmarkedHotels.append(hotel)
-                  }
+              for result in try query.execute() {
+                if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() as? Hotel{
+                      bookmarkedHotels.append(hotel)
+                }
               }
               handler(bookmarkedHotels,nil)
               ```
@@ -1478,9 +1479,10 @@ chapters:
                 ...
         
             
-                // For Full text search on airports and hotels
-                try _db?.createIndex(Index.ftsIndex().on(FTSIndexItem.expression(Expression.property("description"))).ignoreAccents(false), withName: "descFTSIndex")
-              }
+                // For Full text search on description property of airports and hotels docs
+                try _db?.createIndex(Index.fullTextIndex(withItems: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
+      
+               }
               ```
               
               Next you will write an FTS query that uses the index.
@@ -1537,7 +1539,7 @@ chapters:
               ```swift
               var matches:Hotels = []
               do {
-                  for (_,row) in try hotelSearchQuery.run().enumerated() {
+                  for (_,row) in try hotelSearchQuery.execute().enumerated() {
                       
                       if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
                           

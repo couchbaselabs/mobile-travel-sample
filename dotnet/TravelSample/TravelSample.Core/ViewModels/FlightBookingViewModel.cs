@@ -57,7 +57,7 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the price of the flight (in US dollars)
         /// </summary>
-        public string FarePrice => Source["price"].ToFloat().ToString("C", UsCulture);
+        public string FarePrice => Source["price"].Float.ToString("C", UsCulture);
 
         /// <summary>
         /// Gets the airline and flight number for the current flight
@@ -190,12 +190,12 @@ namespace TravelSample.Core.ViewModels
         public DesignFlightBookingViewModel()
         {
             var data = new MutableDictionary()
-                .Set("destinationairport", "BBB")
-                .Set("sourceairport", "AAA")
-                .Set("date", DateTime.Now.ToString())
-                .Set("price", 999.99)
-                .Set("name", "Airplane Airlines")
-                .Set("flight", "AB123");
+                .SetString("destinationairport", "BBB")
+                .SetString("sourceairport", "AAA")
+                .SetString("date", DateTime.Now.ToString())
+                .SetDouble("price", 999.99)
+                .SetString("name", "Airplane Airlines")
+                .SetString("flight", "AB123");
 
             BookingsList.Add(new BookingCellModel(data));
         }

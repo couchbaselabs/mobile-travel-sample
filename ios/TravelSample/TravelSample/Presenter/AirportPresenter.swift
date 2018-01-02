@@ -62,7 +62,7 @@ extension AirportPresenter {
         if let searchQuery = searchQuery {
             var matches:Airports = []
             do {
-                for row in try searchQuery.run() {
+                for row in try searchQuery.execute() {
                     if let match = row.string(forKey: "airportname") {
                         matches.append( match)
                     }

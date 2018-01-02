@@ -77,7 +77,9 @@ namespace TravelSample.Core.Models
         /// </summary>
         public event EventHandler<BookingsUpdateEventArgs> BookingsChanged;
 
-        private ILiveQuery _bookingQuery;
+        private IQuery _bookingQuery;
+
+        private ListenerToken _cancelToken;
 
         #endregion
 
@@ -116,11 +118,10 @@ namespace TravelSample.Core.Models
             _bookingQuery = Query
                 .Select(FlightsResult)
                 .From(DataSource.Database(UserSession.Database))
-                .Where(UsernameProperty.EqualTo(UserSession.Username))
-                .ToLive();
+                .Where(UsernameProperty.EqualTo(UserSession.Username));
 
             var retVal = tcs.Task;
-            _bookingQuery.Changed += (sender, args) =>
+            _cancelToken = _bookingQuery.AddChangeListener(null, (sender, args) =>
             {
                 foreach (var row in args.Rows) {
                     var bookings = row.GetArray("flights");
@@ -130,9 +131,8 @@ namespace TravelSample.Core.Models
 
                 var oldTcs = Interlocked.Exchange(ref tcs, null);
                 oldTcs?.SetResult(true);
-            };
-
-            _bookingQuery.Run();
+            });
+            
             return retVal;
         }
 
@@ -158,7 +158,7 @@ namespace TravelSample.Core.Models
 
                 Debug.WriteLine(
                     $"Updated booking after delete is {JsonConvert.SerializeObject(documentBookings.ToList())}");
-                flightDocument.Set("flights", documentBookings);
+                flightDocument.SetArray("flights", documentBookings);
                 UserSession.Database.Save(flightDocument);
             }
         }
@@ -183,7 +183,7 @@ namespace TravelSample.Core.Models
                    left["flight"].ToString() == right["flight"].ToString() &&
                    left["flighttime"].ToString() == right["flighttime"].ToString() &&
                    left["name"].ToString() == right["name"].ToString() &&
-                   FloatEqual(left["price"].ToFloat(), right["price"].ToFloat()) &&
+                   FloatEqual(left["price"].Float, right["price"].Float) &&
                    left["sourceairport"].ToString() == right["sourceairport"].ToString() &&
                    left["utc"].ToString() == right["utc"].ToString();
         }
@@ -206,6 +206,7 @@ namespace TravelSample.Core.Models
 
         public void Dispose()
         {
+            _bookingQuery?.RemoveChangeListener(_cancelToken);
             UserSession.Dispose();
         }
 

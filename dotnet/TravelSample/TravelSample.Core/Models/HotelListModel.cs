@@ -109,16 +109,16 @@ namespace TravelSample.Core.Models
                         }
                     }
                 } else {
-                    bookmarked.Add(hotel.Source["id"] as string);
+                    bookmarked.AddString(hotel.Source["id"] as string);
                 }
 
-                doc.Set("hotels", bookmarked);
+                doc.SetArray("hotels", bookmarked);
                 UserSession.Database.Save(doc);
 
                 // Add the hotel details document
                 if (hotel.Source["id"] is string id) {
-                    using (var detailDoc = UserSession.Database.GetDocument(id).ToMutable() ?? new MutableDocument(id)) {
-                        detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
+                    using (var detailDoc = UserSession.Database.GetDocument(id)?.ToMutable() ?? new MutableDocument(id)) {
+                        detailDoc.SetData(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
                         UserSession.Database.Save(detailDoc);
                     }
                 }
@@ -134,11 +134,11 @@ namespace TravelSample.Core.Models
             // Description is looked up in the "description" and "name" content
             // Location is looking up in country, city, state, and address
             // Reference: https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
-            // MATCH can only appear at top-leve, or in a top-level AND
+            // MATCH can only appear at top-level, or in a top-level AND
 
             IExpression descExp = null;
             if (!String.IsNullOrWhiteSpace(description)) {
-                descExp = DescriptionProperty.Match(description);
+                descExp = FullTextExpression.Index("description").Match(description);
             }
 
             var locationExp = CountryProperty.Like($"%{location}%")
@@ -155,7 +155,7 @@ namespace TravelSample.Core.Models
                 .Select(SelectResult.All())
                 .From(DataSource.Database(UserSession.Database))
                 .Where(TypeProperty.EqualTo("hotel").And(searchExp))) {
-                using (var results = hotelSearchQuery.Run()) {
+                using (var results = hotelSearchQuery.Execute()) {
                     var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
                     return Task.FromResult(hotels);
                 }
