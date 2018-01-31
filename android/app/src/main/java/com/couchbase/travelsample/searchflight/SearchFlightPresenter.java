@@ -16,6 +16,7 @@ import com.couchbase.lite.MutableArray;
 import com.couchbase.lite.MutableDictionary;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
@@ -55,12 +56,12 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
     @Override
     public void startsWith(String prefix, String tag) {
         Database database = DatabaseManager.getDatabase();
-        Query searchQuery = Query
+        Query searchQuery = QueryBuilder
             .select(SelectResult.expression(Expression.property("airportname")))
             .from(DataSource.database(database))
             .where(
-                Expression.property("type").equalTo("airport")
-                .and(Expression.property("airportname").like(prefix + "%"))
+                Expression.property("type").equalTo(Expression.string("airport"))
+                .and(Expression.property("airportname").like(Expression.string(prefix + "%")))
             );
 
         ResultSet rows = null;

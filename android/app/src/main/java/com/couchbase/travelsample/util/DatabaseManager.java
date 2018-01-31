@@ -8,13 +8,13 @@ import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
-import com.couchbase.lite.Expression;
 import com.couchbase.lite.FullTextIndexItem;
-import com.couchbase.lite.Index;
+import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorChange;
 import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
+import com.couchbase.lite.URLEndpoint;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -36,13 +36,13 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
     private static String dbName;
     public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
-    private static String mSyncGatewayEndpoint = "blip://10.0.2.2:4984/travel-sample";
+    private static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 
     protected DatabaseManager(Context context, boolean isGuest) {
         if (isGuest) {
             DatabaseConfiguration config = new DatabaseConfiguration(context);
-            File folder = new File(String.format("%s/guest", context.getFilesDir()));
-            config.setDirectory(folder);
+           // File folder = new File(String.format("%s/guest", context.getFilesDir()));
+            config.setDirectory(String.format("%s/guest", context.getFilesDir()));
             try {
                 database = new Database("travel-sample", config);
             } catch (CouchbaseLiteException e) {
@@ -78,7 +78,7 @@ public class DatabaseManager {
 
     private void createFTSQueryIndex() {
         try {
-            database.createIndex("descFTSIndex", Index.fullTextIndex(FullTextIndexItem.property("description")));
+            database.createIndex("descFTSIndex", IndexBuilder.fullTextIndex(FullTextIndexItem.property("description")));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
@@ -149,7 +149,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
 
-        ReplicatorConfiguration config = new ReplicatorConfiguration(database, url);
+        ReplicatorConfiguration config = new ReplicatorConfiguration(database, new URLEndpoint(url));
         config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
         config.setAuthenticator(new BasicAuthenticator(username, password));

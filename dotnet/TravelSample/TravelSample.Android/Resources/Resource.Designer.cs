@@ -63,8 +63,6 @@ namespace TravelSample.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahText = global::TravelSample.Droid.Resource.Styleable.ProgressWheel_ahText;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::TravelSample.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::TravelSample.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
-			global::Couchbase.Lite.Support.Android.Resource.String.ApplicationName = global::TravelSample.Droid.Resource.String.ApplicationName;
-			global::Couchbase.Lite.Support.Android.Resource.String.Hello = global::TravelSample.Droid.Resource.String.Hello;
 			global::Splat.Resource.String.library_name = global::TravelSample.Droid.Resource.String.library_name;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::TravelSample.Droid.Resource.Attribute.actionBarSize;
 		}
@@ -3754,12 +3752,6 @@ namespace TravelSample.Droid
 		
 		public partial class String
 		{
-			
-			// aapt resource value: 0x7f090040
-			public const int ApplicationName = 2131296320;
-			
-			// aapt resource value: 0x7f09003f
-			public const int Hello = 2131296319;
 			
 			// aapt resource value: 0x7f090015
 			public const int abc_action_bar_home_description = 2131296277;
