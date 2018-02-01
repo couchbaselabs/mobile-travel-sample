@@ -51,8 +51,8 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the airline serving the flight
         /// </summary>
-        public string Airline => Source.GetCast<string>("name");
-
+        public string Airline => Source.ContainsKey("name") ? Source["name"] as String : null;
+                                   
         /// <summary>
         /// Gets the departure date of the flight
         /// </summary>
@@ -61,17 +61,15 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the departure time of the flight
         /// </summary>
-        public string DepartureTime => Source.GetCast<string>("utc");
-
+        public string DepartureTime => Source.ContainsKey("utc") ? Source["utc"] as String : null;
         /// <summary>
         /// Gets the fare of the flight in dollars
         /// </summary>
-        public string Fare => Source.GetCast<float>("price").ToString("C", UsFormat);
-
+        public string Fare => Source.ContainsKey("price") ? Convert.ToSingle(Source["price"]).ToString("C", UsFormat) : null; 
         /// <summary>
         /// Gets the flight identifier for the flight
         /// </summary>
-        public string Flight => Source.GetCast<string>("flight");
+        public string Flight => Source.ContainsKey("flight") ? Source["flight"] as String : null;
 
         /// <summary>
         /// Gets the raw source information for the flight

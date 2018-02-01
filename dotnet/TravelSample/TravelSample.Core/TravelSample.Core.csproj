@@ -15,7 +15,9 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.4.0.280" />
-    <PackageReference Include="Couchbase.Lite" Version="2.0.0-db021" />
+    <PackageReference Include="Couchbase.Lite" Version="2.0.0-b0520" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.1" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
   </ItemGroup>
 
 </Project>

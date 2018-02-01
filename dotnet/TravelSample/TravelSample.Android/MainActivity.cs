@@ -22,7 +22,6 @@ using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Extensions.DependencyInjection;
 using TravelSample.Core.Services;
 using TravelSample.Droid.Services;
 
@@ -42,11 +41,8 @@ namespace TravelSample.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Couchbase.Lite.Support.Droid.Activate(ApplicationContext);
-            Couchbase.Lite.DI.Service.RegisterServices(collection =>
-            {
-                collection.AddSingleton<IDatabaseSeedService>(p => new DatabaseSeedService(ApplicationContext));
-            });
-            UserDialogs.Init(() => (Activity) ApplicationContext);
+            Couchbase.Lite.DI.Service.Register<IDatabaseSeedService>( new DatabaseSeedService(ApplicationContext)); 
+            UserDialogs.Init(() => (Activity)ApplicationContext);
             LoadApplication(new App());
         }
 

@@ -20,7 +20,6 @@
 // 
 using Couchbase.Lite.DI;
 using Foundation;
-using Microsoft.Extensions.DependencyInjection;
 using TravelSample.Core.Services;
 using TravelSample.iOS.Services;
 using UIKit;
@@ -40,10 +39,7 @@ namespace TravelSample.iOS
             Couchbase.Lite.Support.iOS.Activate();
 
             // Piggy back onto Couchbase's dependency injection
-            Service.RegisterServices(collection =>
-            {
-                collection.AddSingleton<IDatabaseSeedService>(p => new DatabaseSeedService());
-            });
+            Service.Register<IDatabaseSeedService>(new DatabaseSeedService());
         }
 
         #endregion

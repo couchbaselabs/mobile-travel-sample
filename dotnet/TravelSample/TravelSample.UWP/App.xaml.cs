@@ -43,6 +43,7 @@ namespace TravelSample.UWP
             Couchbase.Lite.Support.UWP.Activate();
 
             // Piggy back onto Couchbase's dependency injection
+          //  Services.Register<DatabaseSeedService>
             Service.RegisterServices(collection =>
             {
                 collection.AddSingleton<IDatabaseSeedService>(p => new DatabaseSeedService());

@@ -115,15 +115,15 @@ namespace TravelSample.Core.Models
         public Task FetchBookings()
         {
             var tcs = new TaskCompletionSource<bool>();
-            _bookingQuery = Query
+            _bookingQuery = QueryBuilder
                 .Select(FlightsResult)
                 .From(DataSource.Database(UserSession.Database))
-                .Where(UsernameProperty.EqualTo(UserSession.Username));
+                .Where(UsernameProperty.EqualTo(Expression.String(UserSession.Username)));
 
             var retVal = tcs.Task;
             _cancelToken = _bookingQuery.AddChangeListener(null, (sender, args) =>
             {
-                foreach (var row in args.Rows) {
+                foreach (var row in args.Results) {
                     var bookings = row.GetArray("flights");
                     var eventArgs = new BookingsUpdateEventArgs(EnumerateBookings(bookings));
                     BookingsChanged?.Invoke(this, eventArgs);
@@ -148,7 +148,7 @@ namespace TravelSample.Core.Models
             }
 
             using (var flightDocument = UserSession.Database.GetDocument(userDocId).ToMutable()) {
-                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArray();
+                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArrayObject();
                 for (int i = 0; i < documentBookings.Count; i++) {
                     if (IsEqualBooking(documentBookings.GetDictionary(i), booking.Source)) {
                         documentBookings.RemoveAt(i);
