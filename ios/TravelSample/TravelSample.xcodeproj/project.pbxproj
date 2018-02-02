@@ -19,9 +19,9 @@
 		5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */; };
 		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
-		5F55BE3A1FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F55BE391FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework */; };
-		5F55BE3B1FEB01EC008C7CB8 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F55BE391FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework */; };
-		5F55BE3C1FEB01EC008C7CB8 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F55BE391FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F481E842024EA970016187B /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; };
+		5F481E852024EAA30016187B /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; };
+		5F481E862024EAA30016187B /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
 		5F9180721F7D30450067E2C6 /* Booking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180711F7D30450067E2C6 /* Booking.swift */; };
 		5F9180741F7D30880067E2C6 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180731F7D30880067E2C6 /* Flight.swift */; };
@@ -59,7 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F55BE3C1FEB01EC008C7CB8 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5F481E862024EAA30016187B /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,7 +81,7 @@
 		5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		5F55BE391FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
+		5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
 		5F9180711F7D30450067E2C6 /* Booking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Booking.swift; sourceTree = "<group>"; };
 		5F9180731F7D30880067E2C6 /* Flight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
@@ -117,8 +117,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F55BE3B1FEB01EC008C7CB8 /* CouchbaseLiteSwift.framework in Frameworks */,
-				5F55BE3A1FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5F481E852024EAA30016187B /* CouchbaseLiteSwift.framework in Frameworks */,
+				5F481E842024EA970016187B /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5F55BE391FEB01E6008C7CB8 /* CouchbaseLiteSwift.framework */,
+				5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
