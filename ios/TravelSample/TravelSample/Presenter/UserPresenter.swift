@@ -37,11 +37,11 @@ extension UserPresenter {
         // Every user MUST be associated with a single user document that is created when the
         // user signs up. If a user does not have this user document, then we assume that
         // the user is not a valid user
-        let userQuery = Query
+        let userQuery = QueryBuilder
             .select(_SelectColumn.DOCIDRESULT,
                     _SelectColumn.ALLRESULT)
             .from(DataSource.database(db))
-            .where(_Property.USERNAME.equalTo(user))
+            .where(_Property.USERNAME.equalTo(Expression.property(user)))
         do {
             // V1.0. There should be only one document for a user.
                 

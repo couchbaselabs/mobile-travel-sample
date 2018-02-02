@@ -45,7 +45,7 @@ extension HotelPresenter {
             if document == nil {
                 // First time bookmark is created for guest account
                 // Create document of type "bookmarkedhotels"
-                document = MutableDocument.init(withData: ["type":"bookmarkedhotels","hotels":[String]()])
+                document = MutableDocument.init(data: ["type":"bookmarkedhotels","hotels":[String]()])
                 
             }
             
@@ -80,7 +80,7 @@ extension HotelPresenter {
                         try db.saveDocument(doc)
                     }
                     else {
-                        try db.saveDocument(MutableDocument.init(withID: idVal, data: hotelDoc))
+                        try db.saveDocument(MutableDocument.init(id: idVal, data: hotelDoc))
                     
                     }
                 }
@@ -131,7 +131,7 @@ extension HotelPresenter {
             let IdToRemain = Array(setOfCurrentBookmarkedIds.subtracting(idsToRemove))
          
             // Update the bookmarked Id list
-            document.setArray(MutableArrayObject.init(withData: IdToRemain), forKey: "hotels")
+            document.setArray(MutableArrayObject.init(data: IdToRemain),forKey: "hotels")
             // Save updated version of bookmarkedhotels document
             try db.saveDocument(document)
                     
@@ -181,7 +181,10 @@ extension HotelPresenter {
             let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
             let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
             
-            let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
+            let query = QueryBuilder.select(bookmarkAllColumns, hotelsAllColumns)
+                            .from(bookmarkDS)
+                            .join(join)
+                            .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
             
            // print (try? query.explain())
             for result in try query.execute() {
@@ -216,28 +219,28 @@ extension HotelPresenter {
         // Reference :https://developer.couchbase.com/documentation/server/4.6/sdk/sample-application.html
         // MATCH can only appear at top-level, or in a top-level AND
 
-        var descExp:Expression?
+        var descExp:ExpressionProtocol?
         if let descriptionStr = descriptionStr , descriptionStr != ""{
             descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
         }
         
         
-        let locationExp = _Property.COUNTRY.like("%\(locationStr)%")
-            .or(_Property.CITY.like("%\(locationStr)%"))
-            .or(_Property.STATE.like("%\(locationStr)%"))
-            .or(_Property.ADDRESS.like("%\(locationStr)%"))
+        let locationExp = _Property.COUNTRY.like(Expression.string("%\(locationStr)%"))
+            .or(_Property.CITY.like(Expression.string("%\(locationStr)%")))
+            .or(_Property.STATE.like(Expression.string("%\(locationStr)%")))
+            .or(_Property.ADDRESS.like(Expression.string("%\(locationStr)%")))
         
-        var searchExp:Expression = locationExp
+        var searchExp:ExpressionProtocol = locationExp
         if  let descExp = descExp {
             searchExp = descExp.and(locationExp)
         }
         
        
-        let hotelSearchQuery = Query
+        let hotelSearchQuery = QueryBuilder
             .select(_SelectColumn.ALLRESULT) // CHANGE THIS WHEN SELECT* IS SUPPORTED
             .from(DataSource.database(db))
             .where(
-                _Property.TYPE.equalTo("hotel")
+                _Property.TYPE.equalTo(Expression.string("hotel"))
                  .and(searchExp)
                 )
         print(try? hotelSearchQuery.explain())
@@ -326,11 +329,11 @@ extension HotelPresenter {
     }
     
     fileprivate func fetchGuestBookmarkDocumentFromDB(_ db:Database)throws ->Document?{
-        let searchQuery = Query
+        let searchQuery = QueryBuilder
             .select(_SelectColumn.DOCIDRESULT)
             .from(DataSource.database(db))
             .where(_Property.TYPE
-                .equalTo("bookmarkedhotels"))
+                .equalTo(Expression.string("bookmarkedhotels")))
         
         /*
          {

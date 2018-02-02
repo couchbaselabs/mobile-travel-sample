@@ -35,10 +35,10 @@ class BookingPresenter:BookingPresenterProtocol {
         // Every user MUST be associated with a single user document that is created when the
         // user signs up. If a user does not have this user document, then we assume that
         // the user is not a valid user
-        let userQuery = Query
+        let userQuery = QueryBuilder
             .select(_SelectColumn.DOCIDRESULT)
             .from(DataSource.database(db))
-            .where(_Property.USERNAME.equalTo(user))
+            .where(_Property.USERNAME.equalTo(Expression.string(user)))
         if _userDocId == nil {
             do {
                 
@@ -68,12 +68,11 @@ class BookingPresenter:BookingPresenterProtocol {
         
        
         // Live Query . Its just one document but we will be notified of changes
-/****** LIVE QUERY SWITCH: live Query when Workaround for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816***/
  
-        _bookingQuery = Query
+        _bookingQuery = QueryBuilder
             .select(_SelectColumn.FLIGHTSRESULT)
             .from(DataSource.database(db))
-            .where(_Property.USERNAME.equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
+            .where(_Property.USERNAME.equalTo(Expression.string(user))) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
        // try! print(bookingQuery.explain())
            
      
@@ -83,7 +82,7 @@ class BookingPresenter:BookingPresenterProtocol {
             
             switch change.error {
             case nil:
-                for (_, row) in (change.rows?.enumerated())! {
+                for (_, row) in (change.results?.enumerated())! {
                     // There should be only one document for a user
        
                     print (row.array(forKey: "flights")?.toArray() ?? "No element with flights key!")

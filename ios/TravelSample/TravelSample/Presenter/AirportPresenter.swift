@@ -33,31 +33,31 @@ extension AirportPresenter {
         var searchQuery:Query?
         switch searchStr.characters.count {
         case AirportCodeLength.FAA.rawValue :
-            searchQuery = Query
+            searchQuery = QueryBuilder
                 .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
                 .where(_Property.TYPE
-                    .equalTo("airport")
+                    .equalTo(Expression.string("airport"))
                     .and(_Property.FAA
-                    .equalTo(searchStr.uppercased()))).orderBy(Ordering.property("datfield").ascending())
+                    .equalTo(Expression.string(searchStr.uppercased())))).orderBy(Ordering.property("datfield").ascending())
             
         case AirportCodeLength.ICAO.rawValue:
-            searchQuery = Query
+            searchQuery = QueryBuilder
                 .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
                 .where(_Property.TYPE
-                    .equalTo("airport")
+                    .equalTo(Expression.string("airport"))
                     .and(_Property.ICAO
-                    .equalTo(searchStr.uppercased())))
+                    .equalTo(Expression.string(searchStr.uppercased()))))
         default:
             // Search for all airports starting with specific searchStr
-            searchQuery = Query
+            searchQuery = QueryBuilder
                 .select(_SelectColumn.AIRPORTNAMERESULT)
                 .from(DataSource.database(db))
                 .where(_Property.TYPE
-                    .equalTo("airport")
+                    .equalTo(Expression.string("airport"))
                     .and (Expression.property("airportname")
-                    .like("\(searchStr)%")))
+                    .like(Expression.string("\(searchStr)%"))))
         }
         if let searchQuery = searchQuery {
             var matches:Airports = []
