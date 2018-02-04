@@ -526,6 +526,7 @@ chapters:
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
               - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
               
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
               ### Sync mode
