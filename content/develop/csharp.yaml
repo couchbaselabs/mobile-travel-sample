@@ -31,6 +31,45 @@ chapters:
               
               #### Visual Studio 
               - Downloadable from [visualstudio.com](https://www.visualstudio.com/downloads/)
+              <html>
+              <table style="width:100%">
+              <tr>
+                <th>.Net Runtime</th>
+                <th>Min Runtime version</th> 
+                <th>Min OS version</th>
+              </tr>
+              <tr>
+                <td>.NET Core Win</td>
+                <td>2.0</td> 
+                <td>10(any supported)</td>
+              </tr>
+              <tr>
+                <td>.NET Core Mac </td>
+                <td>2.0</td> 
+                <td>10.12</td>
+              </tr>
+              <tr>
+                <td>.NET Framework </td>
+                <td>4.6.1</td> 
+                <td>10 (any supported)</td>
+              </tr>
+              <tr>
+                <td>UWP </td>
+                <td>6.0.1</td> 
+                <td>10.0.16299</td>
+              </tr>
+              <tr>
+                <td>Xamarin iOS </td>
+                <td>10.14</td> 
+                <td>10.3.1</td>
+              </tr>
+              <tr>
+                <td>Xamarin Android </td>
+                <td>8.1</td> 
+                <td>4.4 (API 19)</td>
+              </tr>
+            </table>
+              </html>
             
               #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
