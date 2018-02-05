@@ -965,8 +965,8 @@ chapters:
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
               - Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
               
-              Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented over the BLIP messaging protocol layered over WebSocket. 
-              ![](https://blog.couchbase.com/wp-content/uploads/2017/08/layered.png)
+              Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket. 
+              ![](http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png)
               
               The replication process can be “continuous” or “one shot“.
               - In “Continuous” replication mode, the changes are continually synchronized between the client and Sync Gateway.
