@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
@@ -118,21 +119,25 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         }
 
         /* 2. Look-up Guest user document. */
-        MutableDocument document = database.getDocument("user::guest").toMutable();
+        Document document = database.getDocument("user::guest");
+        MutableDocument documentCopy = null;
         if (document == null) {
             HashMap<String, Object> properties = new HashMap<>();
             properties.put("type", "bookmarkedhotels");
             properties.put("hotels", new ArrayList<>());
-            document = new MutableDocument("user::guest", properties);
+            documentCopy = new MutableDocument("user::guest", properties);
+        }
+        else {
+            documentCopy = document.toMutable();
         }
 
-        document
+        documentCopy
             .getArray("hotels")
             .toMutable()
             .addString((String) hotel.get("id"));
 
         try {
-            database.save(document);
+            database.save(documentCopy);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
