@@ -9,6 +9,7 @@ import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
+import com.couchbase.lite.MutableArray;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Result;
@@ -131,10 +132,10 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
             documentCopy = document.toMutable();
         }
 
-        documentCopy
-            .getArray("hotels")
-            .toMutable()
-            .addString((String) hotel.get("id"));
+
+        MutableArray hotels =  documentCopy.getArray("hotels").toMutable();
+        documentCopy.setArray("hotels",hotels.addString((String) hotel.get("id")));
+
 
         try {
             database.save(documentCopy);
