@@ -11,10 +11,10 @@ chapters:
 
               It includes the following components -
               - **Client Side **
-                - Travel Mobile App : This is a .Net app (UWP + Xamarin for iOS and Android) that is linked with Couchbase Lite 2.0 (Developer Preview)
+                - Travel Mobile App : This is a .Net app (UWP + Xamarin for iOS and Android) that is linked with Couchbase Lite 2.0 (Prerelease)
               - **Server Side **
                 - Couchbase Server v5.0
-                - Sync Gateway v1.5
+                - Sync Gateway v2.0(Prerelease)
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
@@ -31,6 +31,45 @@ chapters:
               
               #### Visual Studio 
               - Downloadable from [visualstudio.com](https://www.visualstudio.com/downloads/)
+              <html>
+              <table style="width:100%">
+              <tr>
+                <th>.Net Runtime</th>
+                <th>Min Runtime version</th> 
+                <th>Min OS version</th>
+              </tr>
+              <tr>
+                <td>.NET Core Win</td>
+                <td>2.0</td> 
+                <td>10(any supported)</td>
+              </tr>
+              <tr>
+                <td>.NET Core Mac </td>
+                <td>2.0</td> 
+                <td>10.12</td>
+              </tr>
+              <tr>
+                <td>.NET Framework </td>
+                <td>4.6.1</td> 
+                <td>10 (any supported)</td>
+              </tr>
+              <tr>
+                <td>UWP </td>
+                <td>6.0.1</td> 
+                <td>10.0.16299</td>
+              </tr>
+              <tr>
+                <td>Xamarin iOS </td>
+                <td>10.14</td> 
+                <td>10.3.1</td>
+              </tr>
+              <tr>
+                <td>Xamarin Android </td>
+                <td>8.0+</td> 
+                <td>4.4 (API 19)</td>
+              </tr>
+              </table>
+              </html>
             
               #### Python (V 2.7 and above)
               - Downloadable from [python.org](https://www.python.org/downloads/)
@@ -204,8 +243,8 @@ chapters:
                ```json
                {
                 "couchdb":"Welcome",
-                "vendor":{"name":"Couchbase Sync Gateway","version":1.5},
-                "version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"
+                "vendor":{"name":"Couchbase Sync Gateway","version":2.0},
+                "version":"Couchbase Sync Gateway/2.0(...)"
                }
                ```
             
@@ -255,15 +294,15 @@ chapters:
           #       ```bash
           #       $ docker-compose up
           #       ```
-      - title: Sync Gateway 1.5
+      - title: Sync Gateway 2.0
         milestones:
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 1.5 of the Sync Gateway
+              In this lesson, you will install and launch version 2.0 of the Sync Gateway
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/csharp#/0/4/1) section**
              
-              - Install Sync Gateway 1.5 from [here](https://www.couchbase.com/downloads) on your platform of choice
+              - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
@@ -281,7 +320,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                 {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
 
@@ -296,7 +335,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway-internal:1.5.0-community
+                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -311,7 +350,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
               
               - You can view the logs at any time by running the following command
@@ -328,7 +367,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
           - title: Cloud
@@ -526,6 +565,7 @@ chapters:
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
               - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
               
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
               ### Sync mode
@@ -976,6 +1016,7 @@ chapters:
 
             
               Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png)
              
              
               Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property. 
@@ -997,8 +1038,8 @@ chapters:
               - Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
               - Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
               
-              Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented over the BLIP messaging protocol layered over WebSocket. 
-              ![](https://blog.couchbase.com/wp-content/uploads/2017/08/layered.png)
+              Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket. 
+              ![](http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png)
               
               The replication process can be “continuous” or “one shot“.
               - In “Continuous” replication mode, the changes are continually synchronized between the client and Sync Gateway.
