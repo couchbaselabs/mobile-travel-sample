@@ -1083,6 +1083,24 @@ chapters:
               "enable_shared_bucket_access":true
               ```
 
+              You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+              In our demo, we will only be synchornizing the "user" document. So every other document type is ignored.
+              ```javascript
+              "import_filter": `
+              function(doc) {
+                /* Just ignore all the static travel-sample files */
+                if (doc._deleted == true ) {
+                  return true;
+                 }
+                if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+                  return false;
+                } 
+              
+                return true;
+              }
+             `,
+             ```
+
           - title: Replication
             description: |
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
@@ -1140,12 +1158,13 @@ chapters:
               The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
 
               ```swift
+              fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
               let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
-              var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
+              let config = ReplicatorConfiguration.init(database: db, target: URLEndpoint.init(url:dbUrl))
+    
               config.replicatorType = .pushAndPull
-              config.continuous = true
-
+              config.continuous =  true
               ```
               
               The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
@@ -1172,17 +1191,17 @@ chapters:
 
               ``` swift
               
-                  _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
-                      let s = change.status
-                      print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
-          
-                      if s.progress.completed == s.progress.total {
-                          self?.postNotificationOnReplicationState(.idle)
-                      }
-                      else {
-                          self?.postNotificationOnReplicationState(s.activity)
-                      }
-                  })
+              _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
+                  let s = change.status
+                  print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
+      
+                  if s.progress.completed == s.progress.total {
+                      self?.postNotificationOnReplicationState(.idle)
+                  }
+                  else {
+                      self?.postNotificationOnReplicationState(s.activity)
+                  }
+              })
                     
               ```
               Start the Replication

@@ -938,6 +938,24 @@ chapters:
               "enable_shared_bucket_access":true
               ```
 
+              You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+              In our demo, we will only be synchornizing the "user" document. So every other document type is ignored.
+              ```javascript
+              "import_filter": `
+              function(doc) {
+                /* Just ignore all the static travel-sample files */
+                if (doc._deleted == true ) {
+                  return true;
+                 }
+                if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+                  return false;
+                } 
+              
+                return true;
+              }
+             `,
+             ```
+
           - title: Replication
             description: |
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
@@ -966,6 +984,7 @@ chapters:
               First, you initialize the `URL` object which points to the Sync Gateway instance to synchronize with.
               
               ```java
+              private static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
               URI url = null;
               try {
                   url = new URI(mSyncGatewayEndpoint);
@@ -977,7 +996,8 @@ chapters:
               Next, you will configure the replication. The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway. The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel App, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
 
               ```java
-              ReplicatorConfiguration config = new ReplicatorConfiguration(database, url);
+
+              ReplicatorConfiguration config = new ReplicatorConfiguration(database, new URLEndpoint(url));
               config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
               config.setContinuous(true);
               ```
@@ -994,6 +1014,26 @@ chapters:
               Replicator replicator = new Replicator(config);
               ```
 
+              A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
+
+              ```java
+              replicator.addChangeListener(new ReplicatorChangeListener() {
+              @Override
+              public void changed(ReplicatorChange change) {
+
+                  if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.IDLE)) {
+
+                      Log.e("Replication Comp Log", "Schedular Completed");
+
+                  }
+                  if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.OFFLINE)) {
+                      // stopReplication();
+                      Log.e("Rep schedular  Log", "ReplicationTag Stopped");
+                  }
+              }
+              });
+              ```
+              
               Replication is started
               
               ```java

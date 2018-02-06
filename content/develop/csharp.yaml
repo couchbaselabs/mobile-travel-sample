@@ -1033,6 +1033,24 @@ chapters:
               "enable_shared_bucket_access":true
               ```
 
+              You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+              In our demo, we will only be synchornizing the "user" document. So every other document type is ignored.
+              ```javascript
+              "import_filter": `
+              function(doc) {
+                /* Just ignore all the static travel-sample files */
+                if (doc._deleted == true ) {
+                  return true;
+                 }
+                if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+                  return false;
+                } 
+              
+                return true;
+              }
+             `,
+             ```
+
           - title: Replication
             description: |
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
@@ -1059,12 +1077,13 @@ chapters:
               ```
               First, Do some checks to confirm the validity of the user credentials 
               ```csharp
-              if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)) {
+              if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)){
                 throw new InvalidOperationException("User credentials not provided");
               }
               ```
               Create the URL of the Sync Gateway
               ```csharp
+              private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
               var dbUrl = new Uri(SyncUrl, DbName);
               ```
 
@@ -1072,7 +1091,7 @@ chapters:
               The `ReplicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `PushAndPull` indicating that both push and pull replication is enabled. The `Continuous` mode is set to `true` in the Travel app.
 
               ```csharp
-              var config = new ReplicatorConfiguration(db, dbUrl) {
+              var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
                 ReplicatorType = ReplicatorType.PushAndPull,
                 Continuous = true,
                 ...
@@ -1106,13 +1125,13 @@ chapters:
               A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
 
               ``` csharp
-              repl.StatusChanged += (sender, args) =>
+              repl.AddChangeListener((sender, args) =>
               {
-                  var s = args.Status;
-                  Debug.WriteLine(
-                      $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {args.LastError?.Message ?? "<none>"}, activity = {s.Activity}");
-              };
-                    
+                var s = args.Status;
+                Debug.WriteLine(
+                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {s.Error?.Message ?? "<none>"}, activity = {s.Activity}");
+
+              });      
               ```
               Start the Replication
               ```csharp
