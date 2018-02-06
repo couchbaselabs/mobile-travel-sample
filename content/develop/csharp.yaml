@@ -563,7 +563,7 @@ chapters:
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login_sync.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
@@ -576,10 +576,12 @@ chapters:
               - `airport`
               - `hotel`
               - `route`
-              - `landmark`
               - `user`
               
-              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              Except for the **user** document (right on the diagram below), the rest of documents are static/semi-static in nature.
+              In the demo app, 
+              - The `hotel` and `airport' documents are bundled into a prebuilt couchbase lite database and loaded when the app launches.We will discuss more about locading and using prebuilt databases in the [Pre-built Database](http://docs.couchbase.com/tutorials/travel-sample/develop/csharp/#/2/4/0)section of the tutorial.
+              - The `airline`, `airport`,`hotel` and `route` documents are NOT synchornized to the mobile app. Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
@@ -788,20 +790,20 @@ chapters:
               
               Next, add the ID of the passed hotel to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document, or remove it based on the current action.
               ```csharp
-              var bookmarked = doc.GetArray("hotels") ?? new MutableArray();
+              var bookmarked = doc.GetArray("hotels") ?? new MutableArrayObject();
               if (hotel.IsBookmarked) {
                   // Remove the bookmark
-                  for (int i = 0; i < bookmarked.Count; i++) {
-                      if (bookmarked[i].ToString() == hotel.Source["id"] as string) {
+                  for (int i = 0; i < bookmarked.Count(); i++) {
+                      if (bookmarked.GetString(i) == (hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null) ){
                           bookmarked.RemoveAt(i);
                           break;
                       }
                   }
               } else {
-                    bookmarked.Add(hotel.Source["id"] as string);
+                  bookmarked.AddString(hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null);
               }
 
-              doc.Set("hotels", bookmarked);
+              doc.SetArray("hotels", bookmarked);
               UserSession.Database.Save(doc);
               ```
 
@@ -809,9 +811,9 @@ chapters:
               ```csharp
               // Add the hotel details document
               if (hotel.Source["id"] is string id) {
-                  using (var detailDoc = UserSession.Database.GetDocument(id).ToMutable() ?? new MutableDocument(id)) {
-                      detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
-                      UserSession.Database.Save(detailDoc);
+                  using (var detailDoc = UserSession.Database.GetDocument(id)?.ToMutable() ?? new MutableDocument(id)) {
+                      detailDoc.SetData(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
+                        UserSession.Database.Save(detailDoc);
                   }
               }
               ```

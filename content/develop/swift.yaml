@@ -326,7 +326,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull cconnectsv/sync-gateway:2.0.0-prerelease-enterprise
+                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -558,7 +558,7 @@ chapters:
               ![](https://cl.ly/1r1Y3H3w2i1I/ios-login.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
@@ -566,15 +566,18 @@ chapters:
               ### Sync mode
               
               Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types:
-              
+                     
               - `airline`
               - `airport`
               - `hotel`
               - `route`
-              - `landmark`
               - `user`
               
-              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              Except for the **user** document (right on the diagram below), the rest of documents are static/semi-static in nature.
+              In the demo app, 
+              - The `hotel` and `airport' documents are bundled into a prebuilt couchbase lite database and loaded when the app launches. We will discuss more about locading and using prebuilt databases in the [Pre-built Database](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/2/4/0)section of the tutorial.
+              - The `airline`, `airport`,`hotel` and `route` documents are NOT synchornized to the mobile app. Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
+       
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
@@ -940,8 +943,7 @@ chapters:
               }
               ```
               
-              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id from the `hotels` array.
-              
+              When searching for hotels in **Guest mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server. Then, if a hotel is bookmarked, it gets inserted in the Couchbase Lite database for offline access. So when the user unbookmarks a hotel, the document needs to be removed from the database. That's what the code below is doing.
               ```swift
               // Remove unbookmarked hotel documents
               for idOfDocToRemove in idsToRemove {
@@ -950,6 +952,9 @@ chapters:
                 }
               }
               ```
+
+              In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document.
+              
                
               ## Try it out
               

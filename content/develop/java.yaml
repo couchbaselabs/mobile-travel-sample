@@ -303,7 +303,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull cconnectsv/sync-gateway:2.0.0-prerelease-enterprise
+                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/java#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -318,7 +318,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
                 
               - You can view the logs at any time by running the following command
@@ -336,7 +336,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
           - title: Cloud
@@ -536,23 +536,25 @@ chapters:
               ![](https://cl.ly/1s2L2Q372d2m/android-login.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.Documents created in the local database are not synchornized to the Sync Gateway.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
               
-              ### Sync mode
-              
+              ### Sync mode  
+
               Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types:
-              
+                     
               - `airline`
               - `airport`
               - `hotel`
               - `route`
-              - `landmark`
               - `user`
               
-              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              Except for the **user** document (right on the diagram below), the rest of documents are static/semi-static in nature.
+              In the demo app, 
+              - The `hotel` and `airport' documents are bundled into a prebuilt couchbase lite database and loaded when the app launches.We will discuss more about locading and using prebuilt databases in the [Pre-built Database](http://docs.couchbase.com/tutorials/travel-sample/develop/java/#/2/4/0)section of the tutorial.
+              - The `airline`, `airport`,`hotel` and `route` documents are NOT synchornized to the mobile app. Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
@@ -671,8 +673,7 @@ chapters:
               ```java
               if (isGuest) {
                   DatabaseConfiguration config = new DatabaseConfiguration(context);
-                  File folder = new File(String.format("%s/guest", context.getFilesDir()));
-                  config.setDirectory(folder);
+                  config.setDirectory(String.format("%s/guest", context.getFilesDir()));
               ```
  
               The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object
@@ -731,52 +732,45 @@ chapters:
               The following snippet persists the hotel instance (`Map<String, Object>`) as a new `Document` in the database. This will allow us to access bookmarked hotel documents while being offline.
               
               ```java
-              Document hotelDoc = new Document((String) hotel.get("id"));
-              hotelDoc.set(hotel);
+              MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
               try {
-                  database.save(hotelDoc);
+                database.save(hotelDoc);
               } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
+                e.printStackTrace();
               }
               ```
               
               Now you will get the document with ID `user::guest` or create one if it doesn't exist. The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels.
-              
-              ```java
-              MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
-              try {
-                  database.save(hotelDoc);
-              } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
-              }
       
               /* 2. Look-up Guest user document. */
-              MutableDocument document = database.getDocument("user::guest").toMutable();
+              Document document = database.getDocument("user::guest");
+              MutableDocument mutableCopy = null;
               if (document == null) {
-                  HashMap<String, Object> properties = new HashMap<>();
-                  properties.put("type", "bookmarkedhotels");
-                  properties.put("hotels", new ArrayList<>());
-                  document = new MutableDocument("user::guest", properties);
+                HashMap<String, Object> properties = new HashMap<>();
+                properties.put("type", "bookmarkedhotels");
+                properties.put("hotels", new ArrayList<>());
+                mutableCopy = new MutableDocument("user::guest", properties);
+              }
+              else {
+                mutableCopy = document.toMutable();
               }
               ```
               
               Next, the selected hotel's ID is added to the `hotels` array.
                
               ```java
-              document
-                  .getArray("hotels")
-                  .toMutable()
-                  .addString((String) hotel.get("id"));
+              MutableArray hotels =  mutableCopy.getArray("hotels").toMutable();
+              mutableCopy.setArray("hotels",hotels.addString((String) hotel.get("id")));
               ```
               
               Finally, you will save the document.
               
               ```java
-                try {
-                    database.save(document);
-                } catch (CouchbaseLiteException e) {
-                    e.printStackTrace();
-                }
+              try {
+                database.save(mutableCopy);
+              } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+              }
               ```
               
               ## Try it out
@@ -812,29 +806,13 @@ chapters:
               Database database = DatabaseManager.getDatabase();
               Document document = database.getDocument((String) bookmark.get("id"));
               try {
-                  database.delete(document);
+                database.delete(document);
               } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
+                e.printStackTrace();
               }
               ```
               
               In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document.
-              
-              ```java
-              MutableDocument guestDoc = database.getDocument("user::guest").toMutable();
-              MutableArray hotelIds = guestDoc.getArray("hotels").toMutable();
-              for (int i = 0; i < hotelIds.count(); i++) {
-                  if (hotelIds.getString(i).equals((String) bookmark.get("id"))) {
-                      hotelIds.remove(i);
-                  }
-              }
-      
-              try {
-                  database.save(guestDoc);
-              } catch (CouchbaseLiteException e) {
-                  e.printStackTrace();
-              }
-              ```
               
               ## Try it out
               
