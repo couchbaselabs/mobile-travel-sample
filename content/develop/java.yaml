@@ -1098,7 +1098,7 @@ chapters:
                       DatabaseConfiguration config = new DatabaseConfiguration(context);
                       try {
                           database = new Database("travel-sample", config);
-                          createFTSQueryIndex();
+                          ...
                       } catch (CouchbaseLiteException e) {
                           e.printStackTrace();
                       }
@@ -1150,13 +1150,13 @@ chapters:
           
               ```java
               Database database = DatabaseManager.getDatabase();
-              Query searchQuery = Query
-                  .select(SelectResult.expression(Expression.property("airportname")))
-                  .from(DataSource.database(database))
-                  .where(
-                      Expression.property("type").equalTo("airport")
-                      .and(Expression.property("airportname").like(prefix + "%"))
-                  );
+              Query searchQuery = QueryBuilder
+                .select(SelectResult.expression(Expression.property("airportname")))
+                .from(DataSource.database(database))
+                .where(
+                  Expression.property("type").equalTo(Expression.string("airport"))
+                    .and(Expression.property("airportname").like(Expression.string(prefix + "%")))
+              );
               ```
             
               Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a `RecyclerView`.
@@ -1247,14 +1247,14 @@ chapters:
               SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
               SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
       
-              Query query = Query
-                  .select(bookmarkAllColumns, hotelsAllColumns)
-                  .from(bookmarkDS)
-                  .join(join)
-                  .where(typeExpr.equalTo("bookmarkedhotels"));
+              Query query = QueryBuilder
+                .select(bookmarkAllColumns, hotelsAllColumns)
+                .from(bookmarkDS)
+                .join(join)
+                .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
               ```
 
-              And we use the `run()` method to get the results back pass them on to the view.
+              And we use the `execute()` method to get the results back pass them on to the view.
               
               ```java
               query.addChangeListener(new QueryChangeListener() {
@@ -1299,7 +1299,7 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-senstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
+              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-senstive. In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app.
 
               In order to do FTS queries, an FTS index must be created.
               
@@ -1310,7 +1310,7 @@ chapters:
               ```java
               private void createFTSQueryIndex() {
                   try {
-                      database.createIndex("descFTSIndex", Index.fullTextIndex(FullTextIndexItem.property("description")));
+                      database.createIndex("descFTSIndex", IndexBuilder.fullTextIndex(FullTextIndexItem.property("description")));
                   } catch (CouchbaseLiteException e) {
                       e.printStackTrace();
                   }
@@ -1339,23 +1339,23 @@ chapters:
               Next, you will create an FTS `Expressions` using the `match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `where` clause of the query the usual way.
               
               ```java
-              Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
+              Expression descExp = FullTextExpression.index("descFTSIndex").match(description) ;
+    
       
               Expression locationExp = Expression.property("country")
-                  .like("%" + location + "%")
-                  .or(Expression.property("city").like("%" + location + "%"))
-                  .or(Expression.property("state").like("%" + location + "%"))
-                  .or(Expression.property("address").like("%" + location + "%"));
+                .like(Expression.string("%" + location + "%"))
+                .or(Expression.property("city").like(Expression.string("%" + location + "%")))
+                .or(Expression.property("state").like(Expression.string("%" + location + "%")))
+                .or(Expression.property("address").like(Expression.string("%" + location + "%")));
       
               Expression searchExp = descExp.and(locationExp);
       
-              Query hotelSearchQuery = Query
-                  .select(SelectResult.all())
-                  .from(DataSource.database(database))
-                  .where(
-                      Expression.property("type").equalTo("hotel")
-                      .and(searchExp)
-                  );
+              Query hotelSearchQuery = QueryBuilder
+                .select(SelectResult.all())
+                .from(DataSource.database(database))
+                .where(
+                    Expression.property("type").equalTo(Expression.string("hotel")).and(searchExp)
+              );
               ```
               
               We build the query using the different expressions from above and transform the `ResultSet` object into a `List<Map<String, Object>>` object that is passed to the `RecyclerView`.

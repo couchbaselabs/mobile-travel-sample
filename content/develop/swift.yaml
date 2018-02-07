@@ -1363,16 +1363,16 @@ chapters:
               The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```swift
-              searchQuery = Query
-                  .select(_SelectColumn.AIRPORTNAMERESULT)
-                  .from(DataSource.database(db))
-                  .where(_Property.TYPE
-                      .equalTo("airport")
-                      .and (Expression.property("airportname")
-                      .like("\(searchStr)%")))
+              searchQuery = QueryBuilder
+                .select(_SelectColumn.AIRPORTNAMERESULT)
+                .from(DataSource.database(db))
+                .where(_Property.TYPE
+                    .equalTo(Expression.string("airport"))
+                    .and (Expression.property("airportname")
+                    .like(Expression.string("\(searchStr)%"))))
               ```
             
-              Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
+              Next, the query is executed using the `execute()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
               
               ```swift
               if let searchQuery = searchQuery {
@@ -1443,13 +1443,13 @@ chapters:
               
               ```swift
               let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
-              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+              let hotelIdExpr = Meta.id.from("hotelsDS")
               ```
               
               Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
               
               ```swift
-              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+              let joinExpr = ArrayFunction.contains(hotelsExpr, value: hotelIdExpr)
               let join = Join.join(hotelsDS).on(joinExpr);
               ```
               
@@ -1457,14 +1457,17 @@ chapters:
               
               ```swift
               let typeExpr = Expression.property("type").from("bookmarkDS")
-              
+            
               let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
               let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
               
-              let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
+              let query = QueryBuilder.select(bookmarkAllColumns, hotelsAllColumns)
+                              .from(bookmarkDS)
+                              .join(join)
+                              .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
               ```
 
-              And we use the `run()` method to get the results back pass them on to the view.
+              And we use the `execute()` method to get the results back pass them on to the view.
               
               ```swift
               for result in try query.execute() {
@@ -1492,7 +1495,7 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
+              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app.
 
               In order to do FTS queries, an FTS index must be created.
               
@@ -1506,7 +1509,7 @@ chapters:
         
             
                 // For Full text search on description property of airports and hotels docs
-                try _db?.createIndex(Index.fullTextIndex(withItems: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
+                try _db?.createIndex(IndexBuilder.fullTextIndex(items: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
       
                }
               ```
@@ -1534,16 +1537,16 @@ chapters:
               Next, you will create an FTS `Expressions` using the `match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `where` clause of the query the usual way.
               
               ```swift
-              var descExp:Expression?
+              var descExp:ExpressionProtocol?
               if let descriptionStr = descriptionStr , descriptionStr != ""{
-                  descExp = _Property.DESCRIPTION.match(descriptionStr)
+                descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
               }
               
               
-              let locationExp = _Property.COUNTRY.like("%\(locationStr)%")
-                  .or(_Property.CITY.like("%\(locationStr)%"))
-                  .or(_Property.STATE.like("%\(locationStr)%"))
-                  .or(_Property.ADDRESS.like("%\(locationStr)%"))
+              let locationExp = _Property.COUNTRY.like(Expression.string("%\(locationStr)%"))
+                .or(_Property.CITY.like(Expression.string("%\(locationStr)%")))
+                .or(_Property.STATE.like(Expression.string("%\(locationStr)%")))
+                .or(_Property.ADDRESS.like(Expression.string("%\(locationStr)%")))
               
               var searchExp:Expression = locationExp
               if  let descExp = descExp {
@@ -1551,13 +1554,12 @@ chapters:
               }
               
              
-              let hotelSearchQuery = Query
-                  .select(_SelectColumn.ALLRESULT) 
-                  .from(DataSource.database(db))
-                  .where(
-                      _Property.TYPE.equalTo("hotel")
-                       .and(searchExp)
-                      )
+              let hotelSearchQuery = QueryBuilder
+                .select(_SelectColumn.ALLRESULT) 
+                .from(DataSource.database(db))
+                .where(
+                   _Property.TYPE.equalTo(Expression.string("hotel")).and(searchExp)
+                )
               ```
               
               We build the query using the different expressions from above and transform the `ResultSet` object into a `Map` object that is passed to the `TableView`.

@@ -1278,21 +1278,18 @@ chapters:
               The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```csharp
-              searchQuery = Query
-                      .Select(AirportNameResult)
-                      .From(DataSource.Database(UserSession.Database))
-                      .Where(TypeProperty
-                          .EqualTo("airport")
-                          .And(AirportNameProperty
-                              .Like($"{searchStr}%")));
+               searchQuery = QueryBuilder
+                        .Select(AirportNameResult)
+                        .From(DataSource.Database(UserSession.Database))
+                        .Where(TypeProperty.EqualTo(Expression.String("airport"))
+                            .And(AirportNameProperty.Like(Expression.String($"{searchStr}%"))));
               ```
             
               Next, the query is executed using the `Run()` method. Each row in the result will contain a single property called "airportname".
               
               ```csharp
-              using (var results = searchQuery.Execute()) {
-                  return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
-              }
+              var results = searchQuery.Execute().ToList();
+              return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
 
               // Don't forget to Dispose the query object when finished       
               ```
@@ -1369,20 +1366,21 @@ chapters:
               Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
               
               ```csharp
-              var query = Query
-                  .Select(AllBookmarks, AllHotels)
-                  .From(bookmarkSource)
-                  .Joins(join)
-                  .Where(TypeProperty.EqualTo("bookmarkedhotels"))
+              using (var query = QueryBuilder
+                .Select(AllBookmarks, AllHotels)
+                .From(bookmarkSource)
+                .Join(join)
+                   .Where(TypeProperty.EqualTo(Expression.String("bookmarkedhotels")))) {
+
               ```
 
               And we use the `Run()` method to get the results back pass them on to the view.
               
               ```csharp
-              using (var results = query.Execute()) {
-                    foreach (var result in results) {
-                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
-                    }
+              var results = query.Execute().ToList();
+
+              foreach (var result in results ){
+                   bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
               }
               ```
                
@@ -1419,7 +1417,7 @@ chapters:
                   ...
 
                   db.CreateIndex("description",
-                      Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("description"))));
+                           IndexBuilder.FullTextIndex(FullTextIndexItem.Property("description")));
                   
                   ...
               }
@@ -1446,10 +1444,11 @@ chapters:
               }
               
               
-              var locationExp = CountryProperty.Like($"%{location}%")
-                  .Or(CityProperty.Like($"%{location}%"))
-                  .Or(StateProperty.Like($"%{location}%"))
-                  .Or(AddressProperty.Like($"%{location}%"));
+              var locationExp = CountryProperty.Like(Expression.String($"%{location}%"))
+                                    .Or(CityProperty.Like(Expression.String($"%{location}%")))
+                                    .Or(StateProperty.Like(Expression.String($"%{location}%")))
+                                    .Or(AddressProperty.Like(Expression.String($"%{location}%")));
+
               
               var searchExp = locationExp;
               if (descExp != null) {
@@ -1457,18 +1456,20 @@ chapters:
               }
               
              
-              using (var hotelSearchQuery = Query
-                  .Select(SelectResult.All())
-                  .From(DataSource.Database(UserSession.Database))
-                  .Where(TypeProperty.EqualTo("hotel").And(searchExp))) {
-                  ...
+              using (var hotelSearchQuery = QueryBuilder
+                .Select(SelectResult.All())
+                .From(DataSource.Database(UserSession.Database))
+                   .Where(TypeProperty.EqualTo(Expression.String("hotel")).And(searchExp))) {
+                    ...
+
               }
               ```
               
               We build the query using the different expressions from above and transform the `ResultSet` object into a `List` object that is passed to the `ListView`.
               
               ```csharp
-              using (var results = hotelSearchQuery.Execute()) {
+              var results = hotelSearchQuery.Execute().ToList();
+                   
                     var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
                     return Task.FromResult(hotels);
               }
