@@ -13,7 +13,7 @@ chapters:
               - Client Side 
                 - Travel Mobile App -  Android App in java that is linked with Couchbase Lite 2.0 (Prerelease)
               - Server Side
-                - Couchbase Server v5.0
+                - Couchbase Server v5.0.1
                 - Sync Gateway v2.0 (Prerelease)
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
@@ -77,7 +77,7 @@ chapters:
                 ![](https://cl.ly/0T0G2S083g41/as-login.png)
       
       
-      - title: Couchbase Server 5.0
+      - title: Couchbase Server 5.0.1
         milestones:
           
           - title: Manual
@@ -124,13 +124,13 @@ chapters:
                 ```
               - To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following.
                 ```bash
-                $ docker pull connectsv/server-internal:sandbox
+                $ docker pull connectsv/server:5.0.1-enterprise
                 ```
               
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.0.1-enterprise
                 ```
               - You can view the logs at any time by running the following command
                 ```bash
@@ -437,7 +437,8 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-              ```bash
+
+              ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
@@ -460,13 +461,13 @@ chapters:
               - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
-                $ docker pull connectsv/try-cb-python
+                $ docker pull connectsv/try-cb-python:5.0.1-server
                 ```
               
                - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python
+                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.0.1-server
                 ```
               
                 You should then see the following in the console output.
