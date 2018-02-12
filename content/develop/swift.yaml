@@ -353,9 +353,9 @@ chapters:
           - title: Cloud
             description: |
               
-              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
-          
-              If you chose Cloud in the previous previous step then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops.
+
+              If you chose Cloud in the [previous step](#/0/2/2) then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
 
           # - title: Docker Compose
           #   description: |
@@ -494,7 +494,9 @@ chapters:
           - title: Cloud
             description: |
               
-              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops.
+
+              If you chose Cloud in the [previous step](#/0/2/2) then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running. You can move on to the [next chapter](#/1/0/0) to learn about the data modeling requirements of the app.
           
           # - title: Docker Compose
           #   description: |
