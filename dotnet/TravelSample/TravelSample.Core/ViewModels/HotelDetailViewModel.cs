@@ -36,42 +36,43 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the full address of the hotel
         /// </summary>
-        public string Address => $"{Model.GetCast<string>("address")}, {Model.GetCast<string>("city")}, {Model.GetCast<string>("country")}";
+        //public string Address => $"{Model.ContainsKey("address") ? Model["address"] as string : null}, {Model.ContainsKey("city") ? Model["city"] as string : null }, {Model.ContainsKey("country") ? Model["country"] as string : null}"; 
+
+        public string Address => Model.ContainsKey("address") ? Model["address"] as string : null;
 
         /// <summary>
         /// Gets the description of the hotel
         /// </summary>
-        public string Description => Model.GetCast<string>("description") ?? "Best. Hotel. Ever.";
+        public string Description => Model.ContainsKey("description") ? Model["description"] as string : "Best. Hotel. Ever.";
 
         /// <summary>
         /// Gets whether or not this hotel offer free breakfast
         /// </summary>
-        public bool FreeBreakfast => Model.GetCast<bool>("free_breakfast");
-
+        public bool FreeBreakfast => Model.ContainsKey("free_breakfast") && (bool)Model["free_breakfast"];
         /// <summary>
         /// Gets whether or not this hotel offer free Internet
         /// </summary>
-        public bool FreeInternet => Model.GetCast<bool>("free_internet");
+        public bool FreeInternet => Model.ContainsKey("free_internet") && (bool)Model["free_internet"];
 
         /// <summary>
         /// Gets whether or not this hotel offer free parking
         /// </summary>
-        public bool FreeParking => Model.GetCast<bool>("free_parking");
+        public bool FreeParking => Model.ContainsKey("free_parking") && (bool)Model["free_parking"]; 
 
         /// <summary>
         /// Gets the name of the hotel
         /// </summary>
-        public string Name => Model.GetCast<string>("name") ?? "Weird...no name for this hotel";
+        public string Name => Model.ContainsKey("name") ? Model["name"] as string : "Weird...no name for this hotel";
 
         /// <summary>
         /// Gets whether or not the hotel allows pets
         /// </summary>
-        public bool PetsOk => Model.GetCast<bool>("pets_ok");
+        public bool PetsOk => Model.ContainsKey("pets_ok") && (bool)Model["pets_ok"];
 
         /// <summary>
         /// Gets the url of the hotel website
         /// </summary>
-        public string Website => Model.GetCast<string>("url");
+        public string Website => Model.ContainsKey("url") ? Model["url"] as string : null;
 
         #endregion
 

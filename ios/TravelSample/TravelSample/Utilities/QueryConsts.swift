@@ -36,7 +36,7 @@ struct _SelectColumn {
     static let AIRPORTNAMERESULT  = SelectResult.expression(_Property.AIRPORTNAME)
     static let FLIGHTSRESULT      = SelectResult.expression(_Property.FLIGHTS)
     static let DOCIDRESULT        = SelectResult.expression(_Property.DOCID)
-    static let COUNTRESULT        = SelectResult.expression(Function.count(1))
+    static let COUNTRESULT        = SelectResult.expression(Function.count(Expression.int(1)))
     static let ALLRESULT          = SelectResult.all()
 }
 

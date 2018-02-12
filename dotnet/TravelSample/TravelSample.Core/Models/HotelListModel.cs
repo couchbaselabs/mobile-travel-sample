@@ -99,17 +99,17 @@ namespace TravelSample.Core.Models
                     doc = new MutableDocument(new Dictionary<string, object> {["type"] = "bookmarkedhotels"});
                 }
 
-                var bookmarked = doc.GetArray("hotels") ?? new MutableArray();
+                var bookmarked = doc.GetArray("hotels") ?? new MutableArrayObject();
                 if (hotel.IsBookmarked) {
                     // Remove the bookmark
-                    for (int i = 0; i < bookmarked.Count; i++) {
-                        if (bookmarked[i].ToString() == hotel.Source["id"] as string) {
+                    for (int i = 0; i < bookmarked.Count(); i++) {
+                        if (bookmarked.GetString(i) == (hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null) ){
                             bookmarked.RemoveAt(i);
                             break;
                         }
                     }
                 } else {
-                    bookmarked.AddString(hotel.Source["id"] as string);
+                    bookmarked.AddString(hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null);
                 }
 
                 doc.SetArray("hotels", bookmarked);
@@ -141,24 +141,25 @@ namespace TravelSample.Core.Models
                 descExp = FullTextExpression.Index("description").Match(description);
             }
 
-            var locationExp = CountryProperty.Like($"%{location}%")
-                .Or(CityProperty.Like($"%{location}%"))
-                .Or(StateProperty.Like($"%{location}%"))
-                .Or(AddressProperty.Like($"%{location}%"));
+            var locationExp = CountryProperty.Like(Expression.String($"%{location}%"))
+                                             .Or(CityProperty.Like(Expression.String($"%{location}%")))
+                                             .Or(StateProperty.Like(Expression.String($"%{location}%")))
+                                             .Or(AddressProperty.Like(Expression.String($"%{location}%")));
 
             var searchExp = locationExp;
             if (descExp != null) {
                 searchExp = descExp.And(locationExp);
             }
 
-            using (var hotelSearchQuery = Query
+            using (var hotelSearchQuery = QueryBuilder
                 .Select(SelectResult.All())
                 .From(DataSource.Database(UserSession.Database))
-                .Where(TypeProperty.EqualTo("hotel").And(searchExp))) {
-                using (var results = hotelSearchQuery.Execute()) {
+                   .Where(TypeProperty.EqualTo(Expression.String("hotel")).And(searchExp))) {
+                    var results = hotelSearchQuery.Execute().ToList();
+                   
                     var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
                     return Task.FromResult(hotels);
-                }
+
             }
         }
 

@@ -11,10 +11,10 @@ chapters:
 
               It includes the following components -
               - Client Side 
-                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite 2.0 (Developer Preview)
+                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite 2.0 (Prerelease)
               - Server Side
                 - Couchbase Server v5.0
-                - Sync Gateway v1.5
+                - Sync Gateway v2.0 (Prerelease)
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
@@ -28,9 +28,8 @@ chapters:
           - title: Pre-requisites
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
-              
-              #### iOS (Xcode 8.3.3 or Xcode 9.2) 
-              - Preferrable to use Xcode 9.2
+
+              #### iOS (Xcode 9.2+) 
               - Downloadable latest version from the [Mac App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
             
               #### Python (v2.7 and above)
@@ -63,18 +62,8 @@ chapters:
               ```bash
               git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
-              
-              #### On Xcode 8.3
-              If you are building using Xcode8, you will have to download the Swift 3.1 compatible version of Couchbase Lite framework
-              
-              - Run the `install_8.sh` script to download and install the 2.0 version of Couchbase Lite.
-              ```bash
-              cd /path/to/mobile-travel-sample/ios/TravelSample
-              sh install_8.sh
-              ```
-              
-              #### On Xcode 9.1
-              If you are building using Xcode9, you will have to download the Swift 4 compatible version of Couchbase Lite framework
+              #### On Xcode 9.2
+              If you are building using Xcode 9, you will have to download the Swift 4 compatible version of Couchbase Lite framework
               
               - Run the `install_9.sh` script to download and install the 2.0 version of Couchbase Lite.
               ```bash
@@ -90,12 +79,12 @@ chapters:
       
       
       
-      - title: Couchbase Server 5.0
+      - title: Couchbase Server 5.0.1
         milestones:
           
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
+              In this lesson, you will install and launch version 5.0.1 of the Couchbase Server.
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/swift#/0/3/1) section**
 
@@ -137,13 +126,13 @@ chapters:
                 ```
               - To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following.
                 ```bash
-                $ docker pull connectsv/server-internal:sandbox
+                $ docker pull connectsv/server:5.0.1-enterprise
                 ```
               
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.0.1-enterprise
                 ```
               
               - You can view the logs at any time by running the following command
@@ -166,10 +155,9 @@ chapters:
           - title: Cloud
             description: |
               
-              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops. 
+              **NOTE:** The RightScale cloud environment is only available for in-classroom run workshops.
           
-              The RightScale cloud environment is not available for development purposes. This is available for in-classroom style workshop.
-            
+
               Before you get started with this section, make sure your followed the instructions [here](/tutorials/travel-sample/develop/swift#/0/1/0) to download the Travel Mobile app.
               Use this option to connect to a private instance of Couchbase Server components running on Rightscale cloud environment. At the end of this lesson, the following components will be launched in the cloud-
               - Couchbase Server
@@ -235,8 +223,8 @@ chapters:
                ```json
                {
                 "couchdb":"Welcome",
-                "vendor":{"name":"Couchbase Sync Gateway","version":1.5},
-                "version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"
+                "vendor":{"name":"Couchbase Sync Gateway","version":2.0},
+                "version":"Couchbase Sync Gateway/2.0(...)"
                }
                ```
             
@@ -286,7 +274,7 @@ chapters:
           #       ```bash
           #       $ docker-compose up
           #       ```
-      - title: Sync Gateway 1.5
+      - title: Sync Gateway 2.0
         milestones:
           - title: Manual
             description: |
@@ -294,7 +282,7 @@ chapters:
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/swift#/0/4/1) section**
              
-              - Install Sync Gateway 1.5 from [here](https://www.couchbase.com/downloads) on your platform of choice
+              - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
@@ -312,7 +300,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
 
@@ -327,7 +315,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway-internal:1.5.0-community
+                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -342,7 +330,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
               
               - You can view the logs at any time by running the following command
@@ -359,7 +347,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
           - title: Cloud
@@ -461,7 +449,8 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-              ```bash
+
+              ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
@@ -484,13 +473,13 @@ chapters:
               - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
-                $ docker pull connectsv/try-cb-python
+                $ docker pull connectsv/try-cb-python:5.0.1-server
                 ```
               
                - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python
+                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.0.1-server
                 ```
 
                 You should then see the following in the console output.
@@ -559,7 +548,7 @@ chapters:
               ![](https://cl.ly/1r1Y3H3w2i1I/ios-login.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
@@ -567,15 +556,18 @@ chapters:
               ### Sync mode
               
               Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types:
-              
+                     
               - `airline`
               - `airport`
               - `hotel`
               - `route`
-              - `landmark`
               - `user`
               
-              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              Except for the **user** document (right on the diagram below), the rest of documents are static/semi-static in nature.
+              In the demo app, 
+              - The `hotel` and `airport' documents are bundled into a prebuilt couchbase lite database and loaded when the app launches. We will discuss more about locading and using prebuilt databases in the [Pre-built Database](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/2/4/0)section of the tutorial.
+              - The `airline`, `airport`,`hotel` and `route` documents are NOT synchornized to the mobile app. Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
+       
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
@@ -941,8 +933,7 @@ chapters:
               }
               ```
               
-              The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database. Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id from the `hotels` array.
-              
+              When searching for hotels in **Guest mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server. Then, if a hotel is bookmarked, it gets inserted in the Couchbase Lite database for offline access. So when the user unbookmarks a hotel, the document needs to be removed from the database. That's what the code below is doing.
               ```swift
               // Remove unbookmarked hotel documents
               for idOfDocToRemove in idsToRemove {
@@ -951,6 +942,9 @@ chapters:
                 }
               }
               ```
+
+              In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document.
+              
                
               ## Try it out
               
@@ -1079,6 +1073,24 @@ chapters:
               "enable_shared_bucket_access":true
               ```
 
+              You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+              In our demo, we will only be synchornizing the "user" document. So every other document type is ignored.
+              ```javascript
+              "import_filter": `
+              function(doc) {
+                /* Just ignore all the static travel-sample files */
+                if (doc._deleted == true ) {
+                  return true;
+                 }
+                if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+                  return false;
+                } 
+              
+                return true;
+              }
+             `,
+             ```
+
           - title: Replication
             description: |
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
@@ -1136,12 +1148,13 @@ chapters:
               The `replicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `pushAndPull` indicating that both push and pull replication is enabled. The `continuous` mode is set to `true` in the Travel app.
 
               ```swift
+              fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
               let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
-              var config = ReplicatorConfiguration(database: db, targetURL: dbUrl)
+              let config = ReplicatorConfiguration.init(database: db, target: URLEndpoint.init(url:dbUrl))
+    
               config.replicatorType = .pushAndPull
-              config.continuous = true
-
+              config.continuous =  true
               ```
               
               The Replicator is configured with relevant authentication credentials. In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
@@ -1168,17 +1181,17 @@ chapters:
 
               ``` swift
               
-                  _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
-                      let s = change.status
-                      print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
-          
-                      if s.progress.completed == s.progress.total {
-                          self?.postNotificationOnReplicationState(.idle)
-                      }
-                      else {
-                          self?.postNotificationOnReplicationState(s.activity)
-                      }
-                  })
+              _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
+                  let s = change.status
+                  print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
+      
+                  if s.progress.completed == s.progress.total {
+                      self?.postNotificationOnReplicationState(.idle)
+                  }
+                  else {
+                      self?.postNotificationOnReplicationState(s.activity)
+                  }
+              })
                     
               ```
               Start the Replication
@@ -1340,16 +1353,16 @@ chapters:
               The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```swift
-              searchQuery = Query
-                  .select(_SelectColumn.AIRPORTNAMERESULT)
-                  .from(DataSource.database(db))
-                  .where(_Property.TYPE
-                      .equalTo("airport")
-                      .and (Expression.property("airportname")
-                      .like("\(searchStr)%")))
+              searchQuery = QueryBuilder
+                .select(_SelectColumn.AIRPORTNAMERESULT)
+                .from(DataSource.database(db))
+                .where(_Property.TYPE
+                    .equalTo(Expression.string("airport"))
+                    .and (Expression.property("airportname")
+                    .like(Expression.string("\(searchStr)%"))))
               ```
             
-              Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
+              Next, the query is executed using the `execute()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
               
               ```swift
               if let searchQuery = searchQuery {
@@ -1420,13 +1433,13 @@ chapters:
               
               ```swift
               let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
-              let hotelIdExpr = Expression.meta().id.from("hotelsDS")
+              let hotelIdExpr = Meta.id.from("hotelsDS")
               ```
               
               Next, we use a function expression to find document's whose `_id` property is in the `hotels` array. And build the join expression.
               
               ```swift
-              let joinExpr = Function.arrayContains(hotelsExpr, value: hotelIdExpr)
+              let joinExpr = ArrayFunction.contains(hotelsExpr, value: hotelIdExpr)
               let join = Join.join(hotelsDS).on(joinExpr);
               ```
               
@@ -1434,14 +1447,17 @@ chapters:
               
               ```swift
               let typeExpr = Expression.property("type").from("bookmarkDS")
-              
+            
               let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
               let hotelsAllColumns = _SelectColumn.ALLRESULT.from("hotelsDS")
               
-              let query = Query.select(bookmarkAllColumns, hotelsAllColumns).from(bookmarkDS).join(join).where(typeExpr.equalTo("bookmarkedhotels"));
+              let query = QueryBuilder.select(bookmarkAllColumns, hotelsAllColumns)
+                              .from(bookmarkDS)
+                              .join(join)
+                              .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
               ```
 
-              And we use the `run()` method to get the results back pass them on to the view.
+              And we use the `execute()` method to get the results back pass them on to the view.
               
               ```swift
               for result in try query.execute() {
@@ -1469,7 +1485,7 @@ chapters:
         milestones:
           - title: Full Text Search
             description: |
-              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local pre-built "travel-sample" database.
+              Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query. FTS matches are case-insenstive. In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app.
 
               In order to do FTS queries, an FTS index must be created.
               
@@ -1483,7 +1499,7 @@ chapters:
         
             
                 // For Full text search on description property of airports and hotels docs
-                try _db?.createIndex(Index.fullTextIndex(withItems: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
+                try _db?.createIndex(IndexBuilder.fullTextIndex(items: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
       
                }
               ```
@@ -1511,16 +1527,16 @@ chapters:
               Next, you will create an FTS `Expressions` using the `match()` operator.  In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property. This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties. This expression is then used in the `where` clause of the query the usual way.
               
               ```swift
-              var descExp:Expression?
+              var descExp:ExpressionProtocol?
               if let descriptionStr = descriptionStr , descriptionStr != ""{
-                  descExp = _Property.DESCRIPTION.match(descriptionStr)
+                descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
               }
               
               
-              let locationExp = _Property.COUNTRY.like("%\(locationStr)%")
-                  .or(_Property.CITY.like("%\(locationStr)%"))
-                  .or(_Property.STATE.like("%\(locationStr)%"))
-                  .or(_Property.ADDRESS.like("%\(locationStr)%"))
+              let locationExp = _Property.COUNTRY.like(Expression.string("%\(locationStr)%"))
+                .or(_Property.CITY.like(Expression.string("%\(locationStr)%")))
+                .or(_Property.STATE.like(Expression.string("%\(locationStr)%")))
+                .or(_Property.ADDRESS.like(Expression.string("%\(locationStr)%")))
               
               var searchExp:Expression = locationExp
               if  let descExp = descExp {
@@ -1528,13 +1544,12 @@ chapters:
               }
               
              
-              let hotelSearchQuery = Query
-                  .select(_SelectColumn.ALLRESULT) 
-                  .from(DataSource.database(db))
-                  .where(
-                      _Property.TYPE.equalTo("hotel")
-                       .and(searchExp)
-                      )
+              let hotelSearchQuery = QueryBuilder
+                .select(_SelectColumn.ALLRESULT) 
+                .from(DataSource.database(db))
+                .where(
+                   _Property.TYPE.equalTo(Expression.string("hotel")).and(searchExp)
+                )
               ```
               
               We build the query using the different expressions from above and transform the `ResultSet` object into a `Map` object that is passed to the `TableView`.

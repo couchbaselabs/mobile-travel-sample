@@ -189,7 +189,7 @@ namespace TravelSample.Core.ViewModels
 
         public DesignFlightBookingViewModel()
         {
-            var data = new MutableDictionary()
+            var data = new MutableDictionaryObject()
                 .SetString("destinationairport", "BBB")
                 .SetString("sourceairport", "AAA")
                 .SetString("date", DateTime.Now.ToString())

@@ -4,18 +4,20 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
+import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
+import com.couchbase.lite.FullTextExpression;
 import com.couchbase.lite.MutableArray;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
-import com.couchbase.lite.query.FullTextExpression;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 import org.json.JSONArray;
@@ -121,24 +123,24 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
 
         /* 2. Look-up Guest user document. */
         Document document = database.getDocument("user::guest");
-        MutableDocument documentCopy = null;
+
+        MutableDocument mutableCopy = null;
+
         if (document == null) {
             HashMap<String, Object> properties = new HashMap<>();
             properties.put("type", "bookmarkedhotels");
             properties.put("hotels", new ArrayList<>());
-            documentCopy = new MutableDocument("user::guest", properties);
+            mutableCopy = new MutableDocument("user::guest", properties);
         }
         else {
-            documentCopy = document.toMutable();
+            mutableCopy = document.toMutable();
         }
-
-
-        MutableArray hotels =  documentCopy.getArray("hotels").toMutable();
-        documentCopy.setArray("hotels",hotels.addString((String) hotel.get("id")));
-
+        MutableArray hotels =  mutableCopy.getArray("hotels").toMutable();
+        mutableCopy.setArray("hotels",hotels.addString((String) hotel.get("id")));
 
         try {
-            database.save(documentCopy);
+            database.save(mutableCopy);
+
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
@@ -148,21 +150,20 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void queryHotels(String location, String description) {
         Database database = DatabaseManager.getDatabase();
 
-        Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
-
+        Expression descExp = FullTextExpression.index("descFTSIndex").match(description) ;
         Expression locationExp = Expression.property("country")
-            .like("%" + location + "%")
-            .or(Expression.property("city").like("%" + location + "%"))
-            .or(Expression.property("state").like("%" + location + "%"))
-            .or(Expression.property("address").like("%" + location + "%"));
+            .like(Expression.string("%" + location + "%"))
+            .or(Expression.property("city").like(Expression.string("%" + location + "%")))
+            .or(Expression.property("state").like(Expression.string("%" + location + "%")))
+            .or(Expression.property("address").like(Expression.string("%" + location + "%")));
 
         Expression searchExp = descExp.and(locationExp);
 
-        Query hotelSearchQuery = Query
+        Query hotelSearchQuery = QueryBuilder
             .select(SelectResult.all())
             .from(DataSource.database(database))
             .where(
-                Expression.property("type").equalTo("hotel")
+                Expression.property("type").equalTo(Expression.string("hotel"))
                 .and(searchExp)
             );
 

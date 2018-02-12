@@ -94,8 +94,7 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the address of the hotel
         /// </summary>
-        public string Address => Source.GetCast<string>("address");
-
+        public string Address => Source.ContainsKey("address") ? Source["address"] as string : null;
         /// <summary>
         /// Gets the bookmark image to use for the cell
         /// </summary>
@@ -138,12 +137,12 @@ namespace TravelSample.Core.ViewModels
         /// <summary>
         /// Gets the name of the hotel
         /// </summary>
-        public string Name => Source.GetCast<string>("name");
+        public string Name => Source.ContainsKey("name")? Source["name"] as string: null;
 
         /// <summary>
         /// Gets the phone number of the hotel
         /// </summary>
-        public string PhoneNumber => Source.GetCast<string>("phone");
+        public string PhoneNumber => Source.ContainsKey("phone") ? Source["phone"] as string : null;
 
         /// <summary>
         /// Gets the source information for this hotel

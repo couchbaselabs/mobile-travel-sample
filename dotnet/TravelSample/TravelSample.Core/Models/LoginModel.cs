@@ -26,7 +26,6 @@ using Couchbase.Lite;
 using Couchbase.Lite.DI;
 using Couchbase.Lite.Query;
 using Couchbase.Lite.Sync;
-using Microsoft.Extensions.DependencyInjection;
 using TravelSample.Core.Services;
 
 namespace TravelSample.Core.Models
@@ -39,7 +38,7 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private const string DbName = "travel-sample";
-        private static readonly Uri SyncUrl = new Uri("blip://localhost:4984");
+        private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
 
         #endregion
 
@@ -55,9 +54,10 @@ namespace TravelSample.Core.Models
         {
             var isGuest = username == "guest";
             var options = new DatabaseConfiguration();
-            
+
             // Borrow this functionality from Couchbase Lite
-            var defaultDirectory = Service.Provider.GetService<IDefaultDirectoryResolver>().DefaultDirectory();
+            var defaultDirectory = Service.GetInstance<IDefaultDirectoryResolver>().DefaultDirectory();
+                //.Provider.GetService<IDefaultDirectoryResolver>().DefaultDirectory();
             var userFolder = Path.Combine(defaultDirectory, username);
             if (!Directory.Exists(userFolder)) {
                 Directory.CreateDirectory(userFolder);
@@ -68,9 +68,8 @@ namespace TravelSample.Core.Models
             Debug.WriteLine($"Will open/create DB at path {userFolder}");
             if (!Database.Exists(DbName, userFolder)) {
                 // Load prebuilt database to path
-                var copier = Service.Provider.GetService<IDatabaseSeedService>();
+                var copier = Couchbase.Lite.DI.Service.GetInstance<IDatabaseSeedService>();
                 await copier.CopyDatabaseAsync(userFolder);
-
                 db = new Database(DbName, options);
                 CreateDatabaseIndexes(db);
             } else {
@@ -88,15 +87,15 @@ namespace TravelSample.Core.Models
         private void CreateDatabaseIndexes(Database db)
         {
             // For searches on type property
-            db.CreateIndex("type", Index.ValueIndex(ValueIndexItem.Expression(Expression.Property("type"))));
+            db.CreateIndex("type", IndexBuilder.ValueIndex(ValueIndexItem.Expression(Expression.Property("type"))));
 
             // For full text searches on airports and hotels
             db.CreateIndex("airportName",
-                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("airportname"))));
+                           IndexBuilder.FullTextIndex(FullTextIndexItem.Property("airportname")));
             db.CreateIndex("description",
-                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("description"))));
+                           IndexBuilder.FullTextIndex(FullTextIndexItem.Property("description")));
             db.CreateIndex("name", 
-                Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("name"))));
+                           IndexBuilder.FullTextIndex(FullTextIndexItem.Property("name")));
         }
 
         private Replicator StartReplication(string username, string password, Database db)
@@ -106,7 +105,7 @@ namespace TravelSample.Core.Models
             }
 
             var dbUrl = new Uri(SyncUrl, DbName);
-            var config = new ReplicatorConfiguration(db, dbUrl) {
+            var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
                 ReplicatorType = ReplicatorType.PushAndPull,
                 Continuous = true,
                 Authenticator = new BasicAuthenticator(username, password),

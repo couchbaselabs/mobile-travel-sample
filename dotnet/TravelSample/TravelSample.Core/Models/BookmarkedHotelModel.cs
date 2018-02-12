@@ -78,18 +78,20 @@ namespace TravelSample.Core.Models
             var bookmarkedHotels = new Hotels();
             var bookmarkSource = DataSource.Database(UserSession.Database).As(BookmarkDbName);
             var hotelsSource = DataSource.Database(UserSession.Database).As(HotelsDbName);
-            var join = Join.DefaultJoin(hotelsSource).On(JoinExpression);
+            var join = Join.InnerJoin(hotelsSource).On(JoinExpression);
 
-            using (var query = Query
+            using (var query = QueryBuilder
                 .Select(AllBookmarks, AllHotels)
                 .From(bookmarkSource)
                 .Join(join)
-                .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
-                using (var results = query.Execute()) {
-                    foreach (var result in results) {
-                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
-                    }
+                   .Where(TypeProperty.EqualTo(Expression.String("bookmarkedhotels")))) {
+
+                var results = query.Execute().ToList();
+
+                foreach (var result in results ){
+                     bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
                 }
+
             }
 
             return bookmarkedHotels;

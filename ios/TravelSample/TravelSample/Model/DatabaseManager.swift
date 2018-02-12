@@ -32,8 +32,8 @@ class DatabaseManager {
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    fileprivate let kRemoteSyncUrl = "blip://localhost:4984"
-   // fileprivate let kRemoteSyncUrl = "blip://54.148.83.39:4984"
+    fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
+   // fileprivate let kRemoteSyncUrl = "ws://54.148.83.39:4984"
    
     
     fileprivate var _db:Database?
@@ -204,16 +204,13 @@ extension DatabaseManager {
     
     func createDatabaseIndexes() throws{
         // For searches on type property
-    
-        try _db?.createIndex(Index.valueIndex(withItems: ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
-        try _db?.createIndex(Index.valueIndex(withItems:ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
-        try _db?.createIndex(Index.valueIndex(withItems:ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
-
+        try _db?.createIndex(IndexBuilder.valueIndex(items:  ValueIndexItem.expression(Expression.property("type"))), withName: "typeIndex")
+        try _db?.createIndex(IndexBuilder.valueIndex(items:ValueIndexItem.expression(Expression.property("name"))), withName: "nameIndex")
+        try _db?.createIndex(IndexBuilder.valueIndex(items:ValueIndexItem.expression(Expression.property("airportname"))), withName: "airportIndex")
     
         // For Full text search on airports and hotels
-        try _db?.createIndex(Index.fullTextIndex(withItems: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
+        try _db?.createIndex(IndexBuilder.fullTextIndex(items: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
         
-   
     }
 
     
@@ -242,19 +239,19 @@ extension DatabaseManager {
         
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
-        var config = ReplicatorConfiguration(withDatabase: db, targetURL: dbUrl)
+        let config = ReplicatorConfiguration.init(database: db, target: URLEndpoint.init(url:dbUrl))
     
         config.replicatorType = .pushAndPull
-        config.continuous = true
-        config.authenticator = BasicAuthenticator(username: user, password: password)
+        config.continuous =  true
+        config.authenticator =  BasicAuthenticator(username: user, password: password)
+
         
         // This should match what is specified in the sync gateway config
         // Only pull documents from this user's channel
         let userChannel = "channel.\(user)"
         config.channels = [userChannel]
         
-        
-        _pushPullRepl = Replicator.init(withConfig: config)
+        _pushPullRepl = Replicator.init(config: config)
         
         _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
             let s = change.status
@@ -335,8 +332,8 @@ extension DatabaseManager:ConflictResolver {
             // function to sync to clients
             
             // Just use the default resolver
-            
-            return DatabaseConfiguration().conflictResolver?.resolve(conflict: conflict)
+           
+            return DatabaseConfiguration.init().conflictResolver.resolve(conflict: conflict)
             
         }
         else {

@@ -20,7 +20,7 @@
 // 
 using System;
 using Couchbase.Lite.DI;
-using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.DependencyInjection;
 using TravelSample.Core.Services;
 using TravelSample.UWP.Services;
 using Windows.ApplicationModel;
@@ -43,10 +43,8 @@ namespace TravelSample.UWP
             Couchbase.Lite.Support.UWP.Activate();
 
             // Piggy back onto Couchbase's dependency injection
-            Service.RegisterServices(collection =>
-            {
-                collection.AddSingleton<IDatabaseSeedService>(p => new DatabaseSeedService());
-            });
+            Service.Register<IDatabaseSeedService>(new DatabaseSeedService());
+         
         }
 
         /// <summary>

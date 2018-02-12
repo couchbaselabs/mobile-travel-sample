@@ -11,10 +11,10 @@ chapters:
 
               It includes the following components -
               - **Client Side **
-                - Travel Mobile App : This is a .Net app (UWP + Xamarin for iOS and Android) that is linked with Couchbase Lite 2.0 (Developer Preview)
+                - Travel Mobile App : This is a .Net app (UWP + Xamarin for iOS and Android) that is linked with Couchbase Lite 2.0 (Prerelease)
               - **Server Side **
-                - Couchbase Server v5.0
-                - Sync Gateway v1.5
+                - Couchbase Server v5.0.1
+                - Sync Gateway v2.0(Prerelease)
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
               For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
@@ -65,7 +65,8 @@ chapters:
               </tr>
               <tr>
                 <td>Xamarin Android </td>
-                <td>8.1</td> 
+                <td>8.0+</td> 
+
                 <td>4.4 (API 19)</td>
               </tr>
               </table>
@@ -112,7 +113,7 @@ chapters:
     
       
       
-      - title: Couchbase Server 5.0
+      - title: Couchbase Server 5.0.1
         milestones:
           
           - title: Manual
@@ -121,7 +122,7 @@ chapters:
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/csharp#/0/3/1) section**
 
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0 of Couchbase Server
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png)
     
@@ -159,13 +160,13 @@ chapters:
                 ```
               - To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following.
                 ```bash
-                $ docker pull connectsv/server-internal:sandbox
+                $ docker pull connectsv/server:5.0.1-enterprise
                 ```
               
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server-internal:sandbox
+                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.0.1-enterprise
                 ```
               
               - You can view the logs at any time by running the following command
@@ -243,8 +244,8 @@ chapters:
                ```json
                {
                 "couchdb":"Welcome",
-                "vendor":{"name":"Couchbase Sync Gateway","version":1.5},
-                "version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"
+                "vendor":{"name":"Couchbase Sync Gateway","version":2.0},
+                "version":"Couchbase Sync Gateway/2.0(...)"
                }
                ```
             
@@ -294,15 +295,15 @@ chapters:
           #       ```bash
           #       $ docker-compose up
           #       ```
-      - title: Sync Gateway 1.5
+      - title: Sync Gateway 2.0
         milestones:
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 1.5 of the Sync Gateway
+              In this lesson, you will install and launch version 2.0 of the Sync Gateway
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/csharp#/0/4/1) section**
              
-              - Install Sync Gateway 1.5 from [here](https://www.couchbase.com/downloads) on your platform of choice
+              - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
@@ -320,7 +321,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+                 {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
 
@@ -335,7 +336,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway-internal:1.5.0-community
+                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -350,7 +351,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway-internal:1.5.0-community -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
               
               - You can view the logs at any time by running the following command
@@ -367,7 +368,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":1.5},"version":"Couchbase Sync Gateway/1.5.0(594;e78dbf1)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
               ```
 
           - title: Cloud
@@ -466,7 +467,8 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-              ```bash
+
+              ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
@@ -489,13 +491,13 @@ chapters:
               - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
-                $ docker pull connectsv/try-cb-python
+                $ docker pull connectsv/try-cb-python:5.0.1-server
                 ```
               
                - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python
+                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.0.1-server
                 ```
 
                 You should then see the following in the console output.
@@ -563,7 +565,7 @@ chapters:
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login_sync.png)
               
               - **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
-              - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode.
+              - **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway.
               
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png)
               Throughout the next lessons, you will be switching between those two modes to test different functionalities. It's worth noting that the data model is slightly different between those two modes. Let's review the data model for each one.
@@ -576,10 +578,12 @@ chapters:
               - `airport`
               - `hotel`
               - `route`
-              - `landmark`
               - `user`
               
-              Except for the **user** document (right on the diagram below), most of the documents are static/semi-static in nature. 
+              Except for the **user** document (right on the diagram below), the rest of documents are static/semi-static in nature.
+              In the demo app, 
+              - The `hotel` and `airport' documents are bundled into a prebuilt couchbase lite database and loaded when the app launches.We will discuss more about locading and using prebuilt databases in the [Pre-built Database](http://docs.couchbase.com/tutorials/travel-sample/develop/csharp/#/2/4/0)section of the tutorial.
+              - The `airline`, `airport`,`hotel` and `route` documents are NOT synchornized to the mobile app. Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
               
               ![](https://cl.ly/40330Z0M1k3F/models.png)
                 
@@ -788,20 +792,20 @@ chapters:
               
               Next, add the ID of the passed hotel to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document, or remove it based on the current action.
               ```csharp
-              var bookmarked = doc.GetArray("hotels") ?? new MutableArray();
+              var bookmarked = doc.GetArray("hotels") ?? new MutableArrayObject();
               if (hotel.IsBookmarked) {
                   // Remove the bookmark
-                  for (int i = 0; i < bookmarked.Count; i++) {
-                      if (bookmarked[i].ToString() == hotel.Source["id"] as string) {
+                  for (int i = 0; i < bookmarked.Count(); i++) {
+                      if (bookmarked.GetString(i) == (hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null) ){
                           bookmarked.RemoveAt(i);
                           break;
                       }
                   }
               } else {
-                    bookmarked.Add(hotel.Source["id"] as string);
+                  bookmarked.AddString(hotel.Source.ContainsKey("id") ? hotel.Source["id"] as String : null);
               }
 
-              doc.Set("hotels", bookmarked);
+              doc.SetArray("hotels", bookmarked);
               UserSession.Database.Save(doc);
               ```
 
@@ -809,9 +813,9 @@ chapters:
               ```csharp
               // Add the hotel details document
               if (hotel.Source["id"] is string id) {
-                  using (var detailDoc = UserSession.Database.GetDocument(id).ToMutable() ?? new MutableDocument(id)) {
-                      detailDoc.Set(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
-                      UserSession.Database.Save(detailDoc);
+                  using (var detailDoc = UserSession.Database.GetDocument(id)?.ToMutable() ?? new MutableDocument(id)) {
+                      detailDoc.SetData(hotel.Source.ToDictionary(x => x.Key, x => x.Value));
+                        UserSession.Database.Save(detailDoc);
                   }
               }
               ```
@@ -1031,6 +1035,24 @@ chapters:
               "enable_shared_bucket_access":true
               ```
 
+              You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+              In our demo, we will only be synchornizing the "user" document. So every other document type is ignored.
+              ```javascript
+              "import_filter": `
+              function(doc) {
+                /* Just ignore all the static travel-sample files */
+                if (doc._deleted == true ) {
+                  return true;
+                 }
+                if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+                  return false;
+                } 
+              
+                return true;
+              }
+             `,
+             ```
+
           - title: Replication
             description: |
               Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server)  database.
@@ -1057,12 +1079,13 @@ chapters:
               ```
               First, Do some checks to confirm the validity of the user credentials 
               ```csharp
-              if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)) {
+              if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)){
                 throw new InvalidOperationException("User credentials not provided");
               }
               ```
               Create the URL of the Sync Gateway
               ```csharp
+              private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
               var dbUrl = new Uri(SyncUrl, DbName);
               ```
 
@@ -1070,7 +1093,7 @@ chapters:
               The `ReplicatorType` in the Replicator Config specifies the type of replication. In the code snippet in the Travel  app, it is `PushAndPull` indicating that both push and pull replication is enabled. The `Continuous` mode is set to `true` in the Travel app.
 
               ```csharp
-              var config = new ReplicatorConfiguration(db, dbUrl) {
+              var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
                 ReplicatorType = ReplicatorType.PushAndPull,
                 Continuous = true,
                 ...
@@ -1104,13 +1127,13 @@ chapters:
               A change listener callback block is registered to listen for replication changes. Every time, there is a push or pull change, the callback is invoked. 
 
               ``` csharp
-              repl.StatusChanged += (sender, args) =>
+              repl.AddChangeListener((sender, args) =>
               {
-                  var s = args.Status;
-                  Debug.WriteLine(
-                      $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {args.LastError?.Message ?? "<none>"}, activity = {s.Activity}");
-              };
-                    
+                var s = args.Status;
+                Debug.WriteLine(
+                    $"PushPull Replicator: {s.Progress.Completed}/{s.Progress.Total}, error {s.Error?.Message ?? "<none>"}, activity = {s.Activity}");
+
+              });      
               ```
               Start the Replication
               ```csharp
@@ -1257,21 +1280,18 @@ chapters:
               The query below **selects** the "name" property in documents **from** the database **where** the **type** property is equal to **airport** and the "airportname" property is equal to the search term.
           
               ```csharp
-              searchQuery = Query
-                      .Select(AirportNameResult)
-                      .From(DataSource.Database(UserSession.Database))
-                      .Where(TypeProperty
-                          .EqualTo("airport")
-                          .And(AirportNameProperty
-                              .Like($"{searchStr}%")));
+               searchQuery = QueryBuilder
+                        .Select(AirportNameResult)
+                        .From(DataSource.Database(UserSession.Database))
+                        .Where(TypeProperty.EqualTo(Expression.String("airport"))
+                            .And(AirportNameProperty.Like(Expression.String($"{searchStr}%"))));
               ```
             
               Next, the query is executed using the `Run()` method. Each row in the result will contain a single property called "airportname".
               
               ```csharp
-              using (var results = searchQuery.Execute()) {
-                  return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
-              }
+              var results = searchQuery.Execute().ToList();
+              return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
 
               // Don't forget to Dispose the query object when finished       
               ```
@@ -1348,20 +1368,21 @@ chapters:
               Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
               
               ```csharp
-              var query = Query
-                  .Select(AllBookmarks, AllHotels)
-                  .From(bookmarkSource)
-                  .Joins(join)
-                  .Where(TypeProperty.EqualTo("bookmarkedhotels"))
+              using (var query = QueryBuilder
+                .Select(AllBookmarks, AllHotels)
+                .From(bookmarkSource)
+                .Join(join)
+                   .Where(TypeProperty.EqualTo(Expression.String("bookmarkedhotels")))) {
+
               ```
 
               And we use the `Run()` method to get the results back pass them on to the view.
               
               ```csharp
-              using (var results = query.Execute()) {
-                    foreach (var result in results) {
-                        bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
-                    }
+              var results = query.Execute().ToList();
+
+              foreach (var result in results ){
+                   bookmarkedHotels.Add(result.GetDictionary(HotelsDbName).ToDictionary(x => x.Key, x => x.Value));
               }
               ```
                
@@ -1398,7 +1419,7 @@ chapters:
                   ...
 
                   db.CreateIndex("description",
-                      Index.FTSIndex(FTSIndexItem.Expression(Expression.Property("description"))));
+                           IndexBuilder.FullTextIndex(FullTextIndexItem.Property("description")));
                   
                   ...
               }
@@ -1425,10 +1446,11 @@ chapters:
               }
               
               
-              var locationExp = CountryProperty.Like($"%{location}%")
-                  .Or(CityProperty.Like($"%{location}%"))
-                  .Or(StateProperty.Like($"%{location}%"))
-                  .Or(AddressProperty.Like($"%{location}%"));
+              var locationExp = CountryProperty.Like(Expression.String($"%{location}%"))
+                                    .Or(CityProperty.Like(Expression.String($"%{location}%")))
+                                    .Or(StateProperty.Like(Expression.String($"%{location}%")))
+                                    .Or(AddressProperty.Like(Expression.String($"%{location}%")));
+
               
               var searchExp = locationExp;
               if (descExp != null) {
@@ -1436,18 +1458,20 @@ chapters:
               }
               
              
-              using (var hotelSearchQuery = Query
-                  .Select(SelectResult.All())
-                  .From(DataSource.Database(UserSession.Database))
-                  .Where(TypeProperty.EqualTo("hotel").And(searchExp))) {
-                  ...
+              using (var hotelSearchQuery = QueryBuilder
+                .Select(SelectResult.All())
+                .From(DataSource.Database(UserSession.Database))
+                   .Where(TypeProperty.EqualTo(Expression.String("hotel")).And(searchExp))) {
+                    ...
+
               }
               ```
               
               We build the query using the different expressions from above and transform the `ResultSet` object into a `List` object that is passed to the `ListView`.
               
               ```csharp
-              using (var results = hotelSearchQuery.Execute()) {
+              var results = hotelSearchQuery.Execute().ToList();
+                   
                     var hotels = results.Select(x => x.GetDictionary(0).ToDictionary(y => y.Key, y => y.Value) as Hotel).ToList();
                     return Task.FromResult(hotels);
               }

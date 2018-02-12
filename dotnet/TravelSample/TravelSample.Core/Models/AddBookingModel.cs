@@ -81,7 +81,7 @@ namespace TravelSample.Core.Models
             }
 
             using (var flightDocument = UserSession.Database.GetDocument(userDocID).ToMutable()) {
-                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArray();
+                var documentBookings = flightDocument.GetArray("flights") ?? new MutableArrayObject();
                 foreach (var b in bookings) {
                     b.Source["date"] = $"{b.DepartureDate} {b.Source["utc"]}";
                     documentBookings.AddValue(b.Source);
@@ -130,39 +130,39 @@ namespace TravelSample.Core.Models
             IQuery searchQuery;
             switch (searchStr.Length) {
                 case (int)AirportCodeLength.FAA:
-                    searchQuery = Query
+                    searchQuery = QueryBuilder
                         .Select(AirportNameResult)
                         .From(DataSource.Database(UserSession.Database))
                         .Where(TypeProperty
-                            .EqualTo("airport")
+                               .EqualTo(Expression.String("airport"))
                             .And(FaaProperty
-                                .EqualTo(searchStr.ToUpperInvariant())))
+                                 .EqualTo(Expression.String(searchStr.ToUpperInvariant()))))
                         .OrderBy(Ordering.Property("datfield").Ascending());
                     break;
                 case (int)AirportCodeLength.ICAO:
-                    searchQuery = Query
+                    searchQuery = QueryBuilder
                         .Select(AirportNameResult)
                         .From(DataSource.Database(UserSession.Database))
                         .Where(TypeProperty
-                            .EqualTo("airport")
+                               .EqualTo(Expression.String("airport"))
                             .And(IcaoProperty
-                                .EqualTo(searchStr.ToUpperInvariant())));
+                                 .EqualTo(Expression.String(searchStr.ToUpperInvariant()))));
                     break;
                 default:
-                    searchQuery = Query
+                    searchQuery = QueryBuilder
                         .Select(AirportNameResult)
                         .From(DataSource.Database(UserSession.Database))
                         .Where(TypeProperty
-                            .EqualTo("airport")
+                               .EqualTo(Expression.String("airport"))
                             .And(AirportNameProperty
-                                .Like($"{searchStr}%")));
+                                 .Like(Expression.String($"{searchStr}%"))));
                     break;
             }
 
             try {
-                using (var results = searchQuery.Execute()) {
-                    return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
-                }
+                var results = searchQuery.Execute().ToList();
+                return results.Select(x => x.GetString("airportname")).Where(x => x != null).ToList();
+                
             } finally {
                 searchQuery.Dispose();
             }

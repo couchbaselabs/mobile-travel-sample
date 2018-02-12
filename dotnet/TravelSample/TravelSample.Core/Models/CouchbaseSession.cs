@@ -117,14 +117,14 @@ namespace TravelSample.Core.Models
                 throw new InvalidOperationException("This method is only for the guest user");
             }
 
-            using (var searchQuery = Query
+            using (var searchQuery = QueryBuilder
                 .Select(DocIdResult)
                 .From(DataSource.Database(Database))
-                .Where(TypeProperty.EqualTo("bookmarkedhotels"))) {
-                using (var results = searchQuery.Execute()) {
-                    var docID = results.FirstOrDefault()?.GetString("id");
-                    return docID != null ? Database.GetDocument(docID) : null;
-                }
+                   .Where(TypeProperty.EqualTo(Expression.String("bookmarkedhotels")))) {
+                var results = searchQuery.Execute().ToList() ;
+                var docID = results.FirstOrDefault()?.GetString("id");
+                return docID != null ? Database.GetDocument(docID) : null;
+
             }
         }
 
@@ -134,13 +134,13 @@ namespace TravelSample.Core.Models
 
         private string GetUserDocID()
         {
-            using (var userQuery = Query
+            using (var userQuery = QueryBuilder
                 .Select(DocIdResult)
                 .From(DataSource.Database(Database))
-                .Where(UsernameProperty.EqualTo(Username))) {
-                using (var results = userQuery.Execute()) {
-                    return results.FirstOrDefault()?.GetString("id");
-                }
+                   .Where(UsernameProperty.EqualTo(Expression.String(Username)))) {
+                var results = userQuery.Execute().ToList();
+                return results.FirstOrDefault()?.GetString("id");
+
             }
         }
 

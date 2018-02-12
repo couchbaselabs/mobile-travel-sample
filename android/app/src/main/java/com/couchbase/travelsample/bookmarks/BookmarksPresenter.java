@@ -13,12 +13,12 @@ import com.couchbase.lite.Meta;
 import com.couchbase.lite.MutableArray;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryBuilder;
+import com.couchbase.lite.QueryChange;
+import com.couchbase.lite.QueryChangeListener;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
-import com.couchbase.lite.internal.query.LiveQuery;
-import com.couchbase.lite.query.QueryChange;
-import com.couchbase.lite.query.QueryChangeListener;
 import com.couchbase.travelsample.util.DatabaseManager;
 
 import java.util.ArrayList;
@@ -43,6 +43,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
         Expression hotelIdExpr = Meta.id.from("hotelDS");
 
+        ArrayFunction.contains(Expression.property("public_likes"),Expression.string("Yasmeen Lemke"));
+
         Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
         Join join = Join.join(hotelsDS).on(joinExpr);
 
@@ -51,16 +53,16 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
         SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
 
-        Query query = Query
+        Query query = QueryBuilder
             .select(bookmarkAllColumns, hotelsAllColumns)
             .from(bookmarkDS)
             .join(join)
-            .where(typeExpr.equalTo("bookmarkedhotels"));
+            .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
 
         query.addChangeListener(new QueryChangeListener() {
             @Override
             public void changed(QueryChange change) {
-                ResultSet rows = change.getRows();
+                ResultSet rows = change.getResults();
 
                 List<Map<String, Object>> data = new ArrayList<>();
                 Result row = null;
