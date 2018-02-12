@@ -1049,9 +1049,9 @@ chapters:
                 } 
               
                 return true;
-              }
-             `,
-             ```
+              } `
+
+              ```
 
           - title: Replication
             description: |
