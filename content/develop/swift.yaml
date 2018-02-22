@@ -278,7 +278,7 @@ chapters:
         milestones:
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 1.5 of the Sync Gateway
+              In this lesson, you will install and launch version 2.0 of the Sync Gateway
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/swift#/0/4/1) section**
              
