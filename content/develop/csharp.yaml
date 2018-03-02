@@ -454,30 +454,36 @@ chapters:
               ```
 
               - if `virtualenv` is not installed , you can use `apt-get` or `pip` to install it
+              
               **Windows Users** 
               If you are developing on Windows, pip.exe will be found in "Scripts" sub directory under the Python installation directory. Add the path to the "Scripts" folder to the system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
 
               Then run the following command to install virtualenv
+              
               Run the following command
               ```bash
               $ pip install virtualenv
               ```
 
               **Other Platforms**
+              
               Run the following command
               ```bash
               $ sudo pip install virtualenv
               ```
 
               - Specify the folder to set up your virtual environment
+              
               **Windows Users** 
+              
               Run the following command. If you run into permission issues, you may have to run the command as admin.
               ```bash
               $ python -m virtualenv -v /path/to/try-cb-python/
               ```
 
               **Other Platforms**
-               Run the following command
+              
+              Run the following command
               ```bash
               $ virtualenv /path/to/try-cb-python/
               ```
