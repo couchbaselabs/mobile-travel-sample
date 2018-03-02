@@ -428,9 +428,9 @@ chapters:
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/csharp#/0/2/1) section**
         
-              - Install `libcouchbase` which is the Core C SDK used by the Python SDK
+              - **PREREQUISITE** Install **libcouchbase** which is the Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
-        
+
               - Clone the 5.0 branch of Travel Sample web app repo
               ```bash
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
