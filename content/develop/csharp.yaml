@@ -79,7 +79,8 @@ chapters:
               - Downloadable from [python.org](https://www.python.org/downloads/)
 
               #### Docker
-              You need this only if you use the "Docker" installation option
+              You need this only if you use the "Docker" installation option. 
+              **Windows Users** : If you are developing on Windows, you may need to install Docker as Admin user 
               - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
               #### git
@@ -87,13 +88,14 @@ chapters:
               
               ## Try it out
               
-              - Open Visual Studio
+              - Open Visual Studio and make confirm it launches
               - Verify python installation
                 - Run the following command from your terminal command line
                 ```bash
                 python --version
                 ```
                 You should see the version of python displayed
+                **Windows Users** : If you are having trouble running the above command, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
               - Verify git installation
                 - Run the following command from your terminal command line
                 ```bash
@@ -445,24 +447,64 @@ chapters:
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
               ```         
 
-              - We will run the Travel Web App in a Python virtual environment. 
+              - We will run the Travel Web App in a Python [virtual environment](https://virtualenv.pypa.io/en/stable/). 
                 First, check if `virtualenv` is installed on your system
               ```bash
               $ virtualenv --version
               ```
 
               - if `virtualenv` is not installed , you can use `apt-get` or `pip` to install it
+              **Windows Users** 
+              If you are developing on Windows, pip.exe will be found in "Scripts" sub directory under the Python installation directory. Add the path to the "Scripts" folder to the system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
+
+              Then run the following command to install virtualenv
+              Run the following command
+              ```bash
+              $ pip install virtualenv
+              ```
+
+              **Other Platforms**
+              Run the following command
               ```bash
               $ sudo pip install virtualenv
               ```
 
-              - Specify the folder for your virtual environment
+              - Specify the folder to set up your virtual environment
+              **Windows Users** 
+              Run the following command. If you run into permission issues, you may have to run the command as admin.
               ```bash
-              $ virtualenv /path/to/try-cb-python
+              $ python -m virtualenv -v /path/to/try-cb-python/
               ```
-              - Activate your environment. You should see a prompt as shown below
+
+              **Other Platforms**
+               Run the following command
               ```bash
-              $ source /path/to/try-cb-python/bin/activate
+              $ virtualenv /path/to/try-cb-python/
+              ```
+
+              - Activate your environment by running "activate". 
+
+              **Windows Users** 
+              Run the following commands 
+              ```bash
+              $ cd  /path/to/try-cb-python/Scripts
+              $ activate
+              ```
+             
+              You should see a prompt similar to one shown below
+               ```bash
+              $ cd  /path/to/try-cb-python/Scripts
+              $ activate
+              ```
+
+              **Other Platforms**
+              Run the following command
+              ```bash
+              (try-cb-python) c:\Users\priya\try-cb-python\Scripts> 
+              ```
+
+              You should see a prompt similar to one shown below
+              ```bash
               $ (try-cb-python) Macintosh-2:try-cb-python mactester$ 
               ```
 

@@ -422,7 +422,7 @@ chapters:
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
               ```         
 
-              - We will run the Travel Web App in a Python virtual environment. 
+              - We will run the Travel Web App in a Python [virtual environment](https://virtualenv.pypa.io/en/stable/). 
                 First, check if `virtualenv` is installed on your system
               ```bash
               $ virtualenv --version
