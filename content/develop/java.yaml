@@ -17,9 +17,7 @@ chapters:
                 - Sync Gateway v2.0 (Prerelease)
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
-              For the Develop portion of the workshop, you will be developing, building and testing the Travel Mobile App on your local machine. 
-              
-              For the server side components, you have three options
+              **For the server side components, you have three installation options** 
 
               **NOTE** : Make sure you use the same installation option for _all_ server components. i.e. if you selected Docker (Local), then you must use docker for all of them and so on.
 
@@ -29,7 +27,8 @@ chapters:
 
           - title: Pre-requisites
             description: |
-              To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way, and advanced configurations are discussed in the Deploy section but it is more convenient to start a development environment with components running locally.  
+              To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way but it is more convenient to start a development environment with components running locally.  
+ 
               
               #### Android
               - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
@@ -38,8 +37,13 @@ chapters:
               - Android Build Tools 26
               - JDK 8
             
-              #### Python (V 2.7 and above)
+              #### Python (v2.7 and above)
+              You need this only if you use the "Manual" installation option
               - Downloadable from [python.org](https://www.python.org/downloads/)
+
+              #### Docker
+              You need this only if you use the "Docker" installation option
+              - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
               #### git
               - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
