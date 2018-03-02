@@ -85,7 +85,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         String docId = "user::demo";
         Database database = DatabaseManager.getDatabase();
         MutableDocument document = database.getDocument(docId).toMutable();
-        MutableArray bookings = document.getArray("flights").toMutable();
+        MutableArray bookings = document.getArray("flights");
         if (bookings == null) {
             bookings = new MutableArray();
         }
