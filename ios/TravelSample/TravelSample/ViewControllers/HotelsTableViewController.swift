@@ -107,6 +107,8 @@ extension HotelsTableViewController {
                     self?.hotels = hotels
                     self?.tableView.reloadData()
                 default:
+                    self?.showAlertWithTitle(NSLocalizedString("Failed to Fetch Hotel Info!", comment: ""), message: error?.localizedDescription ?? "")
+                    
                     print("Error when fetching hotels \(error?.localizedDescription)")
                 
                 }
@@ -119,6 +121,8 @@ extension HotelsTableViewController {
                     self?.hotels = hotels
                     self?.tableView.reloadData()
                 default:
+                    self?.showAlertWithTitle(NSLocalizedString("Failed to Fetch Hotel Info!", comment: ""), message: error?.localizedDescription ?? "")
+                    
                     print("Error when fetching hotels \(error?.localizedDescription)")
                     
                 }
