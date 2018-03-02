@@ -118,11 +118,13 @@ chapters:
           
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 5.0 of the Couchbase Server.
+              In this lesson, you will install and launch version 5.0.1 of the Couchbase Server.
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/csharp#/0/3/1) section**
 
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.0/install/install-intro.html) to install the same. 
+                - You will find v5.0.1 in the "Previous Versions" tab. Note that if you want to, you can also try with the latest version (v 5.1.0) of Couchbase server although there may be slight updates to the Admin UI from what's referred to below.
+
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png)
     
