@@ -29,8 +29,9 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way but it is more convenient to start a development environment with components running locally.  
 
-              **Windows Users** : If you are developing on Windows, you must use a Windows 10 machine
-
+              **Windows Users** : 
+              - If you are developing on Windows, you must use a Windows 10 machine
+            
               #### Visual Studio 2017
               - Downloadable from [visualstudio.com](https://www.visualstudio.com/downloads/)
               <html>
@@ -73,6 +74,10 @@ chapters:
               </tr>
               </table>
               </html>
+
+              #### Visual C++ 2017
+              - Windows users must install Microsoft Visual C++ Compiler for Python Downloadable from [downloads](https://www.microsoft.com/en-us/download/details.aspx?id=44266)
+               
             
               #### Python (v2.7 and above)
               You need this only if you use the "Manual" installation option
@@ -440,6 +445,9 @@ chapters:
               **If you would prefer to use a docker container instead, please proceed to the [docker](/develop/csharp#/0/2/1) section**
         
               - **PREREQUISITE** : First, install **libcouchbase** Core C SDK used by the Python SDK
+                **Windows Users**
+
+                **Other Platforms**
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
 
               - Clone the 5.0 branch of Travel Sample web app repo
