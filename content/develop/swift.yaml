@@ -649,14 +649,14 @@ chapters:
               
               Mobile App Developers using Couchbase Lite  should typically never have to directly read or write the _id property. You would query the meta().id field to fetch the document ID. We will learn more about this in our lesson on Queries.
 
-              ## Try it out
+              # ## Try it out
               
-              - Confirm that the sync gateway is running
-              - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
-              ```bash
-              curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
-              ```
-              - Confirm that "_id" property in the JSON response is "airline_137"
+              # - Confirm that the sync gateway is running
+              # - Run the following `curl` command on your terminal. If you used cloud install, replace `localhost` with the IP Address of the Sync Gateway cloud instance in command below. The Authorization credentials correspond to a pre-defined "admin" user . We will learn more about user configuration in the [Access Control](/tutorials/travel-sample/develop/swift#/2/2/1) section
+              # ```bash
+              # curl -X GET http://localhost:4984/travel-sample/airline_137 -H 'authorization: Basic YWRtaW46cGFzc3dvcmQ='
+              # ```
+              # - Confirm that "_id" property in the JSON response is "airline_137"
 
   - title: Develop
     lessons:
