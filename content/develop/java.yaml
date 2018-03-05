@@ -54,7 +54,8 @@ chapters:
               - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
               #### git
-              - Downloadable from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+              - Create a [free github account](https://github.com) if you don't already have one
+              - git can be downloaded from [git-scm.org](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
               
               ## Try it out
               
@@ -416,7 +417,49 @@ chapters:
               We will use the Python version of the [Travel Sample Web Backend ](https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html) which uses the Couchbase Python SDK to with with Couchbase Server Query Services.
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](/tutorials/travel-sample/develop/java#/0/2/1) section**
+
+              **Windows Users **
+              The instructions in this section are for Windows users. Scroll to "Other Platforms" section for instructions for other platforms. 
+              - Install the Couchbase Python SDK Installer. This can be downloaded from [Pypi](https://pypi.python.org/pypi/couchbase) website. Scroll to the section which lists the relevant installers
+               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/win_py_installer.png)
+              - Clone the 5.0 branch of Travel Sample web app repo
+              ```bash
+              $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+              ```         
+
+              - We will run the Travel Web App in a Python [virtual environment](https://virtualenv.pypa.io/en/stable/). 
+                First, check if `virtualenv` is installed on your system
+              ```bash
+              $ virtualenv --version
+              ```
+
+              - Verify pip installation
+              If you are developing on Windows, pip.exe will be found in "Scripts" sub directory under the Python installation directory. Add the path to the "Scripts" folder to the system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
+              Verify that pip is recognized by typing the following in the cmd terminal. You should see the help menu
+              ```bash
+              pip
+              ```
+
+              - The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
+              ``` bash
+              cd c:\path\to\try-cb-python
+              pip install -r requirements.txt
+              ```
         
+              - Update the travel.py file to reflect the username and password that you have used during Couchbase Server install. This defaults to "Administrator" and "password"
+              ``` python
+              DEFAULT_USER = "Administrator"
+              PASSWORD = 'password' 
+              ```
+
+              - Now launch the Travel Web App
+
+              ``` bash
+              python travel.py
+              * Running on http://localhost:8080/ (Press CTRL+C to quit)
+              ```
+
+              **Other Platforms **
               - **PREREQUISITE** : First, install **libcouchbase** Core C SDK used by the Python SDK
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice
    
