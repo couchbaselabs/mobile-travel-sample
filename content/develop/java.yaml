@@ -51,6 +51,7 @@ chapters:
 
               #### Docker
               You need this only if you use the "Docker" installation option
+              - **Windows Users** : If you are developing on Windows, you may need to install Docker as Admin user 
               - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
               #### git
@@ -427,12 +428,6 @@ chapters:
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
               ```         
 
-              - We will run the Travel Web App in a Python [virtual environment](https://virtualenv.pypa.io/en/stable/). 
-                First, check if `virtualenv` is installed on your system
-              ```bash
-              $ virtualenv --version
-              ```
-
               - Verify pip installation
               If you are developing on Windows, pip.exe will be found in "Scripts" sub directory under the Python installation directory. Add the path to the "Scripts" folder to the system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
               Verify that pip is recognized by typing the following in the cmd terminal. You should see the help menu
@@ -453,7 +448,6 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-
               ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
@@ -502,7 +496,6 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-
               ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)

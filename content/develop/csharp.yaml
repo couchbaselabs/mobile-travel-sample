@@ -87,9 +87,8 @@ chapters:
             
 
               #### Docker
-              You need this only if you use the "Docker" installation option. 
-              
-              **Windows Users** : If you are developing on Windows, you may need to install Docker as Admin user 
+              You need this only if you use the "Docker" installation option.     
+              - **Windows Users** : If you are developing on Windows, you may need to install Docker as Admin user 
               - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
               #### git
@@ -461,12 +460,6 @@ chapters:
               - Clone the 5.0 branch of Travel Sample web app repo
               ```bash
               $ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
-              ```         
-
-              - We will run the Travel Web App in a Python [virtual environment](https://virtualenv.pypa.io/en/stable/). 
-                First, check if `virtualenv` is installed on your system
-              ```bash
-              $ virtualenv --version
               ```
 
               - Verify pip installation
@@ -489,7 +482,6 @@ chapters:
               ```
 
               - Now launch the Travel Web App
-
               ``` bash
               python travel.py
               * Running on http://localhost:8080/ (Press CTRL+C to quit)
@@ -527,7 +519,6 @@ chapters:
               ```bash
               (try-cb-python) c:\Users\priya\try-cb-python\Scripts> 
               ```
-
               You should see a prompt similar to one shown below
               ```bash
               $ (try-cb-python) Macintosh-2:try-cb-python mactester$ 
