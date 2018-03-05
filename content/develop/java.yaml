@@ -31,8 +31,7 @@ chapters:
  
               **Windows Users** : 
               - If you are developing on Windows, we recommend that you use a Windows 10 machine. 
-              
-              Also, note that if you choose Manual or docker installation mode, you should also have **administrative privileges on the Windows box** so you can authorize the installation and running of the required executables. 
+                Also, note that if you choose Manual or docker installation mode, you should also have **administrative privileges on the Windows box** so you can authorize the installation and running of the required executables. 
 
               #### Android
               - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
@@ -48,8 +47,7 @@ chapters:
               #### Python (v2.7 and above)
               You need this only if you use the "Manual" installation option
               - Downloadable from [python.org](https://www.python.org/downloads/)
-
-               **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable. 
+              - **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable. 
 
               #### Docker
               You need this only if you use the "Docker" installation option
