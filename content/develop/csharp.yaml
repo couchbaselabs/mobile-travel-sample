@@ -147,7 +147,8 @@ chapters:
 
               - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.0/install/install-intro.html) to install the same. 
                 - You will find v5.0.1 in the "Previous Versions" tab. Note that if you want to, you can also try with the latest version 5.x release of Couchbase server although there may be slight updates to the Admin UI from what's referred to below.
-                - **Windows Users** You may need suitable admin level privileges to be able to authorize the install of  Couchbase Server on your machine. The anti-virus software on your machine may prohibit the automatic installation of the service
+                - **Windows Users** You would
+                 need suitable admin level privileges to be able to authorize the install of  Couchbase Server on your machine. The anti-virus software on your machine may prohibit the automatic installation of the service
 
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png)
@@ -327,7 +328,7 @@ chapters:
             description: |
               In this lesson, you will install and launch version 2.0 of the Sync Gateway
 
-              **If you would prefer to use a docker container instead, please proceed to the [docker](/csharp#/0/4/1) section**
+              **If you would prefer to use a docker container instead, please proceed to the [docker](/csharp/#/0/2/1) section**
              
               - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
