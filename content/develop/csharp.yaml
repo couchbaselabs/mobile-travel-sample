@@ -30,7 +30,9 @@ chapters:
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way but it is more convenient to start a development environment with components running locally.  
 
               **Windows Users** : 
-              - If you are developing on Windows, you must use a Windows 10 machine
+              - If you are developing on Windows, you must use a Windows 10 machine. 
+              
+              Also, note that if you choose Manual or docker installation mode, you should also have **administrative privileges on the Windows box** so you can authorize the installation and running of the required executables.  
             
               #### Visual Studio 2017
               - Downloadable from [visualstudio.com](https://www.visualstudio.com/downloads/)
@@ -75,16 +77,20 @@ chapters:
               </table>
               </html>
 
-              #### Visual C++ 2017
-              - Windows users must install Microsoft Visual C++ Compiler for Python Downloadable from [downloads](https://www.microsoft.com/en-us/download/details.aspx?id=44266)
+              #### Visual C++ 2017 (Only Windows Users)
+              - **Windows Users** must install Microsoft Visual C++ Compiler for Python Downloadable from [downloads](https://www.microsoft.com/en-us/download/details.aspx?id=44266)
                
             
               #### Python (v2.7 and above)
               You need this only if you use the "Manual" installation option
               - Downloadable from [python.org](https://www.python.org/downloads/)
+              
+              **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable. 
+            
 
               #### Docker
               You need this only if you use the "Docker" installation option. 
+              
               **Windows Users** : If you are developing on Windows, you may need to install Docker as Admin user 
               - Downloadable from [docker.com](https://www.docker.com/get-docker). Community edition would suffice.
               
@@ -94,13 +100,18 @@ chapters:
               ## Try it out
               
               - Open Visual Studio and make confirm it launches
-              - Verify python installation
+              - Verify python installation (Applicable only if you decided to use Manual install option)
                 - Run the following command from your terminal command line
                 ```bash
                 python --version
                 ```
                 You should see the version of python displayed
-                **Windows Users** : If you are having trouble running the above command, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable.
+              - Verify docker installation (Applicable only if you decided to use Docker install option)
+                - Run the following command from your terminal command line
+                ```bash
+                docker -v
+                ```
+                You should see the version of docker displayed
               - Verify git installation
                 - Run the following command from your terminal command line
                 ```bash
@@ -446,6 +457,7 @@ chapters:
         
               - **PREREQUISITE** : First, install **libcouchbase** Core C SDK used by the Python SDK
                 **Windows Users**
+                - 
 
                 **Other Platforms**
                 - Follow instructions [here](https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk) to install libcouchbase on your platform of choice

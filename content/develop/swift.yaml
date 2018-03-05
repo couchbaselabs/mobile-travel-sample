@@ -45,13 +45,19 @@ chapters:
               
               ## Try it out
               
-              - Open Xcode
-              - Verify python installation
+              - Open Xcode and confirm that it launches
+              - Verify python installation (Applicable only if you decided to use Manual install option)
                 - Run the following command from your terminal command line
                 ```bash
                 python --version
                 ```
                 You should see the version of python displayed
+              - Verify docker installation (Applicable only if you decided to use Docker install option)
+                - Run the following command from your terminal command line
+                ```bash
+                docker -v
+                ```
+                You should see the version of docker displayed
               - Verify git installation
                 - Run the following command from your terminal command line
                 ```bash

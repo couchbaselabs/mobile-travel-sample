@@ -29,7 +29,11 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way but it is more convenient to start a development environment with components running locally.  
  
+              **Windows Users** : 
+              - If you are developing on Windows, we recommend that you use a Windows 10 machine. 
               
+              Also, note that if you choose Manual or docker installation mode, you should also have **administrative privileges on the Windows box** so you can authorize the installation and running of the required executables. 
+
               #### Android
               - Android Studio 2.3.3 or above [Google Developer site](https://developer.android.com)
               - Android device or emulator running API level 19 or above
@@ -37,9 +41,15 @@ chapters:
               - Android Build Tools 26
               - JDK 8
             
+              #### Visual C++ 2017 (Only Windows Users)
+              You need this only if you use the "Manual" installation option
+              - **Windows Users** must install Microsoft Visual C++ Compiler for Python Downloadable from [downloads](https://www.microsoft.com/en-us/download/details.aspx?id=44266)
+
               #### Python (v2.7 and above)
               You need this only if you use the "Manual" installation option
               - Downloadable from [python.org](https://www.python.org/downloads/)
+
+               **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable. 
 
               #### Docker
               You need this only if you use the "Docker" installation option
@@ -51,12 +61,18 @@ chapters:
               ## Try it out
               
               - Open Android Studio
-              - Verify python installation
+              - Verify python installation (Applicable only if you decided to use Manual install option)
                 - Run the following command from your terminal command line
                 ```bash
                 python --version
                 ```
                 You should see the version of python displayed
+              - Verify docker installation (Applicable only if you decided to use Docker install option)
+                - Run the following command from your terminal command line
+                ```bash
+                docker -v
+                ```
+                You should see the version of docker displayed
               - Verify git installation
                 - Run the following command from your terminal command line
                 ```bash
