@@ -161,5 +161,44 @@ extension LoginViewController {
     }
     
 
+}
 
+// MARK: Gesture recognizer
+extension LoginViewController {
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        var sgwTextField:UITextField!
+        if motion == .motionShake {
+            print("Shook phone")
+            
+            let alertController = UIAlertController(title: nil,
+                                                    message: NSLocalizedString("Enter Sync Gateway Address(including port)", comment: ""),
+                                                    preferredStyle: .alert)
+            alertController.addTextField(configurationHandler: { (textField) in
+                textField.placeholder = NSLocalizedString("ws://localhost:4984)", comment: "")
+                sgwTextField = textField
+            })
+            
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Setup", comment: ""), style: .default) { [weak self] _ in
+                
+                guard let `self` = self else {return}
+                
+                let sgAddress = sgwTextField.text ?? "ws://localhost:4984" // defaults to localhost
+                let cbMgr = DatabaseManager.shared
+                cbMgr.kRemoteSyncUrl = sgAddress
+              
+                
+            })
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
+                
+            })
+            self.present(alertController, animated: true, completion: nil)
+        
+        }
+    }
+    
 }
