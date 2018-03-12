@@ -34,6 +34,7 @@ class DatabaseManager {
     // This is the remote URL of the Sync Gateway (public Port)
     var kRemoteSyncUrl = "ws://localhost:4984"
    // fileprivate let kRemoteSyncUrl = "ws://54.148.83.39:4984"
+    
    
     
     fileprivate var _db:Database?

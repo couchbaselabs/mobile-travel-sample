@@ -170,25 +170,34 @@ extension LoginViewController {
     }
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         var sgwTextField:UITextField!
+        var webTextField:UITextField!
         if motion == .motionShake {
             print("Shook phone")
             
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("Enter Sync Gateway Address(including port)", comment: ""),
+                                                    message: NSLocalizedString("Enter Sync Gateway & Web App Address(including port)", comment: ""),
                                                     preferredStyle: .alert)
             alertController.addTextField(configurationHandler: { (textField) in
                 textField.placeholder = NSLocalizedString("ws://localhost:4984)", comment: "")
                 sgwTextField = textField
+               
+                
             })
             
+            alertController.addTextField(configurationHandler: { (textField) in
+                
+                textField.placeholder = NSLocalizedString("http://localhost:8080", comment: "")
+                webTextField = textField
+                
+            })
+            
+           
             
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Setup", comment: ""), style: .default) { [weak self] _ in
                 
-                guard let `self` = self else {return}
+                let webAddress = webTextField.text ?? "http://localhost:8080" // defaults to localhost
                 
-                let sgAddress = sgwTextField.text ?? "ws://localhost:4984" // defaults to localhost
-                let cbMgr = DatabaseManager.shared
-                cbMgr.kRemoteSyncUrl = sgAddress
+                TravelSampleWebService.webUrl = webAddress
               
                 
             })
