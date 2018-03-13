@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:layout_below="@id/toolbar"
     tools:context="com.couchbase.travelsample.hotels.HotelsActivity"
-    tools:layout_editor_absoluteY="81dp" tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteY="81dp" tools:layout_editor_absoluteX="0dp"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <com.google.android.flexbox.FlexboxLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

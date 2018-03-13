@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prompt"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:theme="@style/Theme.AppCompat.DayNight">
+
+    <TextView
+        android:id="@+id/sgwTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Sync Gateway Address (with port): "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextDialogUserInput1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ws://localhost:4984">
+
+    </EditText>
+
+    <TextView
+        android:id="@+id/webTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Web App Address (with port): "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextDialogUserInput2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="http://localhost:8080"
+        >
+
+
+    </EditText>
+
+</LinearLayout>

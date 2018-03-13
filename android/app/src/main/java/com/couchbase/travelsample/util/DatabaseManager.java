@@ -36,7 +36,7 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
     private static String dbName;
     public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
-    private static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 
     protected DatabaseManager(Context context, boolean isGuest) {
         if (isGuest) {
