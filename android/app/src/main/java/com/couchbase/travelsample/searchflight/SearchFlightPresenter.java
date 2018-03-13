@@ -69,6 +69,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
             rows = searchQuery.execute();
         } catch (CouchbaseLiteException e) {
             Log.e("app", "Failed to run query", e);
+            mSearchView.displayError(e.toString());
             return;
         }
 
@@ -84,30 +85,39 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
     public void saveFlight(List<JSONObject> flights) {
         String docId = "user::demo";
         Database database = DatabaseManager.getDatabase();
-        MutableDocument document = database.getDocument(docId).toMutable();
-        MutableArray bookings = document.getArray("flights");
-        if (bookings == null) {
-            bookings = new MutableArray();
+        Document document = database.getDocument(docId);
+
+        if (document == null) {
+            Log.e("app", "User not created. Make sure you create user via web app!!");
+            mSearchView.displayError("User not created. Make sure you create user via web app!!");
+            return;
         }
-        for (int i = 0; i < flights.size(); i++) {
-            HashMap<String, Object> properties = new HashMap<>();
+        else {
+            MutableDocument mutableCopy = database.getDocument(docId).toMutable();
+            MutableArray bookings = mutableCopy.getArray("flights");
+            if (bookings == null) {
+                bookings = new MutableArray();
+            }
+            for (int i = 0; i < flights.size(); i++) {
+                HashMap<String, Object> properties = new HashMap<>();
+                try {
+                    properties.put("date", flights.get(i).getString("utc"));
+                    properties.put("destinationairport", flights.get(i).getString("destinationairport"));
+                    properties.put("flight", flights.get(i).getString("flight"));
+                    properties.put("price", flights.get(i).getDouble("price"));
+                    properties.put("name", flights.get(i).getString("name"));
+                    properties.put("sourceairport", flights.get(i).getString("sourceairport"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                bookings.addDictionary(new MutableDictionary(properties));
+            }
+            mutableCopy.setArray("flights", bookings);
             try {
-                properties.put("date", flights.get(i).getString("utc"));
-                properties.put("destinationairport", flights.get(i).getString("destinationairport"));
-                properties.put("flight", flights.get(i).getString("flight"));
-                properties.put("price", flights.get(i).getDouble("price"));
-                properties.put("name", flights.get(i).getString("name"));
-                properties.put("sourceairport", flights.get(i).getString("sourceairport"));
-            } catch (JSONException e) {
+                database.save(mutableCopy);
+            } catch (CouchbaseLiteException e) {
                 e.printStackTrace();
             }
-            bookings.addDictionary(new MutableDictionary(properties));
-        }
-        document.setArray("flights", bookings);
-        try {
-            database.save(document);
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
         }
     }
 

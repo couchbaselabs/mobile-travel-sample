@@ -15,6 +15,8 @@ public interface SearchFlightContract {
 
         void showFlights(List<List<JSONObject>> flights);
 
+        void displayError(String e);
+
     }
 
     interface UserActionsListener {

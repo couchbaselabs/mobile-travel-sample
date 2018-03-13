@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.couchbase.travelsample.R;
 import com.couchbase.travelsample.util.DatePickerFragment;
@@ -109,6 +110,13 @@ public class SearchFlightActivity extends AppCompatActivity implements SearchFli
                 }
             }
         });
+    }
+
+    @Override
+    public void displayError(String e) {
+        Toast toast = Toast.makeText(getApplicationContext(), e,
+                Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public void showDatePicker(View view) {
