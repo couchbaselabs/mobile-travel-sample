@@ -9,7 +9,7 @@
 import CouchbaseLiteSwift
 
 struct TravelSampleWebService {
-    static var webUrl:String = "http://localhost1:8080"
+    static var webUrl:String = "http://localhost:8080"
     static var serverBackendUrl:URL?  {
         get {
             return URL.init(string: "\(webUrl)/api/")
