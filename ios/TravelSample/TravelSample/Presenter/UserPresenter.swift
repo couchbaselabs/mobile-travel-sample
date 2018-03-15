@@ -103,6 +103,7 @@ extension UserPresenter {
                 // 5. This would result in a conflict triggering the resolver
                 let testingConflicts = false
                 
+                // Using defalt conflict resolver policy. Last save goes through
                 if testingConflicts {
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10000)) {
                         try? db.saveDocument(userDocument)

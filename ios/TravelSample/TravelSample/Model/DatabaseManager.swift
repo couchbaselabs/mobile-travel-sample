@@ -129,7 +129,7 @@ extension DatabaseManager {
             }
             
             options.directory = userFolderPath
-            options.conflictResolver = self
+            // options.conflictResolver = self // Deprecated in DB023
             print("WIll open/create DB  at path \(userFolderPath)")
             if Database.exists(withName: kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
@@ -320,6 +320,7 @@ extension DatabaseManager {
 }
 
 // MARK: Custom conflict resolver
+/*** Deprecated in DB023
 extension DatabaseManager:ConflictResolver {
     public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.Document? {
         print(#function)
@@ -353,5 +354,5 @@ extension DatabaseManager:ConflictResolver {
     }
 }
 
-
+*****/
 

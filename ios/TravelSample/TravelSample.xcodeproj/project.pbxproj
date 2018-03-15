@@ -19,9 +19,6 @@
 		5F2CD9381EDDD0DE0069F12C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */; };
 		5F2CD93F1EDE2B5B0069F12C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */; };
 		5F2CD9431EDE2CF50069F12C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CD9421EDE2CF50069F12C /* Notifications.swift */; };
-		5F481E842024EA970016187B /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; };
-		5F481E852024EAA30016187B /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; };
-		5F481E862024EAA30016187B /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F6B99B31EE700AF00A2CB00 /* FlightSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */; };
 		5F9180721F7D30450067E2C6 /* Booking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180711F7D30450067E2C6 /* Booking.swift */; };
 		5F9180741F7D30880067E2C6 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9180731F7D30880067E2C6 /* Flight.swift */; };
@@ -50,6 +47,9 @@
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
+		5FFE2E1F205ACFBF004C0029 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; };
+		5FFE2E20205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; };
+		5FFE2E21205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,7 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F481E862024EAA30016187B /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5FFE2E21205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,7 +81,6 @@
 		5F2CD9371EDDD0DE0069F12C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		5F2CD93E1EDE2B5B0069F12C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5F2CD9421EDE2CF50069F12C /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteSwift.framework; path = iOS/CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5F6B99B21EE700AF00A2CB00 /* FlightSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightSearchViewController.swift; sourceTree = "<group>"; };
 		5F9180711F7D30450067E2C6 /* Booking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Booking.swift; sourceTree = "<group>"; };
 		5F9180731F7D30880067E2C6 /* Flight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
@@ -110,6 +109,7 @@
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
+		5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +117,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F481E852024EAA30016187B /* CouchbaseLiteSwift.framework in Frameworks */,
-				5F481E842024EA970016187B /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FFE2E20205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FFE2E1F205ACFBF004C0029 /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,9 +163,10 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5F481E832024EA960016187B /* CouchbaseLiteSwift.framework */,
+				5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */,
 			);
-			path = Frameworks;
+			name = Frameworks;
+			path = Frameworks/iOS;
 			sourceTree = "<group>";
 		};
 		5F2CD92D1EDDC4100069F12C /* ViewControllers */ = {
