@@ -18,7 +18,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <JavaMaximumHeapSize />
@@ -57,7 +57,10 @@
       <Version>4.3.3</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Support.Android">
-      <Version>2.0.0-db022</Version>
+      <Version>2.0.0-db023</Version>
+    </PackageReference>
+    <PackageReference Include="Couchbase.Lite">
+      <Version>2.0.0-db023</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,23 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
-    <PackageTargetFallback>portable-net45+win+wpa81</PackageTargetFallback>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!--<PackageTargetFallback>portable-net45+win+wpa81</PackageTargetFallback>-->
     <AssemblyName>TravelSample.Core</AssemblyName>
     <RootNamespace>TravelSample.Core</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>pdbonly</DebugType>
+    <OutputPath>bin\Debug\netstandard2.0</OutputPath>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\netstandard2.0</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.4.0.280" />
-    <PackageReference Include="Couchbase.Lite" Version="2.0.0-db022" />
+    <PackageReference Include="Couchbase.Lite" Version="2.0.0-db023" />
     <PackageReference Include="NETStandard.Library" Version="2.0.1" />
-    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
   </ItemGroup>
 
 </Project>
