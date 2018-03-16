@@ -1,12 +1,12 @@
 ﻿{
   "dependencies": {
-    "Couchbase.Lite": "2.0.0-db022",
-    "Couchbase.Lite.Support.UWP": "2.0.0-db022",
+    "Couchbase.Lite": "2.0.0-db023",
+    "Couchbase.Lite.Support.UWP": "2.0.0-db023",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
     "Xamarin.Forms": "2.4.0.280"
   },
   "frameworks": {
-    "uap10.0.10586": {}
+    "uap10.0.16299": {}
   },
   "runtimes": {
     "win10-arm": {},

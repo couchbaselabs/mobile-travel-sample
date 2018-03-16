@@ -7,6 +7,7 @@
     <RootNamespace>TravelSample.Core</RootNamespace>
   </PropertyGroup>
 
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <OutputPath>bin\Debug\netstandard2.0</OutputPath>
@@ -21,6 +22,7 @@
     <PackageReference Include="Xamarin.Forms" Version="2.4.0.280" />
     <PackageReference Include="Couchbase.Lite" Version="2.0.0-db023" />
     <PackageReference Include="NETStandard.Library" Version="2.0.1" />
+    
   </ItemGroup>
 
 </Project>

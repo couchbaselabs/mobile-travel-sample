@@ -32,7 +32,7 @@ namespace TravelSample.Core.Util
         /// The Url of the backend server (which has API for searching for hotels, flights,
         /// and creating users, etc)
         /// </summary>
-        public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
+        public static readonly Uri ServerBackendUrl = new Uri("http://10.0.2.2:8080/api/");
 
         /// <summary>
         /// An expression for getting the type keypath of a document
