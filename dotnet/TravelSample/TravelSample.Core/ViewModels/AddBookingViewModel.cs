@@ -326,7 +326,8 @@ namespace TravelSample.Core.ViewModels
                 Model.AddFlightBookings(bookings);
             } catch (Exception e) {
                 Debug.WriteLine($"Failed to add bookings {e}");
-                UserDialogs.Instance.Alert($"Failed to add bookings: {e.Message}", "Error");
+                // TO CHECK: Crash
+               // UserDialogs.Instance.Alert($"Failed to add bookings: {e.Message}", "Error");
             }
 
             RequestBack();

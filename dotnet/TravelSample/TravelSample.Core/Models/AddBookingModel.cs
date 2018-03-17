@@ -79,16 +79,20 @@ namespace TravelSample.Core.Models
             if (userDocID == null) {
                 throw new InvalidOperationException("Unable to find current user!");
             }
-
-            using (var flightDocument = UserSession.Database.GetDocument(userDocID).ToMutable()) {
+            var flightDocument = UserSession.Database.GetDocument(userDocID);
+            if (flightDocument == null) {
+                throw new InvalidOperationException("Unable to find current user!");
+            }
+            using (var mutableFlightDocument = flightDocument.ToMutable()) {
                 var documentBookings = flightDocument.GetArray("flights") ?? new MutableArrayObject();
+                var mutableDocumentBookings = documentBookings.ToMutable();
                 foreach (var b in bookings) {
                     b.Source["date"] = $"{b.DepartureDate} {b.Source["utc"]}";
-                    documentBookings.AddValue(b.Source);
+                    mutableDocumentBookings.AddValue(b.Source);
                 }
 
-                flightDocument.SetArray("flights", documentBookings);
-                UserSession.Database.Save(flightDocument);
+                mutableFlightDocument.SetArray("flights", documentBookings);
+                UserSession.Database.Save(mutableFlightDocument);
             }
         }
 

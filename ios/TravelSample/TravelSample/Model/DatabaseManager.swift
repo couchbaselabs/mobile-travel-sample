@@ -150,20 +150,21 @@ extension DatabaseManager {
             }
             
             // Add change listener
-            /***** Uncomment for optional testing
+            /***** Uncomment for optional testing ***
             _db?.addChangeListener({ [weak self](change) in
                 guard let `self` = self else {
                     return
                 }
                 for docId in change.documentIDs   {
                     if let docString = docId as? String {
-                        let doc = self._db?.getDocument(docString)
+                        let doc = self._db?.document(withID:docString)
                        
                         print("doc.isDeleted = \(doc?.isDeleted)")
                     }
                 }
                 
-            })*****/
+            })
+            *****/
             currentUserCredentials = (user,password)
             handler(nil)
         }catch {

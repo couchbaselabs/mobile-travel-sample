@@ -105,6 +105,9 @@ namespace TravelSample.Core.Models
             }
 
             var dbUrl = new Uri(SyncUrl, DbName);
+            Debug.WriteLine(
+                $"PushPull Replicator:Will connect to  {SyncUrl}");
+
             var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
                 ReplicatorType = ReplicatorType.PushAndPull,
                 Continuous = true,

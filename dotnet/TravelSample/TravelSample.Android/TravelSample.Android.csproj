@@ -52,7 +52,6 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>6.5.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
     <PackageReference Include="System.Net.Http">
       <Version>4.3.3</Version>
     </PackageReference>
@@ -61,6 +60,9 @@
     </PackageReference>
     <PackageReference Include="Couchbase.Lite">
       <Version>2.0.0-db023</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>2.5.0.91635</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
