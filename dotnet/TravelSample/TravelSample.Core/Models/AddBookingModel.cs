@@ -91,7 +91,7 @@ namespace TravelSample.Core.Models
                     mutableDocumentBookings.AddValue(b.Source);
                 }
 
-                mutableFlightDocument.SetArray("flights", documentBookings);
+                mutableFlightDocument.SetArray("flights", mutableDocumentBookings);
                 UserSession.Database.Save(mutableFlightDocument);
             }
         }

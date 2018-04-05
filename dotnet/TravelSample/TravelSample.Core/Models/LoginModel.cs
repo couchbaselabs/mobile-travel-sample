@@ -38,7 +38,7 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private const string DbName = "travel-sample";
-        private static readonly Uri SyncUrl = new Uri("ws://10.0.2.2:4984");
+        private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
 
         #endregion
 
@@ -64,6 +64,7 @@ namespace TravelSample.Core.Models
             }
             
             options.Directory = userFolder;
+            
             Database db;
             Debug.WriteLine($"Will open/create DB at path {userFolder}");
             if (!Database.Exists(DbName, userFolder)) {
@@ -75,6 +76,8 @@ namespace TravelSample.Core.Models
             } else {
                 db = new Database(DbName, options);
             }
+           // Database.SetLogLevel(Couchbase.Lite.Logging.LogDomain.Replicator, Couchbase.Lite.Logging.LogLevel.Debug);
+            
 
             var repl = isGuest ? default(Replicator) : StartReplication(username, password, db);
             return new CouchbaseSession(db, repl, username);

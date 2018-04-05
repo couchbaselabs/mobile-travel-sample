@@ -152,8 +152,8 @@ namespace TravelSample.Core.Models
         public void Dispose()
         {
             Ended?.Invoke(this, null);
-            Database?.Dispose();
             Replicator?.Stop();
+            Database?.Dispose();
             // Uncomment after DB019 (https://github.com/couchbase/couchbase-lite-net/issues/908)
             //_replicator?.Dispose();
             HttpClient.Dispose();

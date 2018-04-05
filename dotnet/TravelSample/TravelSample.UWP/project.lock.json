@@ -428,7 +428,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -1045,7 +1045,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -1663,7 +1663,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -2280,7 +2280,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -2898,7 +2898,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -3515,7 +3515,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     },
@@ -4133,7 +4133,7 @@
           "Couchbase.Lite": "2.0.0-db023",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
-          "Xamarin.Forms": "2.4.0.280"
+          "Xamarin.Forms": "2.5.0.91635"
         }
       }
     }
@@ -8238,36 +8238,36 @@
     "UAP,Version=v10.0.16299": []
   },
   "packageFolders": {
-    "C:\\Users\\priya\\.nuget\\packages\\": {},
+    "C:\\Users\\COUCHBASE\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
+      "projectUniqueName": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
       "projectName": "TravelSample.UWP",
-      "projectPath": "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
-      "projectJsonPath": "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\project.json",
-      "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\obj\\",
+      "projectPath": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
+      "projectJsonPath": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\project.json",
+      "packagesPath": "C:\\Users\\COUCHBASE\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\obj\\",
       "projectStyle": "ProjectJson",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\COUCHBASE\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "http://mobile.nuget.couchbase.com/nuget/Developer": {},
+        "http://mobile.nuget.couchbase.com/nuget/Developer/": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "uap10.0.16299": {
           "projectReferences": {
-            "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj": {
-              "projectPath": "C:\\Users\\priya\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj"
+            "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj": {
+              "projectPath": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.Core\\TravelSample.Core.csproj"
             }
           }
         }
@@ -8303,5 +8303,23 @@
         "#import": []
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Forms from 2.5.0.91635 to 2.4.0.280. Reference the package directly from the project to select a different version. \r\n TravelSample.UWP -> TravelSample.Core -> Xamarin.Forms (>= 2.5.0.91635) \r\n TravelSample.UWP -> Xamarin.Forms (>= 2.4.0.280)",
+      "libraryId": "Xamarin.Forms",
+      "targetGraphs": [
+        "UAP,Version=v10.0.16299",
+        "UAP,Version=v10.0.16299/win10-arm",
+        "UAP,Version=v10.0.16299/win10-arm-aot",
+        "UAP,Version=v10.0.16299/win10-x64",
+        "UAP,Version=v10.0.16299/win10-x64-aot",
+        "UAP,Version=v10.0.16299/win10-x86",
+        "UAP,Version=v10.0.16299/win10-x86-aot"
+      ]
+    }
+  ]
 }

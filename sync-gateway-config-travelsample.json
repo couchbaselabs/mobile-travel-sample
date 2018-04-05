@@ -9,7 +9,7 @@
         "replicator_2":true
       },
       "bucket":"travel-sample",
-      "server": "http://localhost:8091",
+      "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,
       "import_filter": `
         function(doc) {
