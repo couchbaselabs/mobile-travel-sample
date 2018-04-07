@@ -197,7 +197,10 @@ namespace TravelSample.Core.ViewModels
                 .SetString("name", "Airplane Airlines")
                 .SetString("flight", "AB123");
 
+         
+
             BookingsList.Add(new BookingCellModel(data));
+
         }
 
         #endregion

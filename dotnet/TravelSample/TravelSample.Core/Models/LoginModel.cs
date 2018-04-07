@@ -38,7 +38,7 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private const string DbName = "travel-sample";
-        private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
+        private static readonly Uri SyncUrl = new Uri("ws://10.0.2.2:4984");
 
         #endregion
 

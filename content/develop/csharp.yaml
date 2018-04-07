@@ -395,9 +395,11 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
-              
+                The first time you run this on Windows, you may see an alert pop up asking for permissions to share drive. Make sure you select "Share it" and proceed. You would need administrator privileges for this
+                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/windows_docker.png)
+
               - You can view the logs at any time by running the following command
                 ```bash
                 $ docker logs sync-gateway
