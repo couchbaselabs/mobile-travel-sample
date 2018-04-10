@@ -100,7 +100,13 @@ extension FlightListingTableViewController {
             
             
             cell.airlineValue = flight["name"] as? String
-            cell.fareValue = "$ \(String(describing: flight["price"] as! Float))"
+            if let fare = flight["price"] as? CGFloat {
+                   cell.fareValue = "$ \(String(describing: fare))"
+            }
+            else {
+                cell.fareValue = "$ \(String(describing: flight["price"] as? Int ))"
+            }
+         
             cell.departureTimeValue = flight["utc"] as? String
             cell.flightValue = flight["flight"] as? String
          

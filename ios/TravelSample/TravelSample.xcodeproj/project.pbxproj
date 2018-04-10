@@ -30,6 +30,9 @@
 		5FB636D51F7D3BC300301B8A /* FlightPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB636D01F7D3BC300301B8A /* FlightPresenterProtocols.swift */; };
 		5FB636D61F7D3BC300301B8A /* HotelPresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB636D11F7D3BC300301B8A /* HotelPresenterProtocols.swift */; };
 		5FB636D71F7D3BC300301B8A /* PresenterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB636D21F7D3BC300301B8A /* PresenterProtocols.swift */; };
+		5FBD05DB207B0901005BE767 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FBD05DA207B0900005BE767 /* CouchbaseLiteSwift.framework */; };
+		5FBD05DC207B0908005BE767 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FBD05DA207B0900005BE767 /* CouchbaseLiteSwift.framework */; };
+		5FBD05DD207B0908005BE767 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FBD05DA207B0900005BE767 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FBFC8101EE9F37D00A0A9F5 /* HotelDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */; };
 		5FBFC8121EEAE51E00A0A9F5 /* BookingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */; };
 		5FC6ADAE1EDE327A00CED153 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */; };
@@ -47,9 +50,6 @@
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
-		5FFE2E1F205ACFBF004C0029 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; };
-		5FFE2E20205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; };
-		5FFE2E21205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,7 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5FFE2E21205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5FBD05DD207B0908005BE767 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +92,7 @@
 		5FB636D01F7D3BC300301B8A /* FlightPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FB636D11F7D3BC300301B8A /* HotelPresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenterProtocols.swift; sourceTree = "<group>"; };
 		5FB636D21F7D3BC300301B8A /* PresenterProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterProtocols.swift; sourceTree = "<group>"; };
+		5FBD05DA207B0900005BE767 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5FBFC80F1EE9F37D00A0A9F5 /* HotelDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailCell.swift; sourceTree = "<group>"; };
 		5FBFC8111EEAE51E00A0A9F5 /* BookingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingCell.swift; sourceTree = "<group>"; };
 		5FC6ADAD1EDE327A00CED153 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
@@ -109,7 +110,6 @@
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
-		5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +117,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FFE2E20205ACFCA004C0029 /* CouchbaseLiteSwift.framework in Frameworks */,
-				5FFE2E1F205ACFBF004C0029 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FBD05DC207B0908005BE767 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FBD05DB207B0901005BE767 /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FFE2E1E205ACFBF004C0029 /* CouchbaseLiteSwift.framework */,
+				5FBD05DA207B0900005BE767 /* CouchbaseLiteSwift.framework */,
 			);
 			name = Frameworks;
 			path = Frameworks/iOS;
