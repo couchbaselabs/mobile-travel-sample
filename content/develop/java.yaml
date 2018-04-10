@@ -99,7 +99,7 @@ chapters:
                 ![](https://cl.ly/0T0G2S083g41/as-login.png)
       
       
-      - title: Couchbase Server 5.0
+      - title: Couchbase Server 5.1
         milestones:
           
           - title: Manual
@@ -108,9 +108,8 @@ chapters:
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs.couchbase.com/tutorials/travel-sample/develop/java/#/0/2/1) section**
 
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.0/install/install-intro.html) to install the same. 
-                - You will find v5.0.1 in the "Previous Versions" tab. Note that if you want to, you can also try with the latest version 5.x release of Couchbase server although there may be slight updates to the Admin UI from what's referred to below.
-                - **Windows Users** You would need suitable admin level privileges to be able to authorize the install of  Couchbase Server on your machine. The anti-virus software on your machine may prohibit the automatic installation of the service
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.1.0 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.0/install/install-intro.html) to install the same. 
+               - **Windows Users** You would need suitable admin level privileges to be able to authorize the install of  Couchbase Server on your machine. The anti-virus software on your machine may prohibit the automatic installation of the service
 
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png)
@@ -149,13 +148,13 @@ chapters:
                 ```
               - To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following.
                 ```bash
-                $ docker pull connectsv/server:5.0.1-enterprise
+                $ docker pull connectsv/server:5.1.0-enterprise
                 ```
               
               - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.0.1-enterprise
+                $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.1.0-enterprise
                 ```
               - You can view the logs at any time by running the following command
                 ```bash
