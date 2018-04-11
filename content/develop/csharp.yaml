@@ -379,7 +379,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
+                $ docker pull connectsv/sync-gateway:2.0.0-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -394,7 +394,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
                 The first time you run this on Windows, you may see an alert pop up asking for permissions to share drive. Make sure you select "Share it" and proceed. You would need administrator privileges for this
                 ![](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/content/assets/docker_windows.png)

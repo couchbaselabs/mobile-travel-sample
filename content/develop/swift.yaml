@@ -11,10 +11,10 @@ chapters:
 
               It includes the following components -
               - Client Side 
-                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite 2.0 (Prerelease)
+                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite 2.0 
               - Server Side
                 - Couchbase Server v5.0
-                - Sync Gateway v2.0 (Prerelease)
+                - Sync Gateway v2.0 
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
               **For the server side components, you have three installation options** 
@@ -328,7 +328,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway:2.0.0-prerelease-enterprise
+                $ docker pull connectsv/sync-gateway:2.0.0-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -343,7 +343,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-prerelease-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
               
               - You can view the logs at any time by running the following command
