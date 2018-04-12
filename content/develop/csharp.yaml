@@ -503,8 +503,8 @@ chapters:
 
               - Now launch the Travel Web App
               ``` bash
-              python travel.py
-              * Running on http://localhost:8080/ (Press CTRL+C to quit)
+              $ python travel.py
+              $ Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
 
               **Other Platforms **
