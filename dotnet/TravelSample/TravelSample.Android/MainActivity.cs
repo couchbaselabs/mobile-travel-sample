@@ -41,7 +41,8 @@ namespace TravelSample.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Couchbase.Lite.Support.Droid.Activate(ApplicationContext);
-rvice>( new DatabaseSeedService(ApplicationContext)); 
+
+            Couchbase.Lite.DI.Service.Register<IDatabaseSeedService>( new DatabaseSeedService(ApplicationContext)); 
             UserDialogs.Init(() => (Activity)ApplicationContext);
             LoadApplication(new App());
         }
