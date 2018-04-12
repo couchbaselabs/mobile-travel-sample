@@ -13,6 +13,6 @@
     <Import Project="C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.sharedlibrary-x64\2.0.0\build\Microsoft.Net.Native.SharedLibrary-x64.targets" Condition="Exists('C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.sharedlibrary-x64\2.0.0\build\Microsoft.Net.Native.SharedLibrary-x64.targets')" />
     <Import Project="C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.sharedlibrary-arm\2.0.0\build\Microsoft.Net.Native.SharedLibrary-arm.targets" Condition="Exists('C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.sharedlibrary-arm\2.0.0\build\Microsoft.Net.Native.SharedLibrary-arm.targets')" />
     <Import Project="C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.compiler\2.0.3\build\Microsoft.Net.Native.Compiler.targets" Condition="Exists('C:\Program Files (x86)\Microsoft SDKs\NuGetPackagesFallback\microsoft.net.native.compiler\2.0.3\build\Microsoft.Net.Native.Compiler.targets')" />
-    <Import Project="$(NuGetPackageRoot)couchbase.lite.support.uwp\2.0.0-db023\build\Couchbase.Lite.Support.UWP.targets" Condition="Exists('$(NuGetPackageRoot)couchbase.lite.support.uwp\2.0.0-db023\build\Couchbase.Lite.Support.UWP.targets')" />
+    <Import Project="$(NuGetPackageRoot)couchbase.lite.support.uwp\2.0.0\build\Couchbase.Lite.Support.UWP.targets" Condition="Exists('$(NuGetPackageRoot)couchbase.lite.support.uwp\2.0.0\build\Couchbase.Lite.Support.UWP.targets')" />
   </ImportGroup>
 </Project>
