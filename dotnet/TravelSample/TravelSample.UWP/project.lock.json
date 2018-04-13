@@ -28,10 +28,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -42,7 +42,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -425,7 +425,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -459,10 +459,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -473,7 +473,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -1042,7 +1042,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -1076,10 +1076,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -1090,7 +1090,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -1660,7 +1660,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -1694,10 +1694,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -1708,7 +1708,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -2277,7 +2277,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -2311,10 +2311,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -2325,7 +2325,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -2895,7 +2895,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -2929,10 +2929,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -2943,7 +2943,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -3512,7 +3512,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -3546,10 +3546,10 @@
           "lib/netcore451/Coding4Fun.Toolkit.dll": {}
         }
       },
-      "Couchbase.Lite/2.0.0": {
+      "Couchbase.Lite/2.0.0.1": {
         "type": "package",
         "dependencies": {
-          "Couchbase.Lite.Support.UWP": "[2.0.0]",
+          "Couchbase.Lite.Support.UWP": "[2.0.0.1]",
           "Newtonsoft.Json": "9.0.1",
           "SimpleInjector": "4.0.12"
         },
@@ -3560,7 +3560,7 @@
           "lib/netstandard2.0/Couchbase.Lite.dll": {}
         }
       },
-      "Couchbase.Lite.Support.UWP/2.0.0": {
+      "Couchbase.Lite.Support.UWP/2.0.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1"
@@ -4130,7 +4130,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Acr.UserDialogs": "6.5.1",
-          "Couchbase.Lite": "2.0.0",
+          "Couchbase.Lite": "2.0.0.1",
           "Microsoft.NETCore.Platforms": "2.0.1",
           "NETStandard.Library": "2.0.1",
           "Xamarin.Forms": "2.5.0.91635"
@@ -4212,25 +4212,25 @@
         "lib/wpa81/Coding4Fun.Toolkit.pri"
       ]
     },
-    "Couchbase.Lite/2.0.0": {
-      "sha512": "AFJIirV4Acm48BszzKBm7qSMHYTsnM5DH1sB3YT/Vn+VJetWP66vmhaqTpjoRidiRjJXHWZB7c1BROrWI3skhg==",
+    "Couchbase.Lite/2.0.0.1": {
+      "sha512": "fkLeu0qmdHM2pyMKZcsIAb6USML7MMt2osg/p05JyZID4FdwMuCsFAJa01AkHdDbjDrt+iiXcIF5GF83/HwvHA==",
       "type": "package",
-      "path": "couchbase.lite/2.0.0",
+      "path": "couchbase.lite/2.0.0.1",
       "files": [
-        "couchbase.lite.2.0.0.nupkg.sha512",
+        "couchbase.lite.2.0.0.1.nupkg.sha512",
         "couchbase.lite.nuspec",
         "lib/netstandard2.0/Couchbase.Lite.dll",
         "lib/netstandard2.0/Couchbase.Lite.pdb",
         "lib/netstandard2.0/Couchbase.Lite.xml"
       ]
     },
-    "Couchbase.Lite.Support.UWP/2.0.0": {
-      "sha512": "o08SKveDTxypzYzAxUqSDNx7bhOFs49cV4/KybQp5Z0t81SNHIt6y8nQONQahifawcISx6se53rWiOyiWftlsQ==",
+    "Couchbase.Lite.Support.UWP/2.0.0.1": {
+      "sha512": "SnCtG9fER7EjOZ0fVbAOsWgakj+1obP+3JoLjYymTp7Dze9lI5B1jJ5taK+z0JBAtnE0omlCs6Z9ehmcSVVJBg==",
       "type": "package",
-      "path": "couchbase.lite.support.uwp/2.0.0",
+      "path": "couchbase.lite.support.uwp/2.0.0.1",
       "files": [
         "build/Couchbase.Lite.Support.UWP.targets",
-        "couchbase.lite.support.uwp.2.0.0.nupkg.sha512",
+        "couchbase.lite.support.uwp.2.0.0.1.nupkg.sha512",
         "couchbase.lite.support.uwp.nuspec",
         "lib/uap10.0/Couchbase.Lite.Support.UWP.dll",
         "lib/uap10.0/Couchbase.Lite.Support.UWP.pdb",
@@ -8229,8 +8229,8 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Couchbase.Lite >= 2.0.0",
-      "Couchbase.Lite.Support.UWP >= 2.0.0",
+      "Couchbase.Lite >= 2.0.0.1",
+      "Couchbase.Lite.Support.UWP >= 2.0.0.1",
       "Microsoft.NETCore.Platforms >= 2.0.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.0.8",
       "Xamarin.Forms >= 2.4.0.280"
@@ -8242,6 +8242,7 @@
     "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {}
   },
   "project": {
+    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\COUCHBASE\\workshop\\mobile-travel-sample\\dotnet\\TravelSample\\TravelSample.UWP\\TravelSample.UWP.csproj",
       "projectName": "TravelSample.UWP",
@@ -8274,8 +8275,8 @@
       }
     },
     "dependencies": {
-      "Couchbase.Lite": "[2.0.0, )",
-      "Couchbase.Lite.Support.UWP": "[2.0.0, )",
+      "Couchbase.Lite": "[2.0.0.1, )",
+      "Couchbase.Lite.Support.UWP": "[2.0.0.1, )",
       "Microsoft.NETCore.Platforms": "[2.0.1, )",
       "Microsoft.NETCore.UniversalWindowsPlatform": "[6.0.8, )",
       "Xamarin.Forms": "[2.4.0.280, )"
