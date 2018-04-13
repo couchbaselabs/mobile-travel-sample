@@ -132,12 +132,7 @@ chapters:
               git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
               
-              - Couchbase Lite 2.0 is in Beta. So you will have to update your nuget package sources with the Couchbase Pre-release nuget feed.
-                 - The URL for Couchbase Pre-release nuget feed is http://mobile.nuget.couchbase.com/nuget/Developer
-              (The path is case sensitive)
-                -![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_pkg_manager.png)
-
-              - Confirm that the _TravelSample.core_ project is linked with the right version of _Couchbase.Lite_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite Core framework under the "installed" section of the nuget package manager .
+              - Confirm that the _TravelSample.core_ project is linked with  version 2.0.0.2 of _Couchbase.Lite_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite Core framework under the "installed" section of the nuget package manager .
                  -![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_lite_core.png)
 
               - Confirm that the _TravelSample.UWP_ projectis linked with the right version of _Couchbase.Lite_ and _Couchbase.Lite.Support.UWP_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite core framework and Couchbase.Lite.Support.* support framework under the "installed" section of the nuget package manager. 
