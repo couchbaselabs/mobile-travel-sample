@@ -89,7 +89,7 @@ chapters:
               #### Python (v2.7 and above)
               You need this only if you use the "Manual" installation option
               - Downloadable from [python.org](https://www.python.org/downloads/) 
-              - **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to set your PATH variable. 
+              - **Windows Users** : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable. You can follow instructions [here](https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/) to update your PATH variable to include the path to the Python install. The default installation path would be _c:\Python27_ for Python 2.7.
             
 
               #### Docker
@@ -341,18 +341,23 @@ chapters:
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs.couchbase.com/tutorials/travel-sample/develop/csharp/#/0/3/1) section**
              
-              - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
-              - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
+              - Install Sync Gateway 2.0 following the instructions specified [here](https://developer.couchbase.com/documentation/mobile/2.0/installation/sync-gateway/index.html). Make sure you select "Windows" from the list of platform tabs to install on.
+              - By default, the Sync Gateway service will install with _serviceconfig.json_ config file at this [location](C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json)
+              - The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `c:/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
               "username": "admin",
               "password": "password",
               ```
-              - Launch the Sync Gateway
+              - Stop the Sync Gateway service (since it was launched with the default version of config file). To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+
+              - Replace the _serviceconfig.json_ file located at C:\Program Files\Couchbase\Sync Gateway\ with the sync-gateway-config-travelsample.json that you downloaded. 
               ``` bash
-              $ cd /path/to/couchbase-sync-gateway/bin
-              $ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+              $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
               ```
+
+               - Start the Sync Gateway service with the new version of _serviceconfig.json_ file. To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+
             
               ## Try it out
 
@@ -470,7 +475,7 @@ chapters:
 
               **Windows Users **
               The instructions in this section are for Windows users. Scroll to "Other Platforms" section for instructions for other platforms. 
-              - Install the Couchbase Python SDK Installer. This can be downloaded from [Pypi](https://pypi.python.org/pypi/couchbase) website. Scroll to the section which lists the relevant installers
+              - Install the Couchbase Python SDK Installer. This can be downloaded from [Pypi](https://pypi.org/project/couchbase/#files) website. Scroll to the section which lists the relevant installers and select the installer corresponding to appropriate version of Python that you have installed on your machine. 
                ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/win_py_installer.png)
               - Clone the 5.0 branch of Travel Sample web app repo
               ```bash
@@ -501,6 +506,9 @@ chapters:
               $ python travel.py
               $ Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
+              You may see an alert similar to one below requesting access to run the app. Make sure you select the "Allow access" option.
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run.png)
+
 
               **Other Platforms **
               - **PREREQUISITE** : First, install **libcouchbase** Core C SDK used by the Python SDK
