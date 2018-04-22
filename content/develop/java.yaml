@@ -301,11 +301,22 @@ chapters:
               $ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
               ```
               **Windows**
-              ```bash
-              PS> & 'C:\Program Files (x86)\Couchbase\sync_gateway.exe' /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+              - By default, the Sync Gateway service will install with _serviceconfig.json_ config file at this [location](C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json)
+              - The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/develop/csharp#/0/1/0). The config file will be located in `c:/path/to/mobile-travel-sample`.
+              - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
+              ```json
+              "username": "admin",
+              "password": "password",
               ```
-              
-              **Note on Windows:** The Sync Gateway service might be running on Windows which will prevent this command from succeeding with the message 'FATAL: Failed to start HTTP server on 127.0.0.1:4985: listen tcp 127.0.0.1:4985: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.' To get around this, stop the 'Couchbase Sync Gateway' service in 'services.msc'.
+              - Stop the Sync Gateway service (since it was launched with the default version of config file). To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+
+              - Replace the _serviceconfig.json_ file located at C:\Program Files\Couchbase\Sync Gateway\ with the sync-gateway-config-travelsample.json that you downloaded. 
+              ``` bash
+              $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
+              ```
+
+              - Start the Sync Gateway service with the new version of _serviceconfig.json_ file. To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+
               
               ## Try it out
 
@@ -453,7 +464,7 @@ chapters:
               $ Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
               You may see an alert similar to one below requesting access to run the app. Make sure you select the "Allow access" option.
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run.png)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png)
 
               **Other Platforms **
               - **PREREQUISITE** : First, install **libcouchbase** Core C SDK used by the Python SDK

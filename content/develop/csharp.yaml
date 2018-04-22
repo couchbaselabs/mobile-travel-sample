@@ -356,7 +356,7 @@ chapters:
               $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
               ```
 
-               - Start the Sync Gateway service with the new version of _serviceconfig.json_ file. To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+              - Start the Sync Gateway service with the new version of _serviceconfig.json_ file. To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
 
             
               ## Try it out
@@ -507,7 +507,7 @@ chapters:
               $ Running on http://localhost:8080/ (Press CTRL+C to quit)
               ```
               You may see an alert similar to one below requesting access to run the app. Make sure you select the "Allow access" option.
-              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run.png)
+              ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png)
 
 
               **Other Platforms **
