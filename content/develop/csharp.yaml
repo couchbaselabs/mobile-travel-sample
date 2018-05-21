@@ -267,7 +267,7 @@ chapters:
               Update the `localhost` to be the IP Address of the Sync Gateway. In my example (from screenshot above), that would be `54.148.83.39`.
 
               ```csharp
-              private static readonly Uri SyncUrl = new Uri("blip://54.148.83.39:4984")
+              private static readonly Uri SyncUrl = new Uri("ws://54.148.83.39:4984")
               ```
               
               ## Try it out (Couchbase Server)

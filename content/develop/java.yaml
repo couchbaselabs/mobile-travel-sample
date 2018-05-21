@@ -212,7 +212,7 @@ chapters:
               [DatabaseManager.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java)
 
               ```java
-              private static String mSyncGatewayEndpoint = "blip://54.148.83.39:4984/travel-sample";
+              public static String mSyncGatewayEndpoint = "ws://54.148.83.39:4984/travel-sample";
               ```
                
               ## Try it out (Couchbase Server)
@@ -1048,7 +1048,7 @@ chapters:
               First, you initialize the `URL` object which points to the Sync Gateway instance to synchronize with.
               
               ```java
-              private static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+              public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
               URI url = null;
               try {
                   url = new URI(mSyncGatewayEndpoint);
