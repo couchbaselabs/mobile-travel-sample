@@ -11,10 +11,10 @@ chapters:
 
               It includes the following components -
               - Client Side 
-                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite 2.0 
+                - Travel Mobile App -  An iOS App in swift that is linked with Couchbase Lite Enterprise 2.1 
               - Server Side
-                - Couchbase Server v5.0
-                - Sync Gateway v2.0 
+                - Couchbase Server Enterprise v5.5
+                - Sync Gateway Enterprise v2.1 
                 - Travel Web App - Python web app integrated with Couchbase Python SDK
 
               **For the server side components, you have three installation options** 
@@ -82,8 +82,8 @@ chapters:
               cd /path/to/mobile-travel-sample/ios/TravelSample
               sh install_9.2.sh
               ```
-              #### On Xcode 9.3
-              If you are building using Xcode 9.3, you will have to download the Swift 4 compatible version of Couchbase Lite framework
+              #### On Xcode 9.3+
+              If you are building using Xcode 9.3+, you will have to download the Swift 4.1 compatible version of Couchbase Lite framework
               
               - Run the `install_9.sh` script to download and install the compatible version of Couchbase Lite.
               ```bash
@@ -98,16 +98,16 @@ chapters:
       
       
       
-      - title: Couchbase Server 5.1
+      - title: Couchbase Server 5.5
         milestones:
           
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 5.1.0 of the Couchbase Server.
+              In this lesson, you will install and launch version 5.5.1 of the Couchbase Server.
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/2/1) section**
 
-              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.0/install/install-intro.html) to install the same. 
+              - [Download and install](https://www.couchbase.com/downloads#couchbase-server) V5.5.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific [install guide](https://developer.couchbase.com/documentation/server/5.5/install/install-intro.html) to install the same. 
     
               - In setup wizard, create Administrator account with user *Administrator* and password as *password*.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png)
@@ -120,7 +120,7 @@ chapters:
         
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/sample_bucket.png)
         
-              - Create an RBAC user named **admin** with password **password** and **full access** to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
+              - Create an RBAC user named **admin** with password **password** and **Application Access** to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_rbac.png)
 
                 ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/RBAC_user.png)
@@ -230,8 +230,8 @@ chapters:
                ```json
                {
                 "couchdb":"Welcome",
-                "vendor":{"name":"Couchbase Sync Gateway","version":2.0},
-                "version":"Couchbase Sync Gateway/2.0(...)"
+                "vendor":{"name":"Couchbase Sync Gateway","version":1},
+                "version":"Couchbase Sync Gateway/2.1(...)"
                }
                ```
             
@@ -281,15 +281,15 @@ chapters:
           #       ```bash
           #       $ docker-compose up
           #       ```
-      - title: Sync Gateway 2.0
+      - title: Sync Gateway 2.1
         milestones:
           - title: Manual
             description: |
-              In this lesson, you will install and launch version 2.0 of the Sync Gateway
+              In this lesson, you will install and launch version 2.1 of the Sync Gateway
 
               **If you would prefer to use a docker container instead, please proceed to the [docker](http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/3/1) section**
              
-              - Install Sync Gateway 2.0 from [here](https://www.couchbase.com/downloads) on your platform of choice
+              - Install Sync Gateway 2.1 from [here](https://www.couchbase.com/downloads) on your platform of choice
               - The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file will be located in `/path/to/mobile-travel-sample`.
               - Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket 
               ```json
@@ -307,7 +307,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.1"},"version":"Couchbase Sync Gateway/2.1.0(775;9cc29c5)"}
               ```
 
 
@@ -322,7 +322,7 @@ chapters:
                 ```
               -  To run the application in a container, you will first get the docker image from Docker Cloud. 
                 ```bash
-                $ docker pull connectsv/sync-gateway:2.0.0-enterprise
+                $ docker pull connectsv/sync-gateway:2.1.0-enterprise
                 ```
               - The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the [Travel Mobile App install](/tutorials/travel-sample/develop/swift#/0/1/0). The config file is located in `/path/to/mobile-travel-sample`.
               - Open the `sync-gateway-config-travelsample.json` file 
@@ -337,7 +337,7 @@ chapters:
                 ```bash
                 $ cd /path/to/mobile-travel-sample/
 
-                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.0.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+                $ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.1.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
                 ```
               
               - You can view the logs at any time by running the following command
@@ -354,7 +354,7 @@ chapters:
               - Access this URL `http://localhost:4984` in your browser
               - Verify that you get back a JSON response similar to one below
               ```json
-              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.0"},"version":"Couchbase Sync Gateway/2.0.0(775;9cc29c5)"}
+              {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.1"},"version":"Couchbase Sync Gateway/2.1.0(775;9cc29c5)"}
               ```
 
           - title: Cloud
@@ -479,13 +479,13 @@ chapters:
               - To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
               
                 ```bash
-                $ docker pull connectsv/try-cb-python:5.0.1-server
+                $ docker pull connectsv/try-cb-python:5.5.1-server
                 ```
               
                - Once the command has completed you can start the application with the following.
               
                 ```bash
-                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.0.1-server
+                $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.5.1-server
                 ```
 
                 You should then see the following in the console output.
@@ -1056,7 +1056,7 @@ chapters:
               Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/tutorials/travel-sample/develop/swift#/0/4/0) section.
 
             
-              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              Starting with Sync Gateway 1.5 and Couchbase Server 5.x, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
              
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png)
          

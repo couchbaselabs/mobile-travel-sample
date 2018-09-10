@@ -1,15 +1,38 @@
 {
   "interface":":4984",
   "log": ["*"],
+  "logging": {
+    "log_file_path": "/var/tmp/sglogs",
+    "console": {
+      "log_level": "debug",
+      "log_keys": ["*"]
+    },
+    "error": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 180
+      }
+    },
+    "warn": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 90
+      }
+    },
+    "info": {
+      "enabled": false
+    },
+    "debug": {
+      "enabled": false
+    }
+  },
   "databases": {
     "travel-sample": {
       "import_docs": "continuous",
-      "unsupported": {
-        "enable_extended_attributes": true,
-        "replicator_2":true
-      },
       "bucket":"travel-sample",
-      "server": "http://localhost:8091",
+      "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,
       "import_filter": `
         function(doc) {
@@ -31,6 +54,7 @@
           "demo": {"password": "password"},
           "tester": {"password": "password"}
       },
+     "num_index_replicas":0,
 
     "sync": `
 function sync(doc, oldDoc) {
