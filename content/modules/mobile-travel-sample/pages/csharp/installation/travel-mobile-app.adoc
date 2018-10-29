@@ -1,0 +1,23 @@
+= Travel Mobile App
+
+== Travel Sample Mobile App
+
+* Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
++
+
+[source,bash]
+----
+
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+* Confirm that the _TravelSample.core_ project is linked with version 2.1 of _Couchbase.Lite_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite Core framework under the "installed" section of the nuget package manager . -image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_lite_core.png[]
+* Confirm that the _TravelSample.UWP_ project is linked with version 2.1 of _Couchbase.Lite_ and _Couchbase.Lite.Support.UWP_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite core framework and Couchbase.Lite.Support.* support framework under the "installed" section of the nuget package manager. 
+* If you were building for Xamarin, verify that the right version of _Couchbase.Lite_ core framework and _Couchbase.Lite.Support.Android_ / _Couchbase.Lite.Support.iOS_ support framework is linked with the appropriate TravelSample.Android or TravelSample.iOS project respectively. -image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_uwp.png[]
+
+
+[[_try_it_out]]
+=== Try it out
+
+* Open the `TravelSample.sln` using Visual Studio 
+* Build and run the project on your platform of choice (UWP, Xamarin iOS or Xamarin Android) 
+* Verify that the login screen appears. The screenshot below is from a UWP App. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login.png[]
