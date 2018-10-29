@@ -1,0 +1,118 @@
+= 
+
+Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query.
+FTS matches are case-insenstive.
+In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app. 
+
+In order to do FTS queries, an FTS index must be created. 
+
+*Open the file*``DatabaseManager.swift``.
+We will review the method ``createDatabaseIndexes()``.
+This code snippet creates an FTS index on the property named ``description``. 
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/85243b8d3b185da8f57e50d7861e951422b6eb50/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L137-L147[DatabaseManager.swift]
+
+[source]
+----
+
+func createDatabaseIndexes() throws{
+  ...
+
+
+  // For Full text search on description property of airports and hotels docs
+  try _db?.createIndex(IndexBuilder.fullTextIndex(items: FullTextIndexItem.property("description")).ignoreAccents(false), withName: "descFTSIndex")
+
+ }
+----
+
+Next you will write an FTS query that uses the index. 
+
+*Open the file*``HotelPresenter.swift``.
+You will review the `fetchHotelsFromLocalDatabaseMatchingDescription` method. 
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/6ae8ec8b0fd5051855669654ee9c8f2c8fb0a96d/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L208[HotelPresenter.swift]
+
+[source]
+----
+
+fileprivate func fetchHotelsFromLocalDatabaseMatchingDescription( _ descriptionStr:String?,location locationStr:String, handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
+  ...
+}
+----
+
+First, you get an instance of the database. 
+
+[source]
+----
+
+guard let db = dbMgr.db else {
+    fatalError("db is not initialized at this point!")
+}
+----
+
+Next, you will create an FTS `Expressions` using the `match()` operator.
+In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property.
+This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the ``country``,``city``,``state`` or `address` properties.
+This expression is then used in the `where` clause of the query the usual way. 
+
+[source]
+----
+
+var descExp:ExpressionProtocol?
+if let descriptionStr = descriptionStr , descriptionStr != ""{
+  descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
+}
+
+
+let locationExp = _Property.COUNTRY.like(Expression.string("%\(locationStr)%"))
+  .or(_Property.CITY.like(Expression.string("%\(locationStr)%")))
+  .or(_Property.STATE.like(Expression.string("%\(locationStr)%")))
+  .or(_Property.ADDRESS.like(Expression.string("%\(locationStr)%")))
+
+var searchExp:Expression = locationExp
+if  let descExp = descExp {
+    searchExp = descExp.and(locationExp)
+}
+
+
+let hotelSearchQuery = QueryBuilder
+  .select(_SelectColumn.ALLRESULT) 
+  .from(DataSource.database(db))
+  .where(
+     _Property.TYPE.equalTo(Expression.string("hotel")).and(searchExp)
+  )
+----
+
+We build the query using the different expressions from above and transform the `ResultSet` object into a `Map` object that is passed to the ``TableView``. 
+
+[source]
+----
+
+var matches:Hotels = []
+do {
+    for (_,row) in try hotelSearchQuery.execute().enumerated() {
+        
+        if let dbName = dbMgr.db?.name, let match = row.dictionary(forKey: dbName) {
+            
+            matches.append(match.toDictionary())
+        }
+        
+    }
+    handler(matches,nil)
+}
+catch {
+    handler(nil,error)
+}
+----
+
+== Try it out
+
+* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
+* Tap on "hotels" button 
+* In the description text field enter "`Pets. 
+* In the Location text field enter "London" 
+* Verify that you see one hotel listed named "Novotel London West" 
+
+
+
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_fts_query.gif[]
