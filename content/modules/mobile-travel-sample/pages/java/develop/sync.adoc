@@ -1,0 +1,214 @@
+= Sync
+
+[[_channelsdata_routing]]
+== Channels/Data Routing
+
+In the lesson on link:/tutorials/travel-sample/develop/java#/2/2/1[Access
+    Control] we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions.
+In this lesson we discuss how it can be used for Data Synchronization and Routing. 
+
+A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
+
+* Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to 
+* Partition the data set 
+* Authorize users to access documents. 
+* Minimize the amount of data synced down to devices. 
+
+In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
+Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
+It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
+
+[source,javascript]
+----
+
+/* Routing */
+// Add doc to the user's channel.
+channel("channel." + username);
+----= 
+
+== XAttrs
+
+Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the link:/tutorials/travel-sample/develop/java#/0/4/0["Installation"] section. 
+
+Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
+It is an opt-in feature can be enabled in the Sync Gateway configuration file. 
+
+
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png[]
+
+Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `\_sync` property.
+In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
+
+This can be enabled through a configuration setting in the sync gateway config file Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json 
+
+[source,javascript]
+----
+
+"import_docs": "continuous",
+"enable_shared_bucket_access":true
+----
+
+You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+In our demo, we will only be synchornizing the "user" document.
+So every other document type is ignored. 
+
+[source,javascript]
+----
+
+"import_filter": `
+function(doc) {
+  /* Just ignore all the static travel-sample files */
+  if (doc._deleted == true ) {
+    return true;
+   }
+  if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
+    return false;
+  } 
+
+  return true;
+}`,
+----= 
+
+== Replication
+
+Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server) database. 
+
+* Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database 
+* Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
+
+Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket. image:http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png[]
+
+The replication process can be "`continuous`" or "`one shot"`. - In "`Continuous`" replication mode, the changes are continually synchronized between the client and Sync Gateway. 
+
+* In "`One shot`" mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
+
+*Open the file*``app/src/android/java/.../util/DatabaseManager.java``.
+We will review the method ``startPushAndPullReplicationForCurrentUser(String username, String password)``. 
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L131[DatabaseManager.java]
+
+[source,java]
+----
+
+public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
+  ...
+}
+----
+
+First, you initialize the `URL` object which points to the Sync Gateway instance to synchronize with. 
+
+[source,java]
+----
+
+public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+URI url = null;
+try {
+    url = new URI(mSyncGatewayEndpoint);
+} catch (URISyntaxException e) {
+    e.printStackTrace();
+}
+----
+
+Next, you will configure the replication.
+The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway.
+The `replicatorType` in the Replicator Config specifies the type of replication.
+In the code snippet in the Travel App, it is `pushAndPull` indicating that both push and pull replication is enabled.
+The `continuous` mode is set to `true` in the Travel app. 
+
+[source,java]
+----
+
+
+ReplicatorConfiguration config = new ReplicatorConfiguration(database, new URLEndpoint(url));
+config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+config.setContinuous(true);
+----
+
+The Replicator is configured with relevant authentication credentials.
+In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/develop/swift#/2/2/1[Access
+    Control] section 
+
+[source,java]
+----
+
+config.setAuthenticator(new BasicAuthenticator(username, password));
+----
+
+The Replicator is initialized with the specified configuration 
+
+[source,java]
+----
+
+Replicator replicator = new Replicator(config);
+----
+
+A change listener callback block is registered to listen for replication changes.
+Every time, there is a push or pull change, the callback is invoked. 
+
+[source,java]
+----
+
+replicator.addChangeListener(new ReplicatorChangeListener() {
+@Override
+public void changed(ReplicatorChange change) {
+
+    if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.IDLE)) {
+
+        Log.e("Replication Comp Log", "Schedular Completed");
+
+    }
+    if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.OFFLINE)) {
+        // stopReplication();
+        Log.e("Rep schedular  Log", "ReplicationTag Stopped");
+    }
+}
+});
+----
+
+Replication is started 
+
+[source,java]
+----
+
+replicator.start();
+----
+
+=== Try it out (Push Replication)
+
+* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
+* Tap on "airline" button to make a flight reservation 
+* Enter "`From`" airport as "San Fran" and select the airport from drop down menu 
+* Enter "`To`" airport as "Detroit" and select the airport from drop down menu 
+* Enter From and Return Dates 
+* Tap "lookup" button 
+* From list of flights, select the first flight listing. This automatically confirms the booking. 
+* Access the Travel Sample Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
+* Make sure that the "New User" checkbox is *unchecked*
+* Log into the web app as "`demo`" user with password as "`password`" 
+* Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
+
+
+
+image::https://cl.ly/3r0X2x1M3k37/android-push.gif[]
+
+
+=== Try it out (Pull Replication)
+
+* Access the Travel Sample Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
+* Make sure that the "New User" checkbox is *unchecked*
+* Log into the web app as "`demo`" user with password as "`password`" 
+* Make a flight reservation by clicking "booking" button. 
+* Enter "`From`" airport as "San" and select the airport from drop down menu. 
+* Enter "`To`" airport as "SFO" and select the airport from drop down menu. 
+* Enter From and Return Travel Dates 
+* Click on "Find Flights" button 
+* From list of flights, select the first flight listing 
+* Confirm the booking by clicking on the shopping cart icon and click on "`Book`" button 
+* {empty}
+
+  Log into the Travel Sample Mobile app as “demo” user and password as “password”
+* Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
+
+
+
+image::https://cl.ly/2x1Q1d20303Y/android-pull.gif[]

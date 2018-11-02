@@ -1,0 +1,25 @@
+= Travel Mobile App
+
+== Travel Sample Mobile App
+
+* Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
++
+
+[source,bash]
+----
+
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+* Open *android/build.gradle* using Android Studio 
+* Build and run the project 
+
+
+
+image::https://cl.ly/1r0T100T0c22/as-build.png[]
+
+
+* Verify that the login screen appears in the simulator 
+
+
+
+image::https://cl.ly/0T0G2S083g41/as-login.png[]

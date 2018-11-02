@@ -1,0 +1,159 @@
+= Travel Web Backend
+
+== Manual
+
+We will use the Python version of the https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html[Travel
+    Sample Web Backend] which uses the Couchbase Python SDK to with with Couchbase Server Query Services. 
+
+*If you would prefer to use a docker
+    container instead, please proceed to the http://docs.couchbase.com/tutorials/travel-sample/develop/java/#/0/4/1[docker]
+    section*
+
+*Windows Users * The instructions in this section are for Windows users.
+Scroll to "Other Platforms" section for instructions for other platforms.
+- Install the Couchbase Python SDK Installer.
+This can be downloaded from https://pypi.org/project/couchbase/#files[Pypi] website.
+Scroll to the section which lists the relevant installers and select the installer corresponding to appropriate version of Python that you have installed on your machine. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/win_py_installer.png[] - Clone the 5.0 branch of Travel Sample web app repo 
+
+[source,bash]
+----
+
+$ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+----
+
+* Verify pip installation If you are developing on Windows, pip.exe will be found in "Scripts" sub directory under the Python installation directory. Add the path to the "Scripts" folder to the system's PATH environment variable. You can follow instructions https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here] to set your PATH variable. Verify that pip is recognized by typing the following in the cmd terminal. You should see the help menu 
++
+
+[source,bash]
+----
+
+pip
+----
+* The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command 
++
+
+[source,bash]
+----
+
+cd c:\path\to\try-cb-python
+pip install -r requirements.txt
+----
+* Update the travel.py file to reflect the username and password that you have used during Couchbase Server install. This defaults to "Administrator" and "password" 
++
+
+[source,python]
+----
+
+DEFAULT_USER = "Administrator"
+PASSWORD = 'password'
+----
+* Now launch the Travel Web App 
++
+
+[source,bash]
+----
+
+$ python travel.py
+$ Running on http://localhost:8080/ (Press CTRL+C to quit)
+----
++
+You may see an alert similar to one below requesting access to run the app.
+Make sure you select the "Allow access" option. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
+
+*Other Platforms * - *PREREQUISITE* : First, install *libcouchbase* Core C SDK used by the Python SDK - Follow instructions https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk[here] to install libcouchbase on your platform of choice 
+
+* Clone the 5.0 branch of Travel Sample web app repo 
++
+
+[source,bash]
+----
+
+$ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+----
+* We will run the Travel Web App in a Python https://virtualenv.pypa.io/en/stable/[virtual environment]. First, check if `virtualenv` is installed on your system 
++
+
+[source,bash]
+----
+
+$ virtualenv --version
+----
+* if `virtualenv` is not installed , you can use `apt-get` or `pip` to install it 
++
+
+[source,bash]
+----
+
+$ sudo pip install virtualenv
+----
+* Specify the folder for your virtual environment 
++
+
+[source,bash]
+----
+
+$ virtualenv /path/to/try-cb-python
+----
+* Activate your environment. You should see a prompt as shown below 
++
+
+[source,bash]
+----
+
+$ source /path/to/try-cb-python/bin/activate
+$ (try-cb-python) Macintosh-2:try-cb-python mactester$
+----
+* The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command 
++
+
+[source,bash]
+----
+
+cd /path/to/try-cb-python
+pip install -r requirements.txt
+----
+* Update the travel.py file to reflect the username and password that you have used during Couchbase Server install. This defaults to "Administrator" and "password" 
++
+
+[source,python]
+----
+
+DEFAULT_USER = "Administrator"
+PASSWORD = 'password'
+----
+* Now launch the Travel Web App ``` bash python travel.py 
+* Running on http://localhost:8080/ (Press CTRL+C to quit) ``` 
+
+
+[[_try_it_out]]
+=== Try it out
+
+* Open http://localhost:8080/ in your web browser 
+* Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
+= 
+
+== Docker (Local)
+
+_NOTE_ : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well.
+If not, please follow instructions link:/tutorials/travel-sample/develop/java#/0/2/1[here] to install the server container and link:/tutorials/travel-sample/develop/java#/0/3/1[here] to install sync gateway container. 
+
+* Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
+* To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following. 
+
+`bash   $ docker pull connectsv/try-cb-python:5.5.1-server`
+
+* Once the command has completed you can start the application with the following. 
+
+`bash   $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.5.1-server`
+
+You should then see the following in the console output. 
+
+`bash    Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)` ## Try it out - Open http://localhost:8080/ in your web browser - Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]= 
+
+== Cloud
+
+*NOTE:* The RightScale cloud environment is only available for in-classroom run workshops. 
+
+If you chose Cloud in the <<_/0/2/2,previous
+    step>> then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running.
+You can move on to the <<_/1/0/0,next chapter>> to learn about the data modeling requirements of the app. 
