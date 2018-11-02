@@ -1,4 +1,6 @@
-= 
+= The Basics
+
+== Create a Database
 
 There is no limit to how many databases can be created or opened on the device.
 You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern). 
@@ -51,13 +53,15 @@ The Couchbase Lite Database is created with specified name and `DatabaseConfigur
 _db = try Database(name: kGuestDBName, config: options)
 ----
 
-== Try it out
+=== Try it out
 
 * Build and Run the Travel Sample Mobile App 
 * On Login screen select "`Proceed as Guest`" option. 
 * This will log you into app in Guest Mode. Signing in as Guest will create a new empty database for "`guest`" account if one does not exist 
 * Confirm that you see the "`Bookmarked Hotels`" page. It will be empty the very first time. 
 = 
+
+== Create and Update a Document
 
 Bookmarked hotels are persisted in a separate document with `type` of ``bookmarkedhotels``. 
 
@@ -184,7 +188,7 @@ for hotelDoc in hotels {
 }
 ----
 
-== Try it out
+=== Try it out
 
 * As Guest User, tap on "`hotels`" button 
 * In "location" text field , enter "London" 
@@ -201,6 +205,8 @@ for hotelDoc in hotels {
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/basics_add_document.gif[]
 = 
+
+== Delete a Document
 
 A document can be deleted using the `delete` method.
 This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients. 
@@ -219,7 +225,7 @@ func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void
 ----
 
 When searching for hotels in **Guest
-  mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server.
+    mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server.
 Then, if a hotel is bookmarked, it gets inserted in the Couchbase Lite database for offline access.
 So when the user unbookmarks a hotel, the document needs to be removed from the database.
 That's what the code below is doing. 
@@ -237,7 +243,7 @@ for idOfDocToRemove in idsToRemove {
 
 In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document. 
 
-== Try it out
+=== Try it out
 
 * Follow the steps in http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1[Update a Document] section to bookmark a hotel 
 * Confirm that you see the bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1[Update a Document] section 

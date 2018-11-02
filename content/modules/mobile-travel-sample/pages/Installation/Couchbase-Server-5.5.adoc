@@ -1,10 +1,12 @@
-= 
+= Couchbase Server 5.5
+
+== Manual
 
 In this lesson, you will install and launch version 5.5.1 of the Couchbase Server. 
 
-*If you would prefer to use a docker container
-  instead, please proceed to the http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/2/1[docker]
-  section*
+*If you would prefer to use a docker
+    container instead, please proceed to the http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/2/1[docker]
+    section*
 
 * https://www.couchbase.com/downloads#couchbase-server[Download and install] V5.5.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://developer.couchbase.com/documentation/server/5.5/install/install-intro.html[install guide] to install the same. 
 * In setup wizard, create Administrator account with user _Administrator_ and password as __password__. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[]
@@ -36,13 +38,15 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/fts.png[]
 
 
-== Try it out
+=== Try it out
 
 * Launch Couchbase Server (if not already runnning) 
 * Log into the "Admin Console" with appropriate Administrator credentials you created during installation 
 * Select the "Buckets" option from the menu on the left 
 * Verify that you have around 31,000 documents in your travel-sample bucket 
 = 
+
+== Docker (Local)
 
 * Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
 * To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following. `bash   $ docker pull connectsv/server:5.5.1-enterprise`
@@ -55,13 +59,15 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 
 [[_try_it_out]]
-== Try it out
+=== Try it out
 
 * Launch Couchbase Server 
 * Log into the "Admin Console" with username as "Administrator" and password as "password" 
 * Select the "Buckets" option from the menu on the left 
 * Verify that you have around 31,000 documents in your travel-sample bucket 
 = 
+
+== Cloud
 
 *NOTE:* The RightScale cloud environment is only available for in-classroom run workshops. 
 
@@ -110,7 +116,7 @@ In the example above that would be `54.148.83.39` but yours will be different.
 let kRemoteSyncUrl = "ws://54.148.83.39::4984"
 ----
 
-== Try it out (Couchbase Server)
+=== Try it out (Couchbase Server)
 
 * Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
 * Log into the "Admin Console" with username as "Administrator" and password as "password" 
@@ -118,13 +124,13 @@ let kRemoteSyncUrl = "ws://54.148.83.39::4984"
 * Verify that you have around 31,000 documents in your travel-sample bucket 
 
 
-== Try it out (Sync Gateway)
+=== Try it out (Sync Gateway)
 
 * Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
 * You should the following response `json  {   "couchdb":"Welcome",   "vendor":{"name":"Couchbase Sync Gateway","version":1},   "version":"Couchbase Sync Gateway/2.1(...)"  }`
 
 
-== Try it out (Travel App)
+=== Try it out (Travel App)
 
 * Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
 * Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]

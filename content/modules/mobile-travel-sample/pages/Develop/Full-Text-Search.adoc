@@ -1,4 +1,6 @@
-= 
+= Full Text Search
+
+== Full Text Search
 
 Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query.
 FTS matches are case-insenstive.
@@ -105,7 +107,7 @@ catch {
 }
 ----
 
-== Try it out
+=== Try it out
 
 * Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
 * Tap on "hotels" button 

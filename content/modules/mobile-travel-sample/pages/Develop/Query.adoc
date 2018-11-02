@@ -1,11 +1,13 @@
-= 
+= Query
+
+== Overview
 
 Couchbase Lite 2.0 includes support for N1QL like query interface.
 Database can be queried by constructing a query using a Query builder and then executing that query. 
 
 The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others - Pattern Matching - Regex Matching - Math Functions - String Manipulation Functions - Aggregate Functions - Grouping - Joins (within single database) - Sorting - NilOrMissing properties 
 
-== Implementation Pattern
+=== Implementation Pattern
 
 The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type.
 Consider the following query 
@@ -65,6 +67,8 @@ This file defines the CouchbaseLite expressions that are used in the Travel App
   }
 ----= 
 
+== Simple Query
+
 The travel app has many instances of querying the database.
 We will discuss a simple example here. 
 
@@ -121,7 +125,7 @@ catch {
 }
 ----
 
-== Try it out
+=== Try it out
 
 * Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
 * Tap on "+"" button to make a flight reservation 
@@ -132,6 +136,8 @@ catch {
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_simple_query.gif[]
 = 
+
+== Advanced Query
 
 In this section we will discuss the JOIN query.
 JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
@@ -228,7 +234,7 @@ for result in try query.execute() {
 handler(bookmarkedHotels,nil)
 ----
 
-== Try it out
+=== Try it out
 
 * Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
 * Tap on "Hotels"" button 

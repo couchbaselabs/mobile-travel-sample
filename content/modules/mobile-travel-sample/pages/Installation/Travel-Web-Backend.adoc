@@ -1,11 +1,13 @@
-= 
+= Travel Web Backend
+
+== Manual
 
 We will use the Python version of the https://developer.couchbase.com/documentation/server/current/sdk/python/sample-app-backend.html[Travel
-  Sample Web Backend] which uses the Couchbase Python SDK to with with Couchbase Server Query Services. 
+    Sample Web Backend] which uses the Couchbase Python SDK to with with Couchbase Server Query Services. 
 
-*If you would prefer to use a docker container
-  instead, please proceed to the http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/4/1[docker]
-  section*
+*If you would prefer to use a docker
+    container instead, please proceed to the http://docs.couchbase.com/tutorials/travel-sample/develop/swift/#/0/4/1[docker]
+    section*
 
 * *PREREQUISITE* : First, install *libcouchbase* Core C SDK used by the Python SDK 
 * Follow instructions https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk[here] to install libcouchbase on your platform of choice 
@@ -80,11 +82,13 @@ $ Running on http://localhost:8080/ (Press CTRL+C to quit)
 
 
 [[_try_it_out]]
-== Try it out
+=== Try it out
 
 * Open http://localhost:8080/ in your web browser 
 * Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
 = 
+
+== Docker (Local)
 
 _NOTE_ : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well.
 If not, please follow instructions link:/tutorials/travel-sample/develop/swift#/0/2/1[here] to install the server container and link:/tutorials/travel-sample/develop/swift#/0/3/1[here] to install sync gateway container. 
@@ -102,7 +106,10 @@ You should then see the following in the console output.
 
 `bash   Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)` ## Try it out - Open http://localhost:8080/ in your web browser - Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]= 
 
+== Cloud
+
 *NOTE:* The RightScale cloud environment is only available for in-classroom run workshops. 
 
-If you chose Cloud in the <<_/0/2/2,previous step>> then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running.
+If you chose Cloud in the <<_/0/2/2,previous
+    step>> then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running.
 You can move on to the <<_/1/0/0,next chapter>> to learn about the data modeling requirements of the app. 

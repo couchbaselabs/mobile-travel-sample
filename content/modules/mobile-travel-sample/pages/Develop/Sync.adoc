@@ -1,4 +1,7 @@
-= 
+= Sync
+
+[[_channelsdata_routing]]
+== Channels/Data Routing
 
 In the lesson on link:/swift#/2/2/1[Access Control] we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions.
 In this lesson we discuss how it can be used for Data Synchronization and Routing. 
@@ -21,6 +24,8 @@ It includes the `sync function` which is a JavaScript function whose source code
 // Add doc to the user's channel.
 channel("channel." + username);
 ----= 
+
+== XAttrs
 
 Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the link:/tutorials/travel-sample/develop/swift#/0/4/0["Installation"] section. 
 
@@ -62,6 +67,8 @@ function(doc) {
   return true;
 }`,
 ----= 
+
+== Replication
 
 Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server) database. 
 
@@ -145,7 +152,7 @@ config.continuous =  true
 
 The Replicator is configured with relevant authentication credentials.
 In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/tutorials/travel-sample/develop/swift#/2/2/1[Access
-  Control] section 
+    Control] section 
 
 [source]
 ----
@@ -155,7 +162,7 @@ config.authenticator = BasicAuthenticator(username: user, password: password)
 
 The Replicator is configured to only pull from current user's channels.
 The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the link:/tutorials/travel-sample/develop/swift#/2/3/0[Channels/
-  Data Routing] section 
+    Data Routing] section 
 
 [source]
 ----
@@ -202,7 +209,7 @@ Start the Replication
 _pushPullRepl?.start()
 ----
 
-== Try it out (Push Replication)
+=== Try it out (Push Replication)
 
 * Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
 * Tap on "+" button to make a flight reservation 
@@ -222,7 +229,7 @@ _pushPullRepl?.start()
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_push_sync.gif[]
 
 
-== Try it out (Pull Replication)
+=== Try it out (Pull Replication)
 
 * Access the Travel Sample Web app. The URL *unchecked*
 * Log into the web app as "`demo`" user with password as "`password`" 
