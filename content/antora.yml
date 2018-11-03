@@ -1,5 +1,4 @@
 name: tutorials
-title: Mobile Travel Sample
 version: 'master'
 nav:
 - modules/mobile-travel-sample/nav.adoc
