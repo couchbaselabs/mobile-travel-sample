@@ -1,37 +1,53 @@
-= Travel Mobile App
-
 == Travel Sample Mobile App
 
 * Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
 +
-
 [source,bash]
 ----
-
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 +
-If you are building using Xcode 9.2, you will have to download the Swift 4 compatible version of Couchbase Lite framework 
-* Run the `install_9.2.sh` script to download and install the compatible version of Couchbase Lite. 
+If you are building using Xcode 9.2, you will have to download the Swift 4 compatible version of Couchbase Lite framework
+* In Terminal, navigate to the *TravelSample* directory.
 +
+[source,bash]
+----
+cd /path/to/mobile-travel-sample/ios/TravelSample
+----
+* Run the following script to download and install Couchbase Lite.
+A script is provided for different versions of Xcode and Swift.
++
+[{tabs}]
+====
+Xcode 10::
++
+--
+[source,bash]
+----
+sh install_10.sh
+----
+--
+
+Xcode 9.2::
++
+--
+If you are building using Xcode 9.3+, you will have to download the Swift 4.1 compatible version of Couchbase Lite framework.
 
 [source,bash]
 ----
-
-cd /path/to/mobile-travel-sample/ios/TravelSample
 sh install_9.2.sh
 ----
-+
-If you are building using Xcode 9.3+, you will have to download the Swift 4.1 compatible version of Couchbase Lite framework 
-* Run the `install_9.sh` script to download and install the compatible version of Couchbase Lite. 
-+
+--
 
+Xcode 9::
++
+--
 [source,bash]
 ----
-
-cd /path/to/mobile-travel-sample/ios/TravelSample
 sh install_9.sh
 ----
-* Open the `TravelSample.xcodeproj` using Xcode 
-* Build and run the project using simulator 
+--
+====
+* Open the `TravelSample.xcodeproj` using Xcode
+* Build and run the project using simulator
 * Verify that the login screen appears in the simulator 
