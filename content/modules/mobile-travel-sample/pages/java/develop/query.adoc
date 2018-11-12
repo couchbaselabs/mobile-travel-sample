@@ -1,18 +1,29 @@
 = Query
+:source-language: java
 
 == Overview
 
 Couchbase Lite 2.0 includes support for N1QL like query interface.
 Database can be queried by constructing a query using a Query builder and then executing that query. 
 
-The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others - Pattern Matching - Regex Matching - Math Functions - String Manipulation Functions - Aggregate Functions - Grouping - Joins (within single database) - Sorting - NilOrMissing properties = 
+The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+
+- Pattern Matching
+- Regex Matching
+- Math Functions
+- String Manipulation Functions
+- Aggregate Functions
+- Grouping
+- Joins (within single database)
+- Sorting
+- NilOrMissing properties
 
 == Simple Query
 
 The travel app has many instances of querying the database.
 We will discuss a simple example here. 
 
-*Open the file*``app/src/android/java/.../searchflight/SearchFlightPresenter.java``.
+*Open the file* ``app/src/android/java/.../searchflight/SearchFlightPresenter.java``.
 We will review the `startsWith(String prefix, String tag)` method. 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53[SearchFlightPresenter.java]
@@ -69,11 +80,8 @@ mSearchView.showAirports(data, tag);
 * Tap the "Flights" button to make a flight reservation 
 * In the "From" airport textfield, enter "Detroit" 
 * Verify that the first item in the drop down list is "Detroit Metro Wayne Co" 
-
-
-
++
 image::https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif[]
-= 
 
 == Advanced Query
 
@@ -84,7 +92,6 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 
 [source,json]
 ----
-
 {
   "_id": "hotel1",
   "name": "San Francisco Hotel",
@@ -116,7 +123,6 @@ First, we instantiate two data sources which corresponds to the two sides of the
 
 [source,java]
 ----
-
 DataSource bookmarkDS = DataSource.database(database).as("bookmarkDS");
 DataSource hotelsDS = DataSource.database(database).as("hotelDS");
 ----
@@ -127,7 +133,6 @@ The seconds get the document ID on the hotels data source.
 
 [source,java]
 ----
-
 Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
 Expression hotelIdExpr = Meta.id.from("hotelDS");
 ----
@@ -137,7 +142,6 @@ And build the join expression.
 
 [source,java]
 ----
-
 Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
 Join join = Join.join(hotelsDS).on(joinExpr);
 ----
@@ -146,7 +150,6 @@ Finally, the query object uses that join expression to find all the hotel docume
 
 [source,java]
 ----
-
 Expression typeExpr = Expression.property("type").from("bookmarkDS");
 
 SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
@@ -163,7 +166,6 @@ And we use the `execute()` method to get the results back pass them on to the vi
 
 [source,java]
 ----
-
 query.addChangeListener(new QueryChangeListener() {
     @Override
     public void changed(QueryChange change) {
@@ -198,8 +200,6 @@ try {
 * Verify that you see the "Novotel London West" listed 
 * Swipe left to "bookmark" the hotel 
 * Tap "Cancel" button 
-* Verify that the Novatel hotel that you bookmarked earlier shows up in the list 
-
-
-
+* Verify that the Novatel hotel that you bookmarked earlier shows up in the list
++
 image::https://cl.ly/3r243s1K2600/android-advanced-query.gif[]

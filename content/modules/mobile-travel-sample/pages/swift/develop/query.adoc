@@ -1,34 +1,45 @@
 = Query
+:source-language: swift
 
 == Overview
 
 Couchbase Lite 2.0 includes support for N1QL like query interface.
 Database can be queried by constructing a query using a Query builder and then executing that query. 
 
-The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others - Pattern Matching - Regex Matching - Math Functions - String Manipulation Functions - Aggregate Functions - Grouping - Joins (within single database) - Sorting - NilOrMissing properties 
+The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+
+- Pattern Matching
+- Regex Matching
+- Math Functions
+- String Manipulation Functions
+- Aggregate Functions
+- Grouping
+- Joins (within single database)
+- Sorting
+- NilOrMissing properties
 
 === Implementation Pattern
 
 The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type.
-Consider the following query 
+Consider the following query.
 
 [source]
 ----
-
 let hotelSearchQuery = Query
-                  .select(SelectResult.expression(Meta.id),
-                          SelectResult.expression(Expression.property("name"))) 
-                  .from(DataSource.database(db))
-                  .where(
-                      Expression.property("description").like("%\(descriptionStr)%")
-                     .and(Expression.property("type").equalTo("hotel"))
-                     .and(Expression.property("country").equalTo(locationStr)
-                     .or(Expression.property("city").equalTo(locationStr))
-                     .or(Expression.property("state").equalTo(locationStr))
-                     .or(Expression.property("address").equalTo(locationStr))))
+  .select(SelectResult.expression(Meta.id),
+          SelectResult.expression(Expression.property("name")))
+  .from(DataSource.database(db))
+  .where(
+      Expression.property("description").like("%\(descriptionStr)%")
+     .and(Expression.property("type").equalTo("hotel"))
+     .and(Expression.property("country").equalTo(locationStr)
+     .or(Expression.property("city").equalTo(locationStr))
+     .or(Expression.property("state").equalTo(locationStr))
+     .or(Expression.property("address").equalTo(locationStr)))
+  )
 ----
 
-Often types, the same `Expression` may be required across multiple queries.
+Often times, the same `Expression` may be required across multiple queries.
 This can quickly become tedious and difficult to maintain.
 The recommended pattern is to define constants corresponding to the Expressions and to reuse them across queries. 
 
@@ -65,21 +76,20 @@ This file defines the CouchbaseLite expressions that are used in the Travel App
       static let COUNTRESULT        = SelectResult.expression(Function.count(1))
       static let ALLRESULT          = SelectResult.all()
   }
-----= 
+----
 
 == Simple Query
 
 The travel app has many instances of querying the database.
 We will discuss a simple example here. 
 
-*Open the file*``AirportPresenter.swift``.
+*Open the file* ``AirportPresenter.swift``.
 We will review the `fetchAirportsMatching` method. 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28[AirportPresenter.swift]
 
 [source]
 ----
-
 func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) {
   ...
 }
@@ -93,7 +103,6 @@ The query below *selects* the "name" property in documents *from* the database *
 
 [source]
 ----
-
 searchQuery = QueryBuilder
   .select(_SelectColumn.AIRPORTNAMERESULT)
   .from(DataSource.database(db))
@@ -104,11 +113,11 @@ searchQuery = QueryBuilder
 ----
 
 Next, the query is executed using the `execute()` method.
-Each row in the result will contain a single property called "airportname". The final result is passed to the `handler` callback where the result will be displayed in a ``TableView``. 
+Each row in the result will contain a single property called "airportname".
+The final result is passed to the `handler` callback where the result will be displayed in a ``TableView``.
 
 [source]
 ----
-
 if let searchQuery = searchQuery {
 var matches:Airports = []
 do {
@@ -131,11 +140,8 @@ catch {
 * Tap on "+"" button to make a flight reservation 
 * In the "`From`" airport textfield, enter "DTW"" 
 * Verify that the first item in the drop down list is "Detroit Metro Wayne Co"" 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_simple_query.gif[]
-= 
 
 == Advanced Query
 
@@ -146,7 +152,6 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 
 [source,json]
 ----
-
 {
   "_id": "hotel1",
   "name": "San Francisco Hotel",
@@ -159,18 +164,16 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 }
 ----
 
-We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels". 
+We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
 
-*Open the file*``HotelPresenter.swift``.
+*Open the file* ``HotelPresenter.swift``.
 We will review the `fetchBookmarkedHotels` method. 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L154[HotelPresenter.swift]
 
 [source]
 ----
-
-func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void)
-    {
+func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
     ...
 }
 ----
@@ -179,7 +182,6 @@ First, we instantiate two data sources which corresponds to the two sides of the
 
 [source]
 ----
-
 let bookmarkDS = DataSource.database(db).as("bookmarkDS")
 let hotelsDS = DataSource.database(db).as("hotelsDS")
 ----
@@ -190,7 +192,6 @@ The seconds get the document ID on the hotels data source.
 
 [source]
 ----
-
 let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
 let hotelIdExpr = Meta.id.from("hotelsDS")
 ----
@@ -200,7 +201,6 @@ And build the join expression.
 
 [source]
 ----
-
 let joinExpr = ArrayFunction.contains(hotelsExpr, value: hotelIdExpr)
 let join = Join.join(hotelsDS).on(joinExpr);
 ----
@@ -209,7 +209,6 @@ Finally, the query object uses that join expression to find all the hotel docume
 
 [source]
 ----
-
 let typeExpr = Expression.property("type").from("bookmarkDS")
 
 let bookmarkAllColumns = _SelectColumn.ALLRESULT.from("bookmarkDS")
@@ -225,7 +224,6 @@ And we use the `execute()` method to get the results back pass them on to the vi
 
 [source]
 ----
-
 for result in try query.execute() {
   if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() as? Hotel{
         bookmarkedHotels.append(hotel)
@@ -244,7 +242,5 @@ handler(bookmarkedHotels,nil)
 * Swipe left to "bookmark" the hotel 
 * Tap "Cancel" button 
 * Verify that the Novatel hotel that you bookmarked earlier shows up in the list 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_join_query.gif[]
