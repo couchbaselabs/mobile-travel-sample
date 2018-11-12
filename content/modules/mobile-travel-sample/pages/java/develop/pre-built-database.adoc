@@ -8,7 +8,7 @@ Even if some of the content changes on the server after you create the app, the 
 Here, you will use a pre-built database that contains only airport and hotel documents.
 The code below moves the pre-built database from the bundled location to the Application Support directory. 
 
-*Open the file*``app/src/android/java/.../util/DatabaseManager.java`` and navigate to the database constructor. 
+*Open the file* ``app/src/android/java/.../util/DatabaseManager.java`` and navigate to the database constructor.
 
 This method first checks if a database file already exists.
 If it doesn't exist it loads the database from the assets directory. 
@@ -17,7 +17,6 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/sr
 
 [source,java]
 ----
-
 protected DatabaseManager(Context context, boolean isGuest) {
     if (isGuest) {
         ...
@@ -43,7 +42,5 @@ protected DatabaseManager(Context context, boolean isGuest) {
 * Tap on "Airplane`" button to make a flight reservation 
 * In the "`From`" airport textfield, enter "`San`" 
 * Confirm that the first item in the dropdown list of "San Francisco Intl" 
-
-
-
++
 image::https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif[]

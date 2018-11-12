@@ -8,7 +8,7 @@ Even if some of the content changes on the server after you create the app, the 
 Here, you will use a pre-built database that contains only airport and hotel documents.
 The code below moves the pre-built database from the bundled location to the Application Support directory. 
 
-*Open the file*``DatabaseManager.swift`` and navigate to the `openOrCreateDatabaseForUser` method. 
+*Open the file* ``DatabaseManager.swift`` and navigate to the `openOrCreateDatabaseForUser` method.
 
 This method first checks if a database file already exists.
 If it doesn't exist it loads the database from the app bundle. 
@@ -32,7 +32,5 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSamp
 * Tap on "+`" button to make a flight reservation 
 * In the "`From`" airport textfield, enter "`San`" 
 * Confirm that the first item in the dropdown list of "San Diego Intl" 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_prebuilt.gif[]
