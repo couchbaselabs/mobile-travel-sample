@@ -1,6 +1,6 @@
 = Sync
+:source-language: swift
 
-[[_channelsdata_routing]]
 == Channels/Data Routing
 
 In the lesson on link:/swift#/2/2/1[Access Control] we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions.
@@ -8,43 +8,44 @@ In this lesson we discuss how it can be used for Data Synchronization and Routin
 
 A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
 
-* Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to 
-* Partition the data set 
-* Authorize users to access documents. 
+Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to:
+
+* Partition the data set.
+* Authorize users to access documents.
 * Minimize the amount of data synced down to devices. 
 
-In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
+In the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section, we walked you through the steps to launch Sync Gateway with a specific config file.
+
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
 It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
 
 [source,javascript]
 ----
-
 /* Routing */
 // Add doc to the user's channel.
 channel("channel." + username);
-----= 
+----
 
 == XAttrs
 
-Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the link:/tutorials/travel-sample/develop/swift#/0/4/0["Installation"] section. 
+Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
 
-Starting with Sync Gateway 1.5 and Couchbase Server 5.x, mobile and server/web applications now have the ability to read and write to the same bucket.
-It is an opt-in feature can be enabled in the Sync Gateway configuration file. 
-
+Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
+It is an opt-in feature can be enabled in the Sync Gateway configuration file.
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png[]
 
-Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `\_sync` property.
-In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document. 
+Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property.
+In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document.
 
-This can be enabled through a configuration setting in the sync gateway config file Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json 
+This can be enabled through a configuration setting in the sync gateway config file.
+
+Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json
 
 [source,javascript]
 ----
-
 "import_docs": "continuous",
-"enable_shared_bucket_access":true
+"enable_shared_bucket_access": true
 ----
 
 You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
@@ -53,8 +54,6 @@ So every other document type is ignored.
 
 [source,javascript]
 ----
-
-"import_filter": `
 function(doc) {
   /* Just ignore all the static travel-sample files */
   if (doc._deleted == true ) {
@@ -65,8 +64,8 @@ function(doc) {
   } 
 
   return true;
-}`,
-----= 
+}
+----
 
 == Replication
 
@@ -75,11 +74,14 @@ Replication is the process by which clients running Couchbase Lite synchronize d
 * Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database 
 * Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
 
-Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket. image:http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png[]
+Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket.
 
-The replication process can be "`continuous`" or "`one shot"`. - In "`Continuous`" replication mode, the changes are continually synchronized between the client and Sync Gateway. 
+image:http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png[]
 
-* In "`One shot`" mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication. 
+The replication process can be "`continuous`" or "`one shot"`.
+
+* In "`Continuous`" replication mode, the changes are continually synchronized between the client and Sync Gateway.
+* In "`One shot`" mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication.
 
 *Open the file*``DatabaseManager.swift``.
 We will review the method `func startPushAndPullReplicationForCurrentUser()`
@@ -223,9 +225,7 @@ _pushPullRepl?.start()
 * Make sure that the "New User" checkbox is *unchecked*
 * Log into the web app as "`demo`" user with password as "`password`" 
 * Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_push_sync.gif[]
 
 
@@ -244,7 +244,5 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
   Log into the Travel Sample Mobile app as “demo” user and password as “password”
 * Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_pull_sync.gif[]
