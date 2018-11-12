@@ -33,21 +33,3 @@
 *** xref:mobile-travel-sample:java/develop/pre-built-database.adoc[Pre-built database]
 *** xref:mobile-travel-sample:java/develop/query.adoc[Query]
 *** xref:mobile-travel-sample:java/develop/full-text-search.adoc[Full Text Search]
-
-* Dot-Net
-** Installation
-*** xref:mobile-travel-sample:csharp/installation/overview.adoc[Overview]
-*** xref:mobile-travel-sample:csharp/installation/travel-mobile-app.adoc[Travel Mobile App]
-*** xref:mobile-travel-sample:csharp/installation/couchbase-server-5.5.adoc[Couchbase Server 5.5]
-*** xref:mobile-travel-sample:csharp/installation/sync-gateway-2.1.adoc[Sync Gateway 2.1]
-*** xref:mobile-travel-sample:csharp/installation/travel-web-backend.adoc[Travel Web Backend]
-** Design
-*** xref:mobile-travel-sample:csharp/design/data-modeling.adoc[Data Modeling]
-** Develop
-*** xref:mobile-travel-sample:csharp/develop/mvp-architecture.adoc[MVP Architecture]
-*** xref:mobile-travel-sample:csharp/develop/the-basics.adoc[The Basics]
-*** xref:mobile-travel-sample:csharp/develop/security.adoc[Security]
-*** xref:mobile-travel-sample:csharp/develop/sync.adoc[Sync]
-*** xref:mobile-travel-sample:csharp/develop/pre-built-database.adoc[Pre-built database]
-*** xref:mobile-travel-sample:csharp/develop/query.adoc[Query]
-*** xref:mobile-travel-sample:csharp/develop/full-text-search.adoc[Full Text Search]
