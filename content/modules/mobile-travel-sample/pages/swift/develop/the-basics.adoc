@@ -7,24 +7,22 @@ You can think of a database as a namespace for documents and several databases c
 
 The snippet below creates an empty database for `guest` user in a directory named ``guest``. 
 
-*Open the file*``DatabaseManager.swift``.
-We will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method. 
+*Open the file* `DatabaseManager.swift`.
+We will review the `func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void)` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Model/DatabaseManager.swift#L81[DatabaseManager.swift]
 
 [source]
 ----
-
 func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
   ...
 }
 ----
 
-We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object 
+We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object.
 
 [source]
 ----
-
 var options = DatabaseConfiguration()
 guard let defaultDBPath = _applicationSupportDirectory else {
     fatalError("Could not open Application Support Directory for app!")
@@ -44,11 +42,10 @@ if !fileManager.fileExists(atPath: guestFolderPath) {
 options.directory = guestFolderPath
 ----
 
-The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object 
+The Couchbase Lite Database is created with the specified name and `DatabaseConfiguration` object
 
 [source]
 ----
-
 // Gets handle to existing DB at specified path
 _db = try Database(name: kGuestDBName, config: options)
 ----
@@ -56,14 +53,13 @@ _db = try Database(name: kGuestDBName, config: options)
 === Try it out
 
 * Build and Run the Travel Sample Mobile App 
-* On Login screen select "`Proceed as Guest`" option. 
-* This will log you into app in Guest Mode. Signing in as Guest will create a new empty database for "`guest`" account if one does not exist 
-* Confirm that you see the "`Bookmarked Hotels`" page. It will be empty the very first time. 
-= 
+* On the Login screen select "`Proceed as Guest`" option.
+* This will log you into the app in Guest Mode. Signing in as Guest will create a new empty database for "`guest`" account if one does not exist
+* Confirm that you see the "Bookmarked Hotels" page. It will be empty the very first time.
 
 == Create and Update a Document
 
-Bookmarked hotels are persisted in a separate document with `type` of ``bookmarkedhotels``. 
+Bookmarked hotels are persisted in a separate document with a `type` of ``bookmarkedhotels``.
 
 The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property.
 The hotel's information is persisted in a separate `hotels` type document. 
@@ -72,7 +68,6 @@ Subsequently, every time a hotel is bookmarked, the process repeats.
 
 [source,json]
 ----
-
 {
   "_id": "hotel1",
   "name": "San Francisco Hotel",
@@ -85,7 +80,7 @@ Subsequently, every time a hotel is bookmarked, the process repeats.
 }
 ----
 
-*Open the file*``HotelPresenter.swift``.
+*Open the file* ``HotelPresenter.swift``.
 We will review the `func bookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L36[HotelsPresenter.swift]
@@ -109,17 +104,15 @@ guard let db = dbMgr.db else {
 }
 ----
 
-Then fetch document of type ``bookmarkedhotels``.
-Don't worry too much about how you query for document of specific type from the database.
-We will examine `queries` in a future lesson. 
+Then fetch documents of type ``bookmarkedhotels``.
+Don't worry too much about how you query for documents of a specific type from the database.
+We will examine the Query API in a future lesson.
 
-Create document of type `bookmarkedhotels` if one does not exist. 
+Create a document of type `bookmarkedhotels` if one does not exist.
 
 [source]
 ----
-
 var document = try fetchGuestBookmarkDocumentFromDB(db)?.toMutable()
-
 
 if document == nil {
   // First time bookmark is created for guest account
@@ -165,8 +158,8 @@ if let document = document?.toMutable() {
 }
 ----
 
-Persist the hotel information as separate documents of type ``hotels``.
-First, determine if the document with specified hotel Id already exists.
+Persist the hotel information as separate documents of type `hotels`.
+First, determine if the document with the specified hotel Id already exists.
 If so, update it with the selected hotel details.
 If not, create a new hotel document. 
 
@@ -190,35 +183,32 @@ for hotelDoc in hotels {
 
 === Try it out
 
-* As Guest User, tap on "`hotels`" button 
-* In "location" text field , enter "London" 
-* You will see list of hotels. 
-* The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running 
+* As Guest User, tap on the "hotels" button.
+* In the "location" text field , enter "London".
+* You will see a list of hotels.
+* The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API.
+The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running.
 * Swipe left on the first hotel cell 
 * You will get option to "`Bookmark`" 
 * Tap "`bookmark`" 
 * This should display a "bookmark" icon on the hotel cell 
 * Tap "Cancel" button 
 * Verify that you see the bookmarked hotel in the "`Bookmarked Hotels`" screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function. 
-
-
-
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/basics_add_document.gif[]
-= 
 
 == Delete a Document
 
 A document can be deleted using the `delete` method.
 This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients. 
 
-*Open the file*``HotelPresenter.swift``.
+*Open the file* ``HotelPresenter.swift``.
 We will review the `func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void)` method. 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L98[HotelsPresenter.swift]
 
 [source]
 ----
-
 func unbookmarkHotels(_ hotels: Hotels, handler:@escaping( _ error:Error?)->Void) {
   ...
 }
@@ -247,11 +237,9 @@ In addition to deleting the document of type "hotel" as shown above, the unbookm
 
 * Follow the steps in http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1[Update a Document] section to bookmark a hotel 
 * Confirm that you see the bookmarked hotels in the "Bookmarked Hotels" screen. If not, make sure you go through the instructions in http://docs.couchbase.com/tutorials/travel-sample/tutorials/travel-sample/develop/swift/#/2/1/1[Update a Document] section 
-* Swipe left on first Hotel cell 
-* You will get option to "`UnBookmark`" 
-* Tap "`unbookmark`" 
-* Verify that the unbookmarked hotel does not show up in list 
-
-
-
+* Swipe left on a bookmarked hotel cell.
+* You will get an option to "`UnBookmark`".
+* Tap "UnBookmark".
+* Verify that the unbookmarked hotel does not show up in the list.
++
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/basics_delete_document.gif[]
