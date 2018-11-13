@@ -1,4 +1,16 @@
 = Travel Mobile App
+//:page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
+
+== Pre-requisites
+
+* Android Studio 2.3.3 or above https://developer.android.com[Google Developer site]
+* Android device or emulator running API level 19 or above
+* Android SDK 26
+* Android Build Tools 26
+* JDK 8
+
+*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
 
 == Travel Sample Mobile App
 
