@@ -1,4 +1,4 @@
-== Couchbase Server 5.5
+= Couchbase Server 5.5
 
 [{tabs}]
 ====
