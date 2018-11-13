@@ -1,4 +1,4 @@
-* xref:mobile-travel-sample:overview.adoc[Overview]
+* xref:mobile-travel-sample:introduction.adoc[Introduction]
 * xref:mobile-travel-sample:installation/index.adoc[Backend Installation]
 ** xref:mobile-travel-sample:installation/manual.adoc[Manual]
 ** xref:mobile-travel-sample:installation/docker.adoc[Docker (Local)]
