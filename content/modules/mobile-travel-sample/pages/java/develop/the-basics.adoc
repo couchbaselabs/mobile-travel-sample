@@ -46,13 +46,15 @@ The Couchbase Lite Database is created with specified name and `DatabaseConfigur
 === Try it out
 
 * Build and Run the Travel Sample Mobile App 
-* On the Login screen select "`Proceed as Guest`" option.
-* This will log you into the app in Guest Mode. Signing in as Guest will create a new empty database for "`guest`" account if one does not exist
-* Confirm that you see the "Bookmarked Hotels" page. It will be empty the very first time.
+* On the Login screen select the "`Proceed as Guest`" option.
+* This will log you into the app in Guest Mode.
+Signing in as Guest will create a new empty database for the "`guest`" account if one does not exist.
+* Confirm that you see the "Bookmarked Hotels" page.
+It will be empty the very first time.
 
 == Create and Update a Document
 
-Bookmarked hotels are persisted in a separate document with a `type` of ``bookmarkedhotels``.
+Bookmarked hotels are persisted in a separate document with a `type` of `bookmarkedhotels`.
 
 The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property.
 The hotel's information is persisted in a separate `hotels` type document. 
@@ -149,12 +151,14 @@ try {
 
 === Try it out
 
-* As Guest User, tap on "`hotels`" button 
-* In location text field , enter London 
-* You will see list of hotels. 
-* The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running 
-* Tap on the first hotel cell to bookmark it 
-* Verify that you see the bookmarked hotel in the "`Bookmarked Hotels`" screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function. 
+* As a Guest User, tap on the "`hotels`" button.
+* In the location text field , enter "London".
+* You will see a list of hotels.
+* The list of hotels is pulled from Couchbase Server via the Travel Sample Web Services API.
+The list of hotels is not displayed unless there is an open connection to the Python web app so make sure you have your Travel Sample Web app running.
+* Tap on the first hotel cell to bookmark it.
+* Verify that you see the bookmarked hotel in the "`Bookmarked Hotels`" screen.
+A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
 +
 image::https://cl.ly/1t38050A1T40/android-save-doc.gif[]
 
