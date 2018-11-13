@@ -1,0 +1,97 @@
+= Docker (Local)
+
+== Pre-requisites
+
+* Docker: downloadable from https://www.docker.com/get-docker[docker.com].
+Community edition would suffice.
++
+*Windows Users* : If you are developing on Windows, you may need to install Docker as Admin user downloadable from https://www.docker.com/get-docker[docker.com].
+The Community Edition would suffice.
+
+*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
+=== Try it out
+
+* Verify the docker installation (applicable only if you decided to use the Docker install option).
+** Run the following command from your terminal.
++
+[source,bash]
+----
+bash docker -v
+----
+You should see the version of docker displayed.
+
+== Couchbase Server
+
+* Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
+* To run the application in a container, you will first get the docker image from Docker Hub. Open a new terminal window and run the following. `bash   $ docker pull connectsv/server:5.5.1-enterprise`
+* Once the command has completed you can start the application with the following.
+
+`bash   $ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.5.1-enterprise`
+
+* You can view the logs at any time by running the following command `bash   $ docker logs cb-server`
+* It may take a few seconds for the server to startup. Verify that the docker image is running with following command `bash   $ docker ps`
+
+
+[[_try_it_out]]
+=== Try it out
+
+* Launch Couchbase Server
+* Log into the "Admin Console" with username as "Administrator" and password as "password"
+* Select the "Buckets" option from the menu on the left
+* Verify that you have around 31,000 documents in your travel-sample bucket
+
+== Sync Gateway
+
+_NOTE_ : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well.
+If not, please follow instructions link:/tutorials/travel-sample/develop/swift#/0/2/1[here] to install the server container.
+
+* Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
+* To run the application in a container, you will first get the docker image from Docker Cloud. `bash   $ docker pull connectsv/sync-gateway:2.1.0-enterprise`
+* The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/tutorials/travel-sample/develop/swift#/0/1/0[Travel Mobile App install]. The config file is located in ``/path/to/mobile-travel-sample``.
+* Open the `sync-gateway-config-travelsample.json` file
+* For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server". Replace the `localhost` in the file with `cb-server` and save
+
+`json    "server": "http://cb-server:8091"`
+
+* Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file. Once the command has completed you can start the application with the following.
+
+```bash $ cd /path/to/mobile-travel-sample/
+
+$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v ``pwd``/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json connectsv/sync-gateway:2.1.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json ```
+
+* You can view the logs at any time by running the following command `bash   $ docker logs sync-gateway`
+* Verify that the docker container named "sync-gateway" is running with the following command in the terminal window `bash   $ docker ps`
+
+
+[[_try_it_out]]
+=== Try it out
+
+* Access this URL `http://localhost:4984` in your browser
+* Verify that you get back a JSON response similar to one below
++
+
+[source,json]
+----
+
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.1"},"version":"Couchbase Sync Gateway/2.1.0(775;9cc29c5)"}
+----
+
+== Python Backend
+
+_NOTE_ : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in containers as well.
+If not, please follow instructions link:/tutorials/travel-sample/develop/java#/0/2/1[here] to install the server container and link:/tutorials/travel-sample/develop/java#/0/3/1[here] to install sync gateway container.
+
+* Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
+* To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following.
+
+`bash   $ docker pull connectsv/try-cb-python:5.5.1-server`
+
+* Once the command has completed you can start the application with the following.
+
+`bash   $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.5.1-server`
+
+You should then see the following in the console output.
+
+`bash    Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)` ## Try it out - Open http://localhost:8080/ in your web browser - Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
