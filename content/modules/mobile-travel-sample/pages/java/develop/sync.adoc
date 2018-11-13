@@ -122,8 +122,7 @@ config.setContinuous(true);
 ----
 
 The Replicator is configured with relevant authentication credentials.
-In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/develop/swift#/2/2/1[Access
-    Control] section 
+In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the xref:tutorials:mobile-travel-sample:{source-language}/develop/security.adoc[Access Control] section
 
 [source,java]
 ----

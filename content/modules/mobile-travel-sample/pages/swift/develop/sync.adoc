@@ -1,9 +1,9 @@
 = Sync
 :source-language: swift
 
-== Channels/Data Routing
+== Data Routing
 
-In the lesson on link:/swift#/2/2/1[Access Control] we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions.
+In the xref:tutorials:mobile-travel-sample:{source-language}/develop/security.adoc[Access Control] lesson we discussed how Sync Gateway supports Authorization and Access Control functions.
 In this lesson we discuss how it can be used for Data Synchronization and Routing. 
 
 A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
@@ -14,7 +14,7 @@ Sync Gateway uses channels to make it easy to share a database between a large n
 * Authorize users to access documents.
 * Minimize the amount of data synced down to devices. 
 
-In the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section, we walked you through the steps to launch Sync Gateway with a specific config file.
+In the xref::installation/index.adoc[backend installation] section, we walked you through the steps to launch Sync Gateway with a specific config file.
 
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
 It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
@@ -28,7 +28,7 @@ channel("channel." + username);
 
 == XAttrs
 
-Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
+Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::installation/index.adoc[backend installation] section.
 
 Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
 It is an opt-in feature can be enabled in the Sync Gateway configuration file.
@@ -90,17 +90,15 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSamp
 
 [source]
 ----
-
 func startPushAndPullReplicationForCurrentUser() {
   ...
-  }
+}
 ----
 
 First, you fetch the URL of the Sync Gateway 
 
 [source]
 ----
-
 guard let remoteUrl = URL.init(string: kRemoteSyncUrl) else {
   lastError = TravelSampleError.RemoteDatabaseNotReachable
 
@@ -112,7 +110,6 @@ Do some checks to confirm the validity of the database and user credentials
 
 [source]
 ----
-
 guard let user = self.currentUserCredentials?.user,let password =   self.currentUserCredentials?.password  else {
   lastError = TravelSampleError.UserCredentialsNotProvided
   return
@@ -128,8 +125,7 @@ Verify that the replicator is not already in progress
 
 [source]
 ----
-
- if _pushPullRepl != nil {
+if _pushPullRepl != nil {
   // Replication is already started
   return
 }
@@ -142,7 +138,6 @@ The `continuous` mode is set to `true` in the Travel app.
 
 [source]
 ----
-
 fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
 let dbUrl = remoteUrl.appendingPathComponent(kDBName)
 
@@ -153,22 +148,18 @@ config.continuous =  true
 ----
 
 The Replicator is configured with relevant authentication credentials.
-In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/tutorials/travel-sample/develop/swift#/2/2/1[Access
-    Control] section 
+In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the xref:tutorials:mobile-travel-sample:{source-language}/develop/security.adoc[Access Control] section.
 
 [source]
 ----
-
 config.authenticator = BasicAuthenticator(username: user, password: password)
 ----
 
 The Replicator is configured to only pull from current user's channels.
-The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the link:/tutorials/travel-sample/develop/swift#/2/3/0[Channels/
-    Data Routing] section 
+The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the <<data-routing, Data Routing>> section.
 
 [source]
 ----
-
 // This should match what is specified in the sync gateway config
 // Only pull documents from this user's channel
 let userChannel = "channel.\(user)"
@@ -179,7 +170,6 @@ The Replicator is initialized with the specified configuration
 
 [source]
 ----
-
 _pushPullRepl = Replicator.init(config: config)
 ----
 
@@ -188,8 +178,6 @@ Every time, there is a push or pull change, the callback is invoked.
 
 [source]
 ----
-
-
 _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
     let s = change.status
     print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")

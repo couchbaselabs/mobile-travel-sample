@@ -1,4 +1,5 @@
 = Security
+:source-language: swift
 
 == User Management
 
@@ -52,7 +53,11 @@ The `users` section defines the hardcoded list of users who are granted access. 
 }
 ----
 
-The Sync Function in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the link:/tutorials/travel-sample/develop/swift#/2/3/0["Sync"] section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel.
+The Sync Function in the config file is a JavaScript function which implements the access control logic.
+The `access` method is used to grant the current user access to specific channel.
+We will discuss channels in detail in the xref:{source-language}/develop/sync.adoc[Sync] section.
+For now, it is sufficient to note that documents are associated with channel(s).
+So access to a document is controlled by controlling the access rights to a channel.
 
 
 [source,javascript]
