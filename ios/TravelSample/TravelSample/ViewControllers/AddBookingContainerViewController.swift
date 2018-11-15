@@ -185,10 +185,10 @@ extension AddBookingContainerViewController {
         }
         
         currentFlightListingVC?.view.removeFromSuperview()
-        currentFlightListingVC?.removeFromParentViewController()
+        currentFlightListingVC?.removeFromParent()
         
-        self.addChildViewController(controller)
-        controller.didMove(toParentViewController: self)
+        self.addChild(controller)
+        controller.didMove(toParent: self)
         controller.view.frame = listingContainerView.bounds
         listingContainerView.addSubview(controller.view)
         

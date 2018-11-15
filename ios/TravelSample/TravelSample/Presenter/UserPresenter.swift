@@ -71,16 +71,16 @@ extension UserPresenter {
             return
         }
         
-        guard let user = dbMgr.currentUserCredentials?.user , let userDocId = userDocId else {
+        guard let _ = dbMgr.currentUserCredentials?.user , let userDocId = userDocId else {
             handler(TravelSampleError.UserNotFound)
             return
         }
         
-        if var userDocument = db.document(withID: userDocId)?.toMutable() {
+        if let userDocument = db.document(withID: userDocId)?.toMutable() {
             
             let maxUploadImageSize = 20000000 // 20MB
             
-            guard let imageData = UIImageJPEGRepresentation(image, 0.75) else {
+            guard let imageData = image.jpegData(compressionQuality: 0.75) else {
                 handler(TravelSampleError.ImageProcessingFailure)
                 return
             }

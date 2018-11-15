@@ -142,7 +142,7 @@ extension FlightListingTableViewController {
         else {
             if let indexPathOfCurrentSelectedFlight = indexPathOfCurrentSelectedFlight {
                 let prevSelectedCell = tableView.cellForRow(at: indexPathOfCurrentSelectedFlight)
-                prevSelectedCell?.accessoryType = UITableViewCellAccessoryType.none
+                prevSelectedCell?.accessoryType = .none
             }
             indexPathOfCurrentSelectedFlight = indexPath
             let checkImage = #imageLiteral(resourceName: "check_filled")

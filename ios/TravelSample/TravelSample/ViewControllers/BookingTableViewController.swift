@@ -46,7 +46,7 @@ class BookingTableViewController: UITableViewController {
     
     private func initializeTable() {
         //    self.tableView.backgroundColor = UIColor.darkGray
-        self.tableView.backgroundColor = UIColor(colorLiteralRed: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor(red: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -62,7 +62,7 @@ class BookingTableViewController: UITableViewController {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80))
         let searchBar =  UISearchBar.init(frame: CGRect(x: 0, y: 5, width: self.view.frame.width , height: 70))
         view.backgroundColor = UIColor.white
-        searchBar.barTintColor = UIColor(colorLiteralRed: 242.0/255, green: 252.0/255, blue: 255.0/255, alpha: 1.0)
+        searchBar.barTintColor = UIColor(red: 242.0/255, green: 252.0/255, blue: 255.0/255, alpha: 1.0)
         
         searchBar.showsCancelButton = true
         searchBar.placeholder = NSLocalizedString("Search For Booking", comment: "")
@@ -144,7 +144,7 @@ extension BookingTableViewController {
             self?.bookingPresenter.removeFlightBookings([booking], handler: { (error) in
                 switch error {
                 case nil:
-                    tableView.deleteSections([indexPath.section], with: UITableViewRowAnimation.automatic)
+                    tableView.deleteSections([indexPath.section], with: .automatic)
                 default:
                     self?.showAlertWithTitle(NSLocalizedString("Error", comment: ""), message: NSLocalizedString("There was an error when attempting to remove the row", comment: ""))
                 }

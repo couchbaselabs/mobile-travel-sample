@@ -65,19 +65,19 @@ class FlightSearchViewController: UIViewController {
     }
     
     private func addTextFieldChangeObservers() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: fromTextField, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: fromTextField, queue: nil) { (notification) in
             self.handleAirportSearchWith(self.fromTextField.text ?? "", isFromAirport: true)
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: toTextField, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: toTextField, queue: nil) { (notification) in
             self.handleAirportSearchWith(self.toTextField.text ?? "", isFromAirport: false)
         }
         
     }
     
     private func removeTextFieldChangeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: fromTextField)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: toTextField)
+        NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: fromTextField)
+        NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: toTextField)
         
         
     }
@@ -131,10 +131,10 @@ extension FlightSearchViewController :UITextFieldDelegate{
     
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let length = (textField.text?.characters.count)! - range.length + string.characters.count
-        let fromLength = (textField == self.fromTextField) ? length : self.fromTextField.text?.characters.count
-        let toLength = (textField == self.toTextField) ? length : self.toTextField.text?.characters.count
-        let departureLength = (textField == self.departureDateTextField) ? length : self.departureDateTextField.text?.characters.count
+        let length = (textField.text?.count)! - range.length + string.count
+        let fromLength = (textField == self.fromTextField) ? length : self.fromTextField.text?.count
+        let toLength = (textField == self.toTextField) ? length : self.toTextField.text?.count
+        let departureLength = (textField == self.departureDateTextField) ? length : self.departureDateTextField.text?.count
         
         self.lookupButton.isEnabled = (fromLength! > 0 && toLength! > 0 && departureLength! > 0)
         
@@ -145,7 +145,7 @@ extension FlightSearchViewController :UITextFieldDelegate{
     
     
     fileprivate func handleAirportSearchWith(_ searchStr:String,isFromAirport:Bool) {
-        if searchStr.characters.count == 0 {
+        if searchStr.count == 0 {
             return
         }
         self.airportPresenter.fetchAirportsMatching(searchStr) { [weak self](airports, error) in
@@ -160,7 +160,7 @@ extension FlightSearchViewController :UITextFieldDelegate{
                     self?.toTableView.reloadData()
                 }
             default:
-                print("No airport matches \(error?.localizedDescription)")
+                print("No airport matches \(error?.localizedDescription ?? "--")")
             }
         }
         
@@ -181,7 +181,7 @@ extension FlightSearchViewController: UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "AirportCell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "AirportCell")
         guard let airports = self.airports else {
             return cell
         }

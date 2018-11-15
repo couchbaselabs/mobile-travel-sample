@@ -31,7 +31,7 @@ extension AirportPresenter {
             
         }
         var searchQuery:Query?
-        switch searchStr.characters.count {
+        switch searchStr.count {
         case AirportCodeLength.FAA.rawValue :
             searchQuery = QueryBuilder
                 .select(_SelectColumn.AIRPORTNAMERESULT)
