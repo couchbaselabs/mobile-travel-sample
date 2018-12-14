@@ -49,7 +49,7 @@ class UserTableViewController:UITableViewController ,PresentingViewProtocol{
     
     private func initializeTable() {
         //    self.tableView.backgroundColor = UIColor.darkGray
-        self.tableView.backgroundColor = UIColor(colorLiteralRed: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor(red: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
         
     }
     
@@ -86,7 +86,7 @@ extension UserTableViewController {
             let imagePickerController = UIImagePickerController()
             imagePickerController.delegate = self
             imagePickerController.allowsEditing = false
-            imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary;
+            imagePickerController.sourceType = .photoLibrary;
             
             imagePickerController.modalPresentationStyle = .overCurrentContext
             
@@ -94,14 +94,14 @@ extension UserTableViewController {
             
         }
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let cameraAction = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: .default) { [unowned self] action in
                 
                 let imagePickerController = UIImagePickerController()
                 imagePickerController.delegate = self
                 imagePickerController.allowsEditing = false
-                imagePickerController.sourceType = UIImagePickerControllerSourceType.camera;
-                imagePickerController.cameraDevice = UIImagePickerControllerCameraDevice.front;
+                imagePickerController.sourceType = .camera;
+                imagePickerController.cameraDevice = .front;
                 
                 imagePickerController.modalPresentationStyle = .overCurrentContext
                 
@@ -128,7 +128,7 @@ extension UserTableViewController {
 
     }
     @IBAction func updateTapped(_ sender: UIBarButtonItem) {
-        guard var userProfile = userProfile else {return}
+        guard userProfile != nil else {return}
         guard let image = userImageView.image else {return}
         
         self.userProfilePresenter.updateProfileImage(image) { (error) in
@@ -137,7 +137,7 @@ extension UserTableViewController {
                 self.showAlertWithTitle(NSLocalizedString("Success!", comment: ""), message: NSLocalizedString("Succesfully updated user image!", comment: ""))
                 
             default:
-                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Failed to update user image. Error code :\(error)!", comment: ""))
+                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("Failed to update user image. Error code :\((error as NSError?)?.code ?? 0)!", comment: ""))
             }
         }
     }
@@ -145,8 +145,8 @@ extension UserTableViewController {
 }
 
 extension UserTableViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
             self.saveButtonItem.isEnabled = true
             self.userImageView.image = image
  
@@ -154,7 +154,7 @@ extension UserTableViewController : UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.saveButtonItem.isEnabled = false
         picker.presentingViewController?.dismiss(animated: true, completion: nil)
     }
@@ -175,7 +175,7 @@ extension UserTableViewController {
               
             default:
               
-                  self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("There was an error when trying to load user data. Error code \(error)!", comment: ""))
+                self.showAlertWithTitle(NSLocalizedString("Error!", comment: ""), message: NSLocalizedString("There was an error when trying to load user data. Error code \((error as NSError?)?.code ?? 0)!", comment: ""))
             }
         }
         

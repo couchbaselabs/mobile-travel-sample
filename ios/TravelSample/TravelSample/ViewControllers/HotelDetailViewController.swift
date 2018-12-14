@@ -27,7 +27,7 @@ class HotelDetailViewController:UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.updateUI()
       //  self.registerCells()
     }

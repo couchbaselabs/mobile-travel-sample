@@ -81,10 +81,9 @@ extension DatabaseManager {
     
     func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
         do {
-            var options = DatabaseConfiguration()
+            let options = DatabaseConfiguration()
             guard let defaultDBPath = _applicationSupportDirectory else {
                 fatalError("Could not open Application Support Directory for app!")
-                return
             }
             // Create a folder for Guest Account if one does not exist
             let guestFolderUrl = defaultDBPath.appendingPathComponent("guest", isDirectory: true)
@@ -112,10 +111,9 @@ extension DatabaseManager {
     
     func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
-            var options = DatabaseConfiguration()
+            let options = DatabaseConfiguration()
             guard let defaultDBPath = _applicationSupportDirectory else {
                 fatalError("Could not open Application Support Directory for app!")
-                return
             }
             // Create a folder for the logged in user
             let userFolderUrl = defaultDBPath.appendingPathComponent(user, isDirectory: true)

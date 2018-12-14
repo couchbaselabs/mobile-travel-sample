@@ -68,9 +68,9 @@ extension LoginViewController:UITextFieldDelegate {
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let length = (textField.text?.characters.count)! - range.length + string.characters.count
-        let userLength = (textField == self.userTextEntry) ? length : self.userTextEntry.text?.characters.count
-        let passwordLength = (textField == self.passwordTextEntry) ? length : self.passwordTextEntry.text?.characters.count
+        let length = (textField.text?.count)! - range.length + string.count
+        let userLength = (textField == self.userTextEntry) ? length : self.userTextEntry.text?.count
+        let passwordLength = (textField == self.passwordTextEntry) ? length : self.passwordTextEntry.text?.count
         
          self.loginButton.isEnabled = (userLength! > 0 && passwordLength! > 0)
         
@@ -122,25 +122,22 @@ extension LoginViewController {
 extension LoginViewController {
     
     func registerKBNotifications() {
-        let selectorShow = "kbWillShow:"
-        let selectorHide = "kbWillHide:"
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.kbWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.kbWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.kbWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.kbWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         
     }
     
     func deregisterKBNotifications() {
         
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         
         
     }
     
-    func kbWillShow(notification:Notification)-> Void{
-        var rect:CGRect = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey]as? NSValue)?.cgRectValue)!
+    @objc func kbWillShow(notification:Notification)-> Void{
+        var rect:CGRect = ((notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
         rect = self.view.convert(rect, from: nil)
         
         let insets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: rect.size.height, right: 0.0)
@@ -154,8 +151,8 @@ extension LoginViewController {
         }
     }
     
-    func kbWillHide(notification:Notification)-> Void {
-        let insets = UIEdgeInsetsMake(0, 0, 0, 0)
+    @objc func kbWillHide(notification:Notification)-> Void {
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.loginScrollView.contentInset = insets
         self.loginScrollView.scrollIndicatorInsets = insets
     }
@@ -168,8 +165,7 @@ extension LoginViewController {
     override var canBecomeFirstResponder: Bool {
         return true
     }
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        var sgwTextField:UITextField!
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         var webTextField:UITextField!
         if motion == .motionShake {
             print("Shook phone")
@@ -179,9 +175,7 @@ extension LoginViewController {
                                                     preferredStyle: .alert)
             alertController.addTextField(configurationHandler: { (textField) in
                 textField.placeholder = NSLocalizedString("ws://localhost:4984)", comment: "")
-                sgwTextField = textField
                
-                
             })
             
             alertController.addTextField(configurationHandler: { (textField) in
@@ -193,12 +187,11 @@ extension LoginViewController {
             
            
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Setup", comment: ""), style: .default) { [weak self] _ in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Setup", comment: ""), style: .default) { _ in
                 
                 let webAddress = webTextField.text ?? "http://localhost:8080" // defaults to localhost
                 
                 TravelSampleWebService.webUrl = webAddress
-              
                 
             })
             
