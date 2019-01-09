@@ -135,7 +135,7 @@ chapters:
               ## Try it out
               
               - Launch Couchbase Server (if not already runnning)
-              - Log into the "Admin Console" with appropriate Administrator credentials you created during installation
+              - Log into the "Admin Console" (`http://localhost:8091`) with appropriate Administrator credentials you created during installation
               - Select the "Buckets" option from the menu on the left
               - Verify that you have around 31,000 documents in your travel-sample bucket       
            
