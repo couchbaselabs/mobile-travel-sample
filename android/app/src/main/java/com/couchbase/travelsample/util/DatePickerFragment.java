@@ -3,6 +3,7 @@ package com.couchbase.travelsample.util;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -34,9 +35,11 @@ public class DatePickerFragment extends DialogFragment implements android.app.Da
     }
 
     @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
         Bundle bundle = getArguments();
-        mFlightSearchView.onDateSelected(String.format("%d/%d/%d", i2, i1, i), bundle.getString("tag"));
+        mFlightSearchView.onDateSelected(
+            String.format("%d/%d/%d", dayOfMonth, month + 1, year),
+            bundle.getString("tag"));
     }
 
 }
