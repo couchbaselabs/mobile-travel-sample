@@ -902,7 +902,8 @@ chapters:
               ## Try it out (Couchbase Server)
               - Access the Couchbase Server URL in the browser. This URL would be [http://localhost:8091](http://localhost:8091) if you installed the server  manually or via docker container. If you used the Cloud install, please access the cloud instance of the server.
               - Log in with Administrator credentials that you set up during the installation of Couchbase Server.
-              - In the search box, enter "user::demo".
+              - Choose "Buckets" in the Navigation pane on the left
+              - In the box labelled "Document ID", enter "user::demo" (note: there are two colons).
               - You should see the user document that was created when you signed up via the web app.
               - Confirm that the "username" that you see is "demo"
 
@@ -921,7 +922,7 @@ chapters:
 
               Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
 
-              - The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. A "tester" and "admin" user is also configured.
+              - The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. "tester" and "admin" users are also configured.
               Note that in a real world app, when a user registers via the web app, the web app would use the Sync Gateway REST API to dynamically create the user. 
               ```javascript
                "users":{
@@ -984,7 +985,7 @@ chapters:
               Before you begin this lesson, confirm that you have the Sync Gateway up and running by following the instructions in the ["Installation"](/tutorials/travel-sample/develop/java#/0/4/0) section.
 
             
-              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+              Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket. It is an opt-in feature that can be enabled in the Sync Gateway configuration file.
              
               ![](https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png)
          
@@ -1105,15 +1106,13 @@ chapters:
               ## Try it out (Push Replication)
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
-              - Tap on  "airline" button to make a flight reservation
-              - Enter “From” airport as "San Fran" and select the airport from drop down menu
-              - Enter “To” airport as "Detroit" and select the airport from drop down menu
-              - Enter From and Return Dates
-              - Tap "lookup" button
+              - Tap the "airline" button to make a flight reservation. Both the "From" and "To" airports and flight dates are already set.
+              - Tap the "lookup" button
               - From list of flights, select the first flight listing. This automatically confirms the booking.
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
+              - Use the "headshot" button (2nd from the right) to  navigate to the list of booked flights
               - Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
               ![](https://cl.ly/3r0X2x1M3k37/android-push.gif)
@@ -1123,13 +1122,13 @@ chapters:
               - Access the Travel Sample Web app. The URL would be [http://localhost:8080](http://localhost:8080). If you did cloud based install, please replace `localhost` in the URL  with the IP Address of the cloud instance of the web app.
               - Make sure that the "New User" checkbox is **unchecked**
               - Log into the web app as “demo” user with password as “password”
-              - Make a flight reservation by clicking "booking" button.
-              - Enter “From” airport as "San" and select the airport from drop down menu.
-              - Enter “To” airport as "SFO" and select the airport from drop down menu.
+              - Make a flight reservation by clicking the "booking" button (the paper airplane).
+              - Enter “From” airport as "SFO" and select the airport from drop down menu.
+              - Enter “To” airport as "LHR" and select the airport from drop down menu.
               - Enter From and Return Travel Dates
               - Click on "Find Flights" button
               - From list of flights, select the first flight listing
-              - Confirm the booking by clicking on the shopping cart icon and click on “Book” button
+              - Confirm the booking by clicking on the shopping cart icon and then the “Book” button
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”    
               - Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app
 
