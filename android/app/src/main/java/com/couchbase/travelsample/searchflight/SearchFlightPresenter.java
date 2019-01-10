@@ -1,15 +1,15 @@
 package com.couchbase.travelsample.searchflight;
 
 import android.os.Build;
+import android.os.Handler;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.couchbase.lite.Array;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
-import com.couchbase.lite.Dictionary;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.MutableArray;
@@ -34,7 +34,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,9 +44,11 @@ import okhttp3.ResponseBody;
 
 public class SearchFlightPresenter implements SearchFlightContract.UserActionsListener{
 
-    private OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
     private final SearchFlightContract.View mSearchView;
+
+    private FlightFetcher flightFetcher;
 
     public SearchFlightPresenter(@NonNull SearchFlightContract.View mSearchView) {
         this.mSearchView = mSearchView;
@@ -121,117 +122,198 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void fetchFlights(String origin, String destination, String from, String to) {
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-        final JSONArray[] outbounds = {null};
-        final JSONArray[] inbounds = {new JSONArray()};
-        List<List<JSONObject>> journeys = new ArrayList<>();
+        if (flightFetcher != null) { return; }
 
-        String backendUrl = DatabaseManager.mPythonWebServerEndpoint;
+        flightFetcher = new FlightFetcher(origin, destination, from, to);
 
-        final String outbound;
-        try {
-            outbound = String.format("flightPaths/%s/%s?leave=%s",
-                URLEncoder.encode(origin, "UTF-8").replace("+", "%20"),
-                URLEncoder.encode(destination, "UTF-8").replace("+", "%20"),
-                from);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
+        if (!flightFetcher.fetchFlights()) {
+            onFlightsFetched();
         }
-        URL outboundURL = null;
-        try {
-            outboundURL = new URL(backendUrl + outbound);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
+    }
+
+    void onFlightsFetched() {
+        FlightFetcher fetcher = flightFetcher;
+        flightFetcher = null;
+        mSearchView.showFlights(fetcher.getJourneys());
+    }
+
+    private class FlightFetcher {
+        private final String backendUrl = DatabaseManager.mPythonWebServerEndpoint;
+        private final Handler handler = new Handler();
+
+        private final String origin;
+        private final String destination;
+        private final String from;
+        private final String to;
+
+        private JSONArray outboundResponse;
+        private JSONArray inboundResponse;
+
+        private int requestsOutstanding;
+
+        private List<List<JSONObject>> journeys;
+
+        @MainThread
+        public FlightFetcher(String origin, String destination, String from, String to) {
+            this.origin = origin;
+            this.destination = destination;
+            this.from = from;
+            this.to = to;
         }
 
-        Request outboundRequest = new Request.Builder()
-            .url(outboundURL)
-            .build();
+        public synchronized List<List<JSONObject>> getJourneys() {
+            return journeys;
+        }
 
-        client.newCall(outboundRequest).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        public boolean fetchFlights() {
+            synchronized (this) {
+                journeys = new ArrayList<>();
+            }
+            outboundResponse = new JSONArray();
+            inboundResponse = new JSONArray();
+            requestsOutstanding = 2;
+
+            try {
+                return scheduleOutbound() && scheduleInbound();
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                    String responseString = responseBody.string();
-                    System.out.println(responseString);
-                    outbounds[0] = new JSONObject(responseString).getJSONArray("data");
-                    countDownLatch.countDown();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        String inbound = null;
-        try {
-            inbound = String.format("flightPaths/%s/%s?leave=%s",
-                URLEncoder.encode(destination, "UTF-8").replace("+", "%20"),
-                URLEncoder.encode(origin, "UTF-8").replace("+", "%20"),
-                to);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
-        }
-        URL inboundURL = null;
-        try {
-            inboundURL = new URL(backendUrl + inbound);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
+            return false;
         }
 
-        Request inboundRequest = new Request.Builder()
-            .url(inboundURL)
-            .build();
-
-        client.newCall(inboundRequest).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {}
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                    String responseString = responseBody.string();
-                    inbounds[0] = new JSONObject(responseString).getJSONArray("data");
-                    countDownLatch.countDown();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        private boolean scheduleOutbound() throws IOException {
+            final String outbound;
+            try {
+                outbound = String.format(
+                    "flightPaths/%s/%s?leave=%s",
+                    URLEncoder.encode(origin, "UTF-8").replace("+", "%20"),
+                    URLEncoder.encode(destination, "UTF-8").replace("+", "%20"),
+                    from);
             }
-        });
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return false;
+            }
+            URL outboundURL = null;
+            try {
+                outboundURL = new URL(backendUrl + outbound);
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+                return false;
+            }
 
-        try {
-            countDownLatch.await();
-            for (int i = 0; i < outbounds[0].length(); i++) {
-                for (int j = 0; j < inbounds[0].length(); j++) {
-                    List<JSONObject> journey = new ArrayList<JSONObject>();
-                    try {
-                        journey.add(outbounds[0].getJSONObject(i));
-                        journey.add(inbounds[0].getJSONObject(j));
-                    } catch (JSONException e) {
+            Request outboundRequest = new Request.Builder()
+                .url(outboundURL)
+                .build();
+
+            client.newCall(outboundRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                    responseReceived();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try (ResponseBody responseBody = response.body()) {
+                        if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                        String responseString = responseBody.string();
+                        System.out.println(responseString);
+                        outboundResponse = new JSONObject(responseString).getJSONArray("data");
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    journeys.add(journey);
+                    finally {
+                        responseReceived();
+                    }
                 }
-            }
-            mSearchView.showFlights(journeys);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            });
+            return true;
         }
 
+        private boolean scheduleInbound() throws IOException {
+            String inbound = null;
+            try {
+                inbound = String.format(
+                    "flightPaths/%s/%s?leave=%s",
+                    URLEncoder.encode(destination, "UTF-8").replace("+", "%20"),
+                    URLEncoder.encode(origin, "UTF-8").replace("+", "%20"),
+                    to);
+            }
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return false;
+            }
+            URL inboundURL = null;
+            try {
+                inboundURL = new URL(backendUrl + inbound);
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+                return false;
+            }
 
+            Request inboundRequest = new Request.Builder()
+                .url(inboundURL)
+                .build();
+
+            client.newCall(inboundRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                    responseReceived();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try (ResponseBody responseBody = response.body()) {
+                        if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                        String responseString = responseBody.string();
+                        inboundResponse = new JSONObject(responseString).getJSONArray("data");
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        responseReceived();
+                    }
+                }
+            });
+
+            return true;
+        }
+
+        synchronized void responseReceived() {
+            if (--requestsOutstanding > 0) { return; }
+
+            for (int i = 0; i < outboundResponse.length(); i++) {
+                for (int j = 0; j < inboundResponse.length(); j++) {
+                    List<JSONObject> journey = new ArrayList<JSONObject>();
+                    try {
+                        journey.add(outboundResponse.getJSONObject(i));
+                        journey.add(inboundResponse.getJSONObject(j));
+                        journeys.add(journey);
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onFlightsFetched();
+                }
+            });
+        }
     }
 
 }
