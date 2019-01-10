@@ -760,7 +760,7 @@ chapters:
               - Build and Run the Travel Sample Mobile App
               - On Login screen select “Proceed as Guest” option. 
               - This will log you into app in Guest Mode. Signing in as Guest will create a new empty  database for “guest” account if one does not exist
-              - Confirm that you see the “Bookmarked Hotels” page. It will be empty the very first time.
+              - Confirm that you see the “BookmarksActivity” page. It will be empty the very first time.
           - title: Create and Update a Document
             description: |
               Bookmarked hotels are persisted in a separate document with the ID of `user::guest`. Every time a hotel is bookmarked, you will persist the document ID of that hotel document on the `hotels` property and the hotel's information inon a separate document.
@@ -777,7 +777,7 @@ chapters:
                 "hotels": ["hotel1", "hotel2"]
               }
               ```
-              **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will review the `bookmarkHotels(Map<String, Object> hotel)` method. Remove the `return;` statement.
+              **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. You will review the `bookmarkHotels(Map<String, Object> hotel)` method.
               
               [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java#L110)
               
@@ -805,9 +805,8 @@ chapters:
               }
               ```
               
-              Now you will get the document with ID `user::guest` or create one if it doesn't exist. The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels.
+              Next you will get the document with ID `user::guest` or create one if it doesn't exist. The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels.
       
-              /* 2. Look-up Guest user document. */
               Document document = database.getDocument("user::guest");
               MutableDocument mutableCopy = null;
               if (document == null) {
@@ -841,11 +840,10 @@ chapters:
               ## Try it out
               
               - As Guest User, tap on “hotels” button
-              - In "location" text field , enter "London"
-              - You will see list of hotels. 
+              - In "location" text field , enter "L" as if you were starting to type "London". You will see list of hotels. 
               - The list of hotels is pulled from the Couchbase Server via the Travel Sample Web Services API. The list of hotels is not displayed unless there is an open connection the python web app so make sure you have your Travel Sample Web app running
               - Tap on the first hotel cell to bookmark it
-              - Verify that you see the bookmarked hotel in the “Bookmarked Hotels” screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
+              - Verify that you see the bookmarked hotel in the “BookmarksActivity" screen. A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
               
               ![](https://cl.ly/1t38050A1T40/android-save-doc.gif)
               
