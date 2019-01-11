@@ -1171,8 +1171,8 @@ chapters:
               
               - Log into the Travel Sample Mobile app as “demo” user and password as “password”
               - Tap on  "Airplane” button to make a flight reservation
-              - In the “From”  airport textfield, enter “San”
-              - Confirm that the first item in the dropdown list of "San Francisco Intl"
+              - In the “From”  airport text field, enter “London”
+              - Confirm that the first item in the dropdown list is "London St Pancras" (a train station!)
               
               ![](https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif)
               
