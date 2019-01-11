@@ -1220,7 +1220,7 @@ chapters:
               );
               ```
             
-              Next, the query is executed using the `run()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a `RecyclerView`.
+              Next, the query is executed using the `execute()` method. Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a `RecyclerView`.
               
               ```java
               ResultSet rows = null;
@@ -1315,7 +1315,7 @@ chapters:
                 .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
               ```
 
-              And we use the `execute()` method to get the results back pass them on to the view.
+              We use the `execute()` method to get the results and pass them on to the view.
               
               ```java
               query.addChangeListener(new QueryChangeListener() {
@@ -1347,12 +1347,11 @@ chapters:
               
               - Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
               - Tap on  "Hotels"" button 
-              - In the "Description" text field, enter "pets"
               - In the "Location" text field, enter "London"
+              - In the "Description" text field, enter "Pets"
               - Verify that you see the "Novotel London West" listed
-              - Swipe left to "bookmark" the hotel
-              - Tap "Cancel" button
-              - Verify that the Novatel hotel that you bookmarked earlier shows up in the list
+              - Tap to "bookmark" the hotel
+              - Verify that the Novatel hotel shows up in the list on the "BookmarksActivity" page
 
               ![](https://cl.ly/3r243s1K2600/android-advanced-query.gif)
 
@@ -1380,9 +1379,9 @@ chapters:
               
               Next you will write an FTS query that uses the index.
               
-              **Open the file** `app/src/android/java/.../hotels/HotelPresenter.java`. We will review the `queryHotels(String location, String description)` method.
+              **Open the file** `app/src/android/java/.../hotels/HotelsPresenter.java`. We will review the `queryHotels(String location, String description)` method.
               
-              [HotelPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
+              [HotelsPresenter.java](https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java)
 
               ```java
               @Override
