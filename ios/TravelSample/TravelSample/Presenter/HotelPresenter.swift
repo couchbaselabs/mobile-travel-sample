@@ -118,7 +118,7 @@ extension HotelPresenter {
             
             
             // Get current list of bookmarked hotels.
-            guard let arrOfCurrentIds:[String] = document.array(forKey: "hotels")?.toArray().flatMap({ return $0 as? String }) else {
+            guard let arrOfCurrentIds:[String] = document.array(forKey: "hotels")?.toArray().compactMap({ return $0 as? String }) else {
                 handler(TravelSampleError.DocumentFetchException)
                 return
             }
@@ -189,7 +189,7 @@ extension HotelPresenter {
            // print (try? query.explain())
             for result in try query.execute() {
                 print ("RESULT IS \(result.toDictionary())")
-                if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() as? Hotel{
+                if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() {
                       bookmarkedHotels.append(hotel)
                 }
             }
@@ -243,7 +243,10 @@ extension HotelPresenter {
                 _Property.TYPE.equalTo(Expression.string("hotel"))
                  .and(searchExp)
                 )
-        print(try? hotelSearchQuery.explain())
+        if let explain = try? hotelSearchQuery.explain() {
+            print(explain)
+        }
+        
         
         var matches:Hotels = []
         do {

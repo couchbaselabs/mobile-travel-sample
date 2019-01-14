@@ -44,7 +44,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
     
     private func initializeTable() {
         //    self.tableView.backgroundColor = UIColor.darkGray
-        self.tableView.backgroundColor = UIColor(colorLiteralRed: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor(red: 252.0/255, green: 252.0/255, blue: 252.0/255, alpha: 1.0)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -60,7 +60,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 150))
         descriptionSearchBar =  UISearchBar.init(frame: CGRect(x: 0, y: 5, width: self.view.frame.width , height: 40))
         view.backgroundColor = UIColor.white
-        descriptionSearchBar.barTintColor = UIColor(colorLiteralRed: 228.0/255, green: 244.0/255, blue: 248.0/255, alpha: 1.0)
+        descriptionSearchBar.barTintColor = UIColor(red: 228.0/255, green: 244.0/255, blue: 248.0/255, alpha: 1.0)
         descriptionSearchBar.showsCancelButton = true
         descriptionSearchBar.placeholder = NSLocalizedString("Description (optional)", comment: "")
         view.addSubview(descriptionSearchBar)
@@ -69,7 +69,7 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
         locationSearchBar =  UISearchBar.init(frame: CGRect(x: 0, y: 50, width: self.view.frame.width , height: 40))
         view.backgroundColor = UIColor.white
-        locationSearchBar.barTintColor = UIColor(colorLiteralRed: 228.0/255, green: 244.0/255, blue: 248.0/255, alpha: 1.0)        
+        locationSearchBar.barTintColor = UIColor(red: 228.0/255, green: 244.0/255, blue: 248.0/255, alpha: 1.0)
         locationSearchBar.showsCancelButton = true
         locationSearchBar.placeholder = NSLocalizedString("Location : Eg.'France', 'London'", comment: "")
         view.addSubview(locationSearchBar)
@@ -78,11 +78,11 @@ class HotelsTableViewController:UITableViewController ,UIViewControllerPreviewin
         
         searchButton =  UIButton.init(type: .custom)
         searchButton.frame =  CGRect(x: 5, y: 100, width: self.view.frame.width - 10, height: 44)
-        searchButton.addTarget(self, action: #selector(onHotelsLookup), for: UIControlEvents.touchUpInside)
-        searchButton.setTitle(NSLocalizedString("Lookup", comment: ""), for: UIControlState.normal)
-        searchButton.setBackgroundImage(#imageLiteral(resourceName: "cyan"), for: UIControlState.normal)
-        searchButton.setTitleColor(UIColor.gray, for: UIControlState.disabled)
-         searchButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+        searchButton.addTarget(self, action: #selector(onHotelsLookup), for: .touchUpInside)
+        searchButton.setTitle(NSLocalizedString("Lookup", comment: ""), for: .normal)
+        searchButton.setBackgroundImage(#imageLiteral(resourceName: "cyan"), for: .normal)
+        searchButton.setTitleColor(UIColor.gray, for: .disabled)
+         searchButton.setTitleColor(UIColor.white, for: .normal)
         searchButton.isEnabled = false
         view.addSubview(searchButton)
         return view
@@ -109,7 +109,7 @@ extension HotelsTableViewController {
                 default:
                     self?.showAlertWithTitle(NSLocalizedString("Failed to Fetch Hotel Info!", comment: ""), message: error?.localizedDescription ?? "")
                     
-                    print("Error when fetching hotels \(error?.localizedDescription)")
+                    print("Error when fetching hotels \(error?.localizedDescription ?? "--")")
                 
                 }
             })
@@ -123,7 +123,7 @@ extension HotelsTableViewController {
                 default:
                     self?.showAlertWithTitle(NSLocalizedString("Failed to Fetch Hotel Info!", comment: ""), message: error?.localizedDescription ?? "")
                     
-                    print("Error when fetching hotels \(error?.localizedDescription)")
+                    print("Error when fetching hotels \(error?.localizedDescription ?? "--")")
                     
                 }
             })
@@ -256,7 +256,7 @@ extension HotelsTableViewController {
             return nil
         }
         let actionType = cell.isBookmarked == true ? NSLocalizedString("UnBookmark", comment: ""): NSLocalizedString("Bookmark", comment: "")
-        let actionStyle:UITableViewRowActionStyle  = cell.isBookmarked == true ? .normal :.default
+        let actionStyle: UITableViewRowAction.Style  = cell.isBookmarked == true ? .normal :.default
         
         switch actionType {
             case "Bookmark":

@@ -55,12 +55,12 @@ class FlightCell: UITableViewCell {
             self.flight.text = flightValue
         }
         if let departureTimeValue = departureTimeValue {
-            let traits = [UIFontDescriptorFaceAttribute:"Bold Condensed"] // UIFontWeightBold / UIFontWeightRegular
-            var titleFontDescriptor = UIFontDescriptor(fontAttributes: [UIFontDescriptorFamilyAttribute: "Helvetica Neue"])
-            titleFontDescriptor = titleFontDescriptor.addingAttributes([UIFontDescriptorTraitsAttribute:traits])
+            let traits = [UIFontDescriptor.AttributeName.face:"Bold Condensed"] // UIFontWeightBold / UIFontWeightRegular
+            var titleFontDescriptor = UIFontDescriptor(fontAttributes: [UIFontDescriptor.AttributeName.family: "Helvetica Neue"])
+            titleFontDescriptor = titleFontDescriptor.addingAttributes([UIFontDescriptor.AttributeName.traits:traits])
             
-            let titleAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: UIFont.init(descriptor: titleFontDescriptor, size: 15.0)]
-            let valueAttributes = [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName: UIFont.systemFont(ofSize:15)]
+            let titleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkText, NSAttributedString.Key.font: UIFont.init(descriptor: titleFontDescriptor, size: 15.0)]
+            let valueAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize:15)]
             
             let title = NSMutableAttributedString(string: NSLocalizedString("Departure Time : ",comment:""), attributes: titleAttributes)
             let value = NSMutableAttributedString(string: departureTimeValue, attributes: valueAttributes)
