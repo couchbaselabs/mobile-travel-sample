@@ -1,0 +1,46 @@
+= Pre-built database
+
+== Starting with Prebuilt Database
+
+In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application.
+It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch.
+Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
+Here, you will use a pre-built database that contains only airport and hotel documents.
+The code below moves the pre-built database from the bundled location to the Application Support directory. 
+
+*Open the file* ``app/src/android/java/.../util/DatabaseManager.java`` and navigate to the database constructor.
+
+This method first checks if a database file already exists.
+If it doesn't exist it loads the database from the assets directory. 
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L49[DatabaseManager.java]
+
+[source,java]
+----
+protected DatabaseManager(Context context, boolean isGuest) {
+    if (isGuest) {
+        ...
+    } else {
+        File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
+        if (!dbFile.exists()) {
+            DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
+        }
+        DatabaseConfiguration config = new DatabaseConfiguration(context);
+        try {
+            database = new Database("travel-sample", config);
+            ...
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
+}
+----
+
+=== Try it out
+
+* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
+* Tap on "Airplane`" button to make a flight reservation
+* In the “From”  airport text field, enter “London”
+* Confirm that the first item in the dropdown list is "London St Pancras" (a train station!)
++
+image::https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif[]

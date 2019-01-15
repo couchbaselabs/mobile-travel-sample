@@ -1,0 +1,86 @@
+= Cloud (RightScale)
+
+*NOTE:* The RightScale cloud environment is only available for in-classroom run workshops.
+
+Before you get started with this section, make sure you followed the instructions link:/tutorials/travel-sample/develop/swift#/0/1/0[here] to download the Travel Mobile app.
+Use this option to connect to a private instance of Couchbase Server components running on the RightScale cloud environment.
+
+At the end of this section, the following components will be launched on the cloud:
+
+* Couchbase Server
+* Sync Gateway
+* Travel Web Application
+
+NOTE: This instance will be available for you to use for the duration of the workshop.
+The instance will automatically be terminated after the workshop.
+Every user will have their own sand boxed instance.
+
+* Access https://selfservice-4.rightscale.com/catalog on your browser.
+* Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
++
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
+* From the catalog of available projects, select the **Mobile Workshop 2017**, give it a name and then click **Launch**.
++
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
+* Once the instance is running, you should see the state change to "launching".
+It will take several minutes to launch.
+So be patient!
++
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_launching.png[,500]
+* Once the instance is running, You should see the state change to "running".
+There are two instances - one for "Develop" and one for "Deploy".
+We are only interested in the "Develop" option.
++
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_running.png[,500]
+
+Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
+
+*Open the file* ``QueryConsts.swift``.
+You must update the `webUrl` constant which points to the Python Web Server.
+Replace the hostname with the IP Address of the Rightscale instance.
+In the example above that would be `54.148.83.39` but yours will be different.
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift[QueryConsts.swift]
+
+[source]
+----
+static var webUrl:String = "http://34.217.88.96:8080"
+----
+
+Next, you will update the Sync Gateway endpoint.
+
+*Open the file* ``DatabaseManager.swift``.
+You must update the `kRemoteSyncUrl` constant.
+Replace the hostname with the IP Address of the RightScale instance.
+In the example above that would be `54.148.83.39` but yours will be different.
+
+In *DatabaseManager.swift*, update the localhost to be the IP Address of the Sync Gateway.
+In my example (from screenshot above), that would be 54.148.83.39.
+
+[source]
+----
+let kRemoteSyncUrl = "ws://54.148.83.39::4984"
+----
+
+== Try it out (Couchbase Server)
+
+* Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
+* Log into the "Admin Console" with username as "Administrator" and password as "password"
+* Select the "Buckets" option from the menu on the left
+* Verify that you have around 31,000 documents in your travel-sample bucket
+
+
+== Try it out (Sync Gateway)
+
+* Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
+* You should see the following response.
++
+[source,bash]
+----
+{ "couchdb":"Welcome", "vendor":{"name":"Couchbase Sync Gateway","version":1}, "version": "Couchbase Sync Gateway/2.1(...)" }
+----
+
+== Try it out (Travel App)
+
+* Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
+* Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
