@@ -52,7 +52,7 @@ Query searchQuery = QueryBuilder
 );
 ----
 
-Next, the query is executed using the `run()` method.
+Next, the query is executed using the `execute()` method.
 Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a ``RecyclerView``. 
 
 [source,java]
@@ -162,7 +162,7 @@ Query query = QueryBuilder
   .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
 ----
 
-And we use the `execute()` method to get the results back pass them on to the view. 
+We use the `execute()` method to get the results and pass them on to the view.
 
 [source,java]
 ----
@@ -195,11 +195,10 @@ try {
 
 * Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
 * Tap on "Hotels"" button 
-* In the "Description" text field, enter "pets" 
-* In the "Location" text field, enter "London" 
-* Verify that you see the "Novotel London West" listed 
-* Swipe left to "bookmark" the hotel 
-* Tap "Cancel" button 
-* Verify that the Novatel hotel that you bookmarked earlier shows up in the list
+* In the "Location" text field, enter "London"
+* In the "Description" text field, enter "Pets"
+* Verify that you see the "Novotel London West" listed
+* Tap to "bookmark" the hotel
+* Verify that the Novatel hotel shows up in the list on the "BookmarksActivity" page
 +
 image::https://cl.ly/3r243s1K2600/android-advanced-query.gif[]

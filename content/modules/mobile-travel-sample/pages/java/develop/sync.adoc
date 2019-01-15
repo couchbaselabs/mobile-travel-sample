@@ -31,7 +31,7 @@ channel("channel." + username);
 Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
 
 Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
-It is an opt-in feature can be enabled in the Sync Gateway configuration file.
+It is an opt-in feature that can be enabled in the Sync Gateway configuration file.
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png[]
 
@@ -168,15 +168,14 @@ replicator.start();
 === Try it out (Push Replication)
 
 * Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "airline" button to make a flight reservation 
-* Enter "`From`" airport as "San Fran" and select the airport from drop down menu 
-* Enter "`To`" airport as "Detroit" and select the airport from drop down menu 
-* Enter From and Return Dates 
-* Tap "lookup" button 
-* From list of flights, select the first flight listing. This automatically confirms the booking. 
+* Tap the "airline" button to make a flight reservation.
+Both the "From" and "To" airports and flight dates are already set.
+* Tap the "lookup" button
+* From list of flights, select the first flight listing. This automatically confirms the booking.
 * Access the Travel Sample Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
 * Make sure that the "New User" checkbox is *unchecked*
-* Log into the web app as "`demo`" user with password as "`password`" 
+* Log into the web app as "`demo`" user with password as "`password`"
+* Use the "headshot" button (2nd from the right) to  navigate to the list of booked flights
 * Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
 +
 image::https://cl.ly/3r0X2x1M3k37/android-push.gif[]
@@ -185,14 +184,14 @@ image::https://cl.ly/3r0X2x1M3k37/android-push.gif[]
 
 * Access the Travel Sample Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
 * Make sure that the "New User" checkbox is *unchecked*
-* Log into the web app as "`demo`" user with password as "`password`" 
-* Make a flight reservation by clicking "booking" button. 
-* Enter "`From`" airport as "San" and select the airport from drop down menu. 
-* Enter "`To`" airport as "SFO" and select the airport from drop down menu. 
-* Enter From and Return Travel Dates 
+* Log into the web app as "`demo`" user with password as "`password`"
+* Make a flight reservation by clicking the "booking" button (the paper airplane).
+* Enter “From” airport as "SFO" and select the airport from drop down menu.
+* Enter “To” airport as "LHR" and select the airport from drop down menu.
+* Enter From and Return Travel Dates
 * Click on "Find Flights" button 
 * From list of flights, select the first flight listing 
-* Confirm the booking by clicking on the shopping cart icon and click on "`Book`" button 
+* Confirm the booking by clicking on the shopping cart icon and then the on "`Book`" button
 * {empty}
 
   Log into the Travel Sample Mobile app as “demo” user and password as “password”

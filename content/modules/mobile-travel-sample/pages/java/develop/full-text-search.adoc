@@ -28,10 +28,10 @@ private void createFTSQueryIndex() {
 
 Next you will write an FTS query that uses the index. 
 
-*Open the file*``app/src/android/java/.../hotels/HotelPresenter.java``.
+*Open the file*``app/src/android/java/.../hotels/HotelsPresenter.java``.
 We will review the `queryHotels(String location, String description)` method. 
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java[HotelPresenter.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java[HotelsPresenter.java]
 
 [source,java]
 ----
