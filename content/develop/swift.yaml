@@ -29,7 +29,7 @@ chapters:
             description: |
               To start, it is easiest if you run all the components on the same machine. It's not required to run your development environment this way but it is more convenient to start a development environment with components running locally.  
 
-              #### iOS (Xcode 9.2+) 
+              #### iOS (Xcode 10.1+) 
               - Downloadable latest version from the [Mac App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
             
               #### Python (v2.7 and above)
@@ -74,21 +74,13 @@ chapters:
               ```bash
               git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
               ```
-              #### On Xcode 9.2
-              If you are building using Xcode 9.2, you will have to download the Swift 4 compatible version of Couchbase Lite framework
+              #### On Xcode 10.1+
+              If you are building using Xcode 10.1+, you will have to download the Swift 4.2 compatible version of Couchbase Lite framework
               
-              - Run the `install_9.2.sh` script to download and install the compatible version of Couchbase Lite.
+              - Run the `install_10.sh` script to download and install the compatible version of Couchbase Lite.
               ```bash
               cd /path/to/mobile-travel-sample/ios/TravelSample
-              sh install_9.2.sh
-              ```
-              #### On Xcode 9.3+
-              If you are building using Xcode 9.3+, you will have to download the Swift 4.1 compatible version of Couchbase Lite framework
-              
-              - Run the `install_9.sh` script to download and install the compatible version of Couchbase Lite.
-              ```bash
-              cd /path/to/mobile-travel-sample/ios/TravelSample
-              sh install_9.sh
+              sh install_10.sh
               ```
               ## Try it out
               
