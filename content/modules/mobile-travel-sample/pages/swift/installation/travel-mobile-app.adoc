@@ -3,7 +3,7 @@
 
 == Pre-requisites
 
-* Xcode 9.2+: downloadable latest version from the https://itunes.apple.com/us/app/xcode/id497799835?mt=12[Mac App Store].
+* Xcode 10.1+: downloadable latest version from the https://itunes.apple.com/us/app/xcode/id497799835?mt=12[Mac App Store].
 
 == Getting Started
 
@@ -14,7 +14,7 @@
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 +
-If you are building using Xcode 9.2, you will have to download the Swift 4 compatible version of Couchbase Lite framework
+If you are building using Xcode 10.1, you will have to download the Swift 4.2 compatible version of Couchbase Lite framework
 * In Terminal, navigate to the *TravelSample* directory.
 +
 [source,bash]
@@ -32,26 +32,6 @@ Xcode 10::
 [source,bash]
 ----
 sh install_10.sh
-----
---
-
-Xcode 9.2::
-+
---
-If you are building using Xcode 9.3+, you will have to download the Swift 4.1 compatible version of Couchbase Lite framework.
-
-[source,bash]
-----
-sh install_9.2.sh
-----
---
-
-Xcode 9::
-+
---
-[source,bash]
-----
-sh install_9.sh
 ----
 --
 ====
