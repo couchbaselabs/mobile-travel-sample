@@ -17,7 +17,6 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
@@ -59,10 +58,10 @@
       <Version>2.5.0.91635</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise">
-      <Version>2.1.0</Version>
+      <Version>2.5.0-db003</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise.Support.Android">
-      <Version>2.1.0</Version>
+      <Version>2.5.0-db003</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

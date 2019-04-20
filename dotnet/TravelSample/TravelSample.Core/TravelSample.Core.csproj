@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
     <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
-    <PackageReference Include="Couchbase.Lite.Enterprise" Version="2.1.0" />
+    <PackageReference Include="Couchbase.Lite.Enterprise" Version="2.5.0-db003" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.1.1" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>

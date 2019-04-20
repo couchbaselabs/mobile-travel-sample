@@ -56,7 +56,7 @@ class DatabaseManager {
     }()
     
     func initialize() {
-       //  enableCrazyLevelLogging()
+        //enableCrazyLevelLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
@@ -99,7 +99,6 @@ extension DatabaseManager {
             options.directory = guestFolderPath
             // Gets handle to existing DB at specified path
             _db = try Database(name: kGuestDBName, config: options)
-
             handler(nil)
         }catch {
             
@@ -138,7 +137,6 @@ extension DatabaseManager {
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
                  try createDatabaseIndexes()
-                
             }
             else
             {
@@ -256,7 +254,6 @@ extension DatabaseManager {
         _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
             let s = change.status
             print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
-            // Workarond for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816.
             if s.progress.completed == s.progress.total {
                 self?.postNotificationOnReplicationState(.idle)
             }
@@ -264,7 +261,6 @@ extension DatabaseManager {
                 self?.postNotificationOnReplicationState(s.activity)
             }
         })
-        
         
         _pushPullRepl?.start()
 
@@ -296,10 +292,6 @@ extension DatabaseManager {
             NotificationCenter.default.post(Notification.notificationForReplicationIdle())
         case .busy:
             NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
-            
-            
-      
-            
         }
     }
     
@@ -310,11 +302,14 @@ extension DatabaseManager {
 
 // MARK: Utils
 extension DatabaseManager {
-    
+    // Only in 2.5
     fileprivate func enableCrazyLevelLogging() {
-   
-        Database.setLogLevel(.verbose, domain: .query)
-    }
+        let tempFolder = NSTemporaryDirectory().appending("cbllog")
+        Database.log.file.config = LogFileConfiguration.init(directory: tempFolder)
+        Database.log.file.level = .info
+        print("path is \(Database.log.file.config?.directory)")
+    
+     }
     
 }
 
