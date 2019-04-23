@@ -304,13 +304,32 @@ extension DatabaseManager {
 extension DatabaseManager {
     // Only in 2.5
     fileprivate func enableCrazyLevelLogging() {
-        let tempFolder = NSTemporaryDirectory().appending("cbllog")
-        Database.log.file.config = LogFileConfiguration.init(directory: tempFolder)
+        guard let logPath = _applicationSupportDirectory else {
+            fatalError("Could not open Support folder for app!")
+        }
+        
+        let logPathUrl = logPath.appendingPathComponent("cbllog")
+        Database.log.file.config = LogFileConfiguration.init(directory:logPathUrl.path)
         Database.log.file.level = .info
-        print("path is \(Database.log.file.config?.directory)")
-    
+         print("path is \(Database.log.file.config?.directory)")
+        //Database.log.custom = LogTestLogger()
      }
-    
+    /*
+    fileprivate class LogTestLogger: Logger {
+        
+        var lines: [String] = []
+        
+        var level: LogLevel = .none
+        
+        func reset() {
+            lines.removeAll()
+        }
+        
+        func log(level: LogLevel, domain: LogDomain, message: String) {
+            lines.append(message)
+        }
+    }
+ */
 }
 
 // MARK: Custom conflict resolver
