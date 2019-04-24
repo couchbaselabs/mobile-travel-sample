@@ -33,9 +33,9 @@ You should see the version of git installed.
 
 == Couchbase Server
 
-In this lesson, you will install and launch version 5.5.1 of Couchbase Server.
+In this lesson, you will install and launch version 6.0.1 of Couchbase Server.
 
-* https://www.couchbase.com/downloads#couchbase-server[Download and install] V5.5.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://developer.couchbase.com/documentation/server/5.5/install/install-intro.html[install guide] to install the same.
+* https://www.couchbase.com/downloads#couchbase-server[Download and install] V6.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]

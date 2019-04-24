@@ -37,13 +37,13 @@ Open a new terminal window and run the following.
 +
 [source,bash]
 ----
-$ docker pull connectsv/server:5.5.1-enterprise
+$ docker pull connectsv/server:6.0.1-enterprise
 ----
 * Once the command has completed you can start the application with the following.
 +
 [source,bash]
 ----
-$ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:5.5.1-enterprise
+$ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:6.0.1-enterprise
 ----
 * You can view the logs at any time by running the following command.
 +
@@ -139,13 +139,13 @@ $ docker network create -d bridge workshop
 +
 [source,bash]
 ----
-$ docker pull connectsv/try-cb-python:5.5.1-server
+$ docker pull connectsv/try-cb-python:6.0.1-server
 ----
 * Once the command has completed you can start the application with the following.
 +
 [source,bash]
 ----
-$ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.5.1-server
+$ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:6.0.1-server
 ----
 You should then see the following in the console output.
 +

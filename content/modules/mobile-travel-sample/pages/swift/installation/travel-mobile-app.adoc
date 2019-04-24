@@ -14,7 +14,7 @@
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 +
-If you are building using Xcode 10.1, you will have to download the Swift 4.2 compatible version of Couchbase Lite framework
+If you are building using Xcode 10.1, you will have to download the Swift 5 compatible version of Couchbase Lite framework
 * In Terminal, navigate to the *TravelSample* directory.
 +
 [source,bash]
