@@ -10,8 +10,6 @@ The app will sync documents with Sync Gateway 2.1 using a new websockets based r
 Additionally, we will use a web version of the Travel Sample app which includes the ability to make flight reservations.
 Documents are persisted on Couchbase Server and seamlessly synced over to web and mobile clients.
 
-image:https://duaw26jehqd4r.cloudfront.net/items/322M3j0K241Q3Z3S0L2B/featured.png[]
-
 == Architecture Diagram
 
 This is the high level architecture of the system that we will be running.
