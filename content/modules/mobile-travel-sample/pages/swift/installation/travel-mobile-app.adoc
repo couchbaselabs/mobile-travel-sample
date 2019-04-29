@@ -1,5 +1,5 @@
 = Travel Sample Mobile App
-//:page-aliases: tutorials:travel-sample:develop/swift,tutorials:travel-sample:develop/swift/index
+:page-aliases: tutorials:travel-sample:develop/swift,tutorials:travel-sample:develop/swift/index
 
 == Pre-requisites
 

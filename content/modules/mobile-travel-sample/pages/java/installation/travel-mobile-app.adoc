@@ -1,5 +1,5 @@
 = Travel Mobile App
-//:page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
+:page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
 
 == Pre-requisites
 
