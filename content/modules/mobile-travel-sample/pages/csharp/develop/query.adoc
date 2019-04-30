@@ -1,4 +1,5 @@
 = Query
+:source-language: csharp
 
 == Overview
 
@@ -16,16 +17,16 @@ Consider the following query
 ----
 
 var hotelSearchQuery = Query
-                  .Select(SelectResult.Expression(Meta.ID),
-                          SelectResult.Expression(Expression.Property("name"))) 
-                  .From(DataSource.Database(UserSession.Database))
-                  .Where(
-                      Expression.Property("description").Like("%\(descriptionStr)%")
-                     .And(Expression.Property("type").EqualTo("hotel"))
-                     .And(Expression.Property("country").EqualTo(locationStr)
-                     .Or(Expression.Property("city").EqualTo(locationStr))
-                     .Or(Expression.Property("state").EqualTo(locationStr))
-                     .Or(Expression.Property("address").EqualTo(locationStr))))
+    .Select(SelectResult.Expression(Meta.ID),
+            SelectResult.Expression(Expression.Property("name")))
+    .From(DataSource.Database(UserSession.Database))
+    .Where(
+        Expression.Property("description").Like("%\(descriptionStr)%")
+       .And(Expression.Property("type").EqualTo("hotel"))
+       .And(Expression.Property("country").EqualTo(locationStr)
+       .Or(Expression.Property("city").EqualTo(locationStr))
+       .Or(Expression.Property("state").EqualTo(locationStr))
+       .Or(Expression.Property("address").EqualTo(locationStr))))
 ----
 
 Often types, the same `Expression` may be required across multiple queries.
@@ -38,11 +39,11 @@ This file defines some of the CouchbaseLite expressions that are used for flight
 [source]
 ----
 
-  private static readonly IExpression AirportNameProperty = Expression.Property("airportname");
-  private static readonly ISelectResult AirportNameResult = SelectResult.Expression(AirportNameProperty);
-  private static readonly IExpression FaaProperty = Expression.Property("faa");
-  private static readonly IExpression IcaoProperty = Expression.Property("icao");
-----= 
+private static readonly IExpression AirportNameProperty = Expression.Property("airportname");
+private static readonly ISelectResult AirportNameResult = SelectResult.Expression(AirportNameProperty);
+private static readonly IExpression FaaProperty = Expression.Property("faa");
+private static readonly IExpression IcaoProperty = Expression.Property("icao");
+----
 
 == Simple Query
 
@@ -71,11 +72,13 @@ The query below *selects* the "name" property in documents *from* the database *
 [source]
 ----
 
- searchQuery = QueryBuilder
-          .Select(AirportNameResult)
-          .From(DataSource.Database(UserSession.Database))
-          .Where(TypeProperty.EqualTo(Expression.String("airport"))
-              .And(AirportNameProperty.Like(Expression.String($"{searchStr}%"))));
+searchQuery = QueryBuilder
+         .Select(AirportNameResult)
+         .From(DataSource.Database(UserSession.Database))
+         .Where(
+             TypeProperty.EqualTo(Expression.String("airport"))
+             .And(AirportNameProperty.Like(Expression.String($"{searchStr}%")))
+         );
 ----
 
 Next, the query is executed using the `Run()` method.
@@ -103,7 +106,6 @@ The screen recording is for UWP app.
 
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_prebuilt.gif[]
-= 
 
 == Advanced Query
 

@@ -1,5 +1,12 @@
 = Travel Mobile App
 
+== Pre-requisites
+
+* Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com]. Preferable to be in VS v15.6
+
+*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+Also, note that if you choose Manual or docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
 == Travel Sample Mobile App
 
 * Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 

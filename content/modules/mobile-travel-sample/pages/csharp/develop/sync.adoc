@@ -19,11 +19,10 @@ It includes the `sync function` which is a JavaScript function whose source code
 
 [source,javascript]
 ----
-
 /* Routing */
 // Add doc to the user's channel.
 channel("channel." + username);
-----= 
+----
 
 == XAttrs
 
@@ -63,7 +62,7 @@ function(doc) {
 
   return true;
 } `
-----= 
+----
 
 == Replication
 
@@ -211,9 +210,7 @@ The screen recording is for UWP version of the app image:https://raw.githubuserc
 * Click on "Find Flights" button 
 * From list of flights, select the first flight listing 
 * Confirm the booking by clicking on the shopping cart icon and click on "`Book`" button 
-* {empty}
-
-  If you are not already logged into the mobile app, Log into the Travel Sample Mobile app as “demo” user and password as “password”
+* If you are not already logged into the mobile app, Log into the Travel Sample Mobile app as “demo” user and password as “password”
 * Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
-
++
 The screen recording is for UWP version of the app image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_pull_replication.gif[]
