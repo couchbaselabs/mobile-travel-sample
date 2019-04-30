@@ -13,7 +13,7 @@
 *** xref:mobile-travel-sample:swift/develop/pre-built-database.adoc[Pre-built database]
 *** xref:mobile-travel-sample:swift/develop/query.adoc[Query]
 *** xref:mobile-travel-sample:swift/develop/full-text-search.adoc[Full Text Search]
-** Android
+** Java
 *** xref:mobile-travel-sample:java/installation/index.adoc[Backend Installation]
 **** xref:mobile-travel-sample:java/installation/manual.adoc[Manual]
 **** xref:mobile-travel-sample:java/installation/docker.adoc[Docker (Local)]
