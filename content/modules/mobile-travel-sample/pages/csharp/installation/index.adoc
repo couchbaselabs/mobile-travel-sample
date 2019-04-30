@@ -1,1 +1,2 @@
+:source-language: csharp
 include::{partialsdir}/installation/index.adoc[]

@@ -6,9 +6,9 @@ There are three alternative options available to install those components.
 
 [cols="1,1,1"]
 |===
-| xref:tutorials:mobile-travel-sample:installation/manual.adoc[Manual]
-| xref:tutorials:mobile-travel-sample:installation/docker.adoc[Docker (Local)]
-| xref:tutorials:mobile-travel-sample:installation/cloud.adoc[Cloud (RightScale)]
+| xref:tutorials:mobile-travel-sample:{source-language}/installation/manual.adoc[Manual]
+| xref:tutorials:mobile-travel-sample:{source-language}/installation/docker.adoc[Docker (Local)]
+| xref:tutorials:mobile-travel-sample:{source-language}/installation/cloud.adoc[Cloud (RightScale)]
 
 | Here, you would download and install the components on your local machine.
 | In this case, you would install all the server components in separate docker containers on your local machine.
