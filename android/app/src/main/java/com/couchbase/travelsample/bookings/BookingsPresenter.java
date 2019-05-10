@@ -57,7 +57,7 @@ public class BookingsPresenter implements BookingsContract.UserActionsListener {
                             MutableDictionary flightInfo = ((com.couchbase.lite.Dictionary)flight).toMutable();
                             Map<String, Object> properties = new HashMap<String, Object>();
                             properties.put("name", flightInfo.getString("name"));
-                            properties.put("journey", String.format("%s - %s", flightInfo.getString("sourceairport"), flightInfo.getString("destinationairport")));
+                            properties.put("journey", String.format("%s - %s, Fare: $%.2f", flightInfo.getString("sourceairport"), flightInfo.getString("destinationairport"),flightInfo.getDouble("price")));
 
                             data.add(properties);
                         }
