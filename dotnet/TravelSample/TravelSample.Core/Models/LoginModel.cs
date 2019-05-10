@@ -76,6 +76,8 @@ namespace TravelSample.Core.Models
             } else {
                 db = new Database(DbName, options);
             }
+
+
            // Database.SetLogLevel(Couchbase.Lite.Logging.LogDomain.Replicator, Couchbase.Lite.Logging.LogLevel.Debug);
             
 
@@ -129,6 +131,14 @@ namespace TravelSample.Core.Models
 
             repl.Start();
             return repl;
+        }
+        // 2.5 Only
+        private void enableLogging()
+        {
+            var logDirectory = Path.GetTempPath();
+            Database.Log.File.Level = Couchbase.Lite.Logging.LogLevel.Info;
+            Database.Log.File.Config = new Couchbase.Lite.Logging.LogFileConfiguration(logDirectory.ToString());
+
         }
 
         #endregion

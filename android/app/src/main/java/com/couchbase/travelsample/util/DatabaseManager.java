@@ -2,6 +2,7 @@ package com.couchbase.travelsample.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.couchbase.lite.BasicAuthenticator;
@@ -10,6 +11,8 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.FullTextIndexItem;
 import com.couchbase.lite.IndexBuilder;
+import com.couchbase.lite.LogFileConfiguration;
+import com.couchbase.lite.LogLevel;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorChange;
 import com.couchbase.lite.ReplicatorChangeListener;
@@ -176,7 +179,9 @@ public class DatabaseManager {
     public static DatabaseManager getSharedInstance(Context context, boolean isGuest) {
         if (instance == null) {
             instance = new DatabaseManager(context, isGuest);
+           // enableLogging(context);
         }
+
         return instance;
     }
 
@@ -185,5 +190,14 @@ public class DatabaseManager {
 
         }
         return database;
+    }
+
+    private static void enableLogging(Context context) {
+        // Only in 2.5
+        final File path = context.getCacheDir();
+
+        Database.log.getFile().setConfig(new LogFileConfiguration(path.toString()));
+        Database.log.getFile().setLevel(LogLevel.INFO);
+        Log.e("log",path.toString());
     }
 }

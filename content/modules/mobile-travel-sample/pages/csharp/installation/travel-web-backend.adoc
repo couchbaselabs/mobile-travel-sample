@@ -156,11 +156,11 @@ If not, please follow instructions link:/develop/csharp#/0/2/1[here] to install 
 * Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command `bash   $ docker network ls   $ docker network create -d bridge workshop`
 * To run the application in a container, you will first get the docker image from Docker Cloud. Open a terminal window and run the following. 
 
-`bash   $ docker pull connectsv/try-cb-python:5.5.1-server`
+`bash   $ docker pull connectsv/try-cb-python:6.0.1-server`
 
 * Once the command has completed you can start the application with the following. 
 
-`bash   $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:5.5.1-server`
+`bash   $ docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python:6.0.1-server`
 
 You should then see the following in the console output. 
 

@@ -34,6 +34,9 @@
       "bucket":"travel-sample",
       "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,
+      "delta_sync": {
+        "enabled": false
+      },
       "import_filter": `
         function(doc) {
           /* Just ignore all the static travel-sample files */

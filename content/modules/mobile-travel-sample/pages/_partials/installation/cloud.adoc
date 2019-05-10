@@ -19,7 +19,7 @@ Every user will have their own sand boxed instance.
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
 +
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
-* From the catalog of available projects, select the **Mobile Workshop 2017**, give it a name and then click **Launch**.
+* From the catalog of available projects, select the **Mobile Workshop**, give it a name and then click **Launch**.
 +
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
 * Once the instance is running, you should see the state change to "launching".
@@ -77,7 +77,7 @@ let kRemoteSyncUrl = "ws://54.148.83.39::4984"
 +
 [source,bash]
 ----
-{ "couchdb":"Welcome", "vendor":{"name":"Couchbase Sync Gateway","version":1}, "version": "Couchbase Sync Gateway/2.1(...)" }
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.5"},"version":"Couchbase Sync Gateway/2.5.0(271;bf3ddf6) EE"}
 ----
 
 == Try it out (Travel App)

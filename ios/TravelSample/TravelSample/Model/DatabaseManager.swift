@@ -32,8 +32,8 @@ class DatabaseManager {
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    var kRemoteSyncUrl = "ws://localhost:4984"
-   // fileprivate let kRemoteSyncUrl = "ws://54.148.83.39:4984"
+    //var kRemoteSyncUrl = "ws://localhost:4984"
+    fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
     
    
     
@@ -56,7 +56,7 @@ class DatabaseManager {
     }()
     
     func initialize() {
-       //  enableCrazyLevelLogging()
+        enableCrazyLevelConsoleLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
@@ -99,7 +99,6 @@ extension DatabaseManager {
             options.directory = guestFolderPath
             // Gets handle to existing DB at specified path
             _db = try Database(name: kGuestDBName, config: options)
-
             handler(nil)
         }catch {
             
@@ -138,7 +137,6 @@ extension DatabaseManager {
                 // Get handle to DB  specified path
                 _db = try Database(name: kDBName, config: options)
                  try createDatabaseIndexes()
-                
             }
             else
             {
@@ -256,7 +254,6 @@ extension DatabaseManager {
         _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
             let s = change.status
             print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
-            // Workarond for BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816.
             if s.progress.completed == s.progress.total {
                 self?.postNotificationOnReplicationState(.idle)
             }
@@ -264,7 +261,6 @@ extension DatabaseManager {
                 self?.postNotificationOnReplicationState(s.activity)
             }
         })
-        
         
         _pushPullRepl?.start()
 
@@ -296,10 +292,6 @@ extension DatabaseManager {
             NotificationCenter.default.post(Notification.notificationForReplicationIdle())
         case .busy:
             NotificationCenter.default.post(Notification.notificationForReplicationInProgress())
-            
-            
-      
-            
         }
     }
     
@@ -310,12 +302,46 @@ extension DatabaseManager {
 
 // MARK: Utils
 extension DatabaseManager {
-    
-    fileprivate func enableCrazyLevelLogging() {
-   
-        Database.setLogLevel(.verbose, domain: .query)
+    // Only in 2.5 : File log options
+    fileprivate func enableCrazyLevelConsoleLogging() {
+        Database.log.console.level = .verbose
+        
     }
     
+    fileprivate func enableCrazyLevelFileLogging() {
+        guard let logPath = _applicationSupportDirectory else {
+            fatalError("Could not open Support folder for app!")
+        }
+        
+        let logPathUrl = logPath.appendingPathComponent("cbllog")
+        var logConfig =  LogFileConfiguration.init(directory:logPathUrl.path)
+        logConfig.usePlainText = true
+        Database.log.file.config = logConfig
+        Database.log.file.level = .verbose
+        
+        print("log file path is \(Database.log.file.config?.directory)")
+    }
+    
+    fileprivate func enableCrazyLevelCustomLogging() {
+        Database.log.custom = LogTestLogger()
+    }
+    
+    fileprivate class LogTestLogger: Logger {
+        
+        var lines: [String] = []
+        
+        var level: LogLevel = .verbose
+        
+        func reset() {
+            lines.removeAll()
+        }
+        
+        func log(level: LogLevel, domain: LogDomain, message: String) {
+            lines.append(message)
+            print("log is \(message)")
+        }
+    }
+ 
 }
 
 // MARK: Custom conflict resolver
