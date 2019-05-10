@@ -35,7 +35,7 @@
       "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,
       "delta_sync": {
-        "enabled": false
+        "enabled": true
       },
       "import_filter": `
         function(doc) {
