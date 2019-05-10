@@ -40,11 +40,12 @@ namespace TravelSample.UWP
 
         static App()
         {
-            Couchbase.Lite.Support.UWP.Activate();
-
             // Piggy back onto Couchbase's dependency injection
             Service.Register<IDatabaseSeedService>(new DatabaseSeedService());
-         
+ 
+            Couchbase.Lite.Support.UWP.Activate();
+
+
         }
 
         /// <summary>

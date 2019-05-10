@@ -64,9 +64,9 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 == Sync Gateway
 
-In this section, you will install and launch version 2.1 of Sync Gateway.
+In this section, you will install and launch version 2.5 of Sync Gateway.
 
-* Install Sync Gateway 2.1 from https://www.couchbase.com/downloads[here] on your platform of choice
+* Install Sync Gateway 2.5 from https://www.couchbase.com/downloads[here] on your platform of choice
 * The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/develop/swift#/0/1/0[Travel Mobile App install]. The config file will be located in ``/path/to/mobile-travel-sample``.
 * Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
 +
@@ -112,7 +112,7 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 *Try it out*
 
 * Access this URL `http://localhost:4984` in your browser
-* Verify that you get JSON response similar to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.1"},"version":"Couchbase Sync Gateway/2.1.0(775;9cc29c5)"}`
+* Verify that you get JSON response similar to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.5"},"version":"Couchbase Sync Gateway/2.5.0(271;bf3ddf6) EE"}`
 
 == Python Backend
 

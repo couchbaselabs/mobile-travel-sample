@@ -36,10 +36,12 @@ namespace TravelSample.iOS
 
         static AppDelegate()
         {
-            Couchbase.Lite.Support.iOS.Activate();
-
             // Piggy back onto Couchbase's dependency injection
             Service.Register<IDatabaseSeedService>(new DatabaseSeedService());
+
+            Couchbase.Lite.Support.iOS.Activate();
+
+         
         }
 
         #endregion

@@ -32,8 +32,8 @@ class DatabaseManager {
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
-    var kRemoteSyncUrl = "ws://localhost:4984"
-   // fileprivate let kRemoteSyncUrl = "ws://54.148.83.39:4984"
+    //var kRemoteSyncUrl = "ws://localhost:4984"
+    fileprivate let kRemoteSyncUrl = "ws://localhost:4984"
     
    
     
@@ -56,7 +56,7 @@ class DatabaseManager {
     }()
     
     func initialize() {
-        //enableCrazyLevelLogging()
+        enableCrazyLevelConsoleLogging()
     }
     // Don't allow instantiation . Enforce singleton
     private init() {
@@ -302,24 +302,35 @@ extension DatabaseManager {
 
 // MARK: Utils
 extension DatabaseManager {
-    // Only in 2.5
-    fileprivate func enableCrazyLevelLogging() {
+    // Only in 2.5 : File log options
+    fileprivate func enableCrazyLevelConsoleLogging() {
+        Database.log.console.level = .verbose
+        
+    }
+    
+    fileprivate func enableCrazyLevelFileLogging() {
         guard let logPath = _applicationSupportDirectory else {
             fatalError("Could not open Support folder for app!")
         }
         
         let logPathUrl = logPath.appendingPathComponent("cbllog")
-        Database.log.file.config = LogFileConfiguration.init(directory:logPathUrl.path)
-        Database.log.file.level = .info
-         print("path is \(Database.log.file.config?.directory)")
-        //Database.log.custom = LogTestLogger()
-     }
-    /*
+        var logConfig =  LogFileConfiguration.init(directory:logPathUrl.path)
+        logConfig.usePlainText = true
+        Database.log.file.config = logConfig
+        Database.log.file.level = .verbose
+        
+        print("log file path is \(Database.log.file.config?.directory)")
+    }
+    
+    fileprivate func enableCrazyLevelCustomLogging() {
+        Database.log.custom = LogTestLogger()
+    }
+    
     fileprivate class LogTestLogger: Logger {
         
         var lines: [String] = []
         
-        var level: LogLevel = .none
+        var level: LogLevel = .verbose
         
         func reset() {
             lines.removeAll()
@@ -327,9 +338,10 @@ extension DatabaseManager {
         
         func log(level: LogLevel, domain: LogDomain, message: String) {
             lines.append(message)
+            print("log is \(message)")
         }
     }
- */
+ 
 }
 
 // MARK: Custom conflict resolver

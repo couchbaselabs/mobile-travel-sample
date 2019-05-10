@@ -3,12 +3,12 @@
 == Application Features
 
 We will do a code walkthrough of a sample Travel application for mobile platforms using Couchbase Mobile 2.5.
-The simple app will allow users to search for and to make flight reservations.
+The app will allow users to search for and to make flight reservations.
 Users will also be able to search for hotels based on specific criteria.
-The mobile app will use the Couchbase Lite 2.x API that includes support for a N1QL like query interface and Full Text Search (FTS) capabilities.
-The app will sync documents with Sync Gateway 2.5 using a new websockets based replication protocol.
-Additionally, we will use a web version of the Travel Sample app which includes the ability to make flight reservations.
-Documents are persisted on Couchbase Server and seamlessly synced over to web and mobile clients.
+The mobile app will use the Couchbase Lite 2.5 SQL based query API with support for Full Text Search (FTS).
+The app will sync documents with Sync Gateway 2.5 using a websockets based replication protocol.
+Additionally, we will use a web version of the Travel Sample app that includes the ability to make flight reservations. Users are created through the web app.
+Documents are persisted on Couchbase Server and seamlessly synced over to web and mobile clients through the Sync Gateway.
 
 image:https://duaw26jehqd4r.cloudfront.net/items/322M3j0K241Q3Z3S0L2B/featured.png[]
 

@@ -32,7 +32,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.5.0-DB2'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.5.0'
 
     testImplementation 'junit:junit:4.12'
 
