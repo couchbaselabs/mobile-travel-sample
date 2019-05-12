@@ -10,30 +10,42 @@ The code below moves the pre-built database from the bundled location to the App
 
 *Open the file* ``app/src/android/java/.../util/DatabaseManager.java`` and navigate to the database constructor.
 
-This method first checks if a database file already exists.
-If it doesn't exist it loads the database from the assets directory. 
+This method first checks if a database file already exists for specific user.
+If it doesn't exist it loads the database from the assets directory, unzips and copies it over to a folder created for ths user.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L49[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L61[DatabaseManager.java]
 
 [source,java]
 ----
-protected DatabaseManager(Context context, boolean isGuest) {
-    if (isGuest) {
-        ...
-    } else {
-        File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
-        if (!dbFile.exists()) {
-            DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
-        }
+  public void OpenDatabaseForUser(Context context,String username) {
+        File dbFile = new File(context.getFilesDir()+"/"+ username, "travel-sample.cblite2");
         DatabaseConfiguration config = new DatabaseConfiguration(context);
+        config.setDirectory(String.format("%s/%s", context.getFilesDir(),username));
+        currentUser = username;
+
+        if (!dbFile.exists()) {
+            AssetManager assetManager = context.getAssets();
+            try {
+                File path = new File(context.getFilesDir()+"");
+                unzip(assetManager.open("travel-sample.cblite2.zip"),path);
+                Database.copy(new File(context.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+            }
+
+        }
         try {
             database = new Database("travel-sample", config);
-            ...
+            createFTSQueryIndex();
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
-}
 ----
 
 === Try it out

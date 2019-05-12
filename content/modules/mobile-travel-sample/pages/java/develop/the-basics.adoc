@@ -9,38 +9,36 @@ You can think of a database as a namespace for documents and several databases c
 The snippet below creates an empty database for the `guest` user in a directory named ``guest``. 
 
 *Open the file* `DatabaseManager.java`.
-We will review the `DatabaseManager(Context context, boolean isGuest)` constructor method.
+We will review the `OpenGuestDatabase(Context context)`  method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L38[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L51[DatabaseManager.java]
 
 [source,java]
 ----
-protected DatabaseManager(Context context, boolean isGuest) {
-  ...
-}
+ public void OpenGuestDatabase(Context context) {
+   ...
+ }
 ----
 
 We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object.
 
 [source,java]
 ----
-if (isGuest) {
-    DatabaseConfiguration config = new DatabaseConfiguration(context);
-    config.setDirectory(String.format("%s/guest", context.getFilesDir()));
+  DatabaseConfiguration config = new DatabaseConfiguration(context);
+  // File folder = new File(String.format("%s/guest", context.getFilesDir()));
+  config.setDirectory(String.format("%s/guest", context.getFilesDir()));
+  
 ----
 
 The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object.
 
 [source,java]
 ----
-  try {
-    database = new Database("travel-sample", config);
+ try {
+      database = new Database("travel-sample", config);
   } catch (CouchbaseLiteException e) {
-    e.printStackTrace();
+      e.printStackTrace();
   }
-} else {
-       ...
-}
 ----
 
 === Try it out
