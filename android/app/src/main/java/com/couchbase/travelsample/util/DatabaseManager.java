@@ -37,46 +37,60 @@ import java.util.zip.ZipInputStream;
 public class DatabaseManager {
     private static Database database;
     private static DatabaseManager instance = null;
+    public  String currentUser = null;
+
     private static String dbName;
     public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
     public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 
-    protected DatabaseManager(Context context, boolean isGuest) {
-        if (isGuest) {
-            DatabaseConfiguration config = new DatabaseConfiguration(context);
-           // File folder = new File(String.format("%s/guest", context.getFilesDir()));
-            config.setDirectory(String.format("%s/guest", context.getFilesDir()));
+
+    protected DatabaseManager() {
+
+    }
+
+    public void OpenGuestDatabase(Context context) {
+        DatabaseConfiguration config = new DatabaseConfiguration(context);
+        // File folder = new File(String.format("%s/guest", context.getFilesDir()));
+        config.setDirectory(String.format("%s/guest", context.getFilesDir()));
+        try {
+            database = new Database("travel-sample", config);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
+    public void OpenDatabaseForUser(Context context,String username) {
+        File dbFile = new File(context.getFilesDir()+"/"+ username, "travel-sample.cblite2");
+        DatabaseConfiguration config = new DatabaseConfiguration(context);
+        config.setDirectory(String.format("%s/%s", context.getFilesDir(),username));
+        currentUser = username;
+
+        if (!dbFile.exists()) {
+            AssetManager assetManager = context.getAssets();
             try {
-                database = new Database("travel-sample", config);
-            } catch (CouchbaseLiteException e) {
+                File path = new File(context.getFilesDir()+"");
+                unzip(assetManager.open("travel-sample.cblite2.zip"),path);
+                Database.copy(new File(context.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
+
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            File dbFile = new File(context.getFilesDir(), "travel-sample.cblite2");
-            if (!dbFile.exists()) {
-                DatabaseManager.installPrebuiltDatabase(context, "travel-sample.cblite2.zip");
-            }
-            DatabaseConfiguration config = new DatabaseConfiguration(context);
-            try {
-                database = new Database("travel-sample", config);
-                createFTSQueryIndex();
-            } catch (CouchbaseLiteException e) {
+            catch (CouchbaseLiteException e) {
                 e.printStackTrace();
             }
+
+        }
+        try {
+            database = new Database("travel-sample", config);
+            createFTSQueryIndex();
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void installPrebuiltDatabase(Context context, String filename) {
-        AssetManager assetManager = context.getAssets();
-        try {
-            InputStream inputStream = assetManager.open(filename);
-            File outFile = new File(context.getFilesDir(), filename);
-            FileOutputStream out = new FileOutputStream(outFile);
-            copyFile(inputStream, out);
-            unpackZip(context.getFilesDir().getPath() + "/", filename);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    public String getCurrentUserDocId() {
+        return "user::" + currentUser;
     }
 
     private void createFTSQueryIndex() {
@@ -87,61 +101,29 @@ public class DatabaseManager {
         }
     }
 
-    private static boolean unpackZip(String path, String zipname)
-    {
-        InputStream is;
-        ZipInputStream zis;
-        try
-        {
-            String filename;
-            is = new FileInputStream(path + zipname);
-            zis = new ZipInputStream(new BufferedInputStream(is));
-            ZipEntry ze;
-            byte[] buffer = new byte[1024];
-            int count;
-
-            while ((ze = zis.getNextEntry()) != null)
-            {
-                // zapis do souboru
-                filename = ze.getName();
-
-                // Need to create directories if not exists, or
-                // it will generate an Exception...
-                if (ze.isDirectory()) {
-                    File fmd = new File(path + filename);
-                    fmd.mkdirs();
-                    continue;
-                }
-
-                FileOutputStream fout = new FileOutputStream(path + filename);
-
-                // cteni zipu a zapis
-                while ((count = zis.read(buffer)) != -1)
-                {
-                    fout.write(buffer, 0, count);
-                }
-
-                fout.close();
-                zis.closeEntry();
-            }
-
-            zis.close();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    private static void copyFile(InputStream in, OutputStream out) throws IOException {
+    private static void unzip(InputStream in, File destination) throws IOException {
         byte[] buffer = new byte[1024];
-        int read;
-        while((read = in.read(buffer)) != -1){
-            out.write(buffer, 0, read);
+        ZipInputStream zis = new ZipInputStream(in);
+        ZipEntry ze = zis.getNextEntry();
+        while (ze != null) {
+            String fileName = ze.getName();
+            File newFile = new File(destination, fileName);
+            if (ze.isDirectory()) {
+                newFile.mkdirs();
+            } else {
+                new File(newFile.getParent()).mkdirs();
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+            }
+            ze = zis.getNextEntry();
         }
+        zis.closeEntry();
+        zis.close();
+        in.close();
     }
 
     public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
@@ -176,10 +158,11 @@ public class DatabaseManager {
         replicator.start();
     }
 
-    public static DatabaseManager getSharedInstance(Context context, boolean isGuest) {
+//
+    public static DatabaseManager getSharedInstance() {
         if (instance == null) {
-            instance = new DatabaseManager(context, isGuest);
-           // enableLogging(context);
+            instance = new DatabaseManager();
+            // enableLogging(context);
         }
 
         return instance;

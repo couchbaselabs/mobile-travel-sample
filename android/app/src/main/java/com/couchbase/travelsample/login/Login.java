@@ -50,14 +50,16 @@ public class Login extends AppCompatActivity  {
 
 
     public void onGuestLoginTapped(View view) {
-        DatabaseManager.getSharedInstance(getApplicationContext(), true);
+        DatabaseManager dbMgr = DatabaseManager.getSharedInstance();
+        dbMgr.OpenGuestDatabase(getApplicationContext());
 
         Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
         startActivity(intent);
     }
 
     public void onLoginTapped(View view) {
-        DatabaseManager.getSharedInstance(getApplicationContext(), false);
+        DatabaseManager dbMgr = DatabaseManager.getSharedInstance();
+        dbMgr.OpenDatabaseForUser(getApplicationContext(), usernameInput.getText().toString());
         DatabaseManager.startPushAndPullReplicationForCurrentUser(usernameInput.getText().toString(),
             passwordInput.getText().toString());
 

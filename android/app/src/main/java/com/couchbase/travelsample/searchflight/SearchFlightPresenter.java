@@ -84,8 +84,9 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
 
     @Override
     public void saveFlight(List<JSONObject> flights) {
-        String docId = "user::demo";
         Database database = DatabaseManager.getDatabase();
+        String docId = DatabaseManager.getSharedInstance().getCurrentUserDocId();
+
         Document document = database.getDocument(docId);
 
         if (document == null) {
