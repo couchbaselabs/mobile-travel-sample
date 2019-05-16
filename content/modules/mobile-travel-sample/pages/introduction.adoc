@@ -1,4 +1,5 @@
 = Introduction
+:page-aliases: tutorials:travel-sample:index
 
 == Application Features
 
