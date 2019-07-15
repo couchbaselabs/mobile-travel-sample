@@ -76,7 +76,7 @@ Replication is the process by which clients running Couchbase Lite synchronize d
 
 Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket.
 
-image:http://blog.couchbase.com/wp-content/uploads/2018/02/replication2.0.png[]
+image:replication-2-0.png[]
 
 The replication process can be "`continuous`" or "`one shot"`.
 
