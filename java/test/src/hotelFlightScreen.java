@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class hotelFlightScreen {
     private JTabbedPane flightPane;
-    private JPanel panel1;
+    public JPanel panel1;
     private JTextField locationInput;
     private JTextField descInput;
     private JLabel locationLabel;
@@ -68,13 +68,5 @@ public class hotelFlightScreen {
         // TODO: place custom component creation code here
         locationImage = new JLabel(new ImageIcon("globe.png"));
         descImage = new JLabel(new ImageIcon("magglass.png"));
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("hotelFlightScreen");
-        frame.setContentPane(new hotelFlightScreen().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
