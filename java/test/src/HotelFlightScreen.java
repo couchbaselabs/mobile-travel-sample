@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class hotelFlightScreen {
+public class HotelFlightScreen {
     private JTabbedPane flightPane;
     public JPanel panel1;
     private JTextField locationInput;
@@ -29,9 +29,9 @@ public class hotelFlightScreen {
     private JLabel destinDate;
     private JDateChooser originChooser = new JDateChooser();
     private JDateChooser destChooser = new JDateChooser();
-    private final static Logger LOGGER = Logger.getLogger(travelSampleMain.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(TravelSampleLogin.class.getName());
 
-    public hotelFlightScreen() {
+    public HotelFlightScreen() {
         //hotel logger
         searchButton.addActionListener(new ActionListener() {
             @Override

@@ -4,21 +4,21 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class travelSampleMain {
+public class TravelSampleLogin {
     public JPanel panel1;
-    private JButton PROCEEDASGUESTButton;
-    private JButton SIGNINButton;
+    private JButton proceedAsGuestButton;
+    private JButton signInButton;
     private JTextField usernameInput;
     private JPasswordField passwordInput;
     private JLabel image;
     private JLabel username;
     private JLabel password;
     private JLabel planeImage;
-    private final static Logger LOGGER = Logger.getLogger(travelSampleMain.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(TravelSampleLogin.class.getName());
     public static int loginCheck = -1;
 
-    public travelSampleMain() {
-        SIGNINButton.addActionListener(new ActionListener() {
+    public TravelSampleLogin() {
+        signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String usernameInputText = usernameInput.getText();
@@ -32,7 +32,7 @@ public class travelSampleMain {
             }
         });
 
-        PROCEEDASGUESTButton.addActionListener(new ActionListener() {
+        proceedAsGuestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 LOGGER.log(Level.INFO, "Guest button pressed");
