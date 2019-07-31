@@ -23,7 +23,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="3691" class="javax.swing.JTextField" binding="locationInput">
+              <component id="3691" class="javax.swing.JTextField" binding="hotelLocationInput">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -38,7 +38,7 @@
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-              <component id="703f2" class="javax.swing.JTextField" binding="descInput">
+              <component id="703f2" class="javax.swing.JTextField" binding="hotelDescriptionInput">
                 <constraints>
                   <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -57,7 +57,7 @@
                   <text value="Location"/>
                 </properties>
               </component>
-              <component id="19ece" class="javax.swing.JLabel" binding="descLabel">
+              <component id="19ece" class="javax.swing.JLabel" binding="descriptionLabel">
                 <constraints>
                   <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -66,7 +66,7 @@
                   <text value="Description"/>
                 </properties>
               </component>
-              <component id="ce44b" class="javax.swing.JButton" binding="searchButton">
+              <component id="ce44b" class="javax.swing.JButton" binding="hotelSearchButton">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="2" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="80" height="40"/>
@@ -152,7 +152,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="f196f" class="javax.swing.JTextField" binding="originInput">
+              <component id="f196f" class="javax.swing.JTextField" binding="flightOriginInput">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -162,7 +162,7 @@
                   <font size="22"/>
                 </properties>
               </component>
-              <component id="34e04" class="javax.swing.JTextField" binding="destInput">
+              <component id="34e04" class="javax.swing.JTextField" binding="flightDestinationInput">
                 <constraints>
                   <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -190,7 +190,7 @@
                   <text value="Destination"/>
                 </properties>
               </component>
-              <component id="df485" class="javax.swing.JButton" binding="lookUp">
+              <component id="df485" class="javax.swing.JButton" binding="flightSearchButton">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="2" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="80" height="40"/>
@@ -248,7 +248,7 @@
                   </grid>
                 </constraints>
               </vspacer>
-              <grid id="13d1e" binding="originDate" layout-manager="BorderLayout" hgap="0" vgap="0">
+              <grid id="13d1e" binding="originFlightDate" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -266,7 +266,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="229f1" binding="destDate" layout-manager="BorderLayout" hgap="0" vgap="0">
+              <grid id="229f1" binding="returnFlightDate" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -279,7 +279,7 @@
                     <constraints border-constraint="West"/>
                     <properties>
                       <font size="22"/>
-                      <text value="Arrival"/>
+                      <text value="Return"/>
                     </properties>
                   </component>
                 </children>
