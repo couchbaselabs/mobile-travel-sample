@@ -1,3 +1,7 @@
+package com.couchbase.travelsample.model;
+
+import com.couchbase.travelsample.LoginState;
+
 public class LoginModel {
 
     private LoginState loginState;

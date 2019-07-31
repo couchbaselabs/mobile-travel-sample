@@ -1,3 +1,5 @@
+package com.couchbase.travelsample.view;
+
 import javax.swing.*;
 
 public class LoginView {
@@ -13,7 +15,7 @@ public class LoginView {
     private JLabel planeImage;
 
     public LoginView() {
-        JFrame login = new JFrame("LoginView");
+        JFrame login = new JFrame("com.couchbase.travelsample.view.LoginView");
         login.setContentPane(panel);
         login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         login.pack();

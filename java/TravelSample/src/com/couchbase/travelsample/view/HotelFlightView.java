@@ -1,5 +1,6 @@
-//prerequisite: download JCalendar
+package com.couchbase.travelsample.view;//prerequisite: download JCalendar
 
+import com.couchbase.travelsample.view.LoginView;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class HotelFlightView {
     private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
     public HotelFlightView() {
-        JFrame search = new JFrame("HotelFlightView");
+        JFrame search = new JFrame("com.couchbase.travelsample.view.HotelFlightView");
         search.setContentPane(panel);
         search.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         search.pack();

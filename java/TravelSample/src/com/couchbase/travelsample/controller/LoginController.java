@@ -1,3 +1,9 @@
+package com.couchbase.travelsample.controller;
+
+import com.couchbase.travelsample.LoginState;
+import com.couchbase.travelsample.model.LoginModel;
+import com.couchbase.travelsample.view.LoginView;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
