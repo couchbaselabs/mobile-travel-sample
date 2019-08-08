@@ -16,12 +16,11 @@ public class LoginView {
     public JFrame login;
 
     public LoginView() {
-        login = new JFrame("com.couchbase.travelsample.view.LoginView");
+        login = new JFrame("Login");
         login.setContentPane(panel);
         login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         login.pack();
         login.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        login.setVisible(true);
     }
 
     public JButton getLoginButton() {
@@ -40,12 +39,16 @@ public class LoginView {
         return passwordInput.getText();
     }
 
-    public void setVisible() {
+    public void show() {
         login.setVisible(true);
     }
 
-    public void setInvisible() {
+    public void hide() {
         login.setVisible(false);
+    }
+
+    public void dispose() {
+        login.dispose();
     }
 
     private void createUIComponents() {

@@ -1,25 +1,31 @@
 package com.couchbase.travelsample.controller;
 
-import com.couchbase.travelsample.model.GuestModel;
 import com.couchbase.travelsample.view.GuestView;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GuestController {
+public class GuestController implements ViewController {
 
-    private GuestModel guestModel;
     private GuestView guestView;
+
     private final static Logger LOGGER = Logger.getLogger(GuestView.class.getName());
 
-    public GuestController(GuestModel model, GuestView view) {
-        guestModel = model;
-        guestView = view;
-        this.initController();
+    public GuestController() {
+        guestView = new GuestView();
+        guestView.getGuestHotelSearchButton().addActionListener(event -> guestHotelSearchButtonPressed());
     }
 
-    public void initController() {
-        guestView.getGuestHotelSearchButton().addActionListener(event -> guestHotelSearchButtonPressed());
+    public void show() {
+        guestView.show();
+    }
+
+    public void hide() {
+        guestView.hide();
+    }
+
+    public void dispose() {
+        guestView.dispose();
     }
 
     private void guestHotelSearchButtonPressed() {

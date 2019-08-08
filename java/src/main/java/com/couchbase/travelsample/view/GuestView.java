@@ -5,7 +5,7 @@ import javax.swing.*;
 public class GuestView {
 
     private JPanel panel;
-    private JTabbedPane flightPane;
+    private JTabbedPane hotelPane;
     private JTextField guestHotelLocationInput;
     private JTextField guestHotelDescriptionInput;
     private JLabel locationLabel;
@@ -15,15 +15,15 @@ public class GuestView {
     private JLabel descImage;
     private JLabel infobox;
     public JPanel panel1;
+    private JList bookmarkList;
     public JFrame guest;
 
     public GuestView() {
-        guest = new JFrame("com.couchbase.travelsample.view.GuestView");
+        guest = new JFrame("Guest");
         guest.setContentPane(panel);
         guest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         guest.pack();
         guest.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        guest.setVisible(true);
     }
 
     public JButton getGuestHotelSearchButton() {
@@ -38,16 +38,19 @@ public class GuestView {
         return guestHotelDescriptionInput.getText();
     }
 
-    public void setVisible() {
+    public void show() {
         guest.setVisible(true);
     }
 
-    public void setInvisible() {
+    public void hide() {
         guest.setVisible(false);
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    public void dispose() {
+        guest.dispose();
+    }
+
+    private void createUIComponents () {
         locationImage = new JLabel(new ImageIcon("globe.png"));
         descImage = new JLabel(new ImageIcon("magglass.png"));
     }

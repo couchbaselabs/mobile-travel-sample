@@ -38,7 +38,7 @@ public class HotelFlightView {
         originFlightDate.add(originFlightDateChooser);
         returnFlightDate.add(returnFlightDateChooser);
         search.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        search.setVisible(true);
+        show();
     }
 
     public JButton getHotelSearchButton() {
@@ -73,12 +73,16 @@ public class HotelFlightView {
         return ((JTextField) returnFlightDateChooser.getDateEditor().getUiComponent()).getText();
     }
 
-    public void setVisible() {
+    public void show() {
         search.setVisible(true);
     }
 
-    public void setInvisible() {
+    public void hide() {
         search.setVisible(false);
+    }
+
+    public void dispose() {
+        search.dispose();
     }
 
     private void createUIComponents() {
