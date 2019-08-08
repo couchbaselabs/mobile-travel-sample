@@ -1,7 +1,9 @@
 package com.couchbase.travelsample.controller;
 
 import com.couchbase.travelsample.view.GuestView;
+import com.couchbase.travelsample.model.HotelModel;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,9 +31,16 @@ public class GuestController implements ViewController {
     }
 
     private void guestHotelSearchButtonPressed() {
-        String guestHotelLocationInputText = guestView.getGuestHotelLocationInput();
-        String guestHotelDescriptionInputText = guestView.getGuestHotelDescriptionInput();
-        LOGGER.log(Level.INFO, "Guest location input: " + guestHotelLocationInputText);
-        LOGGER.log(Level.INFO, "Guest description input: " + guestHotelDescriptionInputText);
+        String location = guestView.getGuestHotelLocationInput();
+        String description = guestView.getGuestHotelDescriptionInput();
+        LOGGER.log(Level.INFO, "Guest location input: " + location);
+        LOGGER.log(Level.INFO, "Guest description input: " + description);
+        HotelModel.searchHotelsUsingRest(location, description, (success, hotels) -> {
+            System.out.println("Hotels: " + hotels.size());
+            for (Map<String, Object> hotel : hotels) {
+                guestView.addHotel(hotel.get("name").toString(), hotel.get("address").toString());
+            }
+            guestView.setHotelList(guestView.getHotelListModel());
+        });
     }
 }

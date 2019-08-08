@@ -16,7 +16,9 @@ public class GuestView {
     private JLabel infobox;
     public JPanel panel1;
     private JList bookmarkList;
+    private JList<String> hotelList;
     public JFrame guest;
+    private DefaultListModel<String> hotelListModel = new DefaultListModel<>();
 
     public GuestView() {
         guest = new JFrame("Guest");
@@ -24,10 +26,28 @@ public class GuestView {
         guest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         guest.pack();
         guest.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        DefaultListCellRenderer renderer = (DefaultListCellRenderer)hotelList.getCellRenderer();
+//        renderer.setHorizontalAlignment(JLabel.CENTER);
     }
 
     public JButton getGuestHotelSearchButton() {
         return guestHotelSearchButton;
+    }
+
+    public JList<String> getHotelList() {
+        return hotelList;
+    }
+
+    public DefaultListModel<String> getHotelListModel() {
+        return hotelListModel;
+    }
+
+    public void addHotel(String name, String address) {
+        hotelListModel.addElement(name + " on " + address);
+    }
+
+    public void setHotelList(DefaultListModel<String> list) {
+        hotelList.setModel(list);
     }
 
     public String getGuestHotelLocationInput() {
