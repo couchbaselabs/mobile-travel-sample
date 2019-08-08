@@ -10,8 +10,29 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    javac2
+}
+
+compileJava {
+    doLast() {
+        ant.taskdef(
+                name: 'javac2',
+                classname: 'com.intellij.ant.Javac2',
+                classpath: configurations.javac2.asPath)
+        ant.javac2(
+                classpath: configurations.compile.asPath,
+                srcdir: 'src/main/java',
+                includes: '**/*.form',
+                destdir: 'build/classes/java/main',
+                includeAntRuntime: false
+        )
+    }
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.intellij:forms_rt:7.0.3'
     compile fileTree(dir: 'libs', include: '*.jar')
+    javac2 'com.intellij:javac2:7.0.3'
 }

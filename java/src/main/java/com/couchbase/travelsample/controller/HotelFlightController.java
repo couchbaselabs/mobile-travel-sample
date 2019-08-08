@@ -8,19 +8,25 @@ import java.util.logging.Logger;
 
 public class HotelFlightController {
 
-    private HotelFlightModel hotelFlightModel;
     private HotelFlightView hotelFlightView;
     private final static Logger LOGGER = Logger.getLogger(HotelFlightView.class.getName());
 
-    public HotelFlightController(HotelFlightModel model, HotelFlightView view) {
-        hotelFlightModel = model;
-        hotelFlightView = view;
-        this.initController();
-    }
-
-    public void initController() {
+    public HotelFlightController() {
+        hotelFlightView = new HotelFlightView();
         hotelFlightView.getHotelSearchButton().addActionListener(event -> hotelSearchButtonPressed());
         hotelFlightView.getFlightSearchButton().addActionListener(event -> flightSearchButtonPressed());
+    }
+
+    public void show() {
+        hotelFlightView.show();
+    }
+
+    public void hide() {
+        hotelFlightView.hide();
+    }
+
+    public void dispose() {
+        hotelFlightView.dispose();
     }
 
     private void hotelSearchButtonPressed() {
