@@ -15,39 +15,77 @@ public class GuestView {
     private JLabel descImage;
     private JLabel infobox;
     public JPanel panel1;
-    private JList bookmarkList;
+    private JList<String> bookmarkList;
     private JList<String> hotelList;
-    public JFrame guest;
+    private JScrollPane scrollPane;
+    public JButton bookmarkHotelButton;
+    private JLabel bookmarkNotification;
+    private JButton deleteBookmarkButton;
+    private JFrame guest;
     private DefaultListModel<String> hotelListModel = new DefaultListModel<>();
+    private DefaultListModel<String> bookmarkListModel = new DefaultListModel<>();
 
     public GuestView() {
         guest = new JFrame("Guest");
         guest.setContentPane(panel);
+        bookmarkHotelButton.setVisible(false);
+        bookmarkNotification.setVisible(false);
         guest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         guest.pack();
         guest.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        DefaultListCellRenderer renderer = (DefaultListCellRenderer)hotelList.getCellRenderer();
-//        renderer.setHorizontalAlignment(JLabel.CENTER);
     }
+
+    public JLabel getBookmarkNotification() {
+        return bookmarkNotification;
+    }
+
+    public JButton getDeleteBookmarkButton() { return deleteBookmarkButton; }
 
     public JButton getGuestHotelSearchButton() {
         return guestHotelSearchButton;
+    }
+
+    public JButton getBookmarkHotelButton() {
+        return bookmarkHotelButton;
     }
 
     public JList<String> getHotelList() {
         return hotelList;
     }
 
+    public JList<String> getBookmarkList() { return bookmarkList; }
+
     public DefaultListModel<String> getHotelListModel() {
         return hotelListModel;
     }
 
-    public void addHotel(String name, String address) {
-        hotelListModel.addElement(name + " on " + address);
+    public DefaultListModel<String> getBookmarkListModel() {
+        return bookmarkListModel;
     }
+
+    public void initialAddHotel(String name, String address) {
+        hotelListModel.addElement("- " + name + " on " + address);
+    }
+
+    public void addHotel(int index, String hotel) { hotelListModel.add(index, hotel); }
+
+    public void deleteHotel(String hotel) { hotelListModel.removeElement(hotel); }
+
+    public void deleteAllHotel() { hotelListModel.removeAllElements(); }
 
     public void setHotelList(DefaultListModel<String> list) {
         hotelList.setModel(list);
+        bookmarkHotelButton.setVisible(true);
+    }
+
+    public void addBookmark(String hotel) {
+        bookmarkListModel.addElement(hotel);
+    }
+
+    public void deleteBookmark(String hotel) { bookmarkListModel.removeElement(hotel); }
+
+    public void setBookmarkList(DefaultListModel<String> list) {
+        bookmarkList.setModel(list);
     }
 
     public String getGuestHotelLocationInput() {
