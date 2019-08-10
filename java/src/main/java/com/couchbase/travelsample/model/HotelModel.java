@@ -87,27 +87,6 @@ public class HotelModel {
         });
     }
 
-    public void bookmarkHotels(Map<String, Object> hotel) throws CouchbaseLiteException {
-        Database database = DatabaseManager.getDatabase();
-
-        MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
-        database.save(hotelDoc);
-
-        Document document = database.getDocument("user::guest");
-        MutableDocument mutableCopy = null;
-        if (document == null) {
-            mutableCopy = new MutableDocument("user::guest");
-            mutableCopy.setString("type", "bookmarkedhotels");
-            mutableCopy.setArray("hotels", new MutableArray());
-        }
-        else {
-            mutableCopy = document.toMutable();
-        }
-        MutableArray hotels = mutableCopy.getArray("hotels").toMutable();
-        hotels.addString((String) hotel.get("id"));
-        database.save(mutableCopy);
-    }
-
     public void searchHotels(String location, String description, Completion completion) {
         Database database = DatabaseManager.getDatabase();
 
