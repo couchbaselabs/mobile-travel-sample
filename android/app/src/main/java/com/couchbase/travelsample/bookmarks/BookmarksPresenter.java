@@ -43,8 +43,6 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
         Expression hotelIdExpr = Meta.id.from("hotelDS");
 
-        ArrayFunction.contains(Expression.property("public_likes"),Expression.string("Yasmeen Lemke"));
-
         Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
         Join join = Join.join(hotelsDS).on(joinExpr);
 
