@@ -9,11 +9,13 @@ public class DatabaseManager {
 
     private static String dbName;
 
-    protected DatabaseManager() {
-
+    private DatabaseManager() {
+        CouchbaseLite.init();
     }
 
     public void OpenGuestDatabase() {
+        Database.log.getConsole().setLevel(LogLevel.INFO);
+
         DatabaseConfiguration config = new DatabaseConfiguration();
         config.setDirectory(Configuration.GUEST_DATABASE_DIR);
         try {
@@ -27,7 +29,6 @@ public class DatabaseManager {
         if (instance == null) {
             instance = new DatabaseManager();
         }
-
         return instance;
     }
 

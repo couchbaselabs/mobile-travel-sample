@@ -1,19 +1,22 @@
 package com.couchbase.travelsample.controller;
 
-import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.*;
+import com.couchbase.travelsample.model.DatabaseManager;
+import com.couchbase.travelsample.model.GuestModel;
 import com.couchbase.travelsample.view.GuestView;
 import com.couchbase.travelsample.model.HotelModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GuestController implements ViewController {
 
     private GuestView guestView;
-    private String selectedHotel;
-    private String selectedBookmark;
-    private int selectedHotelIndex;
-
+    private List<Map<String, Object>> hotels; // List of hotels fetched from python server
+    private boolean isFetchingBookmarks;
+    private List<Dictionary> bookmarks;
 
     public GuestController() {
         guestView = new GuestView();
@@ -24,6 +27,7 @@ public class GuestController implements ViewController {
 
     public void show() {
         guestView.show();
+        fetchBookmarks();
     }
 
     public void hide() {
@@ -34,28 +38,70 @@ public class GuestController implements ViewController {
         guestView.dispose();
     }
 
+    private void fetchBookmarks() {
+        if (isFetchingBookmarks) { return; }
+        isFetchingBookmarks = true;
+
+        //update ui to display bookmarks
+        try {
+            GuestModel.getBookmarks(new QueryChangeListener() {
+                @Override
+                public void changed(QueryChange queryChange) {
+                    guestView.clearBookmarks();
+                    List<Dictionary> bookmarks = new ArrayList<>();
+                    ResultSet rs = queryChange.getResults();
+                    for (Result result : rs) {
+                        Dictionary hotel = result.getDictionary(1);
+                        guestView.addBookmark(hotel.getString("name"));
+                        bookmarks.add(hotel);
+                    }
+                    GuestController.this.bookmarks = bookmarks;
+                    guestView.refreshBookmarkList();
+                }
+            });
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void guestHotelSearchButtonPressed() {
         String location = guestView.getGuestHotelLocationInput();
         String description = guestView.getGuestHotelDescriptionInput();
-        guestView.deleteAllHotel();
+
         HotelModel.searchHotelsUsingRest(location, description, (success, hotels) -> {
-            System.out.println("Hotels: " + hotels.size());
+            this.hotels = hotels;
+            // TODO: Refactor this logic to the view itself
             for (Map<String, Object> hotel : hotels) {
-                guestView.initialAddHotel(hotel.get("name").toString(), hotel.get("address").toString());
+                guestView.addHotel(hotel.get("name").toString(), hotel.get("address").toString());
             }
-            guestView.setHotelList(guestView.getHotelListModel());
+            guestView.refreshHotelList();
         });
     }
 
     private void bookmarkHotelButtonPressed() {
-        selectedHotel = guestView.getHotelList().getSelectedValue();
-        selectedHotelIndex = guestView.getHotelList().getSelectedIndex();
-        guestView.addBookmark(selectedHotel);
-        guestView.setBookmarkList(guestView.getBookmarkListModel());
-        guestView.deleteHotel(selectedHotel);
-        guestView.setHotelList(guestView.getHotelListModel());
-        guestView.getBookmarkNotification().setVisible(true);
+        // 1. Save the selected Hotel data into the database.
+        // 2. Get or create the guest document with id = user::guest.
+        //    Document Structure: { type: 'bookmarkedhotels', hotels: [] }
+        //    The hotels is an Array of the bookmarked hotel ids
+        // 3. Add the selected hotel id to the hotels array and save the guest document.
+        // 4. Display the UI indicating that the hotel has been bookmarked.
+        int index = guestView.getHotelList().getSelectedIndex();
+//        String selectedHotel = guestView.getHotelList().getSelectedValue();
+//        guestView.addBookmark(selectedHotel);
+//        guestView.setBookmarkList(guestView.getBookmarkListModel());
+//        guestView.deleteHotel(selectedHotel);
+//        guestView.setHotelList(guestView.getHotelListModel());
+        Map<String, Object> hotel = hotels.get(index);
+        try {
+            GuestModel.bookmarkHotel(hotel);
+            displayBookmarkedNotification(3000);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void displayBookmarkedNotification(long delayMs) {
+        guestView.getBookmarkNotification().setVisible(true);
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
@@ -63,17 +109,19 @@ public class GuestController implements ViewController {
                         guestView.getBookmarkNotification().setVisible(false);
                     }
                 },
-                3000
+                delayMs
         );
     }
 
     private void deleteBookmarkButtonPressed() {
-        selectedBookmark = guestView.getBookmarkList().getSelectedValue();
-        guestView.deleteBookmark(selectedBookmark);
-        guestView.setBookmarkList(guestView.getBookmarkListModel());
-        if (guestView.getHotelListModel() != null) {
-            guestView.addHotel(selectedHotelIndex, selectedBookmark);
-            guestView.setHotelList(guestView.getHotelListModel());
+        int index = guestView.getBookmarkList().getSelectedIndex();
+        Dictionary bookmark = bookmarks.get(index);
+        String hotelId = bookmark.getString("id");
+
+        try {
+            GuestModel.removeBookmark(hotelId);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
         }
     }
 }
