@@ -30,6 +30,8 @@ public class GuestView {
         guest.setContentPane(panel);
         bookmarkHotelButton.setVisible(false);
         bookmarkNotification.setVisible(false);
+        hotelList.setModel(hotelListModel);
+        bookmarkList.setModel(bookmarkListModel);
         guest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         guest.pack();
         guest.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -63,29 +65,37 @@ public class GuestView {
         return bookmarkListModel;
     }
 
-    public void initialAddHotel(String name, String address) {
+    public void addHotel(String name, String address) {
         hotelListModel.addElement("- " + name + " on " + address);
     }
 
-    public void addHotel(int index, String hotel) { hotelListModel.add(index, hotel); }
+    public void refreshHotelList() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                hotelList.updateUI();
+                bookmarkHotelButton.setVisible(hotelListModel.size() > 0);
+            }
+        });
+    }
 
-    public void deleteHotel(String hotel) { hotelListModel.removeElement(hotel); }
-
-    public void deleteAllHotel() { hotelListModel.removeAllElements(); }
-
-    public void setHotelList(DefaultListModel<String> list) {
-        hotelList.setModel(list);
-        bookmarkHotelButton.setVisible(true);
+    public void clearBookmarks() {
+        bookmarkListModel.removeAllElements();
     }
 
     public void addBookmark(String hotel) {
         bookmarkListModel.addElement(hotel);
     }
 
-    public void deleteBookmark(String hotel) { bookmarkListModel.removeElement(hotel); }
+    public void deleteBookmark(String hotel) {
+        bookmarkListModel.removeElement(hotel);
+    }
 
-    public void setBookmarkList(DefaultListModel<String> list) {
-        bookmarkList.setModel(list);
+    public void refreshBookmarkList() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                bookmarkList.updateUI();
+            }
+        });
     }
 
     public String getGuestHotelLocationInput() {
