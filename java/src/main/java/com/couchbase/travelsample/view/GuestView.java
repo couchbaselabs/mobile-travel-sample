@@ -80,6 +80,14 @@ public class GuestView {
         });
     }
 
+    public void clearHotels() {
+        hotelListModel.removeAllElements();
+    }
+
+    public void setHotelList(DefaultListModel<String> hotels) {
+        hotelList.setModel(hotels);
+    }
+
     public void clearBookmarks() {
         bookmarkListModel.removeAllElements();
     }

@@ -65,7 +65,8 @@ public class GuestController implements ViewController {
     private void guestHotelSearchButtonPressed() {
         String location = guestView.getGuestHotelLocationInput();
         String description = guestView.getGuestHotelDescriptionInput();
-
+        guestView.clearHotels();
+        guestView.setHotelList(guestView.getHotelListModel());
         HotelModel.searchHotelsUsingRest(location, description, (success, hotels) -> {
             this.hotels = hotels;
             for (Map<String, Object> hotel : hotels) {
