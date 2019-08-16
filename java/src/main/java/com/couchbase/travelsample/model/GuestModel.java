@@ -2,7 +2,6 @@ package com.couchbase.travelsample.model;
 
 import com.couchbase.lite.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,12 +56,6 @@ public class GuestModel {
                 .from(bookmark)
                 .join(Join.join(hotel).on(joinCondition))
                 .where(Expression.property("type").from("bookmark").equalTo(Expression.string(GUEST_DOC_TYPE)));
-
-//        Query query = QueryBuilder.select(SelectResult.all()).from(DataSource.database(database));
-//        ResultSet rs = query.execute();
-//        for (Result r : rs) {
-//            System.out.println(">>" + r.toMap());
-//        }
         query.addChangeListener(listener);
     }
 

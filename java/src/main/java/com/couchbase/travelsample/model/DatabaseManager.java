@@ -5,9 +5,6 @@ import com.couchbase.lite.*;
 public class DatabaseManager {
     private static Database database;
     private static DatabaseManager instance = null;
-    public String currentUser = null;
-
-    private static String dbName;
 
     private DatabaseManager() {
         CouchbaseLite.init();
@@ -33,14 +30,6 @@ public class DatabaseManager {
     }
 
     public static Database getDatabase() {
-        if (instance == null) {
-
-        }
         return database;
-    }
-
-    private static void enableLogging() {
-        Database.log.getFile().setConfig(new LogFileConfiguration(Configuration.LOG_DIR));
-        Database.log.getFile().setLevel(LogLevel.INFO);
     }
 }

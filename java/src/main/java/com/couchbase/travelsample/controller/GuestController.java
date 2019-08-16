@@ -1,13 +1,11 @@
 package com.couchbase.travelsample.controller;
 
 import com.couchbase.lite.*;
-import com.couchbase.travelsample.model.DatabaseManager;
 import com.couchbase.travelsample.model.GuestModel;
 import com.couchbase.travelsample.view.GuestView;
 import com.couchbase.travelsample.model.HotelModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +68,6 @@ public class GuestController implements ViewController {
 
         HotelModel.searchHotelsUsingRest(location, description, (success, hotels) -> {
             this.hotels = hotels;
-            // TODO: Refactor this logic to the view itself
             for (Map<String, Object> hotel : hotels) {
                 guestView.addHotel(hotel.get("name").toString(), hotel.get("address").toString());
             }
@@ -86,11 +83,6 @@ public class GuestController implements ViewController {
         // 3. Add the selected hotel id to the hotels array and save the guest document.
         // 4. Display the UI indicating that the hotel has been bookmarked.
         int index = guestView.getHotelList().getSelectedIndex();
-//        String selectedHotel = guestView.getHotelList().getSelectedValue();
-//        guestView.addBookmark(selectedHotel);
-//        guestView.setBookmarkList(guestView.getBookmarkListModel());
-//        guestView.deleteHotel(selectedHotel);
-//        guestView.setHotelList(guestView.getHotelListModel());
         Map<String, Object> hotel = hotels.get(index);
         try {
             GuestModel.bookmarkHotel(hotel);

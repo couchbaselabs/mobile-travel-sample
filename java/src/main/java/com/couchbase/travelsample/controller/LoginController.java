@@ -54,8 +54,6 @@ public class LoginController implements ViewController {
     }
 
     private void guestLoginButtonPressed() {
-        LOGGER.log(Level.INFO, "Guest button pressed");
-
         DatabaseManager dbMgr = DatabaseManager.getSharedInstance();
         dbMgr.OpenGuestDatabase();
 

@@ -52,7 +52,6 @@ public class LoginView {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         image = new JLabel(new ImageIcon("cbtravel_logo.png"));
         planeImage = new JLabel(new ImageIcon("plane.png"));
     }
