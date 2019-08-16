@@ -1,14 +1,11 @@
-plugins {
-    id 'java'
-}
+
+plugins { id 'java' }
 
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 configurations {
     javac2
@@ -31,8 +28,10 @@ compileJava {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'com.intellij:forms_rt:7.0.3'
-    compile fileTree(dir: 'libs', include: '*.jar')
     javac2 'com.intellij:javac2:7.0.3'
+
+    implementation 'com.intellij:forms_rt:7.0.3'
+//    implementation 'com.toedter:jcalendar:1.4'
+
+    testCompile 'junit:junit:4.12'
 }
