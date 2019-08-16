@@ -1,6 +1,5 @@
 package com.couchbase.travelsample.controller;
 
-import com.couchbase.travelsample.model.HotelFlightModel;
 import com.couchbase.travelsample.view.HotelFlightView;
 
 import java.util.logging.Level;

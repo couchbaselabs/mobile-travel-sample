@@ -21,6 +21,8 @@ public class GuestView {
     public JButton bookmarkHotelButton;
     private JLabel bookmarkNotification;
     private JButton deleteBookmarkButton;
+    private JButton logoutButton;
+    private JButton logoutButton1;
     private JFrame guest;
     private DefaultListModel<String> hotelListModel = new DefaultListModel<>();
     private DefaultListModel<String> bookmarkListModel = new DefaultListModel<>();
