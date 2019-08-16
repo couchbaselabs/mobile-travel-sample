@@ -5,10 +5,9 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
-repositories { mavenCentral() }
-
 configurations {
     javac2
+    runtime.extendsFrom implementation
 }
 
 compileJava {
@@ -18,7 +17,7 @@ compileJava {
                 classname: 'com.intellij.ant.Javac2',
                 classpath: configurations.javac2.asPath)
         ant.javac2(
-                classpath: configurations.compile.asPath,
+                classpath: configurations.runtime.asPath,
                 srcdir: 'src/main/java',
                 includes: '**/*.form',
                 destdir: 'build/classes/java/main',
@@ -27,11 +26,26 @@ compileJava {
     }
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.couchbase.travelsample.TravelSample'
+    }
+    baseName = 'TravelSampleApp'
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories { mavenCentral() }
+
 dependencies {
     javac2 'com.intellij:javac2:7.0.3'
 
+    implementation fileTree(dir: 'libs', include: '*.jar')
+
     implementation 'com.intellij:forms_rt:7.0.3'
-//    implementation 'com.toedter:jcalendar:1.4'
+    implementation 'com.toedter:jcalendar:1.4'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'org.json:json:20180813'
 
     testCompile 'junit:junit:4.12'
 }
