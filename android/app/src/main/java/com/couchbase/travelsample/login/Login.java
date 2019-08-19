@@ -51,7 +51,8 @@ public class Login extends AppCompatActivity  {
 
     public void onGuestLoginTapped(View view) {
         DatabaseManager dbMgr = DatabaseManager.getSharedInstance();
-        dbMgr.OpenGuestDatabase(getApplicationContext());
+        dbMgr.initCouchbaseLite(getApplicationContext());
+        dbMgr.OpenGuestDatabase();
 
         Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
         startActivity(intent);
@@ -59,7 +60,8 @@ public class Login extends AppCompatActivity  {
 
     public void onLoginTapped(View view) {
         DatabaseManager dbMgr = DatabaseManager.getSharedInstance();
-        dbMgr.OpenDatabaseForUser(getApplicationContext(), usernameInput.getText().toString());
+        dbMgr.initCouchbaseLite(getApplicationContext());
+        dbMgr.OpenDatabaseForUser( usernameInput.getText().toString());
         DatabaseManager.startPushAndPullReplicationForCurrentUser(usernameInput.getText().toString(),
             passwordInput.getText().toString());
 

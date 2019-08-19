@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.couchbase.lite.BasicAuthenticator;
+import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
@@ -37,6 +38,7 @@ import java.util.zip.ZipInputStream;
 public class DatabaseManager {
     private static Database database;
     private static DatabaseManager instance = null;
+    private Context appContext = null;
     public  String currentUser = null;
 
     private static String dbName;
@@ -47,29 +49,35 @@ public class DatabaseManager {
     protected DatabaseManager() {
 
     }
+    public void initCouchbaseLite(Context context) {
+        CouchbaseLite.init(context);
+        appContext = context;
 
-    public void OpenGuestDatabase(Context context) {
-        DatabaseConfiguration config = new DatabaseConfiguration(context);
-        // File folder = new File(String.format("%s/guest", context.getFilesDir()));
-        config.setDirectory(String.format("%s/guest", context.getFilesDir()));
+    }
+
+    public void OpenGuestDatabase() {
+        DatabaseConfiguration config = new DatabaseConfiguration();
+
+        config.setDirectory(String.format("%s/guest", appContext.getFilesDir()));
+
         try {
-            database = new Database("travel-sample", config);
+            database = new Database("guest", config);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
-    public void OpenDatabaseForUser(Context context,String username) {
-        File dbFile = new File(context.getFilesDir()+"/"+ username, "travel-sample.cblite2");
-        DatabaseConfiguration config = new DatabaseConfiguration(context);
-        config.setDirectory(String.format("%s/%s", context.getFilesDir(),username));
+    public void OpenDatabaseForUser(String username) {
+        File dbFile = new File(appContext.getFilesDir()+"/"+ username, "travel-sample.cblite2");
+        DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(String.format("%s/%s", appContext.getFilesDir(),username));
         currentUser = username;
 
         if (!dbFile.exists()) {
-            AssetManager assetManager = context.getAssets();
+            AssetManager assetManager = appContext.getAssets();
             try {
-                File path = new File(context.getFilesDir()+"");
+                File path = new File(appContext.getFilesDir()+"");
                 unzip(assetManager.open("travel-sample.cblite2.zip"),path);
-                Database.copy(new File(context.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
+                Database.copy(new File(appContext.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
 
             }
             catch (IOException e) {
@@ -162,7 +170,7 @@ public class DatabaseManager {
     public static DatabaseManager getSharedInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
-            // enableLogging(context);
+
         }
 
         return instance;

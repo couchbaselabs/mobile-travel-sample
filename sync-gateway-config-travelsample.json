@@ -30,7 +30,7 @@
   },
   "databases": {
     "travel-sample": {
-      "import_docs": "continuous",
+      "import_docs": true,
       "bucket":"travel-sample",
       "server": "http://cb-server:8091",
       "enable_shared_bucket_access":true,

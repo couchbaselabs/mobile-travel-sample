@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+
     defaultConfig {
         applicationId "com.couchbase.travelsample"
         minSdkVersion 19
@@ -11,12 +11,17 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -32,7 +37,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.5.3'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.6.0-154'
 
     testImplementation 'junit:junit:4.12'
 
