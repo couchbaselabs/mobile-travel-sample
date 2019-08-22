@@ -41,7 +41,9 @@ extension UserPresenter {
             .select(_SelectColumn.DOCIDRESULT,
                     _SelectColumn.ALLRESULT)
             .from(DataSource.database(db))
-            .where(_Property.USERNAME.equalTo(Expression.property(user)))
+            .where(_Property.USERNAME.equalTo(Expression.string(user)))
+        
+        
         do {
             // V1.0. There should be only one document for a user.
                 
@@ -49,13 +51,16 @@ extension UserPresenter {
                 // There isnt a convenience API to get to documentId from Result. So use "id" key
                 // Tracking - https://github.com/couchbaselabs/couchbase-lite-apiv2/issues/123
                     userDocId = row.string(forKey: "id")
+                   
                     if var userVal = row.dictionary(forKey: "travel-sample")?.toDictionary() {
+                         print(userVal)
                         if let profileImage = userVal["imageprofile"] as? Blob {
                             userVal["imageProfile"] = profileImage.content
                             
                         }
                         handler(userVal,nil)
                         break
+                        
                     }
             }
                 
@@ -94,19 +99,28 @@ extension UserPresenter {
             userDocument.setBlob(blob, forKey: "imageprofile")
             
             do {
-                // Set this flag to true to simulate a conflict by delaying the application of the change
+                // Set this flag to true to simulate a conflict by delaying the local save operation
+                // (with expectation that a change would be pulled in for the same document at that time)
                 // To simulate conflict, do the following
                 // 1. Set flag to true
-                // 2. Run app in two devices simultaneously
-                // 3. Update the profile image from both devices. Tap Save
+                // 2. Run app in two devices simultaneously (one with flag set to true and one without)
+                // 3. Update the profile image from both devices. Tap Save (Or update it on SGW )
                 // 4. There would be a race condition for when the document would get updated
                 // 5. This would result in a conflict triggering the resolver
                 let testingConflicts = false
                 
                 // Using defalt conflict resolver policy. Last save goes through
                 if testingConflicts {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10000)) {
-                        try? db.saveDocument(userDocument)
+                    DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(10000)) {
+                        try? db.saveDocument(userDocument, conflictHandler: { (doc, otherDoc) -> Bool in
+                            if otherDoc == nil {
+                                return false // delete always wins
+                            }
+                            else {
+                                userDocument.setString("local", forKey: "winner")
+                                return true
+                            }
+                        })
                         handler(nil)
                     }
                     

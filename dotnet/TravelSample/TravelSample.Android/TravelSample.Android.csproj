@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,10 +58,10 @@
       <Version>2.5.0.91635</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise">
-      <Version>2.5.0-db003</Version>
+      <Version>2.6.0-b0130</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise.Support.Android">
-      <Version>2.5.0-db003</Version>
+      <Version>2.6.0-b0130</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

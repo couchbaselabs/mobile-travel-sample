@@ -126,6 +126,7 @@ extension DatabaseManager {
             }
             
             options.directory = userFolderPath
+            
             // options.conflictResolver = self // Deprecated in DB023
             print("WIll open/create DB  at path \(userFolderPath)")
             if Database.exists(withName: kDBName, inDirectory: userFolderPath) == false {
@@ -243,6 +244,9 @@ extension DatabaseManager {
         config.continuous =  true
         config.authenticator =  BasicAuthenticator(username: user, password: password)
 
+        // Uncomment if you want to use conflict resolver : Only 2.6
+        // You can override the resolve function for testing
+        //config.conflictResolver = self
         
         // This should match what is specified in the sync gateway config
         // Only pull documents from this user's channel
@@ -345,6 +349,38 @@ extension DatabaseManager {
 }
 
 // MARK: Custom conflict resolver
+// Only starting 2.6
+extension DatabaseManager:ConflictResolverProtocol {
+
+    public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.Document? {
+        print(#function)
+        // To implement custom resolver
+        let local = conflict.localDocument
+        let remote = conflict.remoteDocument
+        if let _ = local?.toDictionary()["type"] as? String {
+            // All documents except the user document has a type.
+            // In theory, none of these documents would never be updated
+            // If you want to, then you can change the airline documents on server and change the SG config file filter
+            // function to sync to clients
+            
+            // Just use the default resolver
+            
+            return
+                ConflictResolver.default.resolve(conflict:conflict)
+            
+        }
+        else {
+            // This is the user document and is the only document that can be updated by clients. It has no type
+            // Always let local win unless deleted
+             if local != nil {
+                return local
+            }
+            
+            return remote
+        }
+        
+    }
+}
 /*** Deprecated in DB023
 extension DatabaseManager:ConflictResolver {
     public func resolve(conflict: CouchbaseLiteSwift.Conflict) -> CouchbaseLiteSwift.Document? {

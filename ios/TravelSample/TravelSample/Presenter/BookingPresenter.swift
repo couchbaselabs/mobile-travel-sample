@@ -35,6 +35,7 @@ class BookingPresenter:BookingPresenterProtocol {
         // Every user MUST be associated with a single user document that is created when the
         // user signs up. If a user does not have this user document, then we assume that
         // the user is not a valid user
+        
         let userQuery = QueryBuilder
             .select(_SelectColumn.DOCIDRESULT)
             .from(DataSource.database(db))
@@ -104,39 +105,7 @@ class BookingPresenter:BookingPresenterProtocol {
         })
   
        
-        
- /******/
-        // Until  BUG :https://github.com/couchbase/couchbase-lite-ios/issues/1816 is resolved, use regular query
-        /**** LIVE QUERY SWITCH . Uncomment the Query Request below if doing LiveQuery
-        _bookingQuery = Query
-            .select()
-            .from(DataSource.database(db))
-            .where(Expression.property("username").equalTo(user)) // Just being future proof.We do not need this since there is only one doc for a user and a separate local db for each user anyways.
-        try! print(_bookingQuery?.explain())
-        
-        
-        
-        do {
-            
-            for (_, row) in try _bookingQuery!.run().enumerated() {
-                // There should be only one document for a user
-                print (row.array(forKey: "flights")?.toArray() ?? "No element with flights key!")
-                if let bookings = row.array(forKey: "flights")?.toArray() as? Bookings {
-                    _bookings += bookings
-                }
-                print ("bookings is \(bookings)")
-            }
-            self.associatedView?.dataFinishedLoading()
-            self.associatedView?.updateUIWithUpdatedBookings(bookings, error: nil)
-        }
-        catch {
-            self.associatedView?.dataFinishedLoading()
-            
-            print(error.localizedDescription)
-            self.associatedView?.updateUIWithUpdatedBookings(nil, error: error)
-        }
- 
-*****/
+
         
     }
     
