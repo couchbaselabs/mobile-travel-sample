@@ -13,22 +13,22 @@ The code below moves the pre-built database from the bundled location to the App
 This method first checks if a database file already exists for specific user.
 If it doesn't exist it loads the database from the assets directory, unzips and copies it over to a folder created for ths user.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L61[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L69[DatabaseManager.java]
 
 [source,java]
 ----
-  public void OpenDatabaseForUser(Context context,String username) {
-        File dbFile = new File(context.getFilesDir()+"/"+ username, "travel-sample.cblite2");
-        DatabaseConfiguration config = new DatabaseConfiguration(context);
-        config.setDirectory(String.format("%s/%s", context.getFilesDir(),username));
+    public void OpenDatabaseForUser(String username) {
+        File dbFile = new File(appContext.getFilesDir()+"/"+ username, "travel-sample.cblite2");
+        DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(String.format("%s/%s", appContext.getFilesDir(),username));
         currentUser = username;
 
         if (!dbFile.exists()) {
-            AssetManager assetManager = context.getAssets();
+            AssetManager assetManager = appContext.getAssets();
             try {
-                File path = new File(context.getFilesDir()+"");
+                File path = new File(appContext.getFilesDir()+"");
                 unzip(assetManager.open("travel-sample.cblite2.zip"),path);
-                Database.copy(new File(context.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
+                Database.copy(new File(appContext.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
 
             }
             catch (IOException e) {

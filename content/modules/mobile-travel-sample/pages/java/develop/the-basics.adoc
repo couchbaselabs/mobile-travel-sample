@@ -1,6 +1,20 @@
 = The Basics
 :source-language: java
 
+== Initialization
+To get started, you must initialize Couchbase Lite with the relevant application context
+*Open the file* `DatabaseManager.java`.
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L52[DatabaseManager.java]
+
+[source,java]
+----
+  public void initCouchbaseLite(Context context) {
+      CouchbaseLite.init(context);
+      appContext = context;
+  }
+  
+----
+
 == Create a Database
 
 There is no limit to how many databases can be created or opened on the device.
@@ -11,11 +25,11 @@ The snippet below creates an empty database for the `guest` user in a directory 
 *Open the file* `DatabaseManager.java`.
 We will review the `OpenGuestDatabase(Context context)`  method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L51[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L58[DatabaseManager.java]
 
 [source,java]
 ----
- public void OpenGuestDatabase(Context context) {
+ public void OpenGuestDatabase() {
    ...
  }
 ----
@@ -24,10 +38,9 @@ We create a folder for the `guest` user database if one does not exist and speci
 
 [source,java]
 ----
-  DatabaseConfiguration config = new DatabaseConfiguration(context);
-  // File folder = new File(String.format("%s/guest", context.getFilesDir()));
-  config.setDirectory(String.format("%s/guest", context.getFilesDir()));
-  
+  DatabaseConfiguration config = new DatabaseConfiguration();
+  config.setDirectory(String.format("%s/guest", appContext.getFilesDir()));
+
 ----
 
 The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object.
@@ -35,7 +48,7 @@ The Couchbase Lite Database is created with specified name and `DatabaseConfigur
 [source,java]
 ----
  try {
-      database = new Database("travel-sample", config);
+      database = new Database("guest", config);
   } catch (CouchbaseLiteException e) {
       e.printStackTrace();
   }

@@ -16,8 +16,8 @@ buildscript {
 allprojects {
     repositories {
         maven {
-           url "https://mobile.maven.couchbase.com/maven2/dev/"
-          //  url "http://172.23.121.218/maven2/internalmaven/"
+           //url "https://mobile.maven.couchbase.com/maven2/dev/"
+           url "http://172.23.121.218/maven2/internalmaven/"
         }
         google()
         jcenter()
