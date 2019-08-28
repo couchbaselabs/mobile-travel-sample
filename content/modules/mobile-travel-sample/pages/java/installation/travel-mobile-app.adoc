@@ -3,8 +3,8 @@
 
 == Pre-requisites
 
-* Android Studio 2.3.3 or above https://developer.android.com[Google Developer site]
-* Android device or emulator running API level 19 or above
+* Android Studio 3.0 or above https://developer.android.com[Google Developer site]
+* Android device or emulator running API level 22 or above
 * Android SDK 26
 * Android Build Tools 26
 * JDK 8

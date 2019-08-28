@@ -21,9 +21,9 @@ It includes the following components:
 
 * Client Side
 ** Travel Mobile App
-** An iOS, Android or Windows App that is linked with Couchbase Lite Enterprise 2.5
+** An iOS, Android or Windows App that is linked with Couchbase Lite Enterprise 2.6
 * Server Side
 ** Couchbase Server Enterprise v6.0
-** Sync Gateway Enterprise v2.5
+** Sync Gateway Enterprise v2.6
 ** Travel Web App
 ** Python web app integrated with Couchbase Python SDK
