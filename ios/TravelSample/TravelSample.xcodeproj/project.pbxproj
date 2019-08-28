@@ -45,9 +45,9 @@
 		5FEB6B2B1EE8B01300A6CC18 /* HotelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2A1EE8B01300A6CC18 /* HotelsTableViewController.swift */; };
 		5FEB6B2F1EE8B5C400A6CC18 /* HotelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */; };
 		5FEB6B311EE9E57700A6CC18 /* HotelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */; };
-		5FEC3218230B990F00213A06 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC3217230B990F00213A06 /* CouchbaseLiteSwift.framework */; };
-		5FEC3219230B991700213A06 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC3217230B990F00213A06 /* CouchbaseLiteSwift.framework */; };
-		5FEC321A230B991700213A06 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC3217230B990F00213A06 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FEC321C2314C8C000213A06 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC321B2314C8C000213A06 /* CouchbaseLiteSwift.framework */; };
+		5FEC321D2314C8C600213A06 /* CouchbaseLiteSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC321B2314C8C000213A06 /* CouchbaseLiteSwift.framework */; };
+		5FEC321E2314C8C600213A06 /* CouchbaseLiteSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEC321B2314C8C000213A06 /* CouchbaseLiteSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FF733C11EE8865400ECC392 /* AirportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF733C01EE8865400ECC392 /* AirportPresenter.swift */; };
 		5FFB5C051EEB5B740060704F /* FlightCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB5C041EEB5B740060704F /* FlightCell.swift */; };
 /* End PBXBuildFile section */
@@ -59,7 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5FEC321A230B991700213A06 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
+				5FEC321E2314C8C600213A06 /* CouchbaseLiteSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,7 +107,7 @@
 		5FEB6B2A1EE8B01300A6CC18 /* HotelsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelsTableViewController.swift; sourceTree = "<group>"; };
 		5FEB6B2E1EE8B5C400A6CC18 /* HotelPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelPresenter.swift; sourceTree = "<group>"; };
 		5FEB6B301EE9E57700A6CC18 /* HotelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotelDetailViewController.swift; sourceTree = "<group>"; };
-		5FEC3217230B990F00213A06 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
+		5FEC321B2314C8C000213A06 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		5FF733C01EE8865400ECC392 /* AirportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirportPresenter.swift; sourceTree = "<group>"; };
 		5FFB5C041EEB5B740060704F /* FlightCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,8 +117,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FEC3219230B991700213A06 /* CouchbaseLiteSwift.framework in Frameworks */,
-				5FEC3218230B990F00213A06 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FEC321D2314C8C600213A06 /* CouchbaseLiteSwift.framework in Frameworks */,
+				5FEC321C2314C8C000213A06 /* CouchbaseLiteSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 		5F2CD9231EDDB8CE0069F12C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FEC3217230B990F00213A06 /* CouchbaseLiteSwift.framework */,
+				5FEC321B2314C8C000213A06 /* CouchbaseLiteSwift.framework */,
 			);
 			name = Frameworks;
 			path = Frameworks/iOS;

@@ -127,7 +127,6 @@ extension DatabaseManager {
             
             options.directory = userFolderPath
             
-            // options.conflictResolver = self // Deprecated in DB023
             print("WIll open/create DB  at path \(userFolderPath)")
             if Database.exists(withName: kDBName, inDirectory: userFolderPath) == false {
                 // Load prebuilt database from App Bundle and copy over to Applications support path
