@@ -13,12 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.controller;
+package com.couchbase.travelsample;
 
-public interface ViewController {
-    void show();
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-    void hide();
 
-    void dispose();
+@Configuration
+@ComponentScan("com.couchbase.travelsample")
+public class Config {
+    public static final String LOG_DIR = "logs";
+    public static final String DATABASE_DIR = "database";
+    public static final String GUEST_DATABASE_DIR = DATABASE_DIR + "/guest";
+    public static final String DATABASE_NAME = "guest";
+    public static final String WEB_APP_ENDPOINT = "http://54.185.31.148:8080/api/";
 }

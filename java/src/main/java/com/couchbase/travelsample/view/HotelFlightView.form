@@ -257,7 +257,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="aeb30" class="javax.swing.JLabel" binding="origDate">
+                  <component id="aeb30" class="javax.swing.JLabel" binding="originDate">
                     <constraints border-constraint="West"/>
                     <properties>
                       <font size="22"/>
@@ -275,7 +275,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="3a909" class="javax.swing.JLabel" binding="destinDate">
+                  <component id="3a909" class="javax.swing.JLabel" binding="destinationDate">
                     <constraints border-constraint="West"/>
                     <properties>
                       <font size="22"/>

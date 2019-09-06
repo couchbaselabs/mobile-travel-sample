@@ -13,12 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.controller;
+package com.couchbase.travelsample;
 
-public interface ViewController {
-    void show();
+// import org.junit.Test;
 
-    void hide();
 
-    void dispose();
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+public class TravelSampleApplicationTests {
+
+//    @Test
+    public void contextLoads() {
+    }
+
 }
