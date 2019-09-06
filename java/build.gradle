@@ -1,9 +1,18 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
 
-plugins { id 'java' }
+ext {
+    INTELLIJ_GUI_VERSION = "192.6262.63"
+}
 
-version '1.0-SNAPSHOT'
+group = 'com.couchbase'
+version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 configurations {
     javac2
@@ -13,39 +22,47 @@ configurations {
 compileJava {
     doLast() {
         ant.taskdef(
-                name: 'javac2',
-                classname: 'com.intellij.ant.Javac2',
-                classpath: configurations.javac2.asPath)
+            name: 'javac2',
+            classname: 'com.intellij.ant.Javac2',
+            classpath: configurations.javac2.asPath)
         ant.javac2(
-                classpath: configurations.runtime.asPath,
-                srcdir: 'src/main/java',
-                includes: '**/*.form',
-                destdir: 'build/classes/java/main',
-                includeAntRuntime: false
+            classpath: configurations.runtime.asPath,
+            srcdir: 'src/main/java',
+            includes: '**/*.form',
+            destdir: 'build/classes/java/main',
+            includeAntRuntime: false
         )
     }
 }
 
+
 task fatJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'com.couchbase.travelsample.TravelSample'
-    }
+    manifest { attributes 'Main-Class': 'com.couchbase.travelsample.TravelSampleApplication' }
     baseName = 'TravelSampleApp'
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+    maven { url "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
+}
 
 dependencies {
-    javac2 'com.intellij:javac2:7.0.3'
+    javac2 "com.jetbrains.intellij.java:java-compiler-ant-tasks:${INTELLIJ_GUI_VERSION}"
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
+
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+
+    implementation 'org.json:json:20180813'
+
+    implementation 'com.toedter:jcalendar:1.4'
 
     implementation fileTree(dir: 'libs', include: '*.jar')
 
-    implementation 'com.intellij:forms_rt:7.0.3'
-    implementation 'com.toedter:jcalendar:1.4'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'org.json:json:20180813'
-
-    testCompile 'junit:junit:4.12'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
