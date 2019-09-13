@@ -2,7 +2,6 @@
 
 *NOTE:* The RightScale cloud environment is only available for in-classroom run workshops.
 
-Before you get started with this section, make sure you followed the instructions link:/tutorials/travel-sample/develop/swift#/0/1/0[here] to download the Travel Mobile app.
 Use this option to connect to a private instance of Couchbase Server components running on the RightScale cloud environment.
 
 At the end of this section, the following components will be launched on the cloud:

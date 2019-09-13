@@ -28,7 +28,7 @@ class DatabaseManager {
     
 
     // fileprivate
-    fileprivate let kDBName:String = "travel-sample"
+    fileprivate let kDBName:String = "demo"
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
@@ -242,6 +242,7 @@ extension DatabaseManager {
         config.replicatorType = .pushAndPull
         config.continuous =  true
         config.authenticator =  BasicAuthenticator(username: user, password: password)
+        
 
         // Uncomment if you want to use conflict resolver : Only 2.6
         // You can override the resolve function for testing
@@ -250,10 +251,25 @@ extension DatabaseManager {
         // This should match what is specified in the sync gateway config
         // Only pull documents from this user's channel
         let userChannel = "channel.\(user)"
-        config.channels = [userChannel]
+       // config.channels = [userChannel]
+        config.channels = ["channelA"]
         
         _pushPullRepl = Replicator.init(config: config)
         
+        let token = _pushPullRepl!.addDocumentReplicationListener { (replication) in
+            print("Replication type :: \(replication.isPush ? "Push" : "Pull")")
+            for document in replication.documents {
+                if (document.error == nil) {
+                    print("Doc ID :: \(document.id)")
+                    if (document.flags.contains(.deleted)) {
+                        print("Successfully replicated a deleted document")
+                    }
+                } else {
+                    // There was an error
+                    
+                }
+            }
+        }
         _pushPullReplListener = _pushPullRepl?.addChangeListener({ [weak self] (change) in
             let s = change.status
             print("PushPull Replicator: \(s.progress.completed)/\(s.progress.total), error: \(String(describing: s.error)), activity = \(s.activity)")
