@@ -28,7 +28,7 @@ class DatabaseManager {
     
 
     // fileprivate
-    fileprivate let kDBName:String = "demo"
+    fileprivate let kDBName:String = "travel-sample"
     fileprivate let kGuestDBName:String = "guest"
     
     // This is the remote URL of the Sync Gateway (public Port)
