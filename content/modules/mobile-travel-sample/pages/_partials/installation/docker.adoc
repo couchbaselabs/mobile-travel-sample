@@ -94,7 +94,7 @@ Replace `localhost` in the file with `cb-server` and save.
 ----
 * Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file.
 
-**Non-Windows platforms**
+**Windows**
 +
 [source,bash]
 ----
@@ -102,7 +102,7 @@ cd /path/to/mobile-travel-sample/
 docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.6.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ----
 
-**Windows**
+**Non-Windows platform**
 +
 [source,bash]
 ----
