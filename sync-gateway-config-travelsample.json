@@ -71,8 +71,10 @@ function sync(doc, oldDoc) {
 
   /* validation */
    var username = getUserName();
-   // Verify the user making the request is the same as the one in oldDoc's username
-   requireUser(oldDoc.username);
+   if (oldDoc.username) {
+ 	  // Verify the user making the request is the same as the one in oldDoc's username
+   	requireUser(oldDoc.username);
+   }
 
  
    if (!isDelete()) {
