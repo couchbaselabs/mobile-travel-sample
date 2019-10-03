@@ -36,8 +36,8 @@ compileJava {
 
 
 task fatJar(type: Jar) {
-    manifest { attributes 'Main-Class': 'com.couchbase.travelsample.TravelSampleApplication' }
-    baseName = 'TravelSampleApp'
+    manifest { attributes 'Main-Class': 'com.couchbase.travelsample.TravelSample' }
+    baseName = 'TravelSample'
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
@@ -52,6 +52,8 @@ dependencies {
     javac2 "com.jetbrains.intellij.java:java-compiler-ant-tasks:${INTELLIJ_GUI_VERSION}"
 
     annotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
+
+    compileOnly 'com.google.gwt:gwt-dev:2.8.2'
 
     implementation "com.google.dagger:dagger:${DAGGER_VERSION}"
 

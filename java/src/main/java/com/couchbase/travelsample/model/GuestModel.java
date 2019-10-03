@@ -15,8 +15,6 @@
 //
 package com.couchbase.travelsample.model;
 
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -41,28 +39,25 @@ public final class GuestModel {
     private static final String GUEST_DOC_ID = "user::guest";
     private static final String GUEST_DOC_TYPE = "bookmarkedhotels";
 
-
     private final DatabaseManager dbMgr;
 
     @Inject
     public GuestModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
 
-    public void bookmarkHotel(Map<String, Object> hotel) throws CouchbaseLiteException {
+    public void bookmarkHotel(Hotel hotel) throws CouchbaseLiteException {
         Database database = dbMgr.getDatabase();
 
         // Create a hotel document if it doesn't exist
-        String id = (String) hotel.get("id");
+        String id = hotel.getId();
+        if (id == null) { return; }
+
         Document hotelDoc = database.getDocument(id);
-        if (hotelDoc == null) {
-            database.save(new MutableDocument(id, hotel));
-        }
+        if (hotelDoc == null) { database.save(Hotel.toDocument(hotel)); }
 
         // Get the guest document
         Document doc = database.getDocument(GUEST_DOC_ID);
         MutableDocument mDoc;
-        if (doc != null) {
-            mDoc = doc.toMutable();
-        }
+        if (doc != null) { mDoc = doc.toMutable(); }
         else {
             mDoc = new MutableDocument(GUEST_DOC_ID);
             mDoc.setString("type", GUEST_DOC_TYPE);
@@ -93,6 +88,7 @@ public final class GuestModel {
             .from(bookmark)
             .join(Join.join(hotel).on(joinCondition))
             .where(Expression.property("type").from("bookmark").equalTo(Expression.string(GUEST_DOC_TYPE)));
+
         query.addChangeListener(listener);
     }
 

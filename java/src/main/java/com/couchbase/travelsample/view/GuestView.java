@@ -15,28 +15,15 @@
 //
 package com.couchbase.travelsample.view;
 
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import com.couchbase.travelsample.TravelSample;
 import com.couchbase.travelsample.controller.GuestController;
 
 
 @Singleton
 public final class GuestView {
-    private final DefaultListModel<String> hotelListModel = new DefaultListModel<>();
-    private final DefaultListModel<String> bookmarkListModel = new DefaultListModel<>();
     private final GuestController controller;
 
     private JPanel panel;
@@ -62,87 +49,36 @@ public final class GuestView {
     public GuestView(GuestController controller) {
         this.controller = controller;
 
+        hotelList.setModel(controller.getHotelModel());
         bookmarkHotelButton.setVisible(false);
+        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
+
+        bookmarkHotelButton.setVisible(false);
+        deleteBookmarkButton.addActionListener(
+            e -> controller.deleteBookmark(bookmarkList.getSelectedIndex()));
+
+        bookmarkList.setModel(controller.getBookmarkModel());
+
         bookmarkNotification.setVisible(false);
-        hotelList.setModel(hotelListModel);
-        bookmarkList.setModel(bookmarkListModel);
+
+        guestHotelSearchButton.addActionListener(
+            e -> controller.searchHotels(
+                guestHotelLocationInput.getText(),
+                guestHotelDescriptionInput.getText()));
+
+        controller.fetchBookmarks();
     }
 
     public JPanel getGuestView() { return panel; }
 
-    public JLabel getBookmarkNotification() {
-        return bookmarkNotification;
+    private void bookmarkHotel() {
+        controller.bookmarkHotel(hotelList.getSelectedIndex());
+        displayBookmarkedNotification(3000);
     }
 
-    public JButton getDeleteBookmarkButton() {
-        return deleteBookmarkButton;
-    }
-
-    public JButton getGuestHotelSearchButton() {
-        return guestHotelSearchButton;
-    }
-
-    public JButton getBookmarkHotelButton() {
-        return bookmarkHotelButton;
-    }
-
-    public JList<String> getHotelList() {
-        return hotelList;
-    }
-
-    public void setHotelList(DefaultListModel<String> hotels) {
-        hotelList.setModel(hotels);
-    }
-
-    public JList<String> getBookmarkList() {
-        return bookmarkList;
-    }
-
-    public DefaultListModel<String> getHotelListModel() {
-        return hotelListModel;
-    }
-
-    public DefaultListModel<String> getBookmarkListModel() { return bookmarkListModel; }
-
-    public void addHotel(String name, String address) {
-        hotelListModel.addElement("- " + name + " on " + address);
-    }
-
-    public void refreshHotelList() {
-        SwingUtilities.invokeLater(
-            () -> bookmarkHotelButton.setVisible(hotelListModel.size() > 0)
-//            new Runnable() {
-//                @Override
-//                public void run() {
-//                    hotelList.updateUI();
-//                    bookmarkHotelButton.setVisible(hotelListModel.size() > 0);
-//                }
-//            }
-        );
-    }
-
-    public void clearHotels() {
-        hotelListModel.removeAllElements();
-    }
-
-    public void clearBookmarks() {
-        bookmarkListModel.removeAllElements();
-    }
-
-    public void addBookmark(String hotel) {
-        bookmarkListModel.addElement(hotel);
-    }
-
-    public void deleteBookmark(String hotel) { bookmarkListModel.removeElement(hotel); }
-
-    public void refreshBookmarkList() { SwingUtilities.invokeLater(() -> bookmarkList.updateUI()); }
-
-    public String getGuestHotelLocationInput() {
-        return guestHotelLocationInput.getText();
-    }
-
-    public String getGuestHotelDescriptionInput() {
-        return guestHotelDescriptionInput.getText();
+    private void displayBookmarkedNotification(int delayMs) {
+        bookmarkNotification.setVisible(true);
+        new Timer(delayMs, e -> bookmarkNotification.setVisible(false));
     }
 
     private void createUIComponents() {
