@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Dictionary;
@@ -33,8 +33,8 @@ import com.couchbase.travelsample.model.HotelModel;
 import com.couchbase.travelsample.view.GuestView;
 
 
-@Component
-public class GuestController implements ViewController {
+@Singleton
+public final class GuestController {
     private final GuestModel guestModel;
     private final HotelModel hotelModel;
     private final GuestView guestView;
@@ -43,7 +43,7 @@ public class GuestController implements ViewController {
     private boolean isFetchingBookmarks;
     private List<Dictionary> bookmarks;
 
-    @Autowired
+    @Inject
     public GuestController(GuestModel guestModel, HotelModel hotelModel, GuestView guestView) {
         this.guestModel = guestModel;
         this.hotelModel = hotelModel;
@@ -52,19 +52,6 @@ public class GuestController implements ViewController {
         guestView.getGuestHotelSearchButton().addActionListener(e -> guestHotelSearchButtonPressed());
         guestView.getBookmarkHotelButton().addActionListener(e -> bookmarkHotelButtonPressed());
         guestView.getDeleteBookmarkButton().addActionListener(e -> deleteBookmarkButtonPressed());
-    }
-
-    public void show() {
-        guestView.show();
-        fetchBookmarks();
-    }
-
-    public void hide() {
-        guestView.hide();
-    }
-
-    public void dispose() {
-        guestView.dispose();
     }
 
     private void fetchBookmarks() {

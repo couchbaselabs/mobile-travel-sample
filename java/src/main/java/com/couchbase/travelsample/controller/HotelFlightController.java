@@ -18,53 +18,33 @@ package com.couchbase.travelsample.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.couchbase.travelsample.view.HotelFlightView;
 
-@Component
-public class HotelFlightController {
+
+@Singleton
+public final class HotelFlightController {
     private final static Logger LOGGER = Logger.getLogger(HotelFlightView.class.getName());
 
-    private final HotelFlightView hotelFlightView;
+    @Inject
+    public HotelFlightController() { }
 
-    @Autowired
-    public HotelFlightController(HotelFlightView hotelFlightView) {
-        this.hotelFlightView = hotelFlightView;
-
-        hotelFlightView.getHotelSearchButton().addActionListener(e -> hotelSearchButtonPressed());
-        hotelFlightView.getFlightSearchButton().addActionListener(e -> flightSearchButtonPressed());
+    public void hotelSearchButtonPressed(String hotelLocation, String hotelDesc) {
+        LOGGER.log(Level.INFO, "Location: " + hotelLocation);
+        LOGGER.log(Level.INFO, "Description: " + hotelDesc);
     }
 
-    public void show() {
-        hotelFlightView.show();
-    }
-
-    public void hide() {
-        hotelFlightView.hide();
-    }
-
-    public void dispose() {
-        hotelFlightView.dispose();
-    }
-
-    private void hotelSearchButtonPressed() {
-        String hotelLocationInputText = hotelFlightView.getHotelLocationInput();
-        String hotelDescriptionInputText = hotelFlightView.getHotelDescriptionInput();
-        LOGGER.log(Level.INFO, "Location input: " + hotelLocationInputText);
-        LOGGER.log(Level.INFO, "Description input: " + hotelDescriptionInputText);
-    }
-
-    private void flightSearchButtonPressed() {
-        String flightOriginInputText = hotelFlightView.getFlightOriginInput();
-        String flightDestinationInputText = hotelFlightView.getFlightDestinationInput();
-        LOGGER.log(Level.INFO, "Origin input: " + flightOriginInputText);
-        LOGGER.log(Level.INFO, "Destination input: " + flightDestinationInputText);
-
-        String flightOriginInputDate = hotelFlightView.getFlightOriginDateInput();
-        String flightDestinationInputDate = hotelFlightView.getFlightDestinationDateInput();
-        LOGGER.log(Level.INFO, "Origin date input: " + flightOriginInputDate);
-        LOGGER.log(Level.INFO, "Destination date input: " + flightDestinationInputDate);
+    public void flightSearchButtonPressed(
+        String flightOrigin,
+        String flightDest,
+        String flightOriginDate,
+        String flightDestDate)
+    {
+        LOGGER.log(Level.INFO, "Origin: " + flightOrigin);
+        LOGGER.log(Level.INFO, "Origin date input: " + flightOriginDate);
+        LOGGER.log(Level.INFO, "Destination: " + flightDest);
+        LOGGER.log(Level.INFO, "Destination date: " + flightDestDate);
     }
 }

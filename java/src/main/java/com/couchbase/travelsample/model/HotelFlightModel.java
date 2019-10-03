@@ -16,4 +16,14 @@
 package com.couchbase.travelsample.model;
 
 
-public class HotelFlightModel {}
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.couchbase.travelsample.view.HotelFlightView;
+
+@Singleton
+public final class HotelFlightModel {
+
+    @Inject
+    public HotelFlightModel() {}
+}

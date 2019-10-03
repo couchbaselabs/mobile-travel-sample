@@ -16,22 +16,18 @@
 package com.couchbase.travelsample.view;
 
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.*;
 
-import org.springframework.stereotype.Component;
+import com.couchbase.travelsample.controller.LoginController;
 
 
-@Component
-public class LoginView {
-    public final JFrame login;
-    public JPanel panel;
+@Singleton
+public final class LoginView {
+    private final LoginController controller;
 
+    private JPanel panel;
     private JButton guestButton;
     private JButton loginButton;
     private JTextField usernameInput;
@@ -41,13 +37,12 @@ public class LoginView {
     private JLabel password;
     private JLabel planeImage;
 
-    public LoginView() {
-        login = new JFrame("Login");
-        login.setContentPane(panel);
-        login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        login.pack();
-        login.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    @Inject
+    public LoginView(LoginController controller) {
+        this.controller = controller;
     }
+
+    public JPanel getLoginView() { return panel; }
 
     public JButton getLoginButton() {
         return loginButton;
@@ -63,18 +58,6 @@ public class LoginView {
 
     public String getPasswordInput() {
         return passwordInput.getText();
-    }
-
-    public void show() {
-        login.setVisible(true);
-    }
-
-    public void hide() {
-        login.setVisible(false);
-    }
-
-    public void dispose() {
-        login.dispose();
     }
 
     private void createUIComponents() {
