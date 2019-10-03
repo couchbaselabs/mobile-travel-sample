@@ -14,31 +14,30 @@
 // limitations under the License.
 //
 package com.couchbase.travelsample.model;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.LogLevel;
-import com.couchbase.travelsample.Config;
+import com.couchbase.travelsample.TravelSample;
 
 
-@Component
+@Singleton
 public final class DatabaseManager {
     private Database database;
 
-    @Autowired
+    @Inject
     public DatabaseManager() { CouchbaseLite.init(); }
 
     public void openGuestDatabase() {
         Database.log.getConsole().setLevel(LogLevel.INFO);
 
         DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(Config.GUEST_DATABASE_DIR);
-        try { database = new Database(Config.DATABASE_NAME, config); }
+        config.setDirectory(TravelSample.GUEST_DATABASE_DIR);
+        try { database = new Database(TravelSample.DATABASE_NAME, config); }
         catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }

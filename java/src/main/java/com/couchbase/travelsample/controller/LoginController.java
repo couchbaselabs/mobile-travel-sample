@@ -18,25 +18,23 @@ package com.couchbase.travelsample.controller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.JOptionPane;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.couchbase.travelsample.model.DatabaseManager;
 import com.couchbase.travelsample.view.LoginView;
 
-@Component
-public class LoginController implements ViewController {
+@Singleton
+public final class LoginController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
-
 
     private final DatabaseManager dbMgr;
     private final LoginView loginView;
     private final GuestController guestController;
     private final HotelFlightController hotelFlightController;
 
-    @Autowired
+    @Inject
     public LoginController(
         DatabaseManager dbMgr,
         GuestController guestController,
@@ -51,18 +49,6 @@ public class LoginController implements ViewController {
 
         loginView.getLoginButton().addActionListener(e -> loginButtonPressed());
         loginView.getGuestLoginButton().addActionListener(e -> guestLoginButtonPressed());
-    }
-
-    public void show() {
-        loginView.show();
-    }
-
-    public void hide() {
-        loginView.hide();
-    }
-
-    public void dispose() {
-        loginView.dispose();
     }
 
     private void loginButtonPressed() {
@@ -80,18 +66,10 @@ public class LoginController implements ViewController {
         else {
             LOGGER.log(Level.INFO, "Username input: " + usernameInputText);
             LOGGER.log(Level.INFO, "Password input: " + passwordInputText);
-
-            hotelFlightController.show();
-
-            dispose();
         }
     }
 
     private void guestLoginButtonPressed() {
         dbMgr.openGuestDatabase();
-
-        guestController.show();
-
-        dispose();
     }
 }

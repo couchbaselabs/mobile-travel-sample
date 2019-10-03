@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -34,8 +37,6 @@ import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
@@ -47,21 +48,20 @@ import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
-import com.couchbase.travelsample.Config;
+import com.couchbase.travelsample.TravelSample;
 
 
-@Component
-public class HotelModel {
+@Singleton
+public final class HotelModel {
     public interface Completion {
         void complete(boolean success, List<Map<String, Object>> result);
     }
 
-
     private final DatabaseManager dbMgr;
     private final OkHttpClient client = new OkHttpClient();
 
-    @Autowired
-    private HotelModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
+    @Inject
+    public HotelModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
 
     public void searchHotelsUsingRest(String location, String description, final Completion completion) {
         String fullPath;
@@ -80,7 +80,7 @@ public class HotelModel {
         }
 
         URL url;
-        try { url = new URL(Config.WEB_APP_ENDPOINT + fullPath); }
+        try { url = new URL(TravelSample.WEB_APP_ENDPOINT + fullPath); }
         catch (MalformedURLException e) {
             e.printStackTrace();
             return;

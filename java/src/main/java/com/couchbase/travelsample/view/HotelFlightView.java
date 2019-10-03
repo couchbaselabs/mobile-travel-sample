@@ -15,27 +15,20 @@
 //
 package com.couchbase.travelsample.view;
 
-import java.util.logging.Logger;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.*;
 
 import com.toedter.calendar.JDateChooser;
-import org.springframework.stereotype.Component;
+
+import com.couchbase.travelsample.controller.HotelFlightController;
 
 
-@Component
-public class HotelFlightView {
-    private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
+@Singleton
+public final class HotelFlightView {
+    private final HotelFlightController controller;
 
-    public final JFrame search;
-    public JPanel panel;
-
+    private JPanel panel;
     private final JDateChooser originFlightDateChooser = new JDateChooser();
     private final JDateChooser returnFlightDateChooser = new JDateChooser();
     private JTabbedPane flightPane;
@@ -56,20 +49,17 @@ public class HotelFlightView {
     private JLabel originDate;
     private JLabel destinationDate;
 
-    public HotelFlightView() {
-        search = new JFrame("com.couchbase.travelsample.view.HotelFlightView");
-        search.setContentPane(panel);
-        search.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        search.pack();
+    @Inject
+    public HotelFlightView(HotelFlightController controller) {
+        this.controller = controller;
+
         originFlightDate.add(originFlightDateChooser);
         returnFlightDate.add(returnFlightDateChooser);
-        search.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        show();
     }
 
-    public JButton getHotelSearchButton() {
-        return hotelSearchButton;
-    }
+    public JPanel getHotelFlightView() { return panel; }
+
+    public void 
 
     public JButton getFlightSearchButton() {
         return flightSearchButton;
@@ -97,18 +87,6 @@ public class HotelFlightView {
 
     public String getFlightDestinationDateInput() {
         return ((JTextField) returnFlightDateChooser.getDateEditor().getUiComponent()).getText();
-    }
-
-    public void show() {
-        search.setVisible(true);
-    }
-
-    public void hide() {
-        search.setVisible(false);
-    }
-
-    public void dispose() {
-        search.dispose();
     }
 
     // TODO: place custom component creation code here

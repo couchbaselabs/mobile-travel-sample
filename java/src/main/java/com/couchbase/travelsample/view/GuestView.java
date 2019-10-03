@@ -16,10 +16,11 @@
 package com.couchbase.travelsample.view;
 
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -28,17 +29,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.springframework.stereotype.Component;
+import com.couchbase.travelsample.TravelSample;
+import com.couchbase.travelsample.controller.GuestController;
 
 
-@Component
-public class GuestView {
-    public JPanel panel1;
-    public JButton bookmarkHotelButton;
-
-    private final JFrame guest;
+@Singleton
+public final class GuestView {
     private final DefaultListModel<String> hotelListModel = new DefaultListModel<>();
     private final DefaultListModel<String> bookmarkListModel = new DefaultListModel<>();
+    private final GuestController controller;
+
     private JPanel panel;
     private JTabbedPane hotelPane;
     private JTextField guestHotelLocationInput;
@@ -56,18 +56,19 @@ public class GuestView {
     private JButton deleteBookmarkButton;
     private JButton logoutButton;
     private JButton logoutButton1;
+    private JButton bookmarkHotelButton;
 
-    public GuestView() {
-        guest = new JFrame("Guest");
-        guest.setContentPane(panel);
+    @Inject
+    public GuestView(GuestController controller) {
+        this.controller = controller;
+
         bookmarkHotelButton.setVisible(false);
         bookmarkNotification.setVisible(false);
         hotelList.setModel(hotelListModel);
         bookmarkList.setModel(bookmarkListModel);
-        guest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        guest.pack();
-        guest.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
+
+    public JPanel getGuestView() { return panel; }
 
     public JLabel getBookmarkNotification() {
         return bookmarkNotification;
@@ -142,18 +143,6 @@ public class GuestView {
 
     public String getGuestHotelDescriptionInput() {
         return guestHotelDescriptionInput.getText();
-    }
-
-    public void show() {
-        guest.setVisible(true);
-    }
-
-    public void hide() {
-        guest.setVisible(false);
-    }
-
-    public void dispose() {
-        guest.dispose();
     }
 
     private void createUIComponents() {

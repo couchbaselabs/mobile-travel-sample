@@ -17,8 +17,8 @@ package com.couchbase.travelsample.model;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.couchbase.lite.ArrayFunction;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -36,15 +36,15 @@ import com.couchbase.lite.QueryChangeListener;
 import com.couchbase.lite.SelectResult;
 
 
-@Component
-public class GuestModel {
+@Singleton
+public final class GuestModel {
     private static final String GUEST_DOC_ID = "user::guest";
     private static final String GUEST_DOC_TYPE = "bookmarkedhotels";
 
 
     private final DatabaseManager dbMgr;
 
-    @Autowired
+    @Inject
     public GuestModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
 
     public void bookmarkHotel(Map<String, Object> hotel) throws CouchbaseLiteException {

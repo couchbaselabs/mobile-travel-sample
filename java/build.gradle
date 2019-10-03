@@ -1,11 +1,10 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
 }
 
 ext {
     INTELLIJ_GUI_VERSION = "192.6262.63"
+    DAGGER_VERSION = "2.24"
 }
 
 group = 'com.couchbase'
@@ -52,7 +51,9 @@ repositories {
 dependencies {
     javac2 "com.jetbrains.intellij.java:java-compiler-ant-tasks:${INTELLIJ_GUI_VERSION}"
 
-    implementation 'org.springframework.boot:spring-boot-starter'
+    annotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
+
+    implementation "com.google.dagger:dagger:${DAGGER_VERSION}"
 
     implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
 
@@ -63,6 +64,4 @@ dependencies {
     implementation 'com.toedter:jcalendar:1.4'
 
     implementation fileTree(dir: 'libs', include: '*.jar')
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
