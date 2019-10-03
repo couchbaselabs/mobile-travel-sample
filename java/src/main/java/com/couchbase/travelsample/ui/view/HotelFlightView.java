@@ -13,21 +13,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.view;
+package com.couchbase.travelsample.ui.view;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
+import com.couchbase.travelsample.ui.controller.HotelFlightController;
 import com.toedter.calendar.JDateChooser;
-
-import com.couchbase.travelsample.controller.HotelFlightController;
 
 
 @Singleton
 public final class HotelFlightView {
     private final HotelFlightController controller;
-
 
     private JPanel panel;
     private JTabbedPane flightPane;

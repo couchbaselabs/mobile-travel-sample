@@ -15,22 +15,13 @@
 //
 package com.couchbase.travelsample;
 
-import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import com.couchbase.travelsample.ui.view.RootView;
+import dagger.Component;
 
 
-public class TravelSample {
-    private static AppFactory env;
-
-    public static AppFactory env() { return env; }
-
-    public static void main(String[] args) { DaggerAppFactory.create().app().start(); }
-
-    private final RootView rootView;
-
-    @Inject
-    public TravelSample(RootView rootView) { this.rootView = rootView; }
-
-    private void start() { rootView.setVisible(true); }
+@Component
+@Singleton
+public interface AppFactory {
+    TravelSample app();
 }

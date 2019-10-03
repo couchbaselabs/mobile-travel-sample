@@ -13,24 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample;
+package com.couchbase.travelsample.ui;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.couchbase.travelsample.ui.view.RootView;
 
 
-public class TravelSample {
-    private static AppFactory env;
-
-    public static AppFactory env() { return env; }
-
-    public static void main(String[] args) { DaggerAppFactory.create().app().start(); }
-
-    private final RootView rootView;
+@Singleton
+public class Nav {
+    private final RootView root;
 
     @Inject
-    public TravelSample(RootView rootView) { this.rootView = rootView; }
+    public Nav() { this.root = null; }
 
-    private void start() { rootView.setVisible(true); }
+    public void nextPage() {}
 }

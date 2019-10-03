@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.model;
+package com.couchbase.travelsample.net;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,8 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
+import com.couchbase.travelsample.model.Hotel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,32 +39,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.DataSource;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.Expression;
-import com.couchbase.lite.FullTextExpression;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryBuilder;
-import com.couchbase.lite.Result;
-import com.couchbase.lite.ResultSet;
-import com.couchbase.lite.SelectResult;
-import com.couchbase.travelsample.TravelSample;
 
 
-@Singleton
-public final class HotelModel {
-    private final DatabaseManager dbMgr;
-    private final OkHttpClient client = new OkHttpClient();
+public class RemoteStore {
+    public static final String WEB_APP_ENDPOINT = "http://54.185.31.148:8080/api/";
+
+    private final OkHttpClient client;
 
     @Inject
-    public HotelModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
+    public RemoteStore() { client = new OkHttpClient(); }
 
-    public void searchHotelsUsingRest(String location, String description, final Consumer<List<Hotel>> completion) {
+    public void searchHotels(String location, String description, final Consumer<List<Hotel>> completion) {
         String fullPath;
         try {
             String descriptionStr = description.equals("")
@@ -75,7 +66,7 @@ public final class HotelModel {
         }
 
         URL url;
-        try { url = new URL(TravelSample.WEB_APP_ENDPOINT + fullPath); }
+        try { url = new URL(WEB_APP_ENDPOINT + fullPath); }
         catch (MalformedURLException e) {
             e.printStackTrace();
             return;
@@ -85,12 +76,10 @@ public final class HotelModel {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+            public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
                 if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
                 try (ResponseBody responseBody = response.body()) {
                     if (responseBody == null) { throw new IOException("Empty response"); }
@@ -109,37 +98,5 @@ public final class HotelModel {
                 }
             }
         });
-    }
-
-    public void searchHotels(String location, String description, Consumer<List<Hotel>> completion) {
-        Database database = dbMgr.getDatabase();
-
-        Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
-        Expression locationExp = Expression.property("country")
-            .like(Expression.string("%" + location + "%"))
-            .or(Expression.property("city").like(Expression.string("%" + location + "%")))
-            .or(Expression.property("state").like(Expression.string("%" + location + "%")))
-            .or(Expression.property("address").like(Expression.string("%" + location + "%")));
-
-        Expression searchExp = descExp.and(locationExp);
-        Query hotelSearchQuery = QueryBuilder
-            .select(SelectResult.all())
-            .from(DataSource.database(database))
-            .where(Expression.property("type").equalTo(Expression.string("hotel")).and(searchExp));
-
-        try {
-            ResultSet rows = hotelSearchQuery.execute();
-
-            List<Hotel> hotels = new ArrayList<>();
-            Result row;
-            while ((row = rows.next()) != null) {
-                hotels.add(Hotel.fromDictionary(row.getDictionary("travel-sample")));
-            }
-
-            completion.accept(hotels);
-        }
-        catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
     }
 }

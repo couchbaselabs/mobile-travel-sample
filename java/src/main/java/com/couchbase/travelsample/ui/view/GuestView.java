@@ -13,17 +13,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.view;
+package com.couchbase.travelsample.ui.view;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.Timer;
 
-import com.couchbase.travelsample.controller.GuestController;
+import com.couchbase.travelsample.ui.controller.GuestController;
+import com.couchbase.travelsample.model.Hotel;
 
 
 @Singleton
 public final class GuestView {
+    public static class HotelElement {
+        public final Hotel hotel;
+
+        public HotelElement(@Nonnull Hotel hotel) { this.hotel = hotel; }
+
+        @Override
+        public String toString() { return "- " + hotel.getName() + " on " + hotel.getAddress(); }
+    }
+
     private final GuestController controller;
 
     private JPanel panel;
@@ -36,8 +55,8 @@ public final class GuestView {
     private JLabel locationImage;
     private JLabel descImage;
     private JLabel infoBox;
-    private JList<String> bookmarkList;
-    private JList<String> hotelList;
+    private JList<HotelElement> bookmarkList;
+    private JList<HotelElement> hotelList;
     private JScrollPane scrollPane;
     private JLabel bookmarkNotification;
     private JButton deleteBookmarkButton;
@@ -55,7 +74,7 @@ public final class GuestView {
 
         bookmarkHotelButton.setVisible(false);
         deleteBookmarkButton.addActionListener(
-            e -> controller.deleteBookmark(bookmarkList.getSelectedIndex()));
+            e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
 
         bookmarkList.setModel(controller.getBookmarkModel());
 
@@ -66,13 +85,14 @@ public final class GuestView {
                 guestHotelLocationInput.getText(),
                 guestHotelDescriptionInput.getText()));
 
-        controller.fetchBookmarks();
+        // !!! controller.fetchBookmarks();
+        // !!! controller.fetchHotels();
     }
 
     public JPanel getGuestView() { return panel; }
 
     private void bookmarkHotel() {
-        controller.bookmarkHotel(hotelList.getSelectedIndex());
+        controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
         displayBookmarkedNotification(3000);
     }
 
