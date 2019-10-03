@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 package com.couchbase.travelsample.model;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -33,7 +34,7 @@ public final class DatabaseManager {
     public DatabaseManager() { CouchbaseLite.init(); }
 
     public void openGuestDatabase() {
-        Database.log.getConsole().setLevel(LogLevel.INFO);
+        Database.log.getConsole().setLevel(LogLevel.DEBUG);
 
         DatabaseConfiguration config = new DatabaseConfiguration();
         config.setDirectory(TravelSample.GUEST_DATABASE_DIR);
@@ -44,6 +45,7 @@ public final class DatabaseManager {
     }
 
     public Database getDatabase() {
+        if (database == null) { openGuestDatabase(); }
         return database;
     }
 }

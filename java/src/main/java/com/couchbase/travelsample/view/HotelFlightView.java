@@ -28,9 +28,8 @@ import com.couchbase.travelsample.controller.HotelFlightController;
 public final class HotelFlightView {
     private final HotelFlightController controller;
 
+
     private JPanel panel;
-    private final JDateChooser originFlightDateChooser = new JDateChooser();
-    private final JDateChooser returnFlightDateChooser = new JDateChooser();
     private JTabbedPane flightPane;
     private JTextField hotelLocationInput;
     private JTextField hotelDescriptionInput;
@@ -48,50 +47,38 @@ public final class HotelFlightView {
     private JButton flightSearchButton;
     private JLabel originDate;
     private JLabel destinationDate;
+    private JDateChooser originFlightDateChooser;
+    private JDateChooser returnFlightDateChooser;
 
     @Inject
     public HotelFlightView(HotelFlightController controller) {
         this.controller = controller;
 
+        hotelSearchButton.addActionListener(
+            e -> controller.hotelSearchButtonPressed(hotelLocationInput.getText(), hotelDescriptionInput.getText()));
+
+        flightSearchButton.addActionListener(
+            e -> controller.flightSearchButtonPressed(
+                flightOriginInput.getText(),
+                flightDestinationInput.getText(),
+                getDate(originFlightDateChooser),
+                getDate(returnFlightDateChooser)));
+
+        originFlightDateChooser = new JDateChooser();
         originFlightDate.add(originFlightDateChooser);
+
+        returnFlightDateChooser = new JDateChooser();
         returnFlightDate.add(returnFlightDateChooser);
     }
 
     public JPanel getHotelFlightView() { return panel; }
 
-    public void 
-
-    public JButton getFlightSearchButton() {
-        return flightSearchButton;
-    }
-
-    public String getHotelLocationInput() {
-        return hotelLocationInput.getText();
-    }
-
-    public String getHotelDescriptionInput() {
-        return hotelDescriptionInput.getText();
-    }
-
-    public String getFlightOriginInput() {
-        return flightOriginInput.getText();
-    }
-
-    public String getFlightDestinationInput() {
-        return flightDestinationInput.getText();
-    }
-
-    public String getFlightOriginDateInput() {
-        return ((JTextField) originFlightDateChooser.getDateEditor().getUiComponent()).getText();
-    }
-
-    public String getFlightDestinationDateInput() {
-        return ((JTextField) returnFlightDateChooser.getDateEditor().getUiComponent()).getText();
-    }
-
-    // TODO: place custom component creation code here
     private void createUIComponents() {
         locationImage = new JLabel(new ImageIcon("globe.png"));
         descImage = new JLabel(new ImageIcon("magglass.png"));
+    }
+
+    private String getDate(JDateChooser dateChooser) {
+        return ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();
     }
 }

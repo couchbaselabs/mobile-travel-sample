@@ -20,56 +20,39 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import com.couchbase.travelsample.model.DatabaseManager;
 import com.couchbase.travelsample.view.LoginView;
+
 
 @Singleton
 public final class LoginController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
     private final DatabaseManager dbMgr;
-    private final LoginView loginView;
-    private final GuestController guestController;
-    private final HotelFlightController hotelFlightController;
 
     @Inject
-    public LoginController(
-        DatabaseManager dbMgr,
-        GuestController guestController,
-        HotelFlightController hotelFlightController,
-        LoginView loginView)
-    {
+    public LoginController(DatabaseManager dbMgr) {
         this.dbMgr = dbMgr;
-        this.loginView = loginView;
-        this.guestController = guestController;
-        this.hotelFlightController = hotelFlightController;
-
-
-        loginView.getLoginButton().addActionListener(e -> loginButtonPressed());
-        loginView.getGuestLoginButton().addActionListener(e -> guestLoginButtonPressed());
     }
 
-    private void loginButtonPressed() {
-        String usernameInputText = loginView.getUsernameInput();
-        String passwordInputText = loginView.getPasswordInput();
+    public void loginAsGuest() {
+        dbMgr.openGuestDatabase();
+    }
 
-        if (usernameInputText.equals("") || passwordInputText.equals("")) {
-            System.out.println("Login failed");
+    public void loginAsUser(String username, String password) {
+        if (username.equals("") || password.equals("")) {
+            LOGGER.log(Level.WARNING, "login failed: " + username + ", " + password);
             JOptionPane.showMessageDialog(
                 null,
                 "Both username and password fields must be filled.",
                 "Login Error",
                 JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        else {
-            LOGGER.log(Level.INFO, "Username input: " + usernameInputText);
-            LOGGER.log(Level.INFO, "Password input: " + passwordInputText);
-        }
-    }
 
-    private void guestLoginButtonPressed() {
-        dbMgr.openGuestDatabase();
+        LOGGER.log(Level.INFO, "Username input: " + username);
+        LOGGER.log(Level.INFO, "Password input: " + password);
     }
 }

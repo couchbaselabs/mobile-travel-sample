@@ -36,6 +36,7 @@ public class TravelSample {
     public static final String WEB_APP_ENDPOINT = "http://54.185.31.148:8080/api/";
 
     private static Env env;
+
     public static Env env() { return env; }
 
     public static void main(String[] args) {
@@ -44,12 +45,11 @@ public class TravelSample {
     }
 
     private final JFrame frame;
-    private final JPanel cards;
 
     @Inject
     public TravelSample(LoginView loginView, GuestView guestView, HotelFlightView hotelFlightView) {
         frame = new JFrame("Travel Sample");
-        cards = new JPanel(new CardLayout());
+        JPanel cards = new JPanel(new CardLayout());
 
         cards.add(loginView.getLoginView());
         cards.add(guestView.getGuestView());

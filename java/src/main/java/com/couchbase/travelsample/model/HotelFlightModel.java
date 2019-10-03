@@ -19,7 +19,6 @@ package com.couchbase.travelsample.model;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.couchbase.travelsample.view.HotelFlightView;
 
 @Singleton
 public final class HotelFlightModel {

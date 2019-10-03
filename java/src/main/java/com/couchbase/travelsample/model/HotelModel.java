@@ -21,9 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -53,17 +52,13 @@ import com.couchbase.travelsample.TravelSample;
 
 @Singleton
 public final class HotelModel {
-    public interface Completion {
-        void complete(boolean success, List<Map<String, Object>> result);
-    }
-
     private final DatabaseManager dbMgr;
     private final OkHttpClient client = new OkHttpClient();
 
     @Inject
     public HotelModel(DatabaseManager dbMgr) { this.dbMgr = dbMgr; }
 
-    public void searchHotelsUsingRest(String location, String description, final Completion completion) {
+    public void searchHotelsUsingRest(String location, String description, final Consumer<List<Hotel>> completion) {
         String fullPath;
         try {
             String descriptionStr = description.equals("")
@@ -101,30 +96,22 @@ public final class HotelModel {
                     if (responseBody == null) { throw new IOException("Empty response"); }
                     String responseString = responseBody.string();
                     JSONArray data = new JSONObject(responseString).getJSONArray("data");
-                    List<Map<String, Object>> hotels = new ArrayList<>();
+
+                    List<Hotel> hotels = new ArrayList<>();
                     for (int i = 0; i < data.length(); i++) {
-                        try {
-                            Map<String, Object> properties = new HashMap<>();
-                            properties.put("name", data.getJSONObject(i).getString("name"));
-                            properties.put("id", data.getJSONObject(i).getString("id"));
-                            properties.put("address", data.getJSONObject(i).getString("address"));
-                            hotels.add(properties);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        hotels.add(Hotel.fromJSON(data.getJSONObject(i)));
                     }
-                    completion.complete(true, hotels);
+
+                    completion.accept(hotels);
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
-                    completion.complete(false, null);
                 }
             }
         });
     }
 
-    public void searchHotels(String location, String description, Completion completion) {
+    public void searchHotels(String location, String description, Consumer<List<Hotel>> completion) {
         Database database = dbMgr.getDatabase();
 
         Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
@@ -142,19 +129,17 @@ public final class HotelModel {
 
         try {
             ResultSet rows = hotelSearchQuery.execute();
-            List<Map<String, Object>> hotels = new ArrayList<>();
+
+            List<Hotel> hotels = new ArrayList<>();
             Result row;
             while ((row = rows.next()) != null) {
-                Map<String, Object> properties = new HashMap<>();
-                properties.put("name", row.getDictionary("travel-sample").getString("name"));
-                properties.put("address", row.getDictionary("travel-sample").getString("address"));
-                hotels.add(properties);
+                hotels.add(Hotel.fromDictionary(row.getDictionary("travel-sample")));
             }
-            completion.complete(true, hotels);
+
+            completion.accept(hotels);
         }
         catch (CouchbaseLiteException e) {
             e.printStackTrace();
-            completion.complete(false, null);
         }
     }
 }

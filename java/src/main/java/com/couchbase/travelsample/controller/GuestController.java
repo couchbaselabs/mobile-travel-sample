@@ -15,80 +15,53 @@
 //
 package com.couchbase.travelsample.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.*;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Dictionary;
+import com.couchbase.lite.QueryChange;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.travelsample.model.GuestModel;
+import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.model.HotelModel;
-import com.couchbase.travelsample.view.GuestView;
 
 
 @Singleton
 public final class GuestController {
+
+    private final DefaultListModel<String> hotelListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> bookmarkListModel = new DefaultListModel<>();
+
     private final GuestModel guestModel;
     private final HotelModel hotelModel;
-    private final GuestView guestView;
 
-    private List<Map<String, Object>> hotels; // List of hotels fetched from python server
+    private List<Hotel> hotels; // List of hotels fetched from python server
     private boolean isFetchingBookmarks;
     private List<Dictionary> bookmarks;
 
     @Inject
-    public GuestController(GuestModel guestModel, HotelModel hotelModel, GuestView guestView) {
+    public GuestController(GuestModel guestModel, HotelModel hotelModel) {
         this.guestModel = guestModel;
         this.hotelModel = hotelModel;
-
-        this.guestView = guestView;
-        guestView.getGuestHotelSearchButton().addActionListener(e -> guestHotelSearchButtonPressed());
-        guestView.getBookmarkHotelButton().addActionListener(e -> bookmarkHotelButtonPressed());
-        guestView.getDeleteBookmarkButton().addActionListener(e -> deleteBookmarkButtonPressed());
     }
 
-    private void fetchBookmarks() {
-        if (isFetchingBookmarks) { return; }
+    public DefaultListModel<String> getHotelModel() { return hotelListModel; }
 
-        isFetchingBookmarks = true;
+    public DefaultListModel<String> getBookmarkModel() { return bookmarkListModel; }
 
-        // update ui to display bookmarks
-        guestModel.getBookmarks(change -> {
-            guestView.clearBookmarks();
-            List<Dictionary> bookmarks = new ArrayList<>();
-            ResultSet rs = change.getResults();
-            for (Result result : rs) {
-                Dictionary hotel = result.getDictionary(1);
-                guestView.addBookmark(hotel.getString("name"));
-                bookmarks.add(hotel);
-            }
-            GuestController.this.bookmarks = bookmarks;
-            guestView.refreshBookmarkList();
-        });
-    }
+    public void searchHotels(String location, String description) {
+        hotelListModel.removeAllElements();
+        final DefaultListModel<String> newHotels = new DefaultListModel<>();
 
-    private void guestHotelSearchButtonPressed() {
-        String location = guestView.getGuestHotelLocationInput();
-        String description = guestView.getGuestHotelDescriptionInput();
-        guestView.clearHotels();
-        guestView.setHotelList(guestView.getHotelListModel());
         hotelModel.searchHotelsUsingRest(
             location,
             description,
-            (success, hotels) -> {
-                GuestController.this.hotels = hotels;
-                for (Map<String, Object> hotel : hotels) {
-                    guestView.addHotel(hotel.get("name").toString(), hotel.get("address").toString());
-                }
-                guestView.refreshHotelList();
-            });
+            (hotels) -> SwingUtilities.invokeLater(() -> updateHotels(hotels)));
     }
 
     // 1. Save the selected Hotel data into the database.
@@ -97,36 +70,49 @@ public final class GuestController {
     //    The hotels is an Array of the bookmarked hotel ids
     // 3. Add the selected hotel id to the hotels array and save the guest document.
     // 4. Display the UI indicating that the hotel has been bookmarked.
-    private void bookmarkHotelButtonPressed() {
-        int index = guestView.getHotelList().getSelectedIndex();
-        Map<String, Object> hotel = hotels.get(index);
-        try {
-            guestModel.bookmarkHotel(hotel);
-            displayBookmarkedNotification(3000);
-        }
-        catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
+    public void bookmarkHotel(int index) {
+        Hotel hotel = hotels.get(index);
+        try { guestModel.bookmarkHotel(hotel); }
+        catch (CouchbaseLiteException e) { e.printStackTrace(); }
     }
 
-    private void displayBookmarkedNotification(long delayMs) {
-        guestView.getBookmarkNotification().setVisible(true);
-        new Timer().schedule(
-            new TimerTask() {
-                @Override
-                public void run() { guestView.getBookmarkNotification().setVisible(false); }
-            },
-            delayMs);
-    }
-
-    private void deleteBookmarkButtonPressed() {
-        int index = guestView.getBookmarkList().getSelectedIndex();
+    public void deleteBookmark(int index) {
         Dictionary bookmark = bookmarks.get(index);
         String hotelId = bookmark.getString("id");
 
         try { guestModel.removeBookmark(hotelId); }
-        catch (CouchbaseLiteException e) {
-            e.printStackTrace();
+        catch (CouchbaseLiteException e) { e.printStackTrace(); }
+    }
+
+    public void fetchBookmarks() {
+        if (isFetchingBookmarks) { return; }
+
+        isFetchingBookmarks = true;
+
+        // update ui to display bookmarks
+        guestModel.getBookmarks(this::updateBookmarks);
+    }
+
+    private void updateBookmarks(QueryChange change) {
+        bookmarkListModel.clear();
+        ResultSet results = change.getResults();
+        for (Result result : results) {
+            bookmarkListModel.addElement(result.getDictionary(1).getString("name"));
+        }
+        isFetchingBookmarks = false;
+    }
+
+    private void updateHotels(List<Hotel> hotels) {
+        hotelListModel.clear();
+        for (Hotel hotel : hotels) {
+            hotelListModel.addElement("- " + hotel.getName() + " on " + hotel.getAddress());
+        }
+    }
+
+    private void refreshBookmarks(List<Hotel> hotels) {
+        hotelListModel.clear();
+        for (Hotel hotel : hotels) {
+            hotelListModel.addElement("- " + hotel.getName() + " on " + hotel.getAddress());
         }
     }
 }

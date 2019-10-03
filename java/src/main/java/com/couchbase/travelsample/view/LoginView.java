@@ -40,25 +40,16 @@ public final class LoginView {
     @Inject
     public LoginView(LoginController controller) {
         this.controller = controller;
+
+        loginButton.addActionListener(e -> controller.loginAsUser(
+            usernameInput.getText(),
+            passwordInput.getText()));
+
+        guestButton.addActionListener(e -> controller.loginAsGuest());
+
     }
 
     public JPanel getLoginView() { return panel; }
-
-    public JButton getLoginButton() {
-        return loginButton;
-    }
-
-    public JButton getGuestLoginButton() {
-        return guestButton;
-    }
-
-    public String getUsernameInput() {
-        return usernameInput.getText();
-    }
-
-    public String getPasswordInput() {
-        return passwordInput.getText();
-    }
 
     private void createUIComponents() {
         image = new JLabel(new ImageIcon("cbtravel_logo.png"));
