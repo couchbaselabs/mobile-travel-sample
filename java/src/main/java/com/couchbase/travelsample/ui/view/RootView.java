@@ -13,16 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.model;
+package com.couchbase.travelsample.ui.view;
 
+import java.awt.CardLayout;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
-@Singleton
-public final class HotelFlightModel {
+public class RootView extends JFrame {
 
     @Inject
-    public HotelFlightModel() {}
+    public RootView(LoginView loginView, GuestView guestView, HotelFlightView hotelFlightView) {
+        super("Travel Sample");
+        JPanel cards = new JPanel(new CardLayout());
+
+        cards.add(loginView.getLoginView());
+        cards.add(guestView.getGuestView());
+        cards.add(hotelFlightView.getHotelFlightView());
+
+        setContentPane(cards);
+        pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 }

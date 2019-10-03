@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.controller;
+package com.couchbase.travelsample.ui.controller;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.couchbase.travelsample.view.HotelFlightView;
+import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
 @Singleton

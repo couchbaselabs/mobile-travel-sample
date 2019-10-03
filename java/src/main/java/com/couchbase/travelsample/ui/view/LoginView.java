@@ -13,14 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample.view;
+package com.couchbase.travelsample.ui.view;
 
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
-import com.couchbase.travelsample.controller.LoginController;
+import com.couchbase.travelsample.ui.controller.LoginController;
 
 
 @Singleton
@@ -46,7 +51,6 @@ public final class LoginView {
             passwordInput.getText()));
 
         guestButton.addActionListener(e -> controller.loginAsGuest());
-
     }
 
     public JPanel getLoginView() { return panel; }
