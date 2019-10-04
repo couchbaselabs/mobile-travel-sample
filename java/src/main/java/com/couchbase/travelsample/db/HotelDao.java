@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
+import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.FullTextExpression;
@@ -39,24 +40,24 @@ public class HotelDao {
         this.exec = exec;
     }
 
-    public void searchHotels(String location, String description, Consumer<List<Hotel>> completion) {
-        exec.submit(
-            () -> {
-                Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
-                Expression locationExp = Expression.property("country")
-                    .like(Expression.string("%" + location + "%"))
-                    .or(Expression.property("city").like(Expression.string("%" + location + "%")))
-                    .or(Expression.property("state").like(Expression.string("%" + location + "%")))
-                    .or(Expression.property("address").like(Expression.string("%" + location + "%")));
+    public void searchHotels(String location, String description, Consumer<List<Hotel>> listener) {
+        exec.submit(() -> getHotelsAsync(location, description), listener);
+    }
 
-                Expression searchExp = descExp.and(locationExp);
-                Query hotelSearchQuery = QueryBuilder
-                    .select(SelectResult.all())
-                    .from(DataSource.database(db.getDatabase()))
-                    .where(Expression.property("type").equalTo(Expression.string("hotel")).and(searchExp));
+    private List<Hotel> getHotelsAsync(String location, String description) throws CouchbaseLiteException {
+        Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
+        Expression locationExp = Expression.property("country")
+            .like(Expression.string("%" + location + "%"))
+            .or(Expression.property("city").like(Expression.string("%" + location + "%")))
+            .or(Expression.property("state").like(Expression.string("%" + location + "%")))
+            .or(Expression.property("address").like(Expression.string("%" + location + "%")));
 
-                return Hotel.fromResults(hotelSearchQuery.execute());
-            },
-            completion::accept);
+        Expression searchExp = descExp.and(locationExp);
+        Query hotelSearchQuery = QueryBuilder
+            .select(SelectResult.all())
+            .from(DataSource.database(db.getDatabase()))
+            .where(Expression.property("type").equalTo(Expression.string("hotel")).and(searchExp));
+
+        return Hotel.fromResults(hotelSearchQuery.execute());
     }
 }
