@@ -17,10 +17,13 @@ package com.couchbase.travelsample.db;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.couchbase.lite.CouchbaseLite;
+import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.LogLevel;
@@ -47,24 +50,11 @@ public final class LocalStore {
         Database.log.getConsole().setLevel(LogLevel.DEBUG);
     }
 
-    public void openAsGuest() {
-        exec.submit(
-            () -> {
-                DatabaseConfiguration config = new DatabaseConfiguration();
-                config.setDirectory(GUEST_DATABASE_DIR);
-                database = new Database(DATABASE_NAME, config);
-                return null;
-            });
-    }
+    public void openAsGuest() { exec.submit(this::openAsGuestAsync); }
 
     public void openWithValidation(String username, String password, Consumer<Boolean> listener) {
         exec.submit(
-            () -> {
-                DatabaseConfiguration config = new DatabaseConfiguration();
-                config.setDirectory(username);
-                database = new Database(DATABASE_NAME, config);
-                return true;
-            },
+            () -> openWithValidationAsync(username),
             (ok) -> listener.accept(true),
             (e) -> listener.accept(false));
     }
@@ -72,5 +62,20 @@ public final class LocalStore {
     Database getDatabase() {
         if (database == null) { throw new IllegalStateException("db used before open"); }
         return database;
+    }
+
+    private boolean openWithValidationAsync(String username) throws CouchbaseLiteException {
+        DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(username);
+        database = new Database(DATABASE_NAME, config);
+        return true;
+    }
+
+    @Nullable
+    private Void openAsGuestAsync() throws CouchbaseLiteException {
+        DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(GUEST_DATABASE_DIR);
+        database = new Database(DATABASE_NAME, config);
+        return null;
     }
 }
