@@ -53,10 +53,10 @@ public final class LoginView {
         guestButton.addActionListener(e -> controller.loginAsGuest());
     }
 
-    public JPanel getLoginView() { return panel; }
+    public JPanel getView() { return panel; }
 
     private void createUIComponents() {
-        image = new JLabel(new ImageIcon("cbtravel_logo.png"));
-        planeImage = new JLabel(new ImageIcon("plane.png"));
+        image = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
+        planeImage = new JLabel(new ImageIcon(LoginView.class.getResource("images/plane.png")));
     }
 }

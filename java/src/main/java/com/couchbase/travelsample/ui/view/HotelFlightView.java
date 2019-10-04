@@ -74,14 +74,14 @@ public final class HotelFlightView {
         returnFlightDate.add(returnFlightDateChooser);
     }
 
-    public JPanel getHotelFlightView() { return panel; }
-
-    private void createUIComponents() {
-        locationImage = new JLabel(new ImageIcon("globe.png"));
-        descImage = new JLabel(new ImageIcon("magglass.png"));
-    }
+    public JPanel getView() { return panel; }
 
     private String getDate(JDateChooser dateChooser) {
         return ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();
+    }
+
+    private void createUIComponents() {
+        locationImage = new JLabel(new ImageIcon(HotelFlightView.class.getResource("images/globe.png")));
+        descImage = new JLabel(new ImageIcon(HotelFlightView.class.getResource("images/magglass.png")));
     }
 }
