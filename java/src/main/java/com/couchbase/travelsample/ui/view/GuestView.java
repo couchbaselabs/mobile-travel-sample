@@ -28,8 +28,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-import com.couchbase.travelsample.ui.controller.GuestController;
 import com.couchbase.travelsample.model.Hotel;
+import com.couchbase.travelsample.ui.controller.GuestController;
 
 
 @Singleton
@@ -89,7 +89,7 @@ public final class GuestView {
         // !!! controller.fetchHotels();
     }
 
-    public JPanel getGuestView() { return panel; }
+    public JPanel getView() { return panel; }
 
     private void bookmarkHotel() {
         controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
@@ -102,7 +102,7 @@ public final class GuestView {
     }
 
     private void createUIComponents() {
-        locationImage = new JLabel(new ImageIcon("globe.png"));
-        descImage = new JLabel(new ImageIcon("magglass.png"));
+        locationImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/globe.png")));
+        descImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
     }
 }

@@ -29,9 +29,9 @@ public class RootView extends JFrame {
         super("Travel Sample");
         JPanel cards = new JPanel(new CardLayout());
 
-        cards.add(loginView.getLoginView());
-        cards.add(guestView.getGuestView());
-        cards.add(hotelFlightView.getHotelFlightView());
+        cards.add(loginView.getView());
+        cards.add(guestView.getView());
+        cards.add(hotelFlightView.getView());
 
         setContentPane(cards);
         pack();
