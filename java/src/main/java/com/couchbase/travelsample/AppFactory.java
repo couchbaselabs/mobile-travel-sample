@@ -15,13 +15,24 @@
 //
 package com.couchbase.travelsample;
 
+import java.util.Set;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
+
+import com.couchbase.travelsample.ui.view.Page;
+import com.couchbase.travelsample.ui.view.ViewModule;
 
 import dagger.Component;
 
 
-@Component
+@Component(modules = {ViewModule.class})
 @Singleton
 public interface AppFactory {
     TravelSample app();
+
+    Set<Page> pages();
+
+    @Named("StartPage")
+    Page startPage();
 }

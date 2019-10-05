@@ -23,30 +23,72 @@ import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 
 import com.couchbase.travelsample.db.BookmarkDao;
+import com.couchbase.travelsample.db.HotelDao;
+import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.RemoteStore;
+import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
+import com.couchbase.travelsample.ui.view.LoginView;
 
 
 @Singleton
 public final class GuestController {
+    private final Nav nav;
+
+    private final LocalStore localStore;
     private final BookmarkDao bookmarkDao;
+    private final HotelDao hotelDao;
+
     private final RemoteStore remote;
 
     private final DefaultListModel<GuestView.HotelElement> hotelListModel = new DefaultListModel<>();
     private final DefaultListModel<GuestView.HotelElement> bookmarkListModel = new DefaultListModel<>();
 
+    private boolean isFetchingHotels;
     private boolean isFetchingBookmarks;
 
     @Inject
-    public GuestController(BookmarkDao bookmarkDao, RemoteStore remote) {
+    public GuestController(
+        Nav nav,
+        LocalStore localStore,
+        BookmarkDao bookmarkDao,
+        HotelDao hotelDao,
+        RemoteStore remote) {
+        this.nav = nav;
+        this.localStore = localStore;
         this.bookmarkDao = bookmarkDao;
+        this.hotelDao = hotelDao;
         this.remote = remote;
     }
 
     public DefaultListModel<GuestView.HotelElement> getHotelModel() { return hotelListModel; }
 
     public DefaultListModel<GuestView.HotelElement> getBookmarkModel() { return bookmarkListModel; }
+
+    // !!! Move to super class
+    public void logout() {
+        localStore.close();
+        nav.toPage(LoginView.PAGE_NAME);
+    }
+
+    public void close() { localStore.reset(); }
+
+    public void fetchHotels() {
+        if (isFetchingHotels) { return; }
+        isFetchingHotels = true;
+
+        // update ui to display hotels
+        hotelDao.fetchHotels(this::updateHotels);
+    }
+
+    public void fetchBookmarks() {
+        if (isFetchingBookmarks) { return; }
+        isFetchingBookmarks = true;
+
+        // update ui to display bookmarks
+        bookmarkDao.getBookmarks(this::updateBookmarks);
+    }
 
     public void searchHotels(String location, String description) {
         hotelListModel.removeAllElements();
@@ -72,15 +114,6 @@ public final class GuestController {
     public void deleteBookmark(GuestView.HotelElement hotel) {
         bookmarkListModel.removeElement(hotel);
         bookmarkDao.removeBookmark(hotel.hotel);
-    }
-
-    public void fetchBookmarks() {
-        if (isFetchingBookmarks) { return; }
-
-        isFetchingBookmarks = true;
-
-        // update ui to display bookmarks
-        bookmarkDao.getBookmarks(this::updateBookmarks);
     }
 
     private void updateBookmarks(List<Hotel> bookmarks) {

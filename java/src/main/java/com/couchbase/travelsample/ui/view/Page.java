@@ -13,27 +13,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample;
+package com.couchbase.travelsample.ui.view;
 
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-
-import com.couchbase.travelsample.ui.Nav;
+import javax.annotation.Nonnull;
+import javax.swing.JPanel;
 
 
-public class TravelSample {
-    public static void main(String[] args) {
-        AppFactory appFactory = DaggerAppFactory.create();
-        appFactory.app().start(appFactory);
-    }
+public abstract class Page {
+    private final String name;
 
+    public Page(@Nonnull String name) { this.name = name; }
 
-    private final Nav nav;
+    public abstract JPanel getView();
 
-    @Inject
-    public TravelSample(Nav nav) { this.nav = nav; }
+    public abstract void open();
 
-    private void start(AppFactory appFactory) {
-        SwingUtilities.invokeLater(() -> nav.start(appFactory));
-    }
+    public abstract void close();
+
+    public final String getName() { return name; }
 }

@@ -1,3 +1,12 @@
+package com.couchbase.travelsample.ui.view;
+
+import javax.inject.Named;
+
+import dagger.Binds;
+import dagger.Module;
+import dagger.multibindings.IntoSet;
+
+
 //
 // Copyright (c) 2019 Couchbase, Inc All rights reserved.
 //
@@ -13,27 +22,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package com.couchbase.travelsample;
+@Module
+public interface ViewModule {
+    @Binds
+    @Named("StartPage")
+    Page startPage(LoginView v);
 
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
+    @Binds
+    @IntoSet
+    Page loginView(LoginView v);
 
-import com.couchbase.travelsample.ui.Nav;
+    @Binds
+    @IntoSet
+    Page guestView(GuestView v);
 
-
-public class TravelSample {
-    public static void main(String[] args) {
-        AppFactory appFactory = DaggerAppFactory.create();
-        appFactory.app().start(appFactory);
-    }
-
-
-    private final Nav nav;
-
-    @Inject
-    public TravelSample(Nav nav) { this.nav = nav; }
-
-    private void start(AppFactory appFactory) {
-        SwingUtilities.invokeLater(() -> nav.start(appFactory));
-    }
+    @Binds
+    @IntoSet
+    Page hotelFlightView(HotelFlightView v);
 }

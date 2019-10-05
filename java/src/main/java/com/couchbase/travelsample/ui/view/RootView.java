@@ -17,24 +17,33 @@ package com.couchbase.travelsample.ui.view;
 
 import java.awt.CardLayout;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 public class RootView extends JFrame {
+    private final JPanel cards;
+    private final CardLayout cardLayout;
 
     @Inject
-    public RootView(LoginView loginView, GuestView guestView, HotelFlightView hotelFlightView) {
+    public RootView() {
         super("Travel Sample");
-        JPanel cards = new JPanel(new CardLayout());
-
-        cards.add(loginView.getView());
-        cards.add(guestView.getView());
-        cards.add(hotelFlightView.getView());
-
-        setContentPane(cards);
-        pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        cardLayout = new CardLayout();
+        cards = new JPanel(cardLayout);
+        setContentPane(cards);
+    }
+
+    public void addPage(@Nonnull Page page) { cards.add(page.getView(), page.getName()); }
+
+    public void toPage(@Nonnull Page page) { cardLayout.show(cards, page.getName()); }
+
+    public void start(@Nonnull Page page) {
+        pack();
+        toPage(page);
+        setVisible(true);
     }
 }

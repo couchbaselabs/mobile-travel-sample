@@ -22,8 +22,9 @@ import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 
 import com.couchbase.travelsample.db.LocalStore;
-import com.couchbase.travelsample.ui.view.LoginView;
 import com.couchbase.travelsample.ui.Nav;
+import com.couchbase.travelsample.ui.view.GuestView;
+import com.couchbase.travelsample.ui.view.LoginView;
 
 
 @Singleton
@@ -34,28 +35,32 @@ public final class LoginController {
     private final Nav nav;
 
     @Inject
-    public LoginController(LocalStore db, Nav nav) {
+    public LoginController(Nav nav, LocalStore db) {
         this.db = db;
         this.nav = nav;
     }
 
-    public void loginAsGuest() { db.openAsGuest(); }
+    public void loginAsGuest() {
+        db.openAsGuest(this::onLoginComplete);
+    }
 
-    public void loginAsUser(String username, String password) {
-        db.openWithValidation(
-            username,
-            password,
-            (ok) -> {
-                if (ok) {
-                    nav.nextPage();
-                    return;
-                }
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Both username and password fields must be filled.",
-                    "Login Error",
-                    JOptionPane.ERROR_MESSAGE);
-            });
+    public void loginWithValidation(String username, char[] password) {
+        db.openWithValidation(username, password, this::onLoginComplete);
+    }
+
+    private void onLoginComplete(Boolean ok) {
+        LOGGER.info("");
+
+        if (!ok) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Both username and password fields must be filled.",
+                "Login Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        nav.toPage(GuestView.PAGE_NAME);
     }
 }
 

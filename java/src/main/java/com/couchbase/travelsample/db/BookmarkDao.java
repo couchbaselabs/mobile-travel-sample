@@ -45,6 +45,11 @@ import com.couchbase.travelsample.model.Hotel;
 import static com.couchbase.travelsample.db.LocalStore.GUEST_DOC_TYPE;
 
 
+/**
+ * Rely *heavily* on the single-threaded executor.
+ * If these things always happen in order, then it is impossible for the
+ * dao to be closed, while it is in the middle of doing something.
+ */
 public class BookmarkDao {
     private final LocalStore db;
     private final DBExecutor exec;
@@ -69,14 +74,15 @@ public class BookmarkDao {
     }
 
     @Nullable
-    private Void addBookmarkAsync(String id) throws CouchbaseLiteException {
-        Database database = db.getDatabase();
+    private Void addBookmarkAsync(@Nonnull String id) throws CouchbaseLiteException {
+        final Database database = db.getDatabase();
+        if (database == null) { return null; }
 
-        Document document = database.getDocument(id);
+        final Document document = database.getDocument(id);
         database.delete(document);
 
-        MutableDocument guestDoc = database.getDocument("user::guest").toMutable();
-        MutableArray hotelIds = guestDoc.getArray("hotels").toMutable();
+        final MutableDocument guestDoc = database.getDocument("user::guest").toMutable();
+        final MutableArray hotelIds = guestDoc.getArray("hotels").toMutable();
         for (int i = 0; i < hotelIds.count(); i++) {
             if (hotelIds.getString(i).equals(id)) { hotelIds.remove(i); }
         }
@@ -90,13 +96,15 @@ public class BookmarkDao {
     // FROM DATABASE as bookmark
     // JOIN DATABASE as hotel ON bookmark.hotels CONTAINS hotel.meta.id
     // WHERE bookmark.type = "bookmarkedhotels"
-    private Void queryBookmarksAsync(Consumer<List<Hotel>> listener) {
-        Database database = db.getDatabase();
+    @Nullable
+    private Void queryBookmarksAsync(@Nonnull Consumer<List<Hotel>> listener) {
+        final Database database = db.getDatabase();
+        if (database == null) { return null; }
 
-        DataSource bookmark = DataSource.database(database).as("bookmark");
-        DataSource hotel = DataSource.database(database).as("hotel");
+        final DataSource bookmark = DataSource.database(database).as("bookmark");
+        final DataSource hotel = DataSource.database(database).as("hotel");
 
-        Query query = QueryBuilder
+        final Query query = QueryBuilder
             .select(SelectResult.all().from("bookmark"), SelectResult.all().from("hotel"))
             .from(bookmark)
             .join(Join.join(hotel)
@@ -104,25 +112,27 @@ public class BookmarkDao {
                     .contains(Expression.property("hotels").from("bookmark"), Meta.id.from("hotel"))))
             .where(Expression.property("type").from("bookmark").equalTo(Expression.string(GUEST_DOC_TYPE)));
 
-        query.addChangeListener(change -> onBookmarks(change, listener));
+        db.registerQuery(query, query.addChangeListener(change -> onBookmarks(change, listener)));
 
         return null;
     }
 
+    @Nullable
     private Void addBookmarkAsync(@Nonnull Hotel hotel) throws CouchbaseLiteException {
-        Database database = db.getDatabase();
+        final Database database = db.getDatabase();
+        if (database == null) { return null; }
 
         // Create a hotel document if it doesn't exist
-        String id = hotel.getId();
+        final String id = hotel.getId();
         if (id == null) { return null; }
 
-        Document hotelDoc = database.getDocument(id);
+        final Document hotelDoc = database.getDocument(id);
 
         if (hotelDoc == null) { database.save(Hotel.toDocument(hotel)); }
 
         // Get the guest document
-        Document doc = database.getDocument(LocalStore.GUEST_DOC_ID);
-        MutableDocument mDoc;
+        final Document doc = database.getDocument(LocalStore.GUEST_DOC_ID);
+        final MutableDocument mDoc;
         if (doc != null) { mDoc = doc.toMutable(); }
         else {
             mDoc = new MutableDocument(LocalStore.GUEST_DOC_ID);
@@ -131,7 +141,7 @@ public class BookmarkDao {
         }
 
         // Add the bookmarked hotel id to the hotels array
-        MutableArray hotels = mDoc.getArray("hotels");
+        final MutableArray hotels = mDoc.getArray("hotels");
         hotels.addString(id);
         database.save(mDoc);
 
@@ -139,9 +149,9 @@ public class BookmarkDao {
     }
 
     private void onBookmarks(QueryChange change, Consumer<List<Hotel>> listener) {
-        ResultSet results = change.getResults();
-        List<Hotel> bookmarks = new ArrayList<>();
-        for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
+        final ResultSet results = change.getResults();
+        final List<Hotel> bookmarks = new ArrayList<>();
+        for (Result result: results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
         SwingUtilities.invokeLater(() -> listener.accept(bookmarks));
     }
 }

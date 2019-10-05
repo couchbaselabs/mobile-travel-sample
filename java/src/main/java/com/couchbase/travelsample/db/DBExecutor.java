@@ -47,7 +47,7 @@ class DBExecutor {
     }
 
     public <T> void submit(
-        ThrowingSupplier<T> task,
+        @Nonnull ThrowingSupplier<T> task,
         @Nullable Consumer<T> onComplete,
         @Nullable Consumer<Exception> onError) {
         executor.submit(() -> {
