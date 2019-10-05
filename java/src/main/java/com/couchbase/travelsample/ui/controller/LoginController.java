@@ -28,7 +28,7 @@ import com.couchbase.travelsample.ui.view.LoginView;
 
 
 @Singleton
-public final class LoginController {
+public final class LoginController extends BaseController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
     private final LocalStore db;
@@ -36,6 +36,7 @@ public final class LoginController {
 
     @Inject
     public LoginController(Nav nav, LocalStore db) {
+        super(nav, db);
         this.db = db;
         this.nav = nav;
     }
