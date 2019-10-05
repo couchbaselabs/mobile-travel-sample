@@ -85,7 +85,7 @@ public final class LocalStore {
             (e) -> listener.accept(false));
     }
 
-    public void reset() { exec.submit(this::resetAsync); }
+    public void cancelQueries() { exec.submit(this::cancelQueriesAsync); }
 
     public void close() { exec.submit(this::closeAsync); }
 
@@ -101,14 +101,14 @@ public final class LocalStore {
     }
 
     @Nullable
-    private Void resetAsync() {
+    private Void cancelQueriesAsync() {
         for (ActiveQuery activeQuery: activeQueries) { activeQuery.query.removeChangeListener(activeQuery.token); }
         return null;
     }
 
     @Nullable
     private Void closeAsync() throws CouchbaseLiteException {
-        resetAsync();
+        cancelQueriesAsync();
         database.close();
         database = null;
         return null;

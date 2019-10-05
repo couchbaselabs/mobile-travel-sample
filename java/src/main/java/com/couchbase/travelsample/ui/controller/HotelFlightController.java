@@ -21,19 +21,18 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
 @Singleton
-public final class HotelFlightController {
+public final class HotelFlightController extends BaseController {
     private final static Logger LOGGER = Logger.getLogger(HotelFlightView.class.getName());
 
-    private final Nav nav;
-
     @Inject
-    public HotelFlightController(Nav nav) {
-        this.nav = nav;
+    public HotelFlightController(Nav nav, LocalStore localStore) {
+        super(nav, localStore);
     }
 
     public void hotelSearchButtonPressed(String hotelLocation, String hotelDesc) {
@@ -45,8 +44,7 @@ public final class HotelFlightController {
         String flightOrigin,
         String flightDest,
         String flightOriginDate,
-        String flightDestDate)
-    {
+        String flightDestDate) {
         LOGGER.log(Level.INFO, "Origin: " + flightOrigin);
         LOGGER.log(Level.INFO, "Origin date input: " + flightOriginDate);
         LOGGER.log(Level.INFO, "Destination: " + flightDest);

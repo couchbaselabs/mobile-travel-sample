@@ -29,14 +29,10 @@ import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.RemoteStore;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
-import com.couchbase.travelsample.ui.view.LoginView;
 
 
 @Singleton
-public final class GuestController {
-    private final Nav nav;
-
-    private final LocalStore localStore;
+public final class GuestController extends BaseController {
     private final BookmarkDao bookmarkDao;
     private final HotelDao hotelDao;
 
@@ -55,8 +51,7 @@ public final class GuestController {
         BookmarkDao bookmarkDao,
         HotelDao hotelDao,
         RemoteStore remote) {
-        this.nav = nav;
-        this.localStore = localStore;
+        super(nav, localStore);
         this.bookmarkDao = bookmarkDao;
         this.hotelDao = hotelDao;
         this.remote = remote;
@@ -65,14 +60,6 @@ public final class GuestController {
     public DefaultListModel<GuestView.HotelElement> getHotelModel() { return hotelListModel; }
 
     public DefaultListModel<GuestView.HotelElement> getBookmarkModel() { return bookmarkListModel; }
-
-    // !!! Move to super class
-    public void logout() {
-        localStore.close();
-        nav.toPage(LoginView.PAGE_NAME);
-    }
-
-    public void close() { localStore.reset(); }
 
     public void fetchHotels() {
         if (isFetchingHotels) { return; }
@@ -118,12 +105,12 @@ public final class GuestController {
 
     private void updateBookmarks(List<Hotel> bookmarks) {
         bookmarkListModel.clear();
-        for (Hotel bookmark : bookmarks) { bookmarkListModel.addElement(new GuestView.HotelElement(bookmark)); }
+        for (Hotel bookmark: bookmarks) { bookmarkListModel.addElement(new GuestView.HotelElement(bookmark)); }
         isFetchingBookmarks = false;
     }
 
     private void updateHotels(List<Hotel> hotels) {
         hotelListModel.clear();
-        for (Hotel hotel : hotels) { hotelListModel.addElement(new GuestView.HotelElement(hotel)); }
+        for (Hotel hotel: hotels) { hotelListModel.addElement(new GuestView.HotelElement(hotel)); }
     }
 }
