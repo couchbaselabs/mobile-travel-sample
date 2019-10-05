@@ -15,18 +15,52 @@
 //
 package com.couchbase.travelsample.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.couchbase.travelsample.AppFactory;
+import com.couchbase.travelsample.ui.view.Page;
 import com.couchbase.travelsample.ui.view.RootView;
 
 
 @Singleton
 public class Nav {
-    private final RootView root;
+    private static final Logger LOGGER = Logger.getLogger(Nav.class.getName());
+
+
+    private final RootView rootView;
+
+    private final Map<String, Page> pages = new HashMap<>();
+
+    private Page frontPage;
 
     @Inject
-    public Nav() { this.root = null; }
+    public Nav(RootView rootView) { this.rootView = rootView; }
 
-    public void nextPage() {}
+    public void start(AppFactory appFactory) {
+        for (Page page : appFactory.pages()) {
+            final String name = page.getName();
+            LOGGER.info("Adding page: " + name + " @" + page);
+            pages.put(name, page);
+            rootView.addPage(page);
+        }
+
+        frontPage = appFactory.startPage();
+        rootView.start(frontPage);
+    }
+
+    public void toPage(String pageName) {
+        Page page = pages.get(pageName);
+        LOGGER.info("Moving to page: " + pageName + " @" + page);
+        if (page == null) { return; }
+
+        page.open();
+        rootView.toPage(page);
+        frontPage.close();
+        frontPage = page;
+    }
 }

@@ -18,13 +18,14 @@ package com.couchbase.travelsample.db;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.FullTextExpression;
-import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.model.Hotel;
@@ -35,29 +36,41 @@ public class HotelDao {
     private final DBExecutor exec;
 
     @Inject
-    public HotelDao(LocalStore db, DBExecutor exec) {
+    public HotelDao(@Nonnull LocalStore db, @Nonnull DBExecutor exec) {
         this.db = db;
         this.exec = exec;
     }
 
-    public void searchHotels(String location, String description, Consumer<List<Hotel>> listener) {
-        exec.submit(() -> getHotelsAsync(location, description), listener);
+    public void fetchHotels(@Nonnull Consumer<List<Hotel>> listener) {
+        exec.submit(this::fetchHotelsAsync, listener);
     }
 
-    private List<Hotel> getHotelsAsync(String location, String description) throws CouchbaseLiteException {
-        Expression descExp = FullTextExpression.index("descFTSIndex").match(description);
-        Expression locationExp = Expression.property("country")
-            .like(Expression.string("%" + location + "%"))
-            .or(Expression.property("city").like(Expression.string("%" + location + "%")))
-            .or(Expression.property("state").like(Expression.string("%" + location + "%")))
-            .or(Expression.property("address").like(Expression.string("%" + location + "%")));
+    @Nullable
+    private List<Hotel> fetchHotelsAsync() throws CouchbaseLiteException {
+        if (!db.isOpen()) { return null; }
 
-        Expression searchExp = descExp.and(locationExp);
-        Query hotelSearchQuery = QueryBuilder
-            .select(SelectResult.all())
-            .from(DataSource.database(db.getDatabase()))
-            .where(Expression.property("type").equalTo(Expression.string("hotel")).and(searchExp));
+        return Hotel.fromResults(
+            QueryBuilder.select(SelectResult.all())
+                .from(DataSource.database(db.getDatabase()))
+                .where(Expression.property("type").equalTo(Expression.string("hotel")))
+                .execute());
+    }
 
-        return Hotel.fromResults(hotelSearchQuery.execute());
+    @Nullable
+    private List<Hotel> searchHotelsAsync(@Nonnull String location, @Nonnull String description)
+        throws CouchbaseLiteException {
+        if (!db.isOpen()) { return null; }
+
+        return Hotel.fromResults(
+            QueryBuilder.select(SelectResult.all())
+                .from(DataSource.database(db.getDatabase()))
+                .where(Expression.property("type").equalTo(Expression.string("hotel"))
+                    .and(FullTextExpression.index("descFTSIndex").match(description)
+                        .add(Expression.property("country")
+                            .like(Expression.string("%" + location + "%"))
+                            .or(Expression.property("city").like(Expression.string("%" + location + "%")))
+                            .or(Expression.property("state").like(Expression.string("%" + location + "%")))
+                            .or(Expression.property("address").like(Expression.string("%" + location + "%"))))))
+                .execute());
     }
 }

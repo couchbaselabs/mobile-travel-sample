@@ -29,7 +29,10 @@ import com.toedter.calendar.JDateChooser;
 
 
 @Singleton
-public final class HotelFlightView {
+public final class HotelFlightView extends Page {
+    public static final String PAGE_NAME = "HOTEL-FLIGHT";
+
+
     private final HotelFlightController controller;
 
     private JPanel panel;
@@ -55,6 +58,8 @@ public final class HotelFlightView {
 
     @Inject
     public HotelFlightView(HotelFlightController controller) {
+        super(PAGE_NAME);
+
         this.controller = controller;
 
         hotelSearchButton.addActionListener(
@@ -74,7 +79,14 @@ public final class HotelFlightView {
         returnFlightDate.add(returnFlightDateChooser);
     }
 
+    @Override
     public JPanel getView() { return panel; }
+
+    @Override
+    public void open() { }
+
+    @Override
+    public void close() { }
 
     private String getDate(JDateChooser dateChooser) {
         return ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();

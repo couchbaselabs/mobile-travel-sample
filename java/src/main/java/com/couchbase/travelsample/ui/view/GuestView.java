@@ -33,7 +33,9 @@ import com.couchbase.travelsample.ui.controller.GuestController;
 
 
 @Singleton
-public final class GuestView {
+public final class GuestView extends Page {
+    public static final String PAGE_NAME = "GUEST";
+
     public static class HotelElement {
         public final Hotel hotel;
 
@@ -43,53 +45,60 @@ public final class GuestView {
         public String toString() { return "- " + hotel.getName() + " on " + hotel.getAddress(); }
     }
 
+
     private final GuestController controller;
 
     private JPanel panel;
-    private JTabbedPane hotelPane;
-    private JTextField guestHotelLocationInput;
-    private JTextField guestHotelDescriptionInput;
-    private JLabel locationLabel;
-    private JLabel descriptionLabel;
-    private JButton guestHotelSearchButton;
-    private JLabel locationImage;
-    private JLabel descImage;
+    private JTabbedPane tabPane;
+
+    private JPanel bookmarksTab;
     private JLabel infoBox;
     private JList<HotelElement> bookmarkList;
-    private JList<HotelElement> hotelList;
-    private JScrollPane scrollPane;
-    private JLabel bookmarkNotification;
     private JButton deleteBookmarkButton;
-    private JButton logoutButton;
-    private JButton logoutButton1;
+    private JButton logoutBookmarksButton;
+
+    private JPanel hotelsTab;
+    private JLabel locationImage;
+    private JLabel locationLabel;
+    private JTextField hotelLocation;
+    private JLabel descriptionImage;
+    private JLabel descriptionLabel;
+    private JTextField hotelDescription;
+    private JButton guestHotelSearchButton;
+    private JScrollPane scrollPane;
+    private JList<HotelElement> hotelList;
+    private JLabel bookmarkNotification;
     private JButton bookmarkHotelButton;
+    private JButton logoutHotelsButton;
 
     @Inject
     public GuestView(GuestController controller) {
+        super(PAGE_NAME);
+
         this.controller = controller;
-
-        hotelList.setModel(controller.getHotelModel());
-        bookmarkHotelButton.setVisible(false);
-        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
-
-        bookmarkHotelButton.setVisible(false);
-        deleteBookmarkButton.addActionListener(
-            e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
 
         bookmarkList.setModel(controller.getBookmarkModel());
 
-        bookmarkNotification.setVisible(false);
+        logoutBookmarksButton.setVisible(true);
+        logoutBookmarksButton.addActionListener(e -> controller.logout());
 
-        guestHotelSearchButton.addActionListener(
-            e -> controller.searchHotels(
-                guestHotelLocationInput.getText(),
-                guestHotelDescriptionInput.getText()));
-
-        // !!! controller.fetchBookmarks();
-        // !!! controller.fetchHotels();
+        deleteBookmarkButton.setVisible(false);
+        deleteBookmarkButton.addActionListener(
+            e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
     }
 
+    @Override
     public JPanel getView() { return panel; }
+
+    @Override
+    public void open() {
+        controller.fetchBookmarks();
+    }
+
+    @Override
+    public void close() {
+        controller.close();
+    }
 
     private void bookmarkHotel() {
         controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
@@ -103,6 +112,29 @@ public final class GuestView {
 
     private void createUIComponents() {
         locationImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/globe.png")));
-        descImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
+        descriptionImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
+    }
+
+
+    private void setupHotels() {
+        hotelList.setModel(controller.getHotelModel());
+        bookmarkList.setModel(controller.getBookmarkModel());
+
+        bookmarkNotification.setVisible(false);
+
+        logoutHotelsButton.setVisible(false);
+        logoutHotelsButton.addActionListener(e -> controller.logout());
+
+        bookmarkHotelButton.setVisible(false);
+        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
+
+        guestHotelSearchButton.addActionListener(
+            e -> controller.searchHotels(
+                hotelLocation.getText(),
+                hotelDescription.getText()));
+    }
+
+    public void openHotels() {
+        controller.fetchHotels();
     }
 }

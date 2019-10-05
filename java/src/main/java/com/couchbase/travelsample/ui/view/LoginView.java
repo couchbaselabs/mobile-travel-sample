@@ -29,7 +29,10 @@ import com.couchbase.travelsample.ui.controller.LoginController;
 
 
 @Singleton
-public final class LoginView {
+public final class LoginView extends Page {
+    public static final String PAGE_NAME = "LOGIN";
+
+
     private final LoginController controller;
 
     private JPanel panel;
@@ -44,16 +47,25 @@ public final class LoginView {
 
     @Inject
     public LoginView(LoginController controller) {
+        super(PAGE_NAME);
+
         this.controller = controller;
 
-        loginButton.addActionListener(e -> controller.loginAsUser(
-            usernameInput.getText(),
-            passwordInput.getText()));
-
         guestButton.addActionListener(e -> controller.loginAsGuest());
+
+        loginButton.addActionListener(e -> controller.loginWithValidation(
+            usernameInput.getText(),
+            passwordInput.getPassword()));
     }
 
+    @Override
     public JPanel getView() { return panel; }
+
+    @Override
+    public void open() { }
+
+    @Override
+    public void close() { }
 
     private void createUIComponents() {
         image = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));

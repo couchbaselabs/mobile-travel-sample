@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
@@ -28,8 +29,12 @@ import com.couchbase.travelsample.ui.view.HotelFlightView;
 public final class HotelFlightController {
     private final static Logger LOGGER = Logger.getLogger(HotelFlightView.class.getName());
 
+    private final Nav nav;
+
     @Inject
-    public HotelFlightController() { }
+    public HotelFlightController(Nav nav) {
+        this.nav = nav;
+    }
 
     public void hotelSearchButtonPressed(String hotelLocation, String hotelDesc) {
         LOGGER.log(Level.INFO, "Location: " + hotelLocation);
