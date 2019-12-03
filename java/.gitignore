@@ -20,4 +20,6 @@ build/
 # Log Files
 *.log
 
+# Databases
+/database
 
