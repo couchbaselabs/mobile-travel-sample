@@ -15,16 +15,16 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.awt.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import com.couchbase.travelsample.ui.controller.HotelFlightController;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import com.toedter.calendar.JDateChooser;
 
 
@@ -96,4 +96,5 @@ public final class HotelFlightView extends Page {
         locationImage = new JLabel(new ImageIcon(HotelFlightView.class.getResource("images/globe.png")));
         descImage = new JLabel(new ImageIcon(HotelFlightView.class.getResource("images/magglass.png")));
     }
+
 }

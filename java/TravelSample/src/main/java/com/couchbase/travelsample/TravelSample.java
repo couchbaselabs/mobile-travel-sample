@@ -27,13 +27,10 @@ public class TravelSample {
         appFactory.app().start(appFactory);
     }
 
-
     private final Nav nav;
 
     @Inject
     public TravelSample(Nav nav) { this.nav = nav; }
 
-    private void start(AppFactory appFactory) {
-        SwingUtilities.invokeLater(() -> nav.start(appFactory));
-    }
+    private void start(AppFactory appFactory) { SwingUtilities.invokeLater(() -> nav.start(appFactory)); }
 }

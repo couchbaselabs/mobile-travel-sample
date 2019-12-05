@@ -17,7 +17,6 @@ package com.couchbase.travelsample.db;
 
 import java.util.List;
 import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -39,6 +38,13 @@ public class HotelDao {
     public HotelDao(@Nonnull LocalStore db, @Nonnull DBExecutor exec) {
         this.db = db;
         this.exec = exec;
+    }
+
+    public void searchHotels(
+        @Nonnull String location,
+        @Nonnull String description,
+        @Nonnull Consumer<List<Hotel>> listener) {
+        exec.submit(() -> searchHotelsAsync(location, description), listener);
     }
 
     public void fetchHotels(@Nonnull Consumer<List<Hotel>> listener) {

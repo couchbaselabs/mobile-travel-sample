@@ -38,5 +38,9 @@ public interface ViewModule {
 
     @Binds
     @IntoSet
+    Page searchHotelView(HotelSearchView v);
+
+    @Binds
+    @IntoSet
     Page hotelFlightView(HotelFlightView v);
 }

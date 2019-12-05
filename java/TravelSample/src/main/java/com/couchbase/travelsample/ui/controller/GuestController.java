@@ -29,6 +29,7 @@ import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.RemoteStore;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
+import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
 @Singleton
@@ -60,6 +61,10 @@ public final class GuestController extends BaseController {
     public DefaultListModel<GuestView.HotelElement> getHotelModel() { return hotelListModel; }
 
     public DefaultListModel<GuestView.HotelElement> getBookmarkModel() { return bookmarkListModel; }
+
+    public void selectHotel() {
+        nav.toPage(HotelSearchView.PAGE_NAME);
+    }
 
     public void fetchHotels() {
         if (isFetchingHotels) { return; }
