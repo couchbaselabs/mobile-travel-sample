@@ -15,18 +15,15 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.awt.*;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.Timer;
+import javax.swing.*;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.controller.GuestController;
@@ -49,27 +46,13 @@ public final class GuestView extends Page {
     private final GuestController controller;
 
     private JPanel panel;
-    private JTabbedPane tabPane;
 
-    private JPanel bookmarksTab;
-    private JLabel infoBox;
     private JList<HotelElement> bookmarkList;
-    private JButton deleteBookmarkButton;
-    private JButton logoutBookmarksButton;
 
-    private JPanel hotelsTab;
-    private JLabel locationImage;
-    private JLabel locationLabel;
-    private JTextField hotelLocation;
-    private JLabel descriptionImage;
-    private JLabel descriptionLabel;
-    private JTextField hotelDescription;
-    private JButton guestHotelSearchButton;
-    private JScrollPane scrollPane;
-    private JList<HotelElement> hotelList;
-    private JLabel bookmarkNotification;
-    private JButton bookmarkHotelButton;
-    private JButton logoutHotelsButton;
+    private JButton logoutButton;
+
+    private JButton deleteBookmarkButton;
+    private JButton addBookmarkButton;
 
     @Inject
     public GuestView(GuestController controller) {
@@ -79,12 +62,12 @@ public final class GuestView extends Page {
 
         bookmarkList.setModel(controller.getBookmarkModel());
 
-        logoutBookmarksButton.setVisible(true);
-        logoutBookmarksButton.addActionListener(e -> controller.logout());
+        logoutButton.addActionListener(e -> controller.logout());
 
-        deleteBookmarkButton.setVisible(false);
-        deleteBookmarkButton.addActionListener(
-            e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
+        addBookmarkButton.addActionListener(e -> controller.selectHotel());
+
+        //deleteBookmarkButton.setVisible(false);
+        deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
     }
 
     @Override
@@ -99,42 +82,43 @@ public final class GuestView extends Page {
     public void close() {
         controller.close();
     }
-
-    private void bookmarkHotel() {
-        controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
-        displayBookmarkedNotification(3000);
-    }
-
-    private void displayBookmarkedNotification(int delayMs) {
-        bookmarkNotification.setVisible(true);
-        new Timer(delayMs, e -> bookmarkNotification.setVisible(false));
-    }
-
-    private void createUIComponents() {
-        locationImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/globe.png")));
-        descriptionImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
-    }
-
-
-    private void setupHotels() {
-        hotelList.setModel(controller.getHotelModel());
-        bookmarkList.setModel(controller.getBookmarkModel());
-
-        bookmarkNotification.setVisible(false);
-
-        logoutHotelsButton.setVisible(false);
-        logoutHotelsButton.addActionListener(e -> controller.logout());
-
-        bookmarkHotelButton.setVisible(false);
-        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
-
-        guestHotelSearchButton.addActionListener(
-            e -> controller.searchHotels(
-                hotelLocation.getText(),
-                hotelDescription.getText()));
-    }
-
-    public void openHotels() {
-        controller.fetchHotels();
-    }
+//
+//    public void openHotels() {
+//        controller.fetchHotels();
+//    }
+//
+//
+//    private void bookmarkHotel() {
+//        controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
+//        displayBookmarkedNotification(3000);
+//    }
+//
+//    private void displayBookmarkedNotification(int delayMs) {
+//        bookmarkNotification.setVisible(true);
+//        new Timer(delayMs, e -> bookmarkNotification.setVisible(false));
+//    }
+//
+//    private void createUIComponents() {
+//        locationImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/globe.png")));
+//        descriptionImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
+//    }
+//
+//
+//    private void setupHotels() {
+//        hotelList.setModel(controller.getHotelModel());
+//        bookmarkList.setModel(controller.getBookmarkModel());
+//
+//        bookmarkNotification.setVisible(false);
+//
+//        logoutHotelsButton.setVisible(false);
+//        logoutHotelsButton.addActionListener(e -> controller.logout());
+//
+//        bookmarkHotelButton.setVisible(false);
+//        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
+//
+//        guestHotelSearchButton.addActionListener(
+//            e -> controller.searchHotels(
+//                hotelLocation.getText(),
+//                hotelDescription.getText()));
+//    }
 }

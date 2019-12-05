@@ -31,22 +31,13 @@ import com.couchbase.travelsample.ui.view.LoginView;
 public final class LoginController extends BaseController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
-    private final LocalStore db;
-    private final Nav nav;
-
     @Inject
-    public LoginController(Nav nav, LocalStore db) {
-        super(nav, db);
-        this.db = db;
-        this.nav = nav;
-    }
+    public LoginController(Nav nav, LocalStore localStore) { super(nav, localStore); }
 
-    public void loginAsGuest() {
-        db.openAsGuest(this::onLoginComplete);
-    }
+    public void loginAsGuest() { localStore.openAsGuest(this::onLoginComplete); }
 
     public void loginWithValidation(String username, char[] password) {
-        db.openWithValidation(username, password, this::onLoginComplete);
+        localStore.openWithValidation(username, password, this::onLoginComplete);
     }
 
     private void onLoginComplete(Boolean ok) {

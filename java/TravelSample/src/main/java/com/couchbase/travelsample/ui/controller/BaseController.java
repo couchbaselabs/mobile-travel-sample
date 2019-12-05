@@ -21,8 +21,8 @@ import com.couchbase.travelsample.ui.view.LoginView;
 
 
 public abstract class BaseController {
-    private final Nav nav;
-    private final LocalStore localStore;
+    protected final Nav nav;
+    protected final LocalStore localStore;
 
     protected BaseController(Nav nav, LocalStore localStore) {
         this.nav = nav;

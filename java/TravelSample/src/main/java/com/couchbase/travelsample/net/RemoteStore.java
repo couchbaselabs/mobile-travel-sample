@@ -23,15 +23,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-
-import com.couchbase.travelsample.model.Hotel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,10 +34,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.couchbase.travelsample.model.Hotel;
+import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
 public class RemoteStore {
-    public static final String WEB_APP_ENDPOINT = "http://54.185.31.148:8080/api/";
+    private final static Logger LOGGER = Logger.getLogger(RemoteStore.class.getName());
+
+    public static final String WEB_APP_ENDPOINT = "http://0.0.0.0:8080/api/";
+    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
 
     private final OkHttpClient client;
 
@@ -72,17 +76,20 @@ public class RemoteStore {
             return;
         }
 
-        Request request = new Request.Builder().url(url).build();
+        LOGGER.log(Level.INFO, "Query: " + url);
 
-        client.newCall(request).enqueue(new Callback() {
+
+        client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
             @Override
             public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
 
             @Override
             public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
                 if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+
                 try (ResponseBody responseBody = response.body()) {
                     if (responseBody == null) { throw new IOException("Empty response"); }
+
                     String responseString = responseBody.string();
                     JSONArray data = new JSONObject(responseString).getJSONArray("data");
 

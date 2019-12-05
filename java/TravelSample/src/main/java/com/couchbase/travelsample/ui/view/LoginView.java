@@ -15,15 +15,9 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import com.couchbase.travelsample.ui.controller.LoginController;
 
@@ -32,7 +26,6 @@ import com.couchbase.travelsample.ui.controller.LoginController;
 public final class LoginView extends Page {
     public static final String PAGE_NAME = "LOGIN";
 
-
     private final LoginController controller;
 
     private JPanel panel;
@@ -40,7 +33,7 @@ public final class LoginView extends Page {
     private JButton loginButton;
     private JTextField usernameInput;
     private JPasswordField passwordInput;
-    private JLabel image;
+    private JLabel logo;
     private JLabel username;
     private JLabel password;
     private JLabel planeImage;
@@ -68,7 +61,7 @@ public final class LoginView extends Page {
     public void close() { }
 
     private void createUIComponents() {
-        image = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
+        logo = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
         planeImage = new JLabel(new ImageIcon(LoginView.class.getResource("images/plane.png")));
     }
 }
