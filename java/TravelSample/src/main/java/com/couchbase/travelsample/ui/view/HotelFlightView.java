@@ -15,17 +15,18 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.awt.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
 
 import com.couchbase.travelsample.ui.controller.HotelFlightController;
-
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import com.toedter.calendar.JDateChooser;
 
 
 @Singleton
@@ -83,7 +84,7 @@ public final class HotelFlightView extends Page {
     public JPanel getView() { return panel; }
 
     @Override
-    public void open() { }
+    public void open(Object args) { }
 
     @Override
     public void close() { }

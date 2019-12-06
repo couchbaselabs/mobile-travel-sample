@@ -18,16 +18,17 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="aa192" class="javax.swing.JLabel" binding="password">
+          <component id="aa192" class="javax.swing.JLabel">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font size="18"/>
+              <labelFor value="58725"/>
               <text value="Password"/>
             </properties>
           </component>
-          <component id="fbe4e" class="javax.swing.JTextField" binding="usernameInput">
+          <component id="fbe4e" class="javax.swing.JTextField" binding="username">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="-1"/>
@@ -37,16 +38,17 @@
               <font size="22"/>
             </properties>
           </component>
-          <component id="d55ac" class="javax.swing.JLabel" binding="username">
+          <component id="d55ac" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font size="18"/>
+              <labelFor value="fbe4e"/>
               <text value="Username"/>
             </properties>
           </component>
-          <component id="58725" class="javax.swing.JPasswordField" binding="passwordInput">
+          <component id="58725" class="javax.swing.JPasswordField" binding="password">
             <constraints>
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="-1"/>
