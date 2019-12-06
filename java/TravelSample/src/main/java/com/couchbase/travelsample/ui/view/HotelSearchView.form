@@ -6,6 +6,7 @@
       <xy x="20" y="20" width="800" height="600"/>
     </constraints>
     <properties>
+      <foreground color="-16777216"/>
       <minimumSize width="-1" height="-1"/>
       <preferredSize width="1280" height="800"/>
     </properties>
@@ -13,9 +14,7 @@
     <children>
       <component id="25fec" class="javax.swing.JTextField" binding="hotelDescription">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="22"/>
@@ -25,19 +24,21 @@
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <foreground color="-16777216"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="a344a" class="javax.swing.JList" binding="hotels">
             <constraints/>
             <properties>
               <dropMode value="USE_SELECTION"/>
-              <enabled value="false"/>
+              <enabled value="true"/>
               <fixedCellHeight value="40"/>
-              <fixedCellWidth value="1280"/>
+              <fixedCellWidth value="-1"/>
               <font size="12"/>
               <foreground color="-16777216"/>
-              <selectionMode value="0"/>
+              <selectionMode value="2"/>
               <verifyInputWhenFocusTarget value="true"/>
             </properties>
           </component>
@@ -48,7 +49,9 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <enabled value="false"/>
           <font size="18"/>
+          <labelFor value="4bae2"/>
           <text value="Location"/>
         </properties>
       </component>
@@ -69,6 +72,7 @@
         </constraints>
         <properties>
           <font size="18"/>
+          <labelFor value="25fec"/>
           <text value="Description"/>
         </properties>
       </component>
@@ -89,15 +93,6 @@
           <foreground color="-1"/>
           <opaque value="true"/>
           <text value="LOGOUT"/>
-        </properties>
-      </component>
-      <component id="d4832" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font size="20"/>
-          <text value="HOTELS:"/>
         </properties>
       </component>
       <hspacer id="45ba">
@@ -124,6 +119,16 @@
           <horizontalAlignment value="0"/>
           <opaque value="true"/>
           <text value="DONE"/>
+        </properties>
+      </component>
+      <component id="9e2a8" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font size="20"/>
+          <labelFor value="c85e7"/>
+          <text value="HOTELS:"/>
         </properties>
       </component>
     </children>

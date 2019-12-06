@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 
 public class Hotel {
-    @Nullable
+    @Nonnull
     public static Hotel fromJSON(@Nonnull JSONObject json) {
         String id = (!json.has("id")) ? null : json.getString("id");
         return new Hotel(id, json.getString("name"), json.getString("address"));

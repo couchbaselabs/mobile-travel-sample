@@ -39,7 +39,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.couchbase.travelsample.model.Hotel;
-import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
 public class RemoteStore {

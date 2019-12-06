@@ -16,106 +16,58 @@
 package com.couchbase.travelsample.ui.controller;
 
 import java.util.List;
-
+import java.util.Set;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
-import javax.swing.SwingUtilities;
 
 import com.couchbase.travelsample.db.BookmarkDao;
-import com.couchbase.travelsample.db.HotelDao;
 import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
-import com.couchbase.travelsample.net.RemoteStore;
 import com.couchbase.travelsample.ui.Nav;
-import com.couchbase.travelsample.ui.view.GuestView;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
 @Singleton
 public final class GuestController extends BaseController {
+    private final static Logger LOGGER = Logger.getLogger(GuestController.class.getName());
+
     private final BookmarkDao bookmarkDao;
-    private final HotelDao hotelDao;
 
-    private final RemoteStore remote;
+    private final DefaultListModel<Hotel> bookmarkListModel = new DefaultListModel<>();
 
-    private final DefaultListModel<GuestView.HotelElement> hotelListModel = new DefaultListModel<>();
-    private final DefaultListModel<GuestView.HotelElement> bookmarkListModel = new DefaultListModel<>();
-
-    private boolean isFetchingHotels;
     private boolean isFetchingBookmarks;
 
     @Inject
-    public GuestController(
-        Nav nav,
-        LocalStore localStore,
-        BookmarkDao bookmarkDao,
-        HotelDao hotelDao,
-        RemoteStore remote) {
+    public GuestController(Nav nav, LocalStore localStore, BookmarkDao bookmarkDao) {
         super(nav, localStore);
         this.bookmarkDao = bookmarkDao;
-        this.hotelDao = hotelDao;
-        this.remote = remote;
     }
 
-    public DefaultListModel<GuestView.HotelElement> getHotelModel() { return hotelListModel; }
+    public DefaultListModel<Hotel> getBookmarksModel() { return bookmarkListModel; }
 
-    public DefaultListModel<GuestView.HotelElement> getBookmarkModel() { return bookmarkListModel; }
-
-    public void selectHotel() {
-        nav.toPage(HotelSearchView.PAGE_NAME);
-    }
-
-    public void fetchHotels() {
-        if (isFetchingHotels) { return; }
-        isFetchingHotels = true;
-
-        // update ui to display hotels
-        hotelDao.fetchHotels(this::updateHotels);
-    }
+    public void selectHotel() { nav.toPage(HotelSearchView.PAGE_NAME); }
 
     public void fetchBookmarks() {
         if (isFetchingBookmarks) { return; }
         isFetchingBookmarks = true;
-
-        // update ui to display bookmarks
         bookmarkDao.getBookmarks(this::updateBookmarks);
     }
 
-    public void searchHotels(String location, String description) {
-        hotelListModel.removeAllElements();
-        final DefaultListModel<String> newHotels = new DefaultListModel<>();
-
-        remote.searchHotels(
-            location,
-            description,
-            (hotels) -> SwingUtilities.invokeLater(() -> updateHotels(hotels)));
+    public void bookmarkHotels(Set<Hotel> hotels) {
+        bookmarkDao.addBookmarks(hotels);
+        fetchBookmarks();
     }
 
-    // 1. Save the selected Hotel data into the database.
-    // 2. Get or create the guest document with id = user::guest.
-    //    Document Structure: { type: 'bookmarkedhotels', hotels: [] }
-    //    The hotels is an Array of the bookmarked hotel ids
-    // 3. Add the selected hotel id to the hotels array and save the guest document.
-    // 4. Display the UI indicating that the hotel has been bookmarked.
-    public void bookmarkHotel(Hotel hotel) {
-        bookmarkListModel.addElement(new GuestView.HotelElement(hotel));
-        bookmarkDao.addBookmark(hotel);
-    }
-
-    public void deleteBookmark(GuestView.HotelElement hotel) {
+    public void deleteBookmark(Hotel hotel) {
         bookmarkListModel.removeElement(hotel);
-        bookmarkDao.removeBookmark(hotel.hotel);
+        bookmarkDao.removeBookmark(hotel);
     }
 
-    private void updateBookmarks(List<Hotel> bookmarks) {
+    private void updateBookmarks(List<Hotel> hotels) {
         bookmarkListModel.clear();
-        for (Hotel bookmark: bookmarks) { bookmarkListModel.addElement(new GuestView.HotelElement(bookmark)); }
+        for (Hotel hotel : hotels) { bookmarkListModel.addElement(hotel); }
         isFetchingBookmarks = false;
-    }
-
-    private void updateHotels(List<Hotel> hotels) {
-        hotelListModel.clear();
-        for (Hotel hotel: hotels) { hotelListModel.addElement(new GuestView.HotelElement(hotel)); }
     }
 }

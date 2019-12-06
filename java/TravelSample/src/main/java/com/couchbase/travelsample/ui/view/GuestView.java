@@ -15,39 +15,77 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.awt.*;
-import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
-
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.controller.GuestController;
+import com.couchbase.travelsample.ui.view.widgets.HotelCellRenderer;
 
 
 @Singleton
 public final class GuestView extends Page {
+    private final static Logger LOGGER = Logger.getLogger(GuestView.class.getName());
     public static final String PAGE_NAME = "GUEST";
 
-    public static class HotelElement {
-        public final Hotel hotel;
 
-        public HotelElement(@Nonnull Hotel hotel) { this.hotel = hotel; }
+    static class SelectionListener implements ListSelectionListener {
+        private Set<Hotel> selection;
 
-        @Override
-        public String toString() { return "- " + hotel.getName() + " on " + hotel.getAddress(); }
+        public Set<Hotel> getSelection() { return (selection == null) ? null : new HashSet<>(selection); }
+
+        public void valueChanged(ListSelectionEvent e) {
+            Object src = e.getSource();
+            if (!(src instanceof JList)) { return; }
+            JList<Hotel> hotels = ((JList<Hotel>) src);
+
+            ListModel<Hotel> model = hotels.getModel();
+            ListSelectionModel selectionModel = hotels.getSelectionModel();
+
+            if (selectionModel.isSelectionEmpty()) {
+                selection = null;
+                return;
+            }
+
+            selection = new HashSet<>();
+            int n = selectionModel.getMaxSelectionIndex();
+            for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
+                selection.add(model.getElementAt(i));
+            }
+
+            LOGGER.log(Level.INFO, "new selection: " + selection);
+        }
+    }
+
+    class BookmarkDataListener implements ListDataListener {
+        public void contentsChanged(ListDataEvent e) { setDeleteButtonEnabled(); }
+
+        public void intervalAdded(ListDataEvent e) { setDeleteButtonEnabled(); }
+
+        public void intervalRemoved(ListDataEvent e) { setDeleteButtonEnabled(); }
     }
 
 
     private final GuestController controller;
+    private final DefaultListModel<Hotel> model;
 
     private JPanel panel;
 
-    private JList<HotelElement> bookmarkList;
+    private JList<Hotel> bookmarks;
 
     private JButton logoutButton;
 
@@ -59,66 +97,32 @@ public final class GuestView extends Page {
         super(PAGE_NAME);
 
         this.controller = controller;
-
-        bookmarkList.setModel(controller.getBookmarkModel());
+        this.model = controller.getBookmarksModel();
 
         logoutButton.addActionListener(e -> controller.logout());
-
         addBookmarkButton.addActionListener(e -> controller.selectHotel());
+        deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(bookmarks.getSelectedValue()));
 
-        //deleteBookmarkButton.setVisible(false);
-        deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(bookmarkList.getSelectedValue()));
+        bookmarks.setModel(model);
+        bookmarks.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        //bookmarks.addListSelectionListener(selectionListener);
+        bookmarks.setCellRenderer(new HotelCellRenderer());
+        model.addListDataListener(new BookmarkDataListener());
+
+        setDeleteButtonEnabled();
     }
 
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    public void open() {
+    public void open(Object args) {
+        if (args instanceof Set) { controller.bookmarkHotels((Set<Hotel>) args); }
         controller.fetchBookmarks();
     }
 
     @Override
-    public void close() {
-        controller.close();
-    }
-//
-//    public void openHotels() {
-//        controller.fetchHotels();
-//    }
-//
-//
-//    private void bookmarkHotel() {
-//        controller.bookmarkHotel(hotelList.getSelectedValue().hotel);
-//        displayBookmarkedNotification(3000);
-//    }
-//
-//    private void displayBookmarkedNotification(int delayMs) {
-//        bookmarkNotification.setVisible(true);
-//        new Timer(delayMs, e -> bookmarkNotification.setVisible(false));
-//    }
-//
-//    private void createUIComponents() {
-//        locationImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/globe.png")));
-//        descriptionImage = new JLabel(new ImageIcon(GuestView.class.getResource("images/magglass.png")));
-//    }
-//
-//
-//    private void setupHotels() {
-//        hotelList.setModel(controller.getHotelModel());
-//        bookmarkList.setModel(controller.getBookmarkModel());
-//
-//        bookmarkNotification.setVisible(false);
-//
-//        logoutHotelsButton.setVisible(false);
-//        logoutHotelsButton.addActionListener(e -> controller.logout());
-//
-//        bookmarkHotelButton.setVisible(false);
-//        bookmarkHotelButton.addActionListener(e -> bookmarkHotel());
-//
-//        guestHotelSearchButton.addActionListener(
-//            e -> controller.searchHotels(
-//                hotelLocation.getText(),
-//                hotelDescription.getText()));
-//    }
+    public void close() { controller.close(); }
+
+    void setDeleteButtonEnabled() { deleteBookmarkButton.setVisible(model.getSize() > 0); }
 }

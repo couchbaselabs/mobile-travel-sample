@@ -15,18 +15,26 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.awt.*;
 import javax.annotation.Nonnull;
 import javax.swing.JPanel;
 
 
 public abstract class Page {
+    public static final Color COLOR_ACCENT = new Color(204, 42, 47);
+    public static final Color COLOR_TEXT = Color.BLACK;
+    public static final Color COLOR_UNFOCUSED = Color.GRAY;
+    public static final Color COLOR_SELECTED = new Color(204, 42, 47, 100);
+    public static final Color COLOR_BACKGROUND = Color.WHITE;
+
+
     private final String name;
 
     public Page(@Nonnull String name) { this.name = name; }
 
     public abstract JPanel getView();
 
-    public abstract void open();
+    public abstract void open(Object args);
 
     public abstract void close();
 

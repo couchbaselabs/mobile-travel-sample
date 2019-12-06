@@ -18,7 +18,6 @@ package com.couchbase.travelsample.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -53,12 +52,14 @@ public class Nav {
         rootView.start(frontPage);
     }
 
-    public void toPage(String pageName) {
+    public void toPage(String pageName) { toPage(pageName, null); }
+
+    public void toPage(String pageName, Object args) {
         Page page = pages.get(pageName);
         LOGGER.info("Moving to page: " + pageName + " @" + page);
         if (page == null) { return; }
 
-        page.open();
+        page.open(args);
         rootView.toPage(page);
         frontPage.close();
         frontPage = page;

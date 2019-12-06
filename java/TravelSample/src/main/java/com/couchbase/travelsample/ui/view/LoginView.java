@@ -31,12 +31,9 @@ public final class LoginView extends Page {
     private JPanel panel;
     private JButton guestButton;
     private JButton loginButton;
-    private JTextField usernameInput;
-    private JPasswordField passwordInput;
+    private JTextField username;
+    private JPasswordField password;
     private JLabel logo;
-    private JLabel username;
-    private JLabel password;
-    private JLabel planeImage;
 
     @Inject
     public LoginView(LoginController controller) {
@@ -47,21 +44,20 @@ public final class LoginView extends Page {
         guestButton.addActionListener(e -> controller.loginAsGuest());
 
         loginButton.addActionListener(e -> controller.loginWithValidation(
-            usernameInput.getText(),
-            passwordInput.getPassword()));
+            username.getText(),
+            password.getPassword()));
     }
 
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    public void open() { }
+    public void open(Object args) { }
 
     @Override
     public void close() { }
 
     private void createUIComponents() {
         logo = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
-        planeImage = new JLabel(new ImageIcon(LoginView.class.getResource("images/plane.png")));
     }
 }

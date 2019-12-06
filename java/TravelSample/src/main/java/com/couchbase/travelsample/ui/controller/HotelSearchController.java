@@ -16,7 +16,10 @@
 package com.couchbase.travelsample.ui.controller;
 
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -25,6 +28,7 @@ import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.RemoteStore;
 import com.couchbase.travelsample.ui.Nav;
+import com.couchbase.travelsample.ui.view.GuestView;
 
 
 @Singleton
@@ -47,8 +51,13 @@ public final class HotelSearchController extends BaseController {
         remoteStore.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
     }
 
-    private void displayHotels(List<Hotel> hotels) {
+    private void displayHotels(@Nonnull List<Hotel> hotels) {
         hotelListModel.clear();
         for (Hotel hotel : hotels) { hotelListModel.addElement(hotel); }
+    }
+
+    public void done(Set<Hotel> selection) {
+        LOGGER.log(Level.INFO, "done with selection: " + selection);
+        nav.toPage(GuestView.PAGE_NAME, selection);
     }
 }

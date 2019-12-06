@@ -17,8 +17,10 @@ package com.couchbase.travelsample.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -51,6 +53,8 @@ import static com.couchbase.travelsample.db.LocalStore.GUEST_DOC_TYPE;
  * dao to be closed, while it is in the middle of doing something.
  */
 public class BookmarkDao {
+    private final static Logger LOGGER = Logger.getLogger(BookmarkDao.class.getName());
+
     private final LocalStore db;
     private final DBExecutor exec;
 
@@ -64,7 +68,7 @@ public class BookmarkDao {
         exec.submit(() -> queryBookmarksAsync(listener));
     }
 
-    public void addBookmark(@Nonnull Hotel hotel) { exec.submit(() -> addBookmarkAsync(hotel)); }
+    public void addBookmarks(@Nonnull Set<Hotel> hotels) { exec.submit(() -> addBookmarksAsync(hotels)); }
 
     public void removeBookmark(@Nonnull Hotel hotel) {
         final String id = hotel.getId();
@@ -118,13 +122,24 @@ public class BookmarkDao {
     }
 
     @Nullable
-    private Void addBookmarkAsync(@Nonnull Hotel hotel) throws CouchbaseLiteException {
+    private Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
         final Database database = db.getDatabase();
         if (database == null) { return null; }
 
-        // Create a hotel document if it doesn't exist
+        for (Hotel hotel : hotels) {
+            addBookmarkAsync(database, hotel);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private Void addBookmarkAsync(@Nonnull Database database, @Nonnull Hotel hotel) throws CouchbaseLiteException {
         final String id = hotel.getId();
-        if (id == null) { return null; }
+        if (id == null) {
+            LOGGER.log(Level.WARNING, "Hotel has null ID: " + hotel);
+            return null;
+        }
 
         final Document hotelDoc = database.getDocument(id);
 
@@ -151,7 +166,7 @@ public class BookmarkDao {
     private void onBookmarks(QueryChange change, Consumer<List<Hotel>> listener) {
         final ResultSet results = change.getResults();
         final List<Hotel> bookmarks = new ArrayList<>();
-        for (Result result: results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
+        for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
         SwingUtilities.invokeLater(() -> listener.accept(bookmarks));
     }
 }

@@ -12,17 +12,30 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="7dfde" class="javax.swing.JList" binding="bookmarkList">
+      <scrollpane id="c85e7">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
+          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <font size="28"/>
-          <model/>
+          <foreground color="-16777216"/>
         </properties>
-      </component>
+        <border type="none"/>
+        <children>
+          <component id="a344a" class="javax.swing.JList" binding="bookmarks">
+            <constraints/>
+            <properties>
+              <dropMode value="USE_SELECTION"/>
+              <enabled value="true"/>
+              <fixedCellHeight value="40"/>
+              <fixedCellWidth value="-1"/>
+              <font size="12"/>
+              <foreground color="-16777216"/>
+              <selectionMode value="2"/>
+              <verifyInputWhenFocusTarget value="true"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
       <component id="a6985" class="javax.swing.JButton" binding="logoutButton">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -65,7 +78,7 @@
         </constraints>
         <properties>
           <font size="20"/>
-          <opaque value="true"/>
+          <labelFor value="c85e7"/>
           <text value="BOOKMARKS:"/>
         </properties>
       </component>

@@ -15,27 +15,60 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.controller.HotelSearchController;
+import com.couchbase.travelsample.ui.view.widgets.HotelCellRenderer;
 
 
 @Singleton
 public class HotelSearchView extends Page {
+    private final static Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
     public static final String PAGE_NAME = "SEARCH_HOTELS";
+
+    static class SelectionListener implements ListSelectionListener {
+        private Set<Hotel> selection;
+
+        public Set<Hotel> getSelection() { return (selection == null) ? null : new HashSet<>(selection); }
+
+        public void valueChanged(ListSelectionEvent e) {
+            Object src = e.getSource();
+            if (!(src instanceof JList)) { return; }
+            JList<Hotel> hotels = ((JList<Hotel>) src);
+
+            ListModel<Hotel> model = hotels.getModel();
+            ListSelectionModel selectionModel = hotels.getSelectionModel();
+
+            if (selectionModel.isSelectionEmpty()) {
+                selection = null;
+                return;
+            }
+
+            selection = new HashSet<>();
+            int n = selectionModel.getMaxSelectionIndex();
+            for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
+                selection.add(model.getElementAt(i));
+            }
+
+            LOGGER.log(Level.INFO, "new selection: " + selection);
+        }
+    }
 
     class HotelKeyListener implements KeyListener {
         public void keyPressed(KeyEvent e) {}
@@ -45,40 +78,9 @@ public class HotelSearchView extends Page {
         public void keyReleased(KeyEvent e) { searchHotels(); }
     }
 
-    class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel> {
-        private final JLabel name;
-        private final JLabel location;
-
-        HotelCellRenderer() {
-            super(new BorderLayout(), true);
-
-            name = new JLabel();
-            name.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
-            location = new JLabel();
-            location.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
-
-            add(name, BorderLayout.NORTH);
-            add(location, BorderLayout.SOUTH);
-
-            setBackground(Color.WHITE);
-            setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 42, 47)));
-
-        }
-
-        public Component getListCellRendererComponent(
-            JList list,
-            Hotel hotel,
-            int index,
-            boolean selected,
-            boolean focused) {
-            name.setText(hotel.getName());
-            location.setText(hotel.getAddress());
-            return this;
-        }
-    }
-
 
     private final HotelSearchController controller;
+    private final SelectionListener selectionListener;
 
     private JPanel panel;
     private JTextField hotelLocation;
@@ -92,29 +94,33 @@ public class HotelSearchView extends Page {
         super(PAGE_NAME);
 
         this.controller = controller;
+        this.selectionListener = new SelectionListener();
 
         logoutButton.addActionListener(e -> controller.logout());
+
+        doneButton.addActionListener(e -> controller.done(selectionListener.getSelection()));
 
         hotelLocation.addKeyListener(new HotelKeyListener());
         hotelDescription.addKeyListener(new HotelKeyListener());
 
-        hotels.setCellRenderer(new HotelCellRenderer());
         hotels.setModel(controller.getHotelModel());
+        hotels.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        hotels.addListSelectionListener(selectionListener);
+        hotels.setCellRenderer(new HotelCellRenderer());
     }
 
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    public void open() { }
+    public void open(Object args) { }
 
     @Override
     public void close() { }
 
-    private void searchHotels() {
+    void searchHotels() {
         String location = hotelLocation.getText();
         if (location.isEmpty()) { return; }
-
         controller.searchHotels(location, hotelDescription.getText());
     }
 }
