@@ -18,6 +18,7 @@ package com.couchbase.travelsample.ui.controller;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -26,28 +27,30 @@ import com.couchbase.travelsample.db.BookmarkDao;
 import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.Nav;
+import com.couchbase.travelsample.ui.view.GuestView;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
 @Singleton
-public final class GuestController extends BaseController {
+public final class GuestController extends PageController {
     private final static Logger LOGGER = Logger.getLogger(GuestController.class.getName());
 
-    private final BookmarkDao bookmarkDao;
-
+    @Nonnull
     private final DefaultListModel<Hotel> bookmarkListModel = new DefaultListModel<>();
+
+    @Nonnull
+    private final BookmarkDao bookmarkDao;
 
     private boolean isFetchingBookmarks;
 
     @Inject
-    public GuestController(Nav nav, LocalStore localStore, BookmarkDao bookmarkDao) {
+    public GuestController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull BookmarkDao bookmarkDao) {
         super(nav, localStore);
         this.bookmarkDao = bookmarkDao;
     }
 
+    @Nonnull
     public DefaultListModel<Hotel> getBookmarksModel() { return bookmarkListModel; }
-
-    public void selectHotel() { nav.toPage(HotelSearchView.PAGE_NAME); }
 
     public void fetchBookmarks() {
         if (isFetchingBookmarks) { return; }
@@ -55,15 +58,17 @@ public final class GuestController extends BaseController {
         bookmarkDao.getBookmarks(this::updateBookmarks);
     }
 
-    public void bookmarkHotels(Set<Hotel> hotels) {
+    public void addBookmarks(@Nonnull Set<Hotel> hotels) {
         bookmarkDao.addBookmarks(hotels);
         fetchBookmarks();
     }
 
-    public void deleteBookmark(Hotel hotel) {
-        bookmarkListModel.removeElement(hotel);
-        bookmarkDao.removeBookmark(hotel);
+    public void deleteBookmark(@Nonnull Set<Hotel> hotels) {
+        bookmarkDao.removeBookmarks(hotels);
+        for (Hotel hotel : hotels) { bookmarkListModel.removeElement(hotel); }
     }
+
+    public void selectHotel() { toPage(GuestView.PAGE_NAME, HotelSearchView.PAGE_NAME); }
 
     private void updateBookmarks(List<Hotel> hotels) {
         bookmarkListModel.clear();

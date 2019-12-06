@@ -16,8 +16,6 @@
 package com.couchbase.travelsample.ui.controller;
 
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -26,38 +24,38 @@ import javax.swing.DefaultListModel;
 
 import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
-import com.couchbase.travelsample.net.RemoteStore;
+import com.couchbase.travelsample.net.Remote;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
+import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
 @Singleton
-public final class HotelSearchController extends BaseController {
+public final class HotelSearchController extends PageController {
     private final static Logger LOGGER = Logger.getLogger(HotelSearchController.class.getName());
 
-    private final DefaultListModel<Hotel> hotelListModel = new DefaultListModel<>();
+    @Nonnull
+    private final DefaultListModel<Hotel> hotelsModel = new DefaultListModel<>();
 
-    private final RemoteStore remoteStore;
+    private final Remote remoteStore;
 
     @Inject
-    public HotelSearchController(Nav nav, LocalStore localStore, RemoteStore remoteStore) {
+    public HotelSearchController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull Remote remoteStore) {
         super(nav, localStore);
         this.remoteStore = remoteStore;
     }
 
-    public DefaultListModel<Hotel> getHotelModel() { return hotelListModel; }
+    @Nonnull
+    public DefaultListModel<Hotel> getHotelModel() { return hotelsModel; }
 
-    public void searchHotels(String hotelLocation, String hotelDesc) {
+    public void searchHotels(@Nonnull String hotelLocation, @Nonnull String hotelDesc) {
         remoteStore.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
     }
 
-    private void displayHotels(@Nonnull List<Hotel> hotels) {
-        hotelListModel.clear();
-        for (Hotel hotel : hotels) { hotelListModel.addElement(hotel); }
-    }
+    public void done() { toPage(HotelSearchView.PAGE_NAME, GuestView.PAGE_NAME); }
 
-    public void done(Set<Hotel> selection) {
-        LOGGER.log(Level.INFO, "done with selection: " + selection);
-        nav.toPage(GuestView.PAGE_NAME, selection);
+    private void displayHotels(@Nonnull List<Hotel> hotels) {
+        hotelsModel.clear();
+        for (Hotel hotel : hotels) { hotelsModel.addElement(hotel); }
     }
 }

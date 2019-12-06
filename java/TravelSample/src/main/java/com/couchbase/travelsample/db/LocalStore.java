@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -36,12 +35,16 @@ import com.couchbase.lite.Query;
 
 @Singleton
 public final class LocalStore {
+    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
+
     public static final String DATABASE_DIR = "database";
-    public static final String GUEST_DATABASE_DIR = DATABASE_DIR + "/guest";
+    public static final String GUEST_DATABASE_DIR = DATABASE_DIR + "guest";
     public static final String DATABASE_NAME = "travel";
 
     public static final String GUEST_DOC_ID = "user::guest";
     public static final String GUEST_DOC_TYPE = "bookmarkedhotels";
+    public static final String FIELD_TYPE = "type";
+    public static final String FIELD_BOOKMARKS = "hotels";
 
     static class ActiveQuery {
         final Query query;
@@ -102,7 +105,7 @@ public final class LocalStore {
 
     @Nullable
     private Void cancelQueriesAsync() {
-        for (ActiveQuery activeQuery: activeQueries) { activeQuery.query.removeChangeListener(activeQuery.token); }
+        for (ActiveQuery activeQuery : activeQueries) { activeQuery.query.removeChangeListener(activeQuery.token); }
         return null;
     }
 
@@ -115,23 +118,22 @@ public final class LocalStore {
     }
 
     private boolean openAsGuestAsync() throws CouchbaseLiteException {
-        final DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(GUEST_DATABASE_DIR);
-        database = new Database(DATABASE_NAME, config);
+        openDatabase(GUEST_DATABASE_DIR);
         return true;
     }
 
     private boolean openWithValidationAsync(@Nonnull String username, @Nonnull char[] password)
         throws CouchbaseLiteException {
-        try {
-            final DatabaseConfiguration config = new DatabaseConfiguration();
-            config.setDirectory(username);
-            database = new Database(DATABASE_NAME, config);
-        }
-        finally {
-            Arrays.fill(password, (char) 0);
-        }
-
+        try { openDatabase(username); }
+        finally { Arrays.fill(password, (char) 0); }
         return true;
     }
+
+
+    private void openDatabase(@Nonnull String dir) throws CouchbaseLiteException {
+        final DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(dir);
+        database = new Database(DATABASE_NAME, config);
+    }
+
 }

@@ -18,6 +18,8 @@ package com.couchbase.travelsample.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -33,15 +35,15 @@ public class Nav {
 
     private final RootView rootView;
 
-    private final Map<String, Page> pages = new HashMap<>();
+    private final Map<String, Page<?>> pages = new HashMap<>();
 
-    private Page frontPage;
+    private Page<?> frontPage;
 
     @Inject
     public Nav(RootView rootView) { this.rootView = rootView; }
 
     public void start(AppFactory appFactory) {
-        for (Page page : appFactory.pages()) {
+        for (Page<?> page : appFactory.pages()) {
             final String name = page.getName();
             LOGGER.info("Adding page: " + name + " @" + page);
             pages.put(name, page);
@@ -52,14 +54,14 @@ public class Nav {
         rootView.start(frontPage);
     }
 
-    public void toPage(String pageName) { toPage(pageName, null); }
+    public void toPage(@Nullable String prevPageName, @Nonnull String nextPageName) {
+        LOGGER.info("Nav: " + prevPageName + " => " + nextPageName);
 
-    public void toPage(String pageName, Object args) {
-        Page page = pages.get(pageName);
-        LOGGER.info("Moving to page: " + pageName + " @" + page);
+        Page<?> prevPage = (prevPageName == null) ? null : pages.get(prevPageName);
+        Page<?> page = pages.get(nextPageName);
         if (page == null) { return; }
 
-        page.open(args);
+        page.open(prevPage);
         rootView.toPage(page);
         frontPage.close();
         frontPage = page;

@@ -27,7 +27,7 @@ import com.couchbase.travelsample.ui.view.HotelFlightView;
 
 
 @Singleton
-public final class HotelFlightController extends BaseController {
+public final class HotelFlightController extends PageController {
     private final static Logger LOGGER = Logger.getLogger(HotelFlightView.class.getName());
 
     @Inject

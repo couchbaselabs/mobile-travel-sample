@@ -47,7 +47,7 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
     public Component getListCellRendererComponent(
         JList list,
         Hotel hotel,
-        int index,
+        int idx,
         boolean selected,
         boolean focused) {
         name.setText(hotel.getName());

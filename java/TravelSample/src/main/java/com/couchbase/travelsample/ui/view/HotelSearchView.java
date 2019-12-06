@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JButton;
@@ -38,14 +40,14 @@ import com.couchbase.travelsample.ui.view.widgets.HotelCellRenderer;
 
 
 @Singleton
-public class HotelSearchView extends Page {
+public class HotelSearchView extends Page<HotelSearchController> implements GuestView.HotelSelector {
     private final static Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
     public static final String PAGE_NAME = "SEARCH_HOTELS";
 
-    static class SelectionListener implements ListSelectionListener {
-        private Set<Hotel> selection;
+    private class SelectionListener implements ListSelectionListener {
+        final Set<Hotel> selection = new HashSet<>();
 
-        public Set<Hotel> getSelection() { return (selection == null) ? null : new HashSet<>(selection); }
+        public SelectionListener() {}
 
         public void valueChanged(ListSelectionEvent e) {
             Object src = e.getSource();
@@ -55,12 +57,9 @@ public class HotelSearchView extends Page {
             ListModel<Hotel> model = hotels.getModel();
             ListSelectionModel selectionModel = hotels.getSelectionModel();
 
-            if (selectionModel.isSelectionEmpty()) {
-                selection = null;
-                return;
-            }
+            selection.clear();
+            if (selectionModel.isSelectionEmpty()) { return; }
 
-            selection = new HashSet<>();
             int n = selectionModel.getMaxSelectionIndex();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
                 selection.add(model.getElementAt(i));
@@ -78,8 +77,7 @@ public class HotelSearchView extends Page {
         public void keyReleased(KeyEvent e) { searchHotels(); }
     }
 
-
-    private final HotelSearchController controller;
+    @Nonnull
     private final SelectionListener selectionListener;
 
     private JPanel panel;
@@ -89,16 +87,16 @@ public class HotelSearchView extends Page {
     private JButton logoutButton;
     private JButton doneButton;
 
+    private Set<Hotel> selection;
+
     @Inject
     public HotelSearchView(HotelSearchController controller) {
-        super(PAGE_NAME);
+        super(PAGE_NAME, controller);
 
-        this.controller = controller;
-        this.selectionListener = new SelectionListener();
+        selectionListener = new SelectionListener();
 
-        logoutButton.addActionListener(e -> controller.logout());
-
-        doneButton.addActionListener(e -> controller.done(selectionListener.getSelection()));
+        logoutButton.addActionListener(e -> logout());
+        doneButton.addActionListener(e -> done());
 
         hotelLocation.addKeyListener(new HotelKeyListener());
         hotelDescription.addKeyListener(new HotelKeyListener());
@@ -113,14 +111,20 @@ public class HotelSearchView extends Page {
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(Object args) { }
+    public void open(@Nullable Page<?> prevPage) { }
 
     @Override
-    public void close() { }
+    public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
     void searchHotels() {
         String location = hotelLocation.getText();
         if (location.isEmpty()) { return; }
         controller.searchHotels(location, hotelDescription.getText());
+    }
+
+    void done() {
+        selection = new HashSet<>(selectionListener.selection);
+        hotels.clearSelection();
+        controller.done();
     }
 }

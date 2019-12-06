@@ -15,18 +15,22 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import com.couchbase.travelsample.ui.controller.LoginController;
 
 
 @Singleton
-public final class LoginView extends Page {
+public final class LoginView extends Page<LoginController> {
     public static final String PAGE_NAME = "LOGIN";
-
-    private final LoginController controller;
 
     private JPanel panel;
     private JButton guestButton;
@@ -37,9 +41,7 @@ public final class LoginView extends Page {
 
     @Inject
     public LoginView(LoginController controller) {
-        super(PAGE_NAME);
-
-        this.controller = controller;
+        super(PAGE_NAME, controller);
 
         guestButton.addActionListener(e -> controller.loginAsGuest());
 
@@ -52,10 +54,7 @@ public final class LoginView extends Page {
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(Object args) { }
-
-    @Override
-    public void close() { }
+    public void open(@Nullable Page<?> prevPage) { }
 
     private void createUIComponents() {
         logo = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));

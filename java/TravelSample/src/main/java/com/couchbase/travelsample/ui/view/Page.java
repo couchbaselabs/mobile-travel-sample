@@ -17,26 +17,37 @@ package com.couchbase.travelsample.ui.view;
 
 import java.awt.*;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 
+import com.couchbase.travelsample.ui.controller.PageController;
 
-public abstract class Page {
+
+public abstract class Page<T extends PageController> {
     public static final Color COLOR_ACCENT = new Color(204, 42, 47);
     public static final Color COLOR_TEXT = Color.BLACK;
     public static final Color COLOR_UNFOCUSED = Color.GRAY;
     public static final Color COLOR_SELECTED = new Color(204, 42, 47, 100);
     public static final Color COLOR_BACKGROUND = Color.WHITE;
 
-
+    @Nonnull
+    protected final T controller;
+    @Nonnull
     private final String name;
 
-    public Page(@Nonnull String name) { this.name = name; }
+    public Page(@Nonnull String name, @Nonnull T controller) {
+        this.name = name;
+        this.controller = controller;
+    }
 
     public abstract JPanel getView();
 
-    public abstract void open(Object args);
+    public abstract void open(@Nullable Page<?> prev);
 
-    public abstract void close();
+    // if you oveerride this, you must call super()
+    public void close() { controller.close(); }
 
     public final String getName() { return name; }
+
+    protected final void logout() { controller.logout(name); }
 }

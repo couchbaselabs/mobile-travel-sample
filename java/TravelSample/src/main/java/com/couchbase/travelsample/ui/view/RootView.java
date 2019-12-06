@@ -37,11 +37,11 @@ public class RootView extends JFrame {
         setContentPane(cards);
     }
 
-    public void addPage(@Nonnull Page page) { cards.add(page.getView(), page.getName()); }
+    public void addPage(@Nonnull Page<?> page) { cards.add(page.getView(), page.getName()); }
 
-    public void toPage(@Nonnull Page page) { cardLayout.show(cards, page.getName()); }
+    public void toPage(@Nonnull Page<?> page) { cardLayout.show(cards, page.getName()); }
 
-    public void start(@Nonnull Page page) {
+    public void start(@Nonnull Page<?> page) {
         pack();
         toPage(page);
         setVisible(true);

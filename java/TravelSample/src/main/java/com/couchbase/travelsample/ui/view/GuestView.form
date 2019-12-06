@@ -66,6 +66,7 @@
           <background color="-3397073"/>
           <borderPainted value="false"/>
           <contentAreaFilled value="false"/>
+          <enabled value="false"/>
           <font size="14" style="1"/>
           <foreground color="-1"/>
           <opaque value="true"/>

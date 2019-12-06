@@ -15,6 +15,7 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
@@ -30,11 +31,9 @@ import com.couchbase.travelsample.ui.controller.HotelFlightController;
 
 
 @Singleton
-public final class HotelFlightView extends Page {
+public final class HotelFlightView extends Page<HotelFlightController> {
     public static final String PAGE_NAME = "HOTEL-FLIGHT";
 
-
-    private final HotelFlightController controller;
 
     private JPanel panel;
     private JTabbedPane flightPane;
@@ -59,9 +58,7 @@ public final class HotelFlightView extends Page {
 
     @Inject
     public HotelFlightView(HotelFlightController controller) {
-        super(PAGE_NAME);
-
-        this.controller = controller;
+        super(PAGE_NAME, controller);
 
         hotelSearchButton.addActionListener(
             e -> controller.hotelSearchButtonPressed(hotelLocationInput.getText(), hotelDescriptionInput.getText()));
@@ -84,10 +81,7 @@ public final class HotelFlightView extends Page {
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(Object args) { }
-
-    @Override
-    public void close() { }
+    public void open(@Nullable Page<?> prevPage) { }
 
     private String getDate(JDateChooser dateChooser) {
         return ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();

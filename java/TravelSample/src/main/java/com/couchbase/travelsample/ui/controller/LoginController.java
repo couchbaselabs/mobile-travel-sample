@@ -16,7 +16,7 @@
 package com.couchbase.travelsample.ui.controller;
 
 import java.util.logging.Logger;
-
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
@@ -28,21 +28,19 @@ import com.couchbase.travelsample.ui.view.LoginView;
 
 
 @Singleton
-public final class LoginController extends BaseController {
+public final class LoginController extends PageController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
     @Inject
-    public LoginController(Nav nav, LocalStore localStore) { super(nav, localStore); }
+    public LoginController(@Nonnull Nav nav, @Nonnull LocalStore localStore) { super(nav, localStore); }
 
     public void loginAsGuest() { localStore.openAsGuest(this::onLoginComplete); }
 
-    public void loginWithValidation(String username, char[] password) {
+    public void loginWithValidation(@Nonnull String username, @Nonnull char[] password) {
         localStore.openWithValidation(username, password, this::onLoginComplete);
     }
 
     private void onLoginComplete(Boolean ok) {
-        LOGGER.info("");
-
         if (!ok) {
             JOptionPane.showMessageDialog(
                 null,
@@ -52,7 +50,7 @@ public final class LoginController extends BaseController {
             return;
         }
 
-        nav.toPage(GuestView.PAGE_NAME);
+        toPage(LoginView.PAGE_NAME, GuestView.PAGE_NAME);
     }
 }
 
