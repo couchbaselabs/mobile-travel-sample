@@ -1,12 +1,3 @@
-package com.couchbase.travelsample.ui.view;
-
-import javax.inject.Named;
-
-import dagger.Binds;
-import dagger.Module;
-import dagger.multibindings.IntoSet;
-
-
 //
 // Copyright (c) 2019 Couchbase, Inc All rights reserved.
 //
@@ -22,25 +13,34 @@ import dagger.multibindings.IntoSet;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+package com.couchbase.travelsample.ui.view;
+
+import javax.inject.Named;
+
+import dagger.Binds;
+import dagger.Module;
+import dagger.multibindings.IntoSet;
+
+
 @Module
 public interface ViewModule {
     @Binds
     @Named("StartPage")
-    Page startPage(LoginView v);
+    Page<?> startPage(LoginView v);
 
     @Binds
     @IntoSet
-    Page loginView(LoginView v);
+    Page<?> loginView(LoginView v);
 
     @Binds
     @IntoSet
-    Page guestView(GuestView v);
+    Page<?> guestView(GuestView v);
 
     @Binds
     @IntoSet
-    Page searchHotelView(HotelSearchView v);
+    Page<?> searchHotelView(HotelSearchView v);
 
     @Binds
     @IntoSet
-    Page hotelFlightView(HotelFlightView v);
+    Page<?> hotelFlightView(HotelFlightView v);
 }

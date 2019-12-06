@@ -31,8 +31,8 @@ import dagger.Component;
 public interface AppFactory {
     TravelSample app();
 
-    Set<Page> pages();
+    Set<Page<?>> pages();
 
     @Named("StartPage")
-    Page startPage();
+    Page<?> startPage();
 }

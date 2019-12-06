@@ -41,16 +41,15 @@ import org.json.JSONObject;
 import com.couchbase.travelsample.model.Hotel;
 
 
-public class RemoteStore {
-    private final static Logger LOGGER = Logger.getLogger(RemoteStore.class.getName());
+public class Remote {
+    private final static Logger LOGGER = Logger.getLogger(Remote.class.getName());
 
-    public static final String WEB_APP_ENDPOINT = "http://0.0.0.0:8080/api/";
-    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
+    public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
 
     private final OkHttpClient client;
 
     @Inject
-    public RemoteStore() { client = new OkHttpClient(); }
+    public Remote() { client = new OkHttpClient(); }
 
     public void searchHotels(String location, String description, final Consumer<List<Hotel>> completion) {
         String fullPath;
