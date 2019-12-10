@@ -43,8 +43,6 @@ import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.model.Hotel;
 
-import static com.couchbase.travelsample.db.LocalStore.GUEST_DOC_TYPE;
-
 
 /**
  * Rely *heavily* on the single-threaded executor.
@@ -53,6 +51,11 @@ import static com.couchbase.travelsample.db.LocalStore.GUEST_DOC_TYPE;
  */
 public class BookmarkDao {
     private final static Logger LOGGER = Logger.getLogger(BookmarkDao.class.getName());
+
+    public static final String ID_GUEST_DOC = "user::guest";
+    public static final String TYPE_GUEST_DOC = "bookmarkedhotels";
+    public static final String PROP_TYPE = "type";
+    public static final String PROP_BOOKMARKS = "hotels";
 
     private final LocalStore db;
     private final DBExecutor exec;
@@ -64,9 +67,7 @@ public class BookmarkDao {
     }
 
     public void getBookmarks(@Nonnull Consumer<List<Hotel>> listener) {
-        exec.submit(
-            this::queryBookmarksAsync,
-            (bookmarks) -> SwingUtilities.invokeLater(() -> listener.accept(bookmarks)));
+        exec.submit(this::queryBookmarksAsync, listener);
     }
 
     public void addBookmarks(@Nonnull Set<Hotel> hotels) { exec.submit(() -> addBookmarksAsync(hotels)); }
@@ -75,20 +76,21 @@ public class BookmarkDao {
 
     @Nullable
     private List<Hotel> queryBookmarksAsync() throws CouchbaseLiteException {
+        final List<Hotel> bookmarks = new ArrayList<>();
+
         final Database database = db.getDatabase();
-        if (database == null) { return null; }
+        if (database == null) { return bookmarks; }
 
         final ResultSet results = QueryBuilder
             .select(SelectResult.all().from("bookmark"), SelectResult.all().from("hotel"))
             .from(DataSource.database(database).as("bookmark"))
             .join(Join.join(DataSource.database(database).as("hotel"))
-                .on(ArrayFunction.contains(Expression.property(LocalStore.FIELD_BOOKMARKS)
+                .on(ArrayFunction.contains(Expression.property(PROP_BOOKMARKS)
                     .from("bookmark"), Meta.id.from("hotel"))))
-            .where(Expression.property(LocalStore.FIELD_TYPE).from("bookmark")
-                .equalTo(Expression.string(GUEST_DOC_TYPE)))
+            .where(Expression.property(PROP_TYPE).from("bookmark")
+                .equalTo(Expression.string(TYPE_GUEST_DOC)))
             .execute();
 
-        final List<Hotel> bookmarks = new ArrayList<>();
         for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
 
         LOGGER.log(Level.INFO, "Found bookmarks: " + bookmarks);
@@ -153,7 +155,7 @@ public class BookmarkDao {
 
         final Set<String> currentBookmarks = new HashSet<>();
 
-        final MutableArray bookmarks = guestDoc.getArray(LocalStore.FIELD_BOOKMARKS);
+        final MutableArray bookmarks = guestDoc.getArray(PROP_BOOKMARKS);
         if (bookmarks != null) {
             for (int i = 0; i < bookmarks.count(); i++) { currentBookmarks.add(bookmarks.getString(i)); }
         }
@@ -164,7 +166,7 @@ public class BookmarkDao {
         final MutableArray newBookmarks = new MutableArray();
         for (String bookmark : currentBookmarks) { newBookmarks.addString(bookmark); }
 
-        guestDoc.setArray(LocalStore.FIELD_BOOKMARKS, newBookmarks);
+        guestDoc.setArray(PROP_BOOKMARKS, newBookmarks);
 
         database.save(guestDoc);
     }
@@ -174,7 +176,7 @@ public class BookmarkDao {
 
         final MutableDocument guestDoc = getGuestDoc(database);
 
-        final MutableArray bookmarks = guestDoc.getArray(LocalStore.FIELD_BOOKMARKS);
+        final MutableArray bookmarks = guestDoc.getArray(PROP_BOOKMARKS);
         if (bookmarks == null) { return; }
 
         for (int i = bookmarks.count() - 1; i >= 0; i--) {
@@ -185,12 +187,12 @@ public class BookmarkDao {
     }
 
     private MutableDocument getGuestDoc(Database database) {
-        final Document doc = database.getDocument(LocalStore.GUEST_DOC_ID);
+        final Document doc = database.getDocument(ID_GUEST_DOC);
 
         if (doc != null) { return doc.toMutable(); }
 
-        final MutableDocument mDoc = new MutableDocument(LocalStore.GUEST_DOC_ID);
-        mDoc.setString(LocalStore.FIELD_TYPE, LocalStore.GUEST_DOC_TYPE);
+        final MutableDocument mDoc = new MutableDocument(ID_GUEST_DOC);
+        mDoc.setString(PROP_TYPE, TYPE_GUEST_DOC);
 
         return mDoc;
     }

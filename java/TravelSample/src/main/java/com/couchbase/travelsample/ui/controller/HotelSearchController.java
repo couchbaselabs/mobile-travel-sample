@@ -26,7 +26,6 @@ import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.Remote;
 import com.couchbase.travelsample.ui.Nav;
-import com.couchbase.travelsample.ui.view.GuestView;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
@@ -34,14 +33,17 @@ import com.couchbase.travelsample.ui.view.HotelSearchView;
 public final class HotelSearchController extends PageController {
     private final static Logger LOGGER = Logger.getLogger(HotelSearchController.class.getName());
 
+
+    @Nonnull
+    private final Remote remoteStore;
     @Nonnull
     private final DefaultListModel<Hotel> hotelsModel = new DefaultListModel<>();
 
-    private final Remote remoteStore;
+    private String prevPage;
 
     @Inject
     public HotelSearchController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull Remote remoteStore) {
-        super(nav, localStore);
+        super(HotelSearchView.PAGE_NAME, nav, localStore);
         this.remoteStore = remoteStore;
     }
 
@@ -52,7 +54,10 @@ public final class HotelSearchController extends PageController {
         remoteStore.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
     }
 
-    public void done() { toPage(HotelSearchView.PAGE_NAME, GuestView.PAGE_NAME); }
+    public void done() { back(); }
+
+    @Override
+    protected void onClose() { }
 
     private void displayHotels(@Nonnull List<Hotel> hotels) {
         hotelsModel.clear();

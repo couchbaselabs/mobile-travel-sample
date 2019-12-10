@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Hotel;
 
 
@@ -60,7 +61,7 @@ public class Remote {
             String locationStr = location.equals("")
                 ? "*"
                 : URLEncoder.encode(location, "UTF-8").replace("+", "%20");
-            fullPath = String.format("hotel/%s/%s", descriptionStr, locationStr);
+            fullPath = String.format("flights/%s/%s", descriptionStr, locationStr);
         }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -97,6 +98,57 @@ public class Remote {
                     }
 
                     completion.accept(hotels);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void searchFlights(String prefix, final Consumer<List<Flight>> completion) {
+        String fullPath;
+        try {
+            String flight = prefix.equals("")
+                ? "*"
+                : URLEncoder.encode(prefix, "UTF-8").replace("+", "%20");
+            fullPath = String.format("flights/%s", prefix);
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        URL url;
+        try { url = new URL(WEB_APP_ENDPOINT + fullPath); }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        LOGGER.log(Level.INFO, "Query: " + url);
+
+
+        client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
+
+            @Override
+            public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
+                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+
+                try (ResponseBody responseBody = response.body()) {
+                    if (responseBody == null) { throw new IOException("Empty response"); }
+
+                    String responseString = responseBody.string();
+                    JSONArray data = new JSONObject(responseString).getJSONArray("data");
+
+                    List<Flight> flights = new ArrayList<>();
+                    for (int i = 0; i < data.length(); i++) {
+                        flights.add(Flight.fromJSON(data.getJSONObject(i)));
+                    }
+
+                    completion.accept(flights);
                 }
                 catch (JSONException e) {
                     e.printStackTrace();

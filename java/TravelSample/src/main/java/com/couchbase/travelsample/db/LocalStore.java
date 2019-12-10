@@ -37,14 +37,9 @@ import com.couchbase.lite.Query;
 public final class LocalStore {
     public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
 
-    public static final String DATABASE_DIR = "database";
+    public static final String DATABASE_DIR = "database/";
     public static final String GUEST_DATABASE_DIR = DATABASE_DIR + "guest";
     public static final String DATABASE_NAME = "travel";
-
-    public static final String GUEST_DOC_ID = "user::guest";
-    public static final String GUEST_DOC_TYPE = "bookmarkedhotels";
-    public static final String FIELD_TYPE = "type";
-    public static final String FIELD_BOOKMARKS = "hotels";
 
     static class ActiveQuery {
         final Query query;
@@ -71,21 +66,20 @@ public final class LocalStore {
         Database.log.getConsole().setLevel(LogLevel.DEBUG);
     }
 
-    public void openAsGuest(@Nonnull Consumer<Boolean> listener) {
+    public void openAsGuest(@Nonnull Consumer<Void> listener) {
         exec.submit(
             this::openAsGuestAsync,
-            (ok) -> listener.accept(true),
-            (e) -> listener.accept(false));
+            (ok) -> listener.accept(null));
     }
 
     public void openWithValidation(
         @Nonnull String username,
         @Nonnull char[] password,
-        @Nonnull Consumer<Boolean> listener) {
+        @Nonnull Consumer<String> listener) {
         exec.submit(
             () -> openWithValidationAsync(username, password),
-            (ok) -> listener.accept(true),
-            (e) -> listener.accept(false));
+            (ok) -> listener.accept(null),
+            (e) -> listener.accept(username));
     }
 
     public void cancelQueries() { exec.submit(this::cancelQueriesAsync); }
@@ -129,11 +123,9 @@ public final class LocalStore {
         return true;
     }
 
-
     private void openDatabase(@Nonnull String dir) throws CouchbaseLiteException {
         final DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(dir);
+        config.setDirectory(DATABASE_DIR + dir);
         database = new Database(DATABASE_NAME, config);
     }
-
 }

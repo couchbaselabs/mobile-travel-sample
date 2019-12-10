@@ -16,14 +16,13 @@
 package com.couchbase.travelsample;
 
 import java.util.Set;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import dagger.Component;
+
 import com.couchbase.travelsample.ui.view.Page;
 import com.couchbase.travelsample.ui.view.ViewModule;
-
-import dagger.Component;
 
 
 @Component(modules = {ViewModule.class})
