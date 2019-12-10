@@ -36,27 +36,21 @@ public final class GuestController extends PageController {
     private final static Logger LOGGER = Logger.getLogger(GuestController.class.getName());
 
     @Nonnull
-    private final DefaultListModel<Hotel> bookmarkListModel = new DefaultListModel<>();
+    private final DefaultListModel<Hotel> bookmarks = new DefaultListModel<>();
 
     @Nonnull
     private final BookmarkDao bookmarkDao;
 
-    private boolean isFetchingBookmarks;
-
     @Inject
     public GuestController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull BookmarkDao bookmarkDao) {
-        super(nav, localStore);
+        super(GuestView.PAGE_NAME, nav, localStore);
         this.bookmarkDao = bookmarkDao;
     }
 
     @Nonnull
-    public DefaultListModel<Hotel> getBookmarksModel() { return bookmarkListModel; }
+    public DefaultListModel<Hotel> getBookmarksModel() { return bookmarks; }
 
-    public void fetchBookmarks() {
-        if (isFetchingBookmarks) { return; }
-        isFetchingBookmarks = true;
-        bookmarkDao.getBookmarks(this::updateBookmarks);
-    }
+    public void fetchBookmarks() { bookmarkDao.getBookmarks(this::updateBookmarks); }
 
     public void addBookmarks(@Nonnull Set<Hotel> hotels) {
         bookmarkDao.addBookmarks(hotels);
@@ -65,14 +59,16 @@ public final class GuestController extends PageController {
 
     public void deleteBookmark(@Nonnull Set<Hotel> hotels) {
         bookmarkDao.removeBookmarks(hotels);
-        for (Hotel hotel : hotels) { bookmarkListModel.removeElement(hotel); }
+        for (Hotel hotel : hotels) { bookmarks.removeElement(hotel); }
     }
 
-    public void selectHotel() { toPage(GuestView.PAGE_NAME, HotelSearchView.PAGE_NAME); }
+    public void selectHotel() { toPage(HotelSearchView.PAGE_NAME); }
+
+    @Override
+    protected void onClose() { }
 
     private void updateBookmarks(List<Hotel> hotels) {
-        bookmarkListModel.clear();
-        for (Hotel hotel : hotels) { bookmarkListModel.addElement(hotel); }
-        isFetchingBookmarks = false;
+        bookmarks.clear();
+        for (Hotel hotel : hotels) { bookmarks.addElement(hotel); }
     }
 }

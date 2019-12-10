@@ -17,7 +17,6 @@ package com.couchbase.travelsample.ui.view;
 
 import java.awt.*;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.JPanel;
 
 import com.couchbase.travelsample.ui.controller.PageController;
@@ -42,12 +41,21 @@ public abstract class Page<T extends PageController> {
 
     public abstract JPanel getView();
 
-    public abstract void open(@Nullable Page<?> prev);
+    protected abstract void onOpen(@Nonnull Page<?> prev);
 
-    // if you oveerride this, you must call super()
-    public void close() { controller.close(); }
+    protected abstract void onClose();
 
     public final String getName() { return name; }
+
+    public final void open(@Nonnull Page<?> prev) {
+        onOpen(prev);
+        controller.setPrevPage(prev.getName());
+    }
+
+    public final void close() {
+        onClose();
+        controller.close();
+    }
 
     protected final void logout() { controller.logout(name); }
 }

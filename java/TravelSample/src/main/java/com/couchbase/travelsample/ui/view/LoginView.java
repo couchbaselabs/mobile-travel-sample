@@ -15,6 +15,9 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,7 +33,19 @@ import com.couchbase.travelsample.ui.controller.LoginController;
 
 @Singleton
 public final class LoginView extends Page<LoginController> {
+    private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
+
     public static final String PAGE_NAME = "LOGIN";
+
+    class LoginKeyListener implements KeyListener {
+        public void keyPressed(KeyEvent e) {}
+
+        public void keyTyped(KeyEvent e) { }
+
+        public void keyReleased(KeyEvent e) {
+            setLoginButtonEnabled((!username.getText().isEmpty()) && (password.getPassword().length > 0));
+        }
+    }
 
     private JPanel panel;
     private JButton guestButton;
@@ -48,15 +63,27 @@ public final class LoginView extends Page<LoginController> {
         loginButton.addActionListener(e -> controller.loginWithValidation(
             username.getText(),
             password.getPassword()));
+
+        username.addKeyListener(new LoginKeyListener());
+        password.addKeyListener(new LoginKeyListener());
+        setLoginButtonEnabled(false);
     }
 
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(@Nullable Page<?> prevPage) { }
+    protected void onOpen(@Nullable Page<?> prevPage) { }
+
+    @Override
+    protected void onClose() { }
 
     private void createUIComponents() {
         logo = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
+    }
+
+    void setLoginButtonEnabled(boolean enabled) {
+        loginButton.setEnabled(enabled);
+        loginButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
     }
 }

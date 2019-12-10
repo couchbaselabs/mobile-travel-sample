@@ -98,8 +98,9 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
         logoutButton.addActionListener(e -> logout());
         doneButton.addActionListener(e -> done());
 
-        hotelLocation.addKeyListener(new HotelKeyListener());
-        hotelDescription.addKeyListener(new HotelKeyListener());
+        HotelKeyListener listener = new HotelKeyListener();
+        hotelLocation.addKeyListener(listener);
+        hotelDescription.addKeyListener(listener);
 
         hotels.setModel(controller.getHotelModel());
         hotels.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -111,10 +112,13 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(@Nullable Page<?> prevPage) { }
+    public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
     @Override
-    public Set<Hotel> getSelection() { return new HashSet<>(selection); }
+    protected void onOpen(@Nullable Page<?> prevPage) { }
+
+    @Override
+    protected void onClose() { }
 
     void searchHotels() {
         String location = hotelLocation.getText();

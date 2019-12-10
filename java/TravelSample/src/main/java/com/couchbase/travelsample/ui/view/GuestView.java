@@ -102,12 +102,15 @@ public final class GuestView extends Page<GuestController> {
     public JPanel getView() { return panel; }
 
     @Override
-    public void open(@Nullable Page<?> prevPage) {
+    protected void onOpen(@Nullable Page<?> prevPage) {
         if (prevPage instanceof HotelSearchView) {
             controller.addBookmarks(((HotelSearchView) prevPage).getSelection());
         }
         controller.fetchBookmarks();
     }
+
+    @Override
+    protected void onClose() { }
 
     void setDeleteButtonEnabled(boolean enabled) {
         deleteBookmarkButton.setEnabled(enabled);
