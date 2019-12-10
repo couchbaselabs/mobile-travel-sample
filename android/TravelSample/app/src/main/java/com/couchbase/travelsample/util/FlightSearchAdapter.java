@@ -1,17 +1,17 @@
 package com.couchbase.travelsample.util;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.couchbase.travelsample.R;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import com.couchbase.travelsample.R;
 
 public class FlightSearchAdapter extends RecyclerView.Adapter<FlightSearchAdapter.ViewHolder> {
 
