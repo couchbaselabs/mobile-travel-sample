@@ -15,6 +15,7 @@
 //
 package com.couchbase.travelsample.ui.controller;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 
 import com.couchbase.travelsample.db.BookmarkDao;
-import com.couchbase.travelsample.db.LocalStore;
+import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
@@ -33,7 +34,7 @@ import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 @Singleton
 public final class GuestController extends PageController {
-    private final static Logger LOGGER = Logger.getLogger(GuestController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GuestController.class.getName());
 
     @Nonnull
     private final DefaultListModel<Hotel> bookmarks = new DefaultListModel<>();
@@ -42,7 +43,7 @@ public final class GuestController extends PageController {
     private final BookmarkDao bookmarkDao;
 
     @Inject
-    public GuestController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull BookmarkDao bookmarkDao) {
+    public GuestController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull BookmarkDao bookmarkDao) {
         super(GuestView.PAGE_NAME, nav, localStore);
         this.bookmarkDao = bookmarkDao;
     }

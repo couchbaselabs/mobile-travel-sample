@@ -19,7 +19,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,9 +45,11 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     public static final String PAGE_NAME = "SEARCH_HOTELS";
 
     private class SelectionListener implements ListSelectionListener {
-        final Set<Hotel> selection = new HashSet<>();
+        private final Set<Hotel> selection = new HashSet<>();
 
         public SelectionListener() {}
+
+        public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
         public void valueChanged(ListSelectionEvent e) {
             Object src = e.getSource();
@@ -56,13 +57,14 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
             JList<Hotel> hotels = ((JList<Hotel>) src);
 
             ListSelectionModel selectionModel = hotels.getSelectionModel();
+
             selection.clear();
             if (selectionModel.isSelectionEmpty()) { return; }
 
-            int n = selectionModel.getMaxSelectionIndex();
             ListModel<Hotel> model = hotels.getModel();
+            int n = selectionModel.getMaxSelectionIndex();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
-                selection.add(model.getElementAt(i));
+                if (selectionModel.isSelectedIndex(i)) { selection.add(model.getElementAt(i)); }
             }
         }
     }
@@ -111,13 +113,13 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     public JPanel getView() { return panel; }
 
     @Override
-    public Set<Hotel> getSelection() { return new HashSet<>(selection); }
-
-    @Override
     protected void onOpen(@Nullable Page<?> prevPage) { }
 
     @Override
     protected void onClose() { }
+
+    @Override
+    public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
     void searchHotels() {
         String location = hotelLocation.getText();
@@ -126,7 +128,7 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     }
 
     void done() {
-        selection = new HashSet<>(selectionListener.selection);
+        selection = selectionListener.getSelection();
         hotels.clearSelection();
         controller.done();
     }

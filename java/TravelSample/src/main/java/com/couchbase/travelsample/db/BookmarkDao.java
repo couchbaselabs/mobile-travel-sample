@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 
 import com.couchbase.lite.ArrayFunction;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -50,18 +49,18 @@ import com.couchbase.travelsample.model.Hotel;
  * dao to be closed, while it is in the middle of doing something.
  */
 public class BookmarkDao {
-    private final static Logger LOGGER = Logger.getLogger(BookmarkDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BookmarkDao.class.getName());
 
     public static final String ID_GUEST_DOC = "user::guest";
     public static final String TYPE_GUEST_DOC = "bookmarkedhotels";
     public static final String PROP_TYPE = "type";
     public static final String PROP_BOOKMARKS = "hotels";
 
-    private final LocalStore db;
-    private final DBExecutor exec;
+    private final DbManager db;
+    private final DbExecutor exec;
 
     @Inject
-    public BookmarkDao(LocalStore db, DBExecutor exec) {
+    public BookmarkDao(DbManager db, DbExecutor exec) {
         this.db = db;
         this.exec = exec;
     }
