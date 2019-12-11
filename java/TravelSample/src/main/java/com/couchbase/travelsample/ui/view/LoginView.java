@@ -47,6 +47,7 @@ public final class LoginView extends Page<LoginController> {
         }
     }
 
+
     private JPanel panel;
     private JButton guestButton;
     private JButton loginButton;

@@ -50,7 +50,7 @@ public abstract class PageController {
 
     public final void logout(@Nonnull String pageName) {
         close();
-        localStore.close();
+        localStore.logout();
         toPage(LoginView.PAGE_NAME);
     }
 

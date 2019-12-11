@@ -26,12 +26,13 @@ import javax.inject.Inject;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Expression;
+import com.couchbase.lite.Function;
+import com.couchbase.lite.Ordering;
 import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.model.Flight;
-import com.couchbase.travelsample.model.Hotel;
 
 
 public class FlightsDao {
@@ -39,6 +40,7 @@ public class FlightsDao {
     public static final String TYPE_AIRPORT = "airport";
     public static final String PROP_TYPE = "type";
     public static final String PROP_AIRPORT_NAME = "airportname";
+    public static final String PROP_FAA = "faa";
 
 
     private final LocalStore db;
@@ -54,34 +56,34 @@ public class FlightsDao {
         exec.submit(this::queryFlightsAsync, listener);
     }
 
-    public void searchAirports(@Nonnull String name, @Nonnull Consumer<List<String>> listener) {
-        exec.submit(() -> searchAirportsAsync(name), listener);
+    public void searchAirports(@Nonnull String name, int maxResults, @Nonnull Consumer<List<String>> listener) {
+        exec.submit(() -> searchAirportsAsync(name, maxResults), listener);
     }
 
-    @Nullable
-    private List<String> searchAirportsAsync(@Nonnull String name)
-        throws CouchbaseLiteException {
-        if (!db.isOpen()) { return null; }
-
+    @Nonnull
+    private List<String> searchAirportsAsync(@Nonnull String prefix, int maxResults) throws CouchbaseLiteException {
+        final String target = "%" + prefix + "%";
         final ResultSet results = QueryBuilder.select(SelectResult
             .expression(Expression.property(PROP_AIRPORT_NAME)))
             .from(DataSource.database(db.getDatabase()))
             .where(Expression.property(PROP_TYPE).equalTo(Expression.string(TYPE_AIRPORT))
-                .and(Expression.property(PROP_AIRPORT_NAME).like(Expression.string(name))))
+                .and(Function.lower(Expression.property(PROP_AIRPORT_NAME))
+                    .like(Function.lower(Expression.string(target))))
+                .or(Function.lower(Expression.property(PROP_FAA))
+                    .like(Function.lower(Expression.string(target)))))
+            .orderBy(Ordering.property(PROP_AIRPORT_NAME).ascending())
+            .limit(Expression.intValue(maxResults))
             .execute();
 
         List<String> airports = new ArrayList<>();
         Result row;
-        while ((row = results.next()) != null) {
-            airports.add(row.getString(PROP_AIRPORT_NAME));
-        }
+        while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT_NAME)); }
 
         return airports;
     }
 
     @Nullable
     private List<Flight> queryFlightsAsync() throws CouchbaseLiteException {
-        if (!db.isOpen()) { return Collections.emptyList(); }
         return Collections.emptyList();
     }
 }

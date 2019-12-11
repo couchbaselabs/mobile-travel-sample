@@ -15,6 +15,7 @@
 //
 package com.couchbase.travelsample.ui.controller;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,6 +34,7 @@ import com.couchbase.travelsample.ui.view.UserView;
 public final class LoginController extends PageController {
     private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
+
     @Inject
     public LoginController(@Nonnull Nav nav, @Nonnull LocalStore localStore) {
         super(LoginView.PAGE_NAME, nav, localStore);
@@ -41,17 +43,19 @@ public final class LoginController extends PageController {
     public void loginAsGuest() { localStore.openAsGuest(this::openGuest); }
 
     public void loginWithValidation(@Nonnull String username, @Nonnull char[] password) {
-        localStore.openWithValidation(username, password, this::openUser);
+        localStore.openWithValidation(username, password, (e) -> openUser(e, username));
     }
 
     @Override
     protected void onClose() { }
 
-    private void openUser(@Nullable String username) {
-        if (username != null) {
+    private void openUser(@Nullable Exception error, @Nullable String username) {
+        if (error != null) {
+            LOGGER.log(Level.WARNING, "login failure", error);
+
             JOptionPane.showMessageDialog(
                 null,
-                "Failed logging in user: " + username,
+                "Login failed for user " + username + ": " + error.getLocalizedMessage(),
                 "Login Error",
                 JOptionPane.ERROR_MESSAGE);
             return;
