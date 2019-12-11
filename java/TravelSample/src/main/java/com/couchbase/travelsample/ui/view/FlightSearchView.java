@@ -15,7 +15,11 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,8 +31,8 @@ import com.toedter.calendar.JDateChooser;
 
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.ui.controller.FlightSearchController;
-import com.couchbase.travelsample.ui.view.widgets.AirportChooser;
 import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
+import com.couchbase.travelsample.ui.view.widgets.SuggestedTextField;
 
 
 @Singleton
@@ -37,9 +41,10 @@ public class FlightSearchView extends Page<FlightSearchController> {
 
     public static final String PAGE_NAME = "SEARCH_FLIGHTS";
 
+
     private JPanel panel;
-    private AirportChooser departureAirport;
-    private AirportChooser destinationAirport;
+    private SuggestedTextField<String> departureAirport;
+    private SuggestedTextField<String> destinationAirport;
     private JDateChooser departureDate;
     private JDateChooser returnDate;
     private JList<Flight> flights;
@@ -66,11 +71,20 @@ public class FlightSearchView extends Page<FlightSearchController> {
     @Override
     protected void onClose() { }
 
-    void done() {controller.done(); }
+    void done() {
+        LOGGER.log(
+            Level.INFO,
+            "departure: " + departureAirport.getText() + " destination: " + destinationAirport.getText());
+        controller.done();
+    }
+
+    void searchAirports(@Nonnull String prefix, Consumer<List<String>> consumer) {
+        controller.searchAirports(prefix, 12, consumer);
+    }
 
     private void createUIComponents() {
-        departureAirport = new AirportChooser(this, controller);
-        destinationAirport = new AirportChooser(this, controller);
+        departureAirport = new SuggestedTextField<String>(this::searchAirports);
+        destinationAirport = new SuggestedTextField<String>(this::searchAirports);
         departureDate = new JDateChooser();
         returnDate = new JDateChooser();
     }

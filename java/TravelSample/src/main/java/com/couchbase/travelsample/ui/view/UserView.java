@@ -34,6 +34,7 @@ public final class UserView extends Page<UserController> {
 
     public static final String PAGE_NAME = "USER";
 
+
     private JPanel panel;
     private JList<Flight> flights;
     private JButton logoutButton;

@@ -49,8 +49,8 @@ public final class FlightSearchController extends PageController {
     @Nonnull
     public DefaultListModel<Flight> getFlightsModel() { return flightsModel; }
 
-    public void searchAirports(@Nonnull String prefix, Consumer<List<String>> listener) {
-        flightDao.searchAirports(prefix, listener);
+    public void searchAirports(@Nonnull String prefix, int maxResults, @Nonnull Consumer<List<String>> listener) {
+        flightDao.searchAirports(prefix, maxResults, listener);
     }
 
     public void done() { toPage(UserView.PAGE_NAME); }

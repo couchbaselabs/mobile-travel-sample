@@ -13,7 +13,8 @@ target/
 build/
 
 # Intellij
-.idea/
+/out
+/.idea/
 *.iml
 *.iws
 

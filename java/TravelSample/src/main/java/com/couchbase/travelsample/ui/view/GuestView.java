@@ -74,6 +74,7 @@ public final class GuestView extends Page<GuestController> {
         }
     }
 
+
     private JPanel panel;
     private JList<Hotel> bookmarks;
     private JButton logoutButton;

@@ -41,7 +41,8 @@ import com.couchbase.travelsample.ui.view.widgets.HotelCellRenderer;
 
 @Singleton
 public class HotelSearchView extends Page<HotelSearchController> implements GuestView.HotelSelector {
-    private final static Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
+
     public static final String PAGE_NAME = "SEARCH_HOTELS";
 
     private class SelectionListener implements ListSelectionListener {
@@ -54,18 +55,15 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
             if (!(src instanceof JList)) { return; }
             JList<Hotel> hotels = ((JList<Hotel>) src);
 
-            ListModel<Hotel> model = hotels.getModel();
             ListSelectionModel selectionModel = hotels.getSelectionModel();
-
             selection.clear();
             if (selectionModel.isSelectionEmpty()) { return; }
 
             int n = selectionModel.getMaxSelectionIndex();
+            ListModel<Hotel> model = hotels.getModel();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
                 selection.add(model.getElementAt(i));
             }
-
-            LOGGER.log(Level.INFO, "new selection: " + selection);
         }
     }
 
@@ -76,6 +74,7 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
 
         public void keyReleased(KeyEvent e) { searchHotels(); }
     }
+
 
     @Nonnull
     private final SelectionListener selectionListener;
