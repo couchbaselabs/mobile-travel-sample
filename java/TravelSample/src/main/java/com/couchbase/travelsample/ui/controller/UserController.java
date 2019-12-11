@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 
+import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.db.FlightsDao;
-import com.couchbase.travelsample.db.LocalStore;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.FlightSearchView;
@@ -33,7 +33,7 @@ import com.couchbase.travelsample.ui.view.UserView;
 
 @Singleton
 public final class UserController extends PageController {
-    private final static Logger LOGGER = Logger.getLogger(UserController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
 
     @Nonnull
@@ -43,7 +43,7 @@ public final class UserController extends PageController {
     private final FlightsDao flightsDao;
 
     @Inject
-    public UserController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull FlightsDao flightsDao) {
+    public UserController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull FlightsDao flightsDao) {
         super(UserView.PAGE_NAME, nav, localStore);
         this.flightsDao = flightsDao;
     }

@@ -22,36 +22,36 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 
-import com.couchbase.travelsample.db.LocalStore;
+import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.model.Hotel;
-import com.couchbase.travelsample.net.Remote;
+import com.couchbase.travelsample.net.TryCb;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
 
 
 @Singleton
 public final class HotelSearchController extends PageController {
-    private final static Logger LOGGER = Logger.getLogger(HotelSearchController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HotelSearchController.class.getName());
 
 
     @Nonnull
-    private final Remote remoteStore;
+    private final TryCb remote;
     @Nonnull
     private final DefaultListModel<Hotel> hotelsModel = new DefaultListModel<>();
 
     private String prevPage;
 
     @Inject
-    public HotelSearchController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull Remote remoteStore) {
+    public HotelSearchController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull TryCb remoteStore) {
         super(HotelSearchView.PAGE_NAME, nav, localStore);
-        this.remoteStore = remoteStore;
+        this.remote = remoteStore;
     }
 
     @Nonnull
     public DefaultListModel<Hotel> getHotelModel() { return hotelsModel; }
 
     public void searchHotels(@Nonnull String hotelLocation, @Nonnull String hotelDesc) {
-        remoteStore.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
+        remote.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
     }
 
     public void done() { back(); }

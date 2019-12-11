@@ -43,11 +43,11 @@ public class FlightsDao {
     public static final String PROP_FAA = "faa";
 
 
-    private final LocalStore db;
-    private final DBExecutor exec;
+    private final DbManager db;
+    private final DbExecutor exec;
 
     @Inject
-    public FlightsDao(@Nonnull LocalStore db, @Nonnull DBExecutor exec) {
+    public FlightsDao(@Nonnull DbManager db, @Nonnull DbExecutor exec) {
         this.db = db;
         this.exec = exec;
     }

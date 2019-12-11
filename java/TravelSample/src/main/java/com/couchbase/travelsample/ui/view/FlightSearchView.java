@@ -37,13 +37,13 @@ import com.couchbase.travelsample.ui.view.widgets.SuggestedTextField;
 
 @Singleton
 public class FlightSearchView extends Page<FlightSearchController> {
-    private final static Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HotelSearchView.class.getName());
 
     public static final String PAGE_NAME = "SEARCH_FLIGHTS";
 
 
     private JPanel panel;
-    private SuggestedTextField<String> departureAirport;
+    private SuggestedTextField<String> originAirport;
     private SuggestedTextField<String> destinationAirport;
     private JDateChooser departureDate;
     private JDateChooser returnDate;
@@ -74,7 +74,7 @@ public class FlightSearchView extends Page<FlightSearchController> {
     void done() {
         LOGGER.log(
             Level.INFO,
-            "departure: " + departureAirport.getText() + " destination: " + destinationAirport.getText());
+            "origin: " + originAirport.getText() + " destination: " + destinationAirport.getText());
         controller.done();
     }
 
@@ -83,8 +83,9 @@ public class FlightSearchView extends Page<FlightSearchController> {
     }
 
     private void createUIComponents() {
-        departureAirport = new SuggestedTextField<String>(this::searchAirports);
+        originAirport = new SuggestedTextField<String>(this::searchAirports);
         destinationAirport = new SuggestedTextField<String>(this::searchAirports);
+
         departureDate = new JDateChooser();
         returnDate = new JDateChooser();
     }

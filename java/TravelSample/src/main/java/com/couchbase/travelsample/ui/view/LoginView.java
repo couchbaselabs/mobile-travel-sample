@@ -17,13 +17,16 @@ package com.couchbase.travelsample.ui.view;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -33,7 +36,7 @@ import com.couchbase.travelsample.ui.controller.LoginController;
 
 @Singleton
 public final class LoginView extends Page<LoginController> {
-    private final static Logger LOGGER = Logger.getLogger(LoginView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginView.class.getName());
 
     public static final String PAGE_NAME = "LOGIN";
 
@@ -61,9 +64,10 @@ public final class LoginView extends Page<LoginController> {
 
         guestButton.addActionListener(e -> controller.loginAsGuest());
 
-        loginButton.addActionListener(e -> controller.loginWithValidation(
-            username.getText(),
-            password.getPassword()));
+        loginButton.addActionListener(e -> {
+            final String uname = username.getText();
+            controller.loginWithValidation(uname, password.getPassword(), (err) -> loginFail(err, uname));
+        });
 
         username.addKeyListener(new LoginKeyListener());
         password.addKeyListener(new LoginKeyListener());
@@ -86,5 +90,15 @@ public final class LoginView extends Page<LoginController> {
     void setLoginButtonEnabled(boolean enabled) {
         loginButton.setEnabled(enabled);
         loginButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
+
+    void loginFail(@Nonnull Exception error, @Nonnull String username) {
+        LOGGER.log(Level.WARNING, "login failure", error);
+
+        JOptionPane.showMessageDialog(
+            null,
+            "Login failed for user " + username + ": " + error.getLocalizedMessage(),
+            "Login Error",
+            JOptionPane.ERROR_MESSAGE);
     }
 }

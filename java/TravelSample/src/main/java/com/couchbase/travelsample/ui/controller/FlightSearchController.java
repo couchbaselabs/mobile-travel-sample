@@ -24,7 +24,7 @@ import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 
 import com.couchbase.travelsample.db.FlightsDao;
-import com.couchbase.travelsample.db.LocalStore;
+import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.FlightSearchView;
@@ -33,7 +33,7 @@ import com.couchbase.travelsample.ui.view.UserView;
 
 @Singleton
 public final class FlightSearchController extends PageController {
-    private final static Logger LOGGER = Logger.getLogger(FlightSearchController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FlightSearchController.class.getName());
 
     @Nonnull
     private final DefaultListModel<Flight> flightsModel = new DefaultListModel<>();
@@ -41,7 +41,7 @@ public final class FlightSearchController extends PageController {
     private final FlightsDao flightDao;
 
     @Inject
-    public FlightSearchController(@Nonnull Nav nav, @Nonnull LocalStore localStore, @Nonnull FlightsDao flightDao) {
+    public FlightSearchController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull FlightsDao flightDao) {
         super(FlightSearchView.PAGE_NAME, nav, localStore);
         this.flightDao = flightDao;
     }

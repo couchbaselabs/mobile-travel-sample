@@ -27,7 +27,7 @@ import javax.swing.SwingUtilities;
 
 
 @Singleton
-class DBExecutor {
+class DbExecutor {
     @FunctionalInterface
     public interface ThrowingSupplier<T> {
         T get() throws Exception;
@@ -36,7 +36,7 @@ class DBExecutor {
     private final ExecutorService executor;
 
     @Inject
-    public DBExecutor() { executor = Executors.newSingleThreadExecutor(); }
+    public DbExecutor() { executor = Executors.newSingleThreadExecutor(); }
 
     public void submit(@Nonnull ThrowingSupplier<Void> task) {
         submit(task, null, null);

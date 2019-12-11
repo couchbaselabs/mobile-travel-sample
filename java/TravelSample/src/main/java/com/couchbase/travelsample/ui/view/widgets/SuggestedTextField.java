@@ -34,7 +34,9 @@ import javax.swing.event.ListSelectionListener;
 
 public class SuggestedTextField<T> extends JTextField
     implements KeyListener, Consumer<List<T>>, ListSelectionListener {
-    private final static Logger LOGGER = Logger.getLogger(SuggestedTextField.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SuggestedTextField.class.getName());
+
+    private static final PopupFactory POPUP_FACTORY = new PopupFactory();
 
     @FunctionalInterface
     public interface SuggestionSupplier<S> {
@@ -45,7 +47,6 @@ public class SuggestedTextField<T> extends JTextField
     private final DefaultListModel<T> listModel = new DefaultListModel<>();
 
     private final SuggestionSupplier<T> supplier;
-    private final PopupFactory factory;
     private final JList<T> list;
     private Popup menu;
 
@@ -58,13 +59,16 @@ public class SuggestedTextField<T> extends JTextField
         list.setModel(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(this);
-
-        factory = new PopupFactory();
     }
 
     @Override
     public void accept(@Nonnull List<T> items) {
-        if (menu == null) { menu = factory.getPopup(new JFrame(), this.list, getX(), getY() + (2 * getHeight())); }
+        if (items.isEmpty()) {
+            hideMenu();
+            return;
+        }
+
+        if (menu == null) { menu = POPUP_FACTORY.getPopup(new JFrame(), list, getX(), getY() + (2 * getHeight())); }
 
         listModel.clear();
         for (T item : items) { listModel.addElement(item); }
@@ -79,9 +83,17 @@ public class SuggestedTextField<T> extends JTextField
         ListSelectionModel selectionModel = list.getSelectionModel();
         if (selectionModel.isSelectionEmpty()) { return; }
 
-        menu.hide();
+        T selection = listModel.elementAt(selectionModel.getMinSelectionIndex());
 
-        setText(listModel.elementAt(selectionModel.getMinSelectionIndex()).toString());
+        hideMenu();
+
+        setText(selection.toString());
+    }
+
+    private void hideMenu() {
+        menu.hide();
+        listModel.clear();
+        menu = null;
     }
 
     @Override

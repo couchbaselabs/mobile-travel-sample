@@ -128,13 +128,15 @@
           <text value="Departing"/>
         </properties>
       </component>
-      <component id="9020a" class="com.couchbase.travelsample.ui.view.widgets.SuggestedTextField" binding="departureAirport" custom-create="true">
+      <component id="9020a" class="com.couchbase.travelsample.ui.view.widgets.SuggestedTextField" binding="originAirport" custom-create="true">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="35"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <font size="22"/>
+        </properties>
       </component>
       <component id="9a778" class="com.couchbase.travelsample.ui.view.widgets.SuggestedTextField" binding="destinationAirport" custom-create="true">
         <constraints>
@@ -142,7 +144,9 @@
             <preferred-size width="150" height="35"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <font size="22"/>
+        </properties>
       </component>
       <component id="3fdbe" class="com.toedter.calendar.JDateChooser" binding="departureDate" custom-create="true">
         <constraints>

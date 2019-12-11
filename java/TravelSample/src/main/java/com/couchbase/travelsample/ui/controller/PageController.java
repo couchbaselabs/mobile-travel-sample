@@ -17,14 +17,14 @@ package com.couchbase.travelsample.ui.controller;
 
 import javax.annotation.Nonnull;
 
-import com.couchbase.travelsample.db.LocalStore;
+import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.LoginView;
 
 
 public abstract class PageController {
     @Nonnull
-    protected final LocalStore localStore;
+    protected final DbManager localStore;
 
     @Nonnull
     private final String pageName;
@@ -33,7 +33,7 @@ public abstract class PageController {
 
     private String prevPageName;
 
-    protected PageController(@Nonnull String pageName, @Nonnull Nav nav, @Nonnull LocalStore localStore) {
+    protected PageController(@Nonnull String pageName, @Nonnull Nav nav, @Nonnull DbManager localStore) {
         this.pageName = pageName;
         this.nav = nav;
         this.localStore = localStore;
@@ -41,16 +41,13 @@ public abstract class PageController {
 
     protected abstract void onClose();
 
-    public final void close() {
-        onClose();
-        localStore.cancelQueries();
-    }
+    public final void close() { onClose(); }
 
     public final void setPrevPage(@Nonnull String prevPageName) { this.prevPageName = prevPageName; }
 
     public final void logout(@Nonnull String pageName) {
         close();
-        localStore.logout();
+        localStore.close();
         toPage(LoginView.PAGE_NAME);
     }
 

@@ -42,15 +42,15 @@ import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Hotel;
 
 
-public class Remote {
-    private final static Logger LOGGER = Logger.getLogger(Remote.class.getName());
+public class TryCb {
+    private static final Logger LOGGER = Logger.getLogger(TryCb.class.getName());
 
     public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
 
     private final OkHttpClient client;
 
     @Inject
-    public Remote() { client = new OkHttpClient(); }
+    public TryCb() { client = new OkHttpClient(); }
 
     public void searchHotels(String location, String description, final Consumer<List<Hotel>> completion) {
         String fullPath;
@@ -61,7 +61,7 @@ public class Remote {
             String locationStr = location.equals("")
                 ? "*"
                 : URLEncoder.encode(location, "UTF-8").replace("+", "%20");
-            fullPath = String.format("flights/%s/%s", descriptionStr, locationStr);
+            fullPath = String.format("hotel/%s/%s", descriptionStr, locationStr);
         }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -76,8 +76,6 @@ public class Remote {
         }
 
         LOGGER.log(Level.INFO, "Query: " + url);
-
-
         client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
             @Override
             public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
@@ -127,7 +125,6 @@ public class Remote {
         }
 
         LOGGER.log(Level.INFO, "Query: " + url);
-
 
         client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
             @Override

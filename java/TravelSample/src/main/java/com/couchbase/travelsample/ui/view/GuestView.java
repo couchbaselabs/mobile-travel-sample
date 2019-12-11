@@ -17,7 +17,6 @@ package com.couchbase.travelsample.ui.view;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -37,7 +36,7 @@ import com.couchbase.travelsample.ui.view.widgets.HotelCellRenderer;
 
 @Singleton
 public final class GuestView extends Page<GuestController> {
-    private final static Logger LOGGER = Logger.getLogger(GuestView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GuestView.class.getName());
 
     public static final String PAGE_NAME = "GUEST";
 
@@ -46,31 +45,29 @@ public final class GuestView extends Page<GuestController> {
     }
 
     private class SelectionListener implements ListSelectionListener {
-        final Set<Hotel> selection = new HashSet<>();
+        private final Set<Hotel> selection = new HashSet<>();
 
         public SelectionListener() {}
+
+        public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
         public void valueChanged(ListSelectionEvent e) {
             Object src = e.getSource();
             if (!(src instanceof JList)) { return; }
             JList<Hotel> hotels = ((JList<Hotel>) src);
 
-            ListModel<Hotel> model = hotels.getModel();
             ListSelectionModel selectionModel = hotels.getSelectionModel();
 
             boolean selectionEmpty = selectionModel.isSelectionEmpty();
-
             setDeleteButtonEnabled(!selectionEmpty);
-
             selection.clear();
             if (selectionEmpty) { return; }
 
+            ListModel<Hotel> model = hotels.getModel();
             int n = selectionModel.getMaxSelectionIndex();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
-                selection.add(model.getElementAt(i));
+                if (selectionModel.isSelectedIndex(i)) { selection.add(model.getElementAt(i)); }
             }
-
-            LOGGER.log(Level.INFO, "new selection: " + selection);
         }
     }
 
@@ -90,7 +87,7 @@ public final class GuestView extends Page<GuestController> {
         logoutButton.addActionListener(e -> logout());
         addBookmarkButton.addActionListener(e -> selectHotel());
 
-        deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(selectionListener.selection));
+        deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(selectionListener.getSelection()));
         setDeleteButtonEnabled(false);
 
         bookmarks.setModel(controller.getBookmarksModel());

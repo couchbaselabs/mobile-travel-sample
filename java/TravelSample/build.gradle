@@ -41,8 +41,9 @@ task fatJar(type: Jar) {
 
 repositories {
     mavenCentral()
-    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
-    maven { url "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
+    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
+    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
+    maven { url 'http://mobile.nuget.couchbase.com/maven2/cimaven/' }
 }
 
 dependencies {
@@ -52,11 +53,14 @@ dependencies {
 
     compileOnly 'com.google.gwt:gwt-dev:2.8.2'
 
-    implementation fileTree(dir: 'libs', include: '*.jar')
-
     implementation "com.google.dagger:dagger:${DAGGER_VERSION}"
+
     implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
+
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
     implementation 'org.json:json:20180813'
+
     implementation 'com.toedter:jcalendar:1.4'
+
+    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.7.0-77'
 }

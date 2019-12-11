@@ -30,7 +30,7 @@ import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
 
 @Singleton
 public final class UserView extends Page<UserController> {
-    private final static Logger LOGGER = Logger.getLogger(GuestView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GuestView.class.getName());
 
     public static final String PAGE_NAME = "USER";
 
