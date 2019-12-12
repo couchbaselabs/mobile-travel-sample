@@ -29,6 +29,7 @@ public abstract class Page<T extends PageController> {
     public static final Color COLOR_SELECTED = new Color(204, 42, 47, 100);
     public static final Color COLOR_BACKGROUND = Color.WHITE;
 
+
     @Nonnull
     protected final T controller;
     @Nonnull

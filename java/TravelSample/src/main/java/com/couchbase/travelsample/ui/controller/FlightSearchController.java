@@ -27,9 +27,9 @@ import javax.swing.DefaultListModel;
 import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.db.FlightsDao;
 import com.couchbase.travelsample.model.Flight;
+import com.couchbase.travelsample.model.Trip;
 import com.couchbase.travelsample.net.TryCb;
 import com.couchbase.travelsample.ui.Nav;
-import com.couchbase.travelsample.ui.view.BookingsView;
 import com.couchbase.travelsample.ui.view.FlightSearchView;
 
 
@@ -75,10 +75,8 @@ public final class FlightSearchController extends PageController {
         tryCb.searchFlights(destination, origin, returnDate, this::displayReturningFlights);
     }
 
-    public void bookFlights(@Nonnull Flight outboundFlight, @Nonnull Flight returningFlight) {
-        flightDao.bookFlight(outboundFlight);
-        flightDao.bookFlight(returningFlight);
-        back();
+    public void bookTrip(@Nonnull Trip trip, @Nonnull Consumer<Exception> onError) {
+        flightDao.bookTrip(trip, (ign) -> done(), onError);
     }
 
     @Override
@@ -94,5 +92,9 @@ public final class FlightSearchController extends PageController {
         for (Flight flight : flights) { returningFlightsModel.addElement(flight); }
     }
 
-    public void done() { back(); }
+    public void done() {
+        outboundFlightsModel.clear();
+        returningFlightsModel.clear();
+        back();
+    }
 }

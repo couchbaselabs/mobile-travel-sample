@@ -51,16 +51,16 @@ import com.couchbase.travelsample.model.Hotel;
 public class BookmarkDao {
     private static final Logger LOGGER = Logger.getLogger(BookmarkDao.class.getName());
 
-    public static final String ID_GUEST_DOC = "user::guest";
-    public static final String TYPE_GUEST_DOC = "bookmarkedhotels";
-    public static final String PROP_TYPE = "type";
     public static final String PROP_BOOKMARKS = "hotels";
 
+
+    @Nonnull
     private final DbManager db;
+    @Nonnull
     private final DbExecutor exec;
 
     @Inject
-    public BookmarkDao(DbManager db, DbExecutor exec) {
+    public BookmarkDao(@Nonnull DbManager db, @Nonnull DbExecutor exec) {
         this.db = db;
         this.exec = exec;
     }
@@ -73,12 +73,11 @@ public class BookmarkDao {
 
     public void removeBookmarks(@Nonnull Set<Hotel> hotels) { exec.submit(() -> removeBookmarksAsync(hotels)); }
 
-    @Nullable
-    private List<Hotel> queryBookmarksAsync() throws CouchbaseLiteException {
+    @Nonnull
+    List<Hotel> queryBookmarksAsync() throws CouchbaseLiteException {
         final List<Hotel> bookmarks = new ArrayList<>();
 
         final Database database = db.getDatabase();
-        if (database == null) { return bookmarks; }
 
         final ResultSet results = QueryBuilder
             .select(SelectResult.all().from("bookmark"), SelectResult.all().from("hotel"))
@@ -86,8 +85,8 @@ public class BookmarkDao {
             .join(Join.join(DataSource.database(database).as("hotel"))
                 .on(ArrayFunction.contains(Expression.property(PROP_BOOKMARKS)
                     .from("bookmark"), Meta.id.from("hotel"))))
-            .where(Expression.property(PROP_TYPE).from("bookmark")
-                .equalTo(Expression.string(TYPE_GUEST_DOC)))
+            .where(Expression.property(DbManager.PROP_DOC_TYPE).from("bookmark")
+                .equalTo(Expression.string(DbManager.TYPE_GUEST_DOC)))
             .execute();
 
         for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
@@ -97,17 +96,12 @@ public class BookmarkDao {
     }
 
     @Nullable
-    private Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+    Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
         final Database database = db.getDatabase();
-        if (database == null) { return null; }
 
         final Set<String> ids = new HashSet<>();
         for (Hotel hotel : hotels) {
             final String id = hotel.getId();
-            if (id == null) {
-                LOGGER.log(Level.WARNING, "Hotel has null ID in remove bookmark: " + hotel);
-                continue;
-            }
 
             final Document hotelDoc = database.getDocument(id);
             if (hotelDoc == null) { database.save(Hotel.toDocument(hotel)); }
@@ -121,9 +115,8 @@ public class BookmarkDao {
     }
 
     @Nullable
-    private Void removeBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+    Void removeBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
         final Database database = db.getDatabase();
-        if (database == null) { return null; }
 
         final Set<String> ids = new HashSet<>();
         for (Hotel hotel : hotels) {
@@ -150,7 +143,7 @@ public class BookmarkDao {
     }
 
     private void bookmarkIds(Database database, Set<String> ids) throws CouchbaseLiteException {
-        final MutableDocument guestDoc = getGuestDoc(database);
+        final MutableDocument guestDoc = db.getGuestDoc();
 
         final Set<String> currentBookmarks = new HashSet<>();
 
@@ -173,7 +166,7 @@ public class BookmarkDao {
     private void unbookmarkIds(Database database, Set<String> ids) throws CouchbaseLiteException {
         LOGGER.log(Level.INFO, "Unbookmarking: " + ids);
 
-        final MutableDocument guestDoc = getGuestDoc(database);
+        final MutableDocument guestDoc = db.getGuestDoc();
 
         final MutableArray bookmarks = guestDoc.getArray(PROP_BOOKMARKS);
         if (bookmarks == null) { return; }
@@ -183,16 +176,5 @@ public class BookmarkDao {
         }
 
         database.save(guestDoc);
-    }
-
-    private MutableDocument getGuestDoc(Database database) {
-        final Document doc = database.getDocument(ID_GUEST_DOC);
-
-        if (doc != null) { return doc.toMutable(); }
-
-        final MutableDocument mDoc = new MutableDocument(ID_GUEST_DOC);
-        mDoc.setString(PROP_TYPE, TYPE_GUEST_DOC);
-
-        return mDoc;
     }
 }

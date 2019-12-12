@@ -26,9 +26,9 @@ import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.db.FlightsDao;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.ui.Nav;
+import com.couchbase.travelsample.ui.view.BookingsView;
 import com.couchbase.travelsample.ui.view.FlightSearchView;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
-import com.couchbase.travelsample.ui.view.BookingsView;
 
 
 @Singleton
@@ -58,7 +58,14 @@ public final class BookingsController extends PageController {
     @Override
     protected void onClose() { }
 
-    private void updateFlights(List<Flight> flights) {
+    public void fetchFlights() { flightsDao.getFlights(this::updateFlights); }
+
+    public void deleteBooking(Flight flight) {
+        flightsDao.deleteFlight(flight);
+        flightsModel.removeElement(flight);
+    }
+
+    void updateFlights(List<Flight> flights) {
         flightsModel.clear();
         for (Flight flight : flights) { flightsModel.addElement(flight); }
     }

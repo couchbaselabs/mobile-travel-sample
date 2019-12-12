@@ -17,6 +17,9 @@ package com.couchbase.travelsample.ui.view;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -25,7 +28,9 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -35,6 +40,7 @@ import javax.swing.event.ListSelectionListener;
 import com.toedter.calendar.JDateChooser;
 
 import com.couchbase.travelsample.model.Flight;
+import com.couchbase.travelsample.model.Trip;
 import com.couchbase.travelsample.ui.controller.FlightSearchController;
 import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
 import com.couchbase.travelsample.ui.view.widgets.SuggestedTextField;
@@ -52,9 +58,7 @@ public class FlightSearchView extends Page<FlightSearchController> {
 
         public void keyTyped(KeyEvent e) { }
 
-        public void keyReleased(KeyEvent e) {
-            setSearchButtonEnabled(!(originAirport.getText().isEmpty() || destinationAirport.getText().isEmpty()));
-        }
+        public void keyReleased(KeyEvent e) { setSearchButtonEnabled(); }
     }
 
     private class SelectionListener implements ListSelectionListener {
@@ -82,6 +86,8 @@ public class FlightSearchView extends Page<FlightSearchController> {
 
     private final SelectionListener outboundSelectionListener = new SelectionListener();
     private final SelectionListener returningSelectionListener = new SelectionListener();
+    private final JFormattedTextField departureDateText;
+    private final JFormattedTextField returnDateText;
 
     private JPanel panel;
     private SuggestedTextField<String> originAirport;
@@ -100,7 +106,7 @@ public class FlightSearchView extends Page<FlightSearchController> {
         super(PAGE_NAME, controller);
 
         logoutButton.addActionListener(e -> logout());
-        doneButton.addActionListener(e -> controller.done());
+        doneButton.addActionListener(e -> done());
 
         searchButton.addActionListener(e -> searchFlights());
         bookButton.addActionListener(e -> bookFlights());
@@ -119,25 +125,27 @@ public class FlightSearchView extends Page<FlightSearchController> {
         final SearchKeyListener keyListener = new SearchKeyListener();
         originAirport.addKeyListener(keyListener);
         destinationAirport.addKeyListener(keyListener);
-        departureDate.addKeyListener(keyListener);
-        returnDate.addKeyListener(keyListener);
-        setSearchButtonEnabled(false);
+        departureDateText = (JFormattedTextField) departureDate.getDateEditor().getUiComponent();
+        departureDateText.addKeyListener(keyListener);
+        returnDateText = (JFormattedTextField) returnDate.getDateEditor().getUiComponent();
+        returnDateText.addKeyListener(keyListener);
+
+        setSearchButtonEnabled();
     }
 
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    protected void onOpen(@Nullable Page<?> prevPage) { }
+    protected void onOpen(@Nullable Page<?> prevPage) {
+        final ZoneId defaultZone = ZoneId.systemDefault();
+        final LocalDateTime defaultDate = LocalDateTime.now().plusWeeks(2);
+        departureDate.setDate(Date.from(defaultDate.atZone(defaultZone).toInstant()));
+        departureDate.setDate(Date.from(defaultDate.plusWeeks(1).atZone(defaultZone).toInstant()));
+    }
 
     @Override
     protected void onClose() { }
-
-    void bookFlights() {
-        controller.bookFlights(
-            outboundSelectionListener.getSelection(),
-            returningSelectionListener.getSelection());
-    }
 
     void searchAirports(@Nonnull String prefix, Consumer<List<String>> consumer) {
         controller.searchAirports(prefix, 12, consumer);
@@ -151,6 +159,37 @@ public class FlightSearchView extends Page<FlightSearchController> {
             returnDate.getDate());
     }
 
+    void bookFlights() {
+        controller.bookTrip(
+            new Trip(
+                outboundSelectionListener.getSelection(),
+                returningSelectionListener.getSelection(),
+                departureDate.getDate(),
+                returnDate.getDate()),
+            this::onError);
+    }
+
+    void onError(@Nonnull Exception failure) {
+        JOptionPane.showMessageDialog(null, failure.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    void setSearchButtonEnabled() {
+        final boolean enabled = !(
+            originAirport.getText().isEmpty()
+                || destinationAirport.getText().isEmpty()
+                || (departureDate.getDate() == null)
+                || (returnDate).getDate() == null);
+        searchButton.setEnabled(enabled);
+        searchButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
+
+    void setBookButtonEnabled() {
+        final boolean enabled
+            = (outboundSelectionListener.getSelection() != null) && (returningSelectionListener.getSelection() != null);
+        bookButton.setEnabled(enabled);
+        bookButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
+
     private void createUIComponents() {
         originAirport = new SuggestedTextField<>(this::searchAirports);
         destinationAirport = new SuggestedTextField<>(this::searchAirports);
@@ -159,15 +198,12 @@ public class FlightSearchView extends Page<FlightSearchController> {
         returnDate = new JDateChooser();
     }
 
-    void setSearchButtonEnabled(boolean enabled) {
-        searchButton.setEnabled(enabled);
-        searchButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
-    }
-
-    void setBookButtonEnabled() {
-        boolean enabled
-            = (outboundSelectionListener.getSelection() != null) && (returningSelectionListener.getSelection() != null);
-        bookButton.setEnabled(enabled);
-        bookButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    void done() {
+        originAirport.setText("");
+        destinationAirport.setText("");
+        departureDateText.setText("");
+        returnDateText.setText("");
+        controller.done();
     }
 }
+

@@ -15,63 +15,110 @@
 //
 package com.couchbase.travelsample.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.json.JSONObject;
 
-import com.couchbase.lite.Result;
-import com.couchbase.lite.ResultSet;
+import com.couchbase.lite.Dictionary;
+import com.couchbase.lite.MutableDictionary;
 
 
 public class Flight {
-    @Nonnull
-    public static Flight fromJSON(@Nonnull JSONObject json) {
-        System.out.println("got flight: " + json);
-        return new Flight(
-            json.getString("flight"),
-            json.getString("name"),
-            json.getString("sourceairport"),
-            json.getString("destinationairport"),
-            json.getString("equipment"),
-            json.getString("utc"),
-            json.getInt("flighttime"),
-            json.getFloat("price"));
+    public static final String PROP_FLIGHT = "flight";
+    public static final String PROP_NAME = "name";
+    public static final String PROP_ORIGIN = "sourceairport";
+    public static final String PROP_DESTINATION = "destinationairport";
+    public static final String PROP_EQUIPMENT = "equipment";
+    public static final String PROP_DEPARTURE_DATE = "date";
+    public static final String PROP_DEPARTURE_TIME = "utc";
+    public static final String PROP_FLIGHT_TIME = "flighttime";
+    public static final String PROP_PRICE = "price";
+
+    @Nullable
+    public static Flight fromJSON(@Nullable JSONObject json) {
+        return (json == null)
+            ? null
+            : new Flight(
+                json.getString(PROP_FLIGHT),
+                (!json.has(PROP_NAME)) ? null : json.getString(PROP_NAME),
+                (!json.has(PROP_ORIGIN)) ? null : json.getString(PROP_ORIGIN),
+                (!json.has(PROP_DESTINATION)) ? null : json.getString(PROP_DESTINATION),
+                (!json.has(PROP_EQUIPMENT)) ? null : json.getString(PROP_EQUIPMENT),
+                (!json.has(PROP_DEPARTURE_TIME)) ? null : json.getString(PROP_DEPARTURE_TIME),
+                (!json.has(PROP_DEPARTURE_DATE)) ? null : json.getString(PROP_DEPARTURE_DATE),
+                (!json.has(PROP_FLIGHT_TIME)) ? 0 : json.getInt(PROP_FLIGHT_TIME),
+                (!json.has(PROP_PRICE)) ? 0F : json.getFloat(PROP_PRICE));
+    }
+
+    @Nullable
+    public static Flight fromDictionary(@Nullable Dictionary dict) {
+        return (dict == null)
+            ? null
+            : new Flight(
+                dict.getString(PROP_FLIGHT),
+                dict.getString(PROP_NAME),
+                dict.getString(PROP_ORIGIN),
+                dict.getString(PROP_DESTINATION),
+                dict.getString(PROP_EQUIPMENT),
+                dict.getString(PROP_DEPARTURE_DATE),
+                dict.getString(PROP_DEPARTURE_TIME),
+                dict.getInt(PROP_FLIGHT_TIME),
+                dict.getFloat(PROP_PRICE));
+    }
+
+    @Nullable
+    public static MutableDictionary toDictionary(@Nullable Flight flight) {
+        if (flight == null) { return null; }
+        final MutableDictionary dict = new MutableDictionary();
+        dict.setString(PROP_FLIGHT, flight.flight);
+        if (flight.carrier != null) { dict.setString(PROP_NAME, flight.carrier); }
+        if (flight.origin != null) { dict.setString(PROP_ORIGIN, flight.origin); }
+        if (flight.destination != null) { dict.setString(PROP_DESTINATION, flight.destination); }
+        if (flight.equipment != null) { dict.setString(PROP_EQUIPMENT, flight.equipment); }
+        if (flight.departDate != null) { dict.setString(PROP_DEPARTURE_DATE, flight.departDate); }
+        if (flight.departTime != null) { dict.setString(PROP_DEPARTURE_TIME, flight.departTime); }
+        if (flight.flightTime != 0) { dict.setInt(PROP_FLIGHT_TIME, flight.flightTime); }
+        if (flight.price != 0F) { dict.setFloat(PROP_PRICE, flight.price); }
+        return dict;
     }
 
     @Nonnull
     private final String flight;
-    @Nonnull
+    @Nullable
     private final String carrier;
-    @Nonnull
-    private final String source;
-    @Nonnull
-    private final String dest;
-    @Nonnull
+    @Nullable
+    private final String origin;
+    @Nullable
+    private final String destination;
+    @Nullable
     private final String equipment;
-    @Nonnull
-    private final String depart;
+    @Nullable
+    private final String departDate;
+    @Nullable
+    private final String departTime;
     private final int flightTime;
     private final float price;
 
-    public Flight(
+    Flight(
         @Nonnull String flight,
-        @Nonnull String carrier,
-        @Nonnull String source,
-        @Nonnull String dest,
-        @Nonnull String equipment,
-        @Nonnull String depart,
+        @Nullable String carrier,
+        @Nullable String origin,
+        @Nullable String destination,
+        @Nullable String equipment,
+        @Nullable String departDate,
+        @Nullable String departTime,
         int flightTime,
         float price) {
+        if (flight == null) { throw new IllegalArgumentException("Flight may not be null"); }
         this.flight = flight;
         this.carrier = carrier;
-        this.source = source;
-        this.dest = dest;
+        this.origin = origin;
+        this.destination = destination;
         this.equipment = equipment;
-        this.depart = depart;
+        this.departDate = departTime;
+        this.departTime = departTime;
         this.flightTime = flightTime;
         this.price = price;
     }
@@ -79,20 +126,23 @@ public class Flight {
     @Nonnull
     public String getFlight() { return flight; }
 
-    @Nonnull
+    @Nullable
     public String getCarrier() { return carrier; }
 
-    @Nonnull
-    public String getSourceAirport() { return source; }
+    @Nullable
+    public String getOriginAirport() { return origin; }
 
-    @Nonnull
-    public String getDestinationAirport() { return dest; }
+    @Nullable
+    public String getDestinationAirport() { return destination; }
 
-    @Nonnull
+    @Nullable
     public String getEquipment() { return equipment; }
 
-    @Nonnull
-    public String getDepartureTime() { return depart; }
+    @Nullable
+    public String getDepartureDate() { return departDate; }
+
+    @Nullable
+    public String getDepartureTime() { return departTime; }
 
     public int getFlightTime() { return flightTime; }
 
@@ -105,6 +155,12 @@ public class Flight {
     public boolean equals(Object o) {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
-        return flight.equals(((Flight) o).flight);
+
+        Flight other = (Flight) o;
+        boolean eq = flight.equals(other.flight);
+        if ((departDate != null) && (other.departDate != null)) { eq = eq || departDate.equals(other.departDate); }
+        if ((departTime != null) && (other.departTime != null)) { eq = eq || departTime.equals(other.departTime); }
+
+        return eq;
     }
 }

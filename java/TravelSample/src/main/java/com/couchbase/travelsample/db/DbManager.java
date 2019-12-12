@@ -42,8 +42,10 @@ import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
+import com.couchbase.lite.Document;
 import com.couchbase.lite.ListenerToken;
 import com.couchbase.lite.LogLevel;
+import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorChange;
@@ -60,10 +62,13 @@ public final class DbManager {
     public static final int LOGIN_TIMEOUT_SEC = 30;
 
     public static final String DB_DIR = "database/";
-    public static final String GUEST_DB_DIR = DB_DIR + "guest";
     public static final String DB_NAME = "travel-sample";
     public static final String DB_SUFFIX = ".cblite2";
     public static final String DB_ZIP = DB_NAME + DB_SUFFIX + ".zip";
+
+    public static final String GUEST_USER = "guest";
+    public static final String PROP_DOC_TYPE = "type";
+    public static final String TYPE_GUEST_DOC = "bookmarkedhotels";
 
     static class ReplicationStartListener implements ReplicatorChangeListener {
         @Nonnull
@@ -102,11 +107,15 @@ public final class DbManager {
         }
     }
 
-
+    @Nonnull
     private final DbExecutor exec;
 
+    @Nullable
     private Database database;
+    @Nullable
     private Replicator replicator;
+    @Nullable
+    private String currentUser;
 
     @Inject
     public DbManager(@Nonnull DbExecutor exec) {
@@ -116,20 +125,72 @@ public final class DbManager {
         Database.log.getConsole().setLevel(LogLevel.DEBUG);
     }
 
+    @Nonnull
+    public String getCurrentUser() {
+        if (currentUser == null) { throw new IllegalStateException("No user logged in"); }
+        return currentUser;
+    }
+
+
+    @Nonnull
+    public MutableDocument getGuestDoc() {
+        final String guestId = getCurrentUserId();
+        LOGGER.log(Level.INFO, "id is: " + guestId);
+        if (!guestId.endsWith(GUEST_USER)) { throw new IllegalStateException("Not logged in as guest"); }
+
+        final Document doc = getDatabase().getDocument(guestId);
+        if (doc != null) { return doc.toMutable(); }
+
+        final MutableDocument mDoc = new MutableDocument(guestId);
+        mDoc.setString(PROP_DOC_TYPE, TYPE_GUEST_DOC);
+        return mDoc;
+    }
+
+    @Nonnull
+    public MutableDocument getUserDoc() {
+        final String uId = getCurrentUserId();
+        final Document doc = getDatabase().getDocument(uId);
+        if (doc != null) { return doc.toMutable(); }
+
+        LOGGER.log(Level.WARNING, "No document for user: " + currentUser);
+        throw new IllegalStateException("User " + currentUser + "does not exist. Use the web app to create it");
+    }
+
     public void close() { exec.submit(this::closeAsync); }
 
     // This is synchronous!  Don't use it from the Swing thread!
-    Database getDatabase() {
+    @Nonnull
+    public Database getDatabase() {
         if (database == null) { throw new IllegalStateException("db used before open"); }
         return database;
     }
 
-    void openGuestDb() throws IOException, CouchbaseLiteException {
-        final DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(new File(GUEST_DB_DIR).getCanonicalPath());
-        database = new Database(DB_NAME, config);
+    @Nullable
+    Void closeAsync() throws CouchbaseLiteException {
+        if (replicator != null) {
+            replicator.stop();
+            replicator = null;
+        }
+
+        if (database != null) {
+            database.close();
+            database = null;
+        }
+
+        currentUser = null;
+
+        return null;
     }
 
+    // This is synchronous!  Don't use it from the Swing thread!
+    void openGuestDb() throws IOException, CouchbaseLiteException {
+        final DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(new File(DB_DIR, GUEST_USER).getCanonicalPath());
+        database = new Database(DB_NAME, config);
+        currentUser = GUEST_USER;
+    }
+
+    // This is synchronous!  Don't use it from the Swing thread!
     void openUserDb(@Nonnull String username, @Nonnull char[] password)
         throws IOException, CouchbaseLiteException, AuthenticationException, URISyntaxException {
         final File dbDir = new File(DB_DIR, username);
@@ -143,21 +204,14 @@ public final class DbManager {
 
         database = new Database(DB_NAME, config);
         replicator = startReplication(username, password);
+
+        currentUser = username;
     }
 
-    @Nullable
-    private Void closeAsync() throws CouchbaseLiteException {
-        if (replicator != null) {
-            replicator.stop();
-            replicator = null;
-        }
-
-        if (database != null) {
-            database.close();
-            database = null;
-        }
-
-        return null;
+    @Nonnull
+    private String getCurrentUserId() {
+        if (currentUser == null) { throw new IllegalStateException("No user logged in"); }
+        return "user::" + currentUser;
     }
 
     private Replicator startReplication(@Nonnull String username, @Nonnull char[] password)
@@ -204,7 +258,7 @@ public final class DbManager {
         return unzippedDb;
     }
 
-    private void unzipStream(InputStream in, File destDir) throws IOException {
+    private void unzipStream(@Nonnull InputStream in, @Nonnull File destDir) throws IOException {
         final byte[] buffer = new byte[1024];
 
         try (ZipInputStream zin = new ZipInputStream(in)) {

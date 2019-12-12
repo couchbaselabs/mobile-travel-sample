@@ -56,7 +56,7 @@ public class FlightCellRenderer extends JPanel implements ListCellRenderer<Fligh
         flightInfo.setText(flight.getCarrier() + " " + flight.getFlight());
         details.setText(String.format(
             "%s - %s, Fare: $%.2f",
-            flight.getSourceAirport(), flight.getDestinationAirport(), flight.getPrice()));
+            flight.getOriginAirport(), flight.getDestinationAirport(), flight.getPrice()));
         setForeground(focused ? Page.COLOR_TEXT : Page.COLOR_UNFOCUSED);
         setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
         return this;
