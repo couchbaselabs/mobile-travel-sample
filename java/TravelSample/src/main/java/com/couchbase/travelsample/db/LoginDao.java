@@ -27,7 +27,9 @@ import com.couchbase.lite.CouchbaseLiteException;
 
 
 public class LoginDao {
+    @Nonnull
     private final DbManager db;
+    @Nonnull
     private final DbExecutor exec;
 
     @Inject

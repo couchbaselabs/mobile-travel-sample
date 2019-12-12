@@ -158,7 +158,7 @@
           <hideActionText value="false"/>
           <horizontalAlignment value="0"/>
           <opaque value="true"/>
-          <text value="QUIT"/>
+          <text value="CANCEL"/>
         </properties>
       </component>
       <component id="9c580" class="javax.swing.JButton" binding="bookButton">

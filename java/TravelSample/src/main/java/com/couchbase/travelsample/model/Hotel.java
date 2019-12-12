@@ -15,45 +15,37 @@
 //
 package com.couchbase.travelsample.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.json.JSONObject;
+
 import com.couchbase.lite.Dictionary;
 import com.couchbase.lite.MutableDocument;
-import com.couchbase.lite.Result;
-import com.couchbase.lite.ResultSet;
-
-import org.json.JSONObject;
 
 
 public class Hotel {
+    public static final String PROP_ID = "id";
+    public static final String PROP_NAME = "name";
+    public static final String PROP_ADDRESS = "address";
+
+
     @Nonnull
     public static Hotel fromJSON(@Nonnull JSONObject json) {
-        String id = (!json.has("id")) ? null : json.getString("id");
-        return new Hotel(id, json.getString("name"), json.getString("address"));
+        return new Hotel(
+            json.getString(PROP_ID),
+            json.getString(PROP_NAME),
+            json.getString(PROP_ADDRESS));
     }
 
     @Nullable
     public static Hotel fromDictionary(@Nullable Dictionary dict) {
         if (dict == null) { return null; }
-        return new Hotel(dict.getString("id"), dict.getString("name"), dict.getString("address"));
-    }
-
-    @Nullable
-    public static List<Hotel> fromResults(@Nullable ResultSet results) {
-        if (results == null) { return null; }
-
-        List<Hotel> hotels = new ArrayList<>();
-        Result row;
-        while ((row = results.next()) != null) {
-            hotels.add(Hotel.fromDictionary(row.getDictionary("travel-sample")));
-        }
-
-        return hotels;
+        return new Hotel(
+            dict.getString(PROP_ID),
+            dict.getString(PROP_NAME),
+            dict.getString(PROP_ADDRESS));
     }
 
     @Nullable
@@ -63,21 +55,22 @@ public class Hotel {
         final String id = hotel.getId();
 
         final MutableDocument doc = new MutableDocument(id);
-        if (id != null) { doc.setString("id", id); }
-        doc.setString("name", hotel.getName());
-        doc.setString("address", hotel.getAddress());
+        doc.setString(PROP_ID, id);
+        doc.setString(PROP_NAME, hotel.getName());
+        doc.setString(PROP_ADDRESS, hotel.getAddress());
 
         return doc;
     }
 
     @Nullable
     private final String id;
-    @Nonnull
+    @Nullable
     private final String name;
-    @Nonnull
+    @Nullable
     private final String address;
 
-    public Hotel(@Nullable String id, @Nonnull String name, @Nonnull String address) {
+    Hotel(@Nonnull String id, @Nullable String name, @Nullable String address) {
+        if ((id == null) || id.isEmpty()) { throw new IllegalStateException("Hotel has no id"); }
         this.id = id;
         this.name = name;
         this.address = address;
@@ -86,20 +79,20 @@ public class Hotel {
     @Nullable
     public String getId() { return id; }
 
-    @Nonnull
+    @Nullable
     public String getName() { return name; }
 
-    @Nonnull
+    @Nullable
     public String getAddress() { return address; }
 
     @Override
-    public int hashCode() { return Objects.hash(name, address); }
+    public int hashCode() { return Objects.hash(id); }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
         Hotel hotel = (Hotel) o;
-        return name.equals(hotel.name) && address.equals(hotel.address);
+        return id.equals(hotel.id);
     }
 }

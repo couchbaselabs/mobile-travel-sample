@@ -50,6 +50,9 @@ public class TryCb {
     private static final Logger LOGGER = Logger.getLogger(TryCb.class.getName());
 
     public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
+    public static final String HOTEL_ENDPOINT = WEB_APP_ENDPOINT + "hotel/";
+    public static final String FLIGHT_PATHS_ENDPOINT = WEB_APP_ENDPOINT + "flightPaths/";
+
 
     @Nonnull
     private final DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -70,7 +73,7 @@ public class TryCb {
         @Nonnull String description,
         @Nonnull Consumer<List<Hotel>> receiver) {
         runQuery(
-            WEB_APP_ENDPOINT + "hotel/" + encodePath(description) + "/" + encodePath(location),
+            HOTEL_ENDPOINT + encodePath(description) + "/" + encodePath(location),
             receiver,
             json -> {
                 List<Hotel> flights = new ArrayList<>();
@@ -85,8 +88,7 @@ public class TryCb {
         @Nonnull Date date,
         @Nonnull Consumer<List<Flight>> receiver) {
         runQuery(
-            WEB_APP_ENDPOINT
-                + "flightPaths/" + encodePath(origin) + "/" + encodePath(destination)
+            FLIGHT_PATHS_ENDPOINT + encodePath(origin) + "/" + encodePath(destination)
                 + "?leave=" + formatter.format(date),
             receiver,
             json -> {
@@ -109,7 +111,7 @@ public class TryCb {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Run Query: " + url);
+        LOGGER.log(Level.INFO, "query: " + url);
         client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
             @Override
             public void onFailure(@Nonnull Call call, @Nonnull IOException e) {

@@ -54,7 +54,10 @@ public final class HotelSearchController extends PageController {
         remote.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
     }
 
-    public void done() { back(); }
+    public void done() {
+        hotelsModel.clear();
+        back();
+    }
 
     @Override
     protected void onClose() { }

@@ -15,15 +15,22 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.couchbase.travelsample.model.Flight;
+import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.controller.BookingsController;
 import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
 
@@ -34,30 +41,56 @@ public final class BookingsView extends Page<BookingsController> {
 
     public static final String PAGE_NAME = "BOOKINGS";
 
-    interface FlightSelector {
-        Flight getOutboundSelection();
-        Flight getReturningSelection();
-    }
+    private class SelectionListener implements ListSelectionListener {
+        private Flight selection;
 
+        public SelectionListener() {}
+
+        public Flight getSelection() { return selection; }
+
+        public void valueChanged(ListSelectionEvent e) {
+            Object src = e.getSource();
+            if (!(src instanceof JList)) { return; }
+            JList<Flight> flights = ((JList<Flight>) src);
+
+            ListSelectionModel selectionModel = flights.getSelectionModel();
+
+            boolean selectionEmpty = selectionModel.isSelectionEmpty();
+            setDeleteButtonEnabled(!selectionEmpty);
+            ;
+            selection = (selectionEmpty)
+                ? null
+                : flights.getModel().getElementAt(selectionModel.getMaxSelectionIndex());
+        }
+    }
 
     private JPanel panel;
     private JList<Flight> flights;
     private JButton logoutButton;
+    private JButton deleteBookingButton;
     private JButton findHotelsButton;
     private JButton findFlightsButton;
 
     @Inject
-    public BookingsView(BookingsController controller) {
+    public BookingsView(@Nonnull BookingsController controller) {
         super(PAGE_NAME, controller);
 
+        final SelectionListener selectionListener = new SelectionListener();
+
         logoutButton.addActionListener(e -> logout());
-
         findFlightsButton.addActionListener(e -> controller.selectFlight());
-
         findHotelsButton.addActionListener(e -> controller.selectHotel());
 
+        deleteBookingButton.addActionListener(e -> controller.deleteBooking(selectionListener.getSelection()));
+        setDeleteButtonEnabled(false);
+
         flights.setModel(controller.getFlightsModel());
+        flights.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        flights.addListSelectionListener(selectionListener);
         flights.setCellRenderer(new FlightCellRenderer());
+    }
+
+    private void removeBooking() {
     }
 
     @Override
@@ -68,4 +101,9 @@ public final class BookingsView extends Page<BookingsController> {
 
     @Override
     protected void onClose() { }
+
+    void setDeleteButtonEnabled(boolean enabled) {
+        deleteBookingButton.setEnabled(enabled);
+        deleteBookingButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
 }

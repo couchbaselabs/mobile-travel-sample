@@ -129,6 +129,8 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
 
     void done() {
         selection = selectionListener.getSelection();
+        hotelLocation.setText("");
+        hotelDescription.setText("");
         hotels.clearSelection();
         controller.done();
     }
