@@ -20,13 +20,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,7 +40,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.couchbase.travelsample.model.Flight;
@@ -47,110 +51,93 @@ public class TryCb {
 
     public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
 
+    @Nonnull
+    private final DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+    @FunctionalInterface
+    public interface JsonArrayConverter<T> {
+        List<T> convert(@Nonnull JSONArray json);
+    }
+
+
     private final OkHttpClient client;
 
     @Inject
     public TryCb() { client = new OkHttpClient(); }
 
-    public void searchHotels(String location, String description, final Consumer<List<Hotel>> completion) {
-        String fullPath;
-        try {
-            String descriptionStr = description.equals("")
-                ? "*"
-                : URLEncoder.encode(description, "UTF-8").replace("+", "%20");
-            String locationStr = location.equals("")
-                ? "*"
-                : URLEncoder.encode(location, "UTF-8").replace("+", "%20");
-            fullPath = String.format("hotel/%s/%s", descriptionStr, locationStr);
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
-        }
+    public void searchHotels(
+        @Nonnull String location,
+        @Nonnull String description,
+        @Nonnull Consumer<List<Hotel>> receiver) {
+        runQuery(
+            WEB_APP_ENDPOINT + "hotel/" + encodePath(description) + "/" + encodePath(location),
+            receiver,
+            json -> {
+                List<Hotel> flights = new ArrayList<>();
+                for (int i = 0; i < json.length(); i++) { flights.add(Hotel.fromJSON(json.getJSONObject(i))); }
+                return flights;
+            });
+    }
 
-        URL url;
-        try { url = new URL(WEB_APP_ENDPOINT + fullPath); }
+    public void searchFlights(
+        @Nonnull String origin,
+        @Nonnull String destination,
+        @Nonnull Date date,
+        @Nonnull Consumer<List<Flight>> receiver) {
+        runQuery(
+            WEB_APP_ENDPOINT
+                + "flightPaths/" + encodePath(origin) + "/" + encodePath(destination)
+                + "?leave=" + formatter.format(date),
+            receiver,
+            json -> {
+                List<Flight> flights = new ArrayList<>();
+                for (int i = 0; i < json.length(); i++) { flights.add(Flight.fromJSON(json.getJSONObject(i))); }
+                return flights;
+            });
+    }
+
+    private <T> void runQuery(
+        @Nonnull String urlStr,
+        @Nonnull Consumer<List<T>> receiver,
+        @Nonnull JsonArrayConverter<T> converter) {
+
+        final URL url;
+        try { url = new URL(urlStr); }
         catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Malformed URL: " + urlStr, e);
+            receiver.accept(Collections.emptyList());
             return;
         }
 
-        LOGGER.log(Level.INFO, "Query: " + url);
+        LOGGER.log(Level.INFO, "Run Query: " + url);
         client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
             @Override
-            public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
+            public void onFailure(@Nonnull Call call, @Nonnull IOException e) {
+                throw new RuntimeException("Request failed", e);
+            }
 
             @Override
             public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                if (!response.isSuccessful()) { throw new IOException("Unsuccessful request: " + response); }
 
                 try (ResponseBody responseBody = response.body()) {
                     if (responseBody == null) { throw new IOException("Empty response"); }
 
-                    String responseString = responseBody.string();
-                    JSONArray data = new JSONObject(responseString).getJSONArray("data");
+                    List<T> data = converter.convert(new JSONObject(responseBody.string()).getJSONArray("data"));
 
-                    List<Hotel> hotels = new ArrayList<>();
-                    for (int i = 0; i < data.length(); i++) {
-                        hotels.add(Hotel.fromJSON(data.getJSONObject(i)));
-                    }
-
-                    completion.accept(hotels);
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
+                    SwingUtilities.invokeLater(() -> receiver.accept(data));
                 }
             }
         });
     }
 
-    public void searchFlights(String prefix, final Consumer<List<Flight>> completion) {
-        String fullPath;
-        try {
-            String flight = prefix.equals("")
-                ? "*"
-                : URLEncoder.encode(prefix, "UTF-8").replace("+", "%20");
-            fullPath = String.format("flights/%s", prefix);
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        URL url;
-        try { url = new URL(WEB_APP_ENDPOINT + fullPath); }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        LOGGER.log(Level.INFO, "Query: " + url);
-
-        client.newCall(new Request.Builder().url(url).build()).enqueue(new Callback() {
-            @Override
-            public void onFailure(@Nonnull Call call, @Nonnull IOException e) { e.printStackTrace(); }
-
-            @Override
-            public void onResponse(@Nonnull Call call, @Nonnull Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
-
-                try (ResponseBody responseBody = response.body()) {
-                    if (responseBody == null) { throw new IOException("Empty response"); }
-
-                    String responseString = responseBody.string();
-                    JSONArray data = new JSONObject(responseString).getJSONArray("data");
-
-                    List<Flight> flights = new ArrayList<>();
-                    for (int i = 0; i < data.length(); i++) {
-                        flights.add(Flight.fromJSON(data.getJSONObject(i)));
-                    }
-
-                    completion.accept(flights);
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    private String encodePath(@Nonnull String segment) {
+        if (!segment.isEmpty()) {
+            try { return URLEncoder.encode(segment, "UTF-8").replace("+", "%20"); }
+            catch (UnsupportedEncodingException e) {
+                LOGGER.log(Level.WARNING, "Failed encoding : " + segment, e);
             }
-        });
+        }
+        return "*";
     }
 }

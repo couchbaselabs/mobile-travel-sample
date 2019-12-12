@@ -42,7 +42,7 @@ public interface ViewModule {
 
     @Binds
     @IntoSet
-    Page<?> userView(UserView v);
+    Page<?> userView(BookingsView v);
 
     @Binds
     @IntoSet

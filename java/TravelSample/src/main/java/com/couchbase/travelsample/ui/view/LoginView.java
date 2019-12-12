@@ -69,8 +69,9 @@ public final class LoginView extends Page<LoginController> {
             controller.loginWithValidation(uname, password.getPassword(), (err) -> loginFail(err, uname));
         });
 
-        username.addKeyListener(new LoginKeyListener());
-        password.addKeyListener(new LoginKeyListener());
+        final LoginKeyListener keyListener = new LoginKeyListener();
+        username.addKeyListener(keyListener);
+        password.addKeyListener(keyListener);
         setLoginButtonEnabled(false);
     }
 

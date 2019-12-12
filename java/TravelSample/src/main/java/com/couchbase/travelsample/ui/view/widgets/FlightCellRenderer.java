@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import com.couchbase.travelsample.model.Flight;
+import com.couchbase.travelsample.ui.view.Page;
 
 
 public class FlightCellRenderer extends JPanel implements ListCellRenderer<Flight> {
@@ -56,6 +57,8 @@ public class FlightCellRenderer extends JPanel implements ListCellRenderer<Fligh
         details.setText(String.format(
             "%s - %s, Fare: $%.2f",
             flight.getSourceAirport(), flight.getDestinationAirport(), flight.getPrice()));
+        setForeground(focused ? Page.COLOR_TEXT : Page.COLOR_UNFOCUSED);
+        setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
         return this;
     }
 }

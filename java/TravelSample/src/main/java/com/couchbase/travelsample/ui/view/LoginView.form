@@ -79,7 +79,7 @@
           <component id="7d8b3" class="javax.swing.JButton" binding="loginButton" default-binding="true">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="180" height="40"/>
+                <preferred-size width="200" height="40"/>
               </grid>
             </constraints>
             <properties>
@@ -94,8 +94,8 @@
           </component>
           <component id="c968b" class="javax.swing.JButton" binding="guestButton" default-binding="true">
             <constraints>
-              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="180" height="40"/>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="40"/>
               </grid>
             </constraints>
             <properties>

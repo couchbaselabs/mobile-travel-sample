@@ -16,11 +16,11 @@
 package com.couchbase.travelsample.db;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -36,6 +36,8 @@ import com.couchbase.travelsample.model.Flight;
 
 
 public class FlightsDao {
+    private static final Logger LOGGER = Logger.getLogger(FlightsDao.class.getName());
+
     public static final String ID_GUEST_DOC = "user::guest";
     public static final String TYPE_AIRPORT = "airport";
     public static final String PROP_TYPE = "type";
@@ -52,12 +54,12 @@ public class FlightsDao {
         this.exec = exec;
     }
 
-    public void getFlights(@Nonnull Consumer<List<Flight>> listener) {
-        exec.submit(this::queryFlightsAsync, listener);
-    }
-
     public void searchAirports(@Nonnull String name, int maxResults, @Nonnull Consumer<List<String>> listener) {
         exec.submit(() -> searchAirportsAsync(name, maxResults), listener);
+    }
+
+    public void bookFlight(Flight flight) {
+        LOGGER.log(Level.INFO, "Booking flight: " + flight);
     }
 
     @Nonnull
@@ -80,10 +82,5 @@ public class FlightsDao {
         while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT_NAME)); }
 
         return airports;
-    }
-
-    @Nullable
-    private List<Flight> queryFlightsAsync() throws CouchbaseLiteException {
-        return Collections.emptyList();
     }
 }
