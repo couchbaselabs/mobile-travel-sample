@@ -24,15 +24,20 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 
 import com.couchbase.travelsample.model.Flight;
-import com.couchbase.travelsample.ui.controller.UserController;
+import com.couchbase.travelsample.ui.controller.BookingsController;
 import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
 
 
 @Singleton
-public final class UserView extends Page<UserController> {
+public final class BookingsView extends Page<BookingsController> {
     private static final Logger LOGGER = Logger.getLogger(GuestView.class.getName());
 
-    public static final String PAGE_NAME = "USER";
+    public static final String PAGE_NAME = "BOOKINGS";
+
+    interface FlightSelector {
+        Flight getOutboundSelection();
+        Flight getReturningSelection();
+    }
 
 
     private JPanel panel;
@@ -42,7 +47,7 @@ public final class UserView extends Page<UserController> {
     private JButton findFlightsButton;
 
     @Inject
-    public UserView(UserController controller) {
+    public BookingsView(BookingsController controller) {
         super(PAGE_NAME, controller);
 
         logoutButton.addActionListener(e -> logout());

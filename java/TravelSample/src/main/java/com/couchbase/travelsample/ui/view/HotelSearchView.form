@@ -59,7 +59,7 @@
       </component>
       <component id="4bae2" class="javax.swing.JTextField" binding="hotelLocation">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="35"/>
           </grid>
         </constraints>
@@ -104,7 +104,7 @@
       </hspacer>
       <component id="974d7" class="javax.swing.JButton" binding="doneButton">
         <constraints>
-          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
             <minimum-size width="160" height="40"/>
             <preferred-size width="160" height="40"/>
             <maximum-size width="160" height="40"/>

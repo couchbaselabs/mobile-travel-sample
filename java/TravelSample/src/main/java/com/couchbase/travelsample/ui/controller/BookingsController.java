@@ -28,12 +28,12 @@ import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.FlightSearchView;
 import com.couchbase.travelsample.ui.view.HotelSearchView;
-import com.couchbase.travelsample.ui.view.UserView;
+import com.couchbase.travelsample.ui.view.BookingsView;
 
 
 @Singleton
-public final class UserController extends PageController {
-    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+public final class BookingsController extends PageController {
+    private static final Logger LOGGER = Logger.getLogger(BookingsController.class.getName());
 
 
     @Nonnull
@@ -43,15 +43,13 @@ public final class UserController extends PageController {
     private final FlightsDao flightsDao;
 
     @Inject
-    public UserController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull FlightsDao flightsDao) {
-        super(UserView.PAGE_NAME, nav, localStore);
+    public BookingsController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull FlightsDao flightsDao) {
+        super(BookingsView.PAGE_NAME, nav, localStore);
         this.flightsDao = flightsDao;
     }
 
     @Nonnull
     public DefaultListModel<Flight> getFlightsModel() { return flightsModel; }
-
-    public void fetchFlights() { flightsDao.getFlights(this::updateFlights); }
 
     public void selectFlight() { toPage(FlightSearchView.PAGE_NAME); }
 

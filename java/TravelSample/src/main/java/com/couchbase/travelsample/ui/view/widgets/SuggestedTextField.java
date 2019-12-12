@@ -15,6 +15,8 @@
 //
 package com.couchbase.travelsample.ui.view.widgets;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -33,7 +35,7 @@ import javax.swing.event.ListSelectionListener;
 
 
 public class SuggestedTextField<T> extends JTextField
-    implements KeyListener, Consumer<List<T>>, ListSelectionListener {
+    implements KeyListener, Consumer<List<T>>, ListSelectionListener, FocusListener {
     private static final Logger LOGGER = Logger.getLogger(SuggestedTextField.class.getName());
 
     private static final PopupFactory POPUP_FACTORY = new PopupFactory();
@@ -54,6 +56,7 @@ public class SuggestedTextField<T> extends JTextField
         this.supplier = supplier;
 
         addKeyListener(this);
+        addFocusListener(this);
 
         list = new JList<>();
         list.setModel(listModel);
@@ -90,12 +93,6 @@ public class SuggestedTextField<T> extends JTextField
         setText(selection.toString());
     }
 
-    private void hideMenu() {
-        menu.hide();
-        listModel.clear();
-        menu = null;
-    }
-
     @Override
     public void keyReleased(KeyEvent e) { supplier.match(getText(), this); }
 
@@ -104,4 +101,16 @@ public class SuggestedTextField<T> extends JTextField
 
     @Override
     public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void focusGained(FocusEvent e) { }
+
+    @Override
+    public void focusLost(FocusEvent e) { hideMenu(); }
+
+    private void hideMenu() {
+        if (menu != null) { menu.hide(); }
+        listModel.clear();
+        menu = null;
+    }
 }

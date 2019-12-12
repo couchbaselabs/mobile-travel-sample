@@ -44,7 +44,7 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
 
     public static final String PAGE_NAME = "SEARCH_HOTELS";
 
-    private class SelectionListener implements ListSelectionListener {
+    private static class SelectionListener implements ListSelectionListener {
         private final Set<Hotel> selection = new HashSet<>();
 
         public SelectionListener() {}

@@ -38,7 +38,7 @@ public class Flight {
             json.getString("destinationairport"),
             json.getString("equipment"),
             json.getString("utc"),
-            json.getString("flighttime"),
+            json.getInt("flighttime"),
             json.getFloat("price"));
     }
 
@@ -54,9 +54,7 @@ public class Flight {
     private final String equipment;
     @Nonnull
     private final String depart;
-    @Nonnull
-    private final String flightTime;
-    @Nonnull
+    private final int flightTime;
     private final float price;
 
     public Flight(
@@ -66,7 +64,7 @@ public class Flight {
         @Nonnull String dest,
         @Nonnull String equipment,
         @Nonnull String depart,
-        @Nonnull String flightTime,
+        int flightTime,
         float price) {
         this.flight = flight;
         this.carrier = carrier;
@@ -96,10 +94,8 @@ public class Flight {
     @Nonnull
     public String getDepartureTime() { return depart; }
 
-    @Nonnull
-    public String getFlightTime() { return flightTime; }
+    public int getFlightTime() { return flightTime; }
 
-    @Nonnull
     public float getPrice() { return price; }
 
     @Override

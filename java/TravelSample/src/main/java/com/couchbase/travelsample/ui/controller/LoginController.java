@@ -26,7 +26,7 @@ import com.couchbase.travelsample.db.LoginDao;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.GuestView;
 import com.couchbase.travelsample.ui.view.LoginView;
-import com.couchbase.travelsample.ui.view.UserView;
+import com.couchbase.travelsample.ui.view.BookingsView;
 
 
 @Singleton
@@ -50,7 +50,7 @@ public final class LoginController extends PageController {
         loginDao.openWithValidation(
             username,
             password,
-            () -> toPage(UserView.PAGE_NAME),
+            () -> toPage(BookingsView.PAGE_NAME),
             onFail);
     }
 

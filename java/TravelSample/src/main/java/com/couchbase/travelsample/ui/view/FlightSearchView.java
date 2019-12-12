@@ -15,9 +15,10 @@
 //
 package com.couchbase.travelsample.ui.view;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +27,10 @@ import javax.inject.Singleton;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -42,24 +47,81 @@ public class FlightSearchView extends Page<FlightSearchController> {
     public static final String PAGE_NAME = "SEARCH_FLIGHTS";
 
 
+    class SearchKeyListener implements KeyListener {
+        public void keyPressed(KeyEvent e) {}
+
+        public void keyTyped(KeyEvent e) { }
+
+        public void keyReleased(KeyEvent e) {
+            setSearchButtonEnabled(!(originAirport.getText().isEmpty() || destinationAirport.getText().isEmpty()));
+        }
+    }
+
+    private class SelectionListener implements ListSelectionListener {
+        private Flight selection;
+
+        public SelectionListener() {}
+
+        public Flight getSelection() { return selection; }
+
+        public void valueChanged(ListSelectionEvent e) {
+            Object src = e.getSource();
+            if (!(src instanceof JList)) { return; }
+            JList<Flight> flights = ((JList<Flight>) src);
+
+            ListSelectionModel selectionModel = flights.getSelectionModel();
+            ListModel<Flight> model = flights.getModel();
+
+            selection = (selectionModel.isSelectionEmpty())
+                ? null
+                : model.getElementAt(selectionModel.getMinSelectionIndex());
+
+            setBookButtonEnabled();
+        }
+    }
+
+    private final SelectionListener outboundSelectionListener = new SelectionListener();
+    private final SelectionListener returningSelectionListener = new SelectionListener();
+
     private JPanel panel;
     private SuggestedTextField<String> originAirport;
     private SuggestedTextField<String> destinationAirport;
     private JDateChooser departureDate;
     private JDateChooser returnDate;
-    private JList<Flight> flights;
+    private JList<Flight> outboundFlights;
+    private JList<Flight> returningFlights;
     private JButton logoutButton;
+    private JButton searchButton;
     private JButton doneButton;
+    private JButton bookButton;
 
     @Inject
     public FlightSearchView(FlightSearchController controller) {
         super(PAGE_NAME, controller);
 
         logoutButton.addActionListener(e -> logout());
-        doneButton.addActionListener(e -> done());
+        doneButton.addActionListener(e -> controller.done());
 
-        flights.setModel(controller.getFlightsModel());
-        flights.setCellRenderer(new FlightCellRenderer());
+        searchButton.addActionListener(e -> searchFlights());
+        bookButton.addActionListener(e -> bookFlights());
+
+        outboundFlights.setModel(controller.getOutboundFlightsModel());
+        outboundFlights.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        outboundFlights.addListSelectionListener(outboundSelectionListener);
+        outboundFlights.setCellRenderer(new FlightCellRenderer());
+
+        returningFlights.setModel(controller.getReturningFlightsModel());
+        returningFlights.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        returningFlights.addListSelectionListener(returningSelectionListener);
+        returningFlights.setCellRenderer(new FlightCellRenderer());
+        setBookButtonEnabled();
+
+        final SearchKeyListener keyListener = new SearchKeyListener();
+        originAirport.addKeyListener(keyListener);
+        destinationAirport.addKeyListener(keyListener);
+        departureDate.addKeyListener(keyListener);
+        returnDate.addKeyListener(keyListener);
+        setSearchButtonEnabled(false);
     }
 
     @Override
@@ -71,22 +133,41 @@ public class FlightSearchView extends Page<FlightSearchController> {
     @Override
     protected void onClose() { }
 
-    void done() {
-        LOGGER.log(
-            Level.INFO,
-            "origin: " + originAirport.getText() + " destination: " + destinationAirport.getText());
-        controller.done();
+    void bookFlights() {
+        controller.bookFlights(
+            outboundSelectionListener.getSelection(),
+            returningSelectionListener.getSelection());
     }
 
     void searchAirports(@Nonnull String prefix, Consumer<List<String>> consumer) {
         controller.searchAirports(prefix, 12, consumer);
     }
 
+    void searchFlights() {
+        controller.searchFlights(
+            originAirport.getText(),
+            destinationAirport.getText(),
+            departureDate.getDate(),
+            returnDate.getDate());
+    }
+
     private void createUIComponents() {
-        originAirport = new SuggestedTextField<String>(this::searchAirports);
-        destinationAirport = new SuggestedTextField<String>(this::searchAirports);
+        originAirport = new SuggestedTextField<>(this::searchAirports);
+        destinationAirport = new SuggestedTextField<>(this::searchAirports);
 
         departureDate = new JDateChooser();
         returnDate = new JDateChooser();
+    }
+
+    void setSearchButtonEnabled(boolean enabled) {
+        searchButton.setEnabled(enabled);
+        searchButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
+
+    void setBookButtonEnabled() {
+        boolean enabled
+            = (outboundSelectionListener.getSelection() != null) && (returningSelectionListener.getSelection() != null);
+        bookButton.setEnabled(enabled);
+        bookButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
     }
 }
