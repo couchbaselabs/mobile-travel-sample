@@ -22,9 +22,6 @@ import javax.annotation.Nullable;
 
 import org.json.JSONObject;
 
-import com.couchbase.lite.Dictionary;
-import com.couchbase.lite.MutableDictionary;
-
 
 public class Flight {
     public static final String PROP_FLIGHT = "flight";
@@ -48,59 +45,24 @@ public class Flight {
                 (!json.has(PROP_DESTINATION)) ? null : json.getString(PROP_DESTINATION),
                 (!json.has(PROP_EQUIPMENT)) ? null : json.getString(PROP_EQUIPMENT),
                 (!json.has(PROP_DEPARTURE_TIME)) ? null : json.getString(PROP_DEPARTURE_TIME),
-                (!json.has(PROP_DEPARTURE_DATE)) ? null : json.getString(PROP_DEPARTURE_DATE),
                 (!json.has(PROP_FLIGHT_TIME)) ? 0 : json.getInt(PROP_FLIGHT_TIME),
                 (!json.has(PROP_PRICE)) ? 0F : json.getFloat(PROP_PRICE));
     }
 
-    @Nullable
-    public static Flight fromDictionary(@Nullable Dictionary dict) {
-        return (dict == null)
-            ? null
-            : new Flight(
-                dict.getString(PROP_FLIGHT),
-                dict.getString(PROP_NAME),
-                dict.getString(PROP_ORIGIN),
-                dict.getString(PROP_DESTINATION),
-                dict.getString(PROP_EQUIPMENT),
-                dict.getString(PROP_DEPARTURE_DATE),
-                dict.getString(PROP_DEPARTURE_TIME),
-                dict.getInt(PROP_FLIGHT_TIME),
-                dict.getFloat(PROP_PRICE));
-    }
-
-    @Nullable
-    public static MutableDictionary toDictionary(@Nullable Flight flight) {
-        if (flight == null) { return null; }
-        final MutableDictionary dict = new MutableDictionary();
-        dict.setString(PROP_FLIGHT, flight.flight);
-        if (flight.carrier != null) { dict.setString(PROP_NAME, flight.carrier); }
-        if (flight.origin != null) { dict.setString(PROP_ORIGIN, flight.origin); }
-        if (flight.destination != null) { dict.setString(PROP_DESTINATION, flight.destination); }
-        if (flight.equipment != null) { dict.setString(PROP_EQUIPMENT, flight.equipment); }
-        if (flight.departDate != null) { dict.setString(PROP_DEPARTURE_DATE, flight.departDate); }
-        if (flight.departTime != null) { dict.setString(PROP_DEPARTURE_TIME, flight.departTime); }
-        if (flight.flightTime != 0) { dict.setInt(PROP_FLIGHT_TIME, flight.flightTime); }
-        if (flight.price != 0F) { dict.setFloat(PROP_PRICE, flight.price); }
-        return dict;
-    }
-
     @Nonnull
-    private final String flight;
+    protected final String flight;
     @Nullable
-    private final String carrier;
+    protected final String carrier;
     @Nullable
-    private final String origin;
+    protected final String origin;
     @Nullable
-    private final String destination;
+    protected final String destination;
     @Nullable
-    private final String equipment;
+    protected final String equipment;
     @Nullable
-    private final String departDate;
-    @Nullable
-    private final String departTime;
-    private final int flightTime;
-    private final float price;
+    protected final String departTime;
+    protected final int flightTime;
+    protected final float price;
 
     Flight(
         @Nonnull String flight,
@@ -108,46 +70,41 @@ public class Flight {
         @Nullable String origin,
         @Nullable String destination,
         @Nullable String equipment,
-        @Nullable String departDate,
         @Nullable String departTime,
         int flightTime,
         float price) {
-        if (flight == null) { throw new IllegalArgumentException("Flight may not be null"); }
+        if (flight == null) { throw new IllegalArgumentException("Flight may not have null flight id"); }
         this.flight = flight;
         this.carrier = carrier;
         this.origin = origin;
         this.destination = destination;
         this.equipment = equipment;
-        this.departDate = departTime;
         this.departTime = departTime;
         this.flightTime = flightTime;
         this.price = price;
     }
 
     @Nonnull
-    public String getFlight() { return flight; }
+    public final String getFlight() { return flight; }
 
     @Nullable
-    public String getCarrier() { return carrier; }
+    public final String getCarrier() { return carrier; }
 
     @Nullable
-    public String getOriginAirport() { return origin; }
+    public final String getOriginAirport() { return origin; }
 
     @Nullable
-    public String getDestinationAirport() { return destination; }
+    public final String getDestinationAirport() { return destination; }
 
     @Nullable
-    public String getEquipment() { return equipment; }
+    public final String getEquipment() { return equipment; }
 
     @Nullable
-    public String getDepartureDate() { return departDate; }
+    public final String getDepartureTime() { return departTime; }
 
-    @Nullable
-    public String getDepartureTime() { return departTime; }
+    public final int getFlightTime() { return flightTime; }
 
-    public int getFlightTime() { return flightTime; }
-
-    public float getPrice() { return price; }
+    public final float getPrice() { return price; }
 
     @Override
     public int hashCode() { return Objects.hash(flight); }
@@ -155,13 +112,7 @@ public class Flight {
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        final Flight other = (Flight) o;
-        boolean eq = flight.equals(other.flight);
-        if ((departDate != null) && (other.departDate != null)) { eq = eq || departDate.equals(other.departDate); }
-        if ((departTime != null) && (other.departTime != null)) { eq = eq || departTime.equals(other.departTime); }
-
-        return eq;
+        if ((o == null) || (this.getClass() == o.getClass())) { return false; }
+        return flight.equals(((Flight) o).flight);
     }
 }

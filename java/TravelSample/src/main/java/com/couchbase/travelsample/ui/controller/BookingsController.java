@@ -59,10 +59,10 @@ public final class BookingsController extends PageController {
     @Override
     protected void onClose() { }
 
-    public void fetchFlights() { flightsDao.getFlights(this::updateFlights); }
+    public void fetchBookedFlights() { flightsDao.getBookedFlights(this::updateFlights); }
 
     public void deleteBooking(Flight flight) {
-        flightsDao.deleteFlight(flight);
+        flightsDao.deleteBookedFlight(flight);
         flightsModel.removeElement(flight);
     }
 

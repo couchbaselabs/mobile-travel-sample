@@ -88,14 +88,11 @@ public final class BookingsView extends Page<BookingsController> {
         flights.setCellRenderer(new FlightCellRenderer());
     }
 
-    private void removeBooking() {
-    }
-
     @Override
     public JPanel getView() { return panel; }
 
     @Override
-    protected void onOpen(@Nullable Page<?> prevPage) { controller.fetchFlights(); }
+    protected void onOpen(@Nullable Page<?> prevPage) { controller.fetchBookedFlights(); }
 
     @Override
     protected void onClose() { }

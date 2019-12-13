@@ -59,5 +59,5 @@ public abstract class Page<T extends PageController> {
         controller.close();
     }
 
-    protected final void logout() { controller.logout(name); }
+    protected final void logout() { controller.logout(); }
 }

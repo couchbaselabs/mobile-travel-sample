@@ -20,8 +20,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -43,6 +41,7 @@ import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.couchbase.travelsample.model.BookedFlight;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Hotel;
 
@@ -54,9 +53,6 @@ public class TryCb {
     public static final String HOTEL_ENDPOINT = WEB_APP_ENDPOINT + "hotel/";
     public static final String FLIGHT_PATHS_ENDPOINT = WEB_APP_ENDPOINT + "flightPaths/";
 
-
-    @Nonnull
-    private final DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
     @FunctionalInterface
     public interface JsonArrayConverter<T> {
@@ -90,7 +86,7 @@ public class TryCb {
         @Nonnull Consumer<List<Flight>> receiver) {
         runQuery(
             FLIGHT_PATHS_ENDPOINT + encodePath(origin) + "/" + encodePath(destination)
-                + "?leave=" + formatter.format(date),
+                + "?leave=" + BookedFlight.DATE_FORMAT.get().format(date),
             receiver,
             json -> {
                 final List<Flight> flights = new ArrayList<>();

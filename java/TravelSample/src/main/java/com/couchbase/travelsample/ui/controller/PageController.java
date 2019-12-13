@@ -45,7 +45,7 @@ public abstract class PageController {
 
     public final void setPrevPage(@Nonnull String prevPageName) { this.prevPageName = prevPageName; }
 
-    public final void logout(@Nonnull String pageName) {
+    public final void logout() {
         close();
         localStore.close();
         toPage(LoginView.PAGE_NAME);

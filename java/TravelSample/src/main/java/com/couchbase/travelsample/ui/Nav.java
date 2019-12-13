@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -55,10 +54,10 @@ public class Nav {
         rootView.start(frontPage);
     }
 
-    public void toPage(@Nullable String prevPageName, @Nonnull String nextPageName) {
+    public void toPage(@Nonnull String prevPageName, @Nonnull String nextPageName) {
         LOGGER.info("Nav: " + prevPageName + " => " + nextPageName);
 
-        final Page<?> prevPage = (prevPageName == null) ? null : pages.get(prevPageName);
+        final Page<?> prevPage = pages.get(prevPageName);
         final Page<?> page = pages.get(nextPageName);
         if (page == null) { return; }
 
