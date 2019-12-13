@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -110,7 +111,7 @@ public class FlightsDao {
             .limit(Expression.intValue(maxResults))
             .execute();
 
-        List<String> airports = new ArrayList<>();
+        final List<String> airports = new ArrayList<>();
         Result row;
         while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT_NAME)); }
 
@@ -129,7 +130,7 @@ public class FlightsDao {
     }
 
     private void bookFlightAsync(@Nonnull Flight flight, @Nonnull Date date) throws CouchbaseLiteException {
-        MutableDocument userDoc = db.getUserDoc();
+        final MutableDocument userDoc = db.getUserDoc();
 
         MutableArray bookings = userDoc.getArray(PROP_FLIGHTS);
         if (bookings == null) { bookings = new MutableArray(); }

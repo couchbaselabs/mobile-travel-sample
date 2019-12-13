@@ -37,7 +37,7 @@ class DbExecutor {
     private final ExecutorService executor;
 
     @Inject
-    public DbExecutor() { executor = Executors.newSingleThreadExecutor(); }
+    DbExecutor() { executor = Executors.newSingleThreadExecutor(); }
 
     public void submit(@Nonnull ThrowingSupplier<Void> task) {
         submit(task, null, null);

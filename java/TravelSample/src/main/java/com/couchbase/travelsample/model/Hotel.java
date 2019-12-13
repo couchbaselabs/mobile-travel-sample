@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -92,7 +93,7 @@ public class Hotel {
     public boolean equals(Object o) {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
-        Hotel hotel = (Hotel) o;
+        final Hotel hotel = (Hotel) o;
         return id.equals(hotel.id);
     }
 }

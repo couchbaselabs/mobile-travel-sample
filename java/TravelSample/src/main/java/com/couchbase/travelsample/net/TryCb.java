@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -76,9 +77,9 @@ public class TryCb {
             HOTEL_ENDPOINT + encodePath(description) + "/" + encodePath(location),
             receiver,
             json -> {
-                List<Hotel> flights = new ArrayList<>();
-                for (int i = 0; i < json.length(); i++) { flights.add(Hotel.fromJSON(json.getJSONObject(i))); }
-                return flights;
+                final List<Hotel> hotels = new ArrayList<>();
+                for (int i = 0; i < json.length(); i++) { hotels.add(Hotel.fromJSON(json.getJSONObject(i))); }
+                return hotels;
             });
     }
 
@@ -92,7 +93,7 @@ public class TryCb {
                 + "?leave=" + formatter.format(date),
             receiver,
             json -> {
-                List<Flight> flights = new ArrayList<>();
+                final List<Flight> flights = new ArrayList<>();
                 for (int i = 0; i < json.length(); i++) { flights.add(Flight.fromJSON(json.getJSONObject(i))); }
                 return flights;
             });
@@ -102,7 +103,6 @@ public class TryCb {
         @Nonnull String urlStr,
         @Nonnull Consumer<List<T>> receiver,
         @Nonnull JsonArrayConverter<T> converter) {
-
         final URL url;
         try { url = new URL(urlStr); }
         catch (MalformedURLException e) {
@@ -125,7 +125,7 @@ public class TryCb {
                 try (ResponseBody responseBody = response.body()) {
                     if (responseBody == null) { throw new IOException("Empty response"); }
 
-                    List<T> data = converter.convert(new JSONObject(responseBody.string()).getJSONArray("data"));
+                    final List<T> data = converter.convert(new JSONObject(responseBody.string()).getJSONArray("data"));
 
                     SwingUtilities.invokeLater(() -> receiver.accept(data));
                 }

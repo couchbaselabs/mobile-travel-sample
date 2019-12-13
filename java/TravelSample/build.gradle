@@ -3,6 +3,9 @@ plugins { id 'java' }
 ext {
     INTELLIJ_GUI_VERSION = "192.6262.63"
     DAGGER_VERSION = "2.24"
+
+    ETC_DIR = "${projectDir}/etc"
+    REPORTS_DIR = "${buildDir}/reports"
 }
 
 group = 'com.couchbase'
@@ -51,16 +54,122 @@ dependencies {
 
     annotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
 
-    compileOnly 'com.google.gwt:gwt-dev:2.8.2'
+    compileOnly 'com.google.code.findbugs:annotations:3.0.1'
 
     implementation "com.google.dagger:dagger:${DAGGER_VERSION}"
 
     implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
 
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
     implementation 'org.json:json:20180813'
 
     implementation 'com.toedter:jcalendar:1.4'
 
     implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.7.0-77'
 }
+
+
+// ----------------------------------------------------------------
+// Static analysis
+// ----------------------------------------------------------------
+
+/////// Checkstyle
+apply plugin: 'checkstyle'
+checkstyle {
+    toolVersion = "8.18"
+
+    configFile file("${ETC_DIR}/checkstyle/checkstyle.xml")
+    configProperties = ['configDir': file("${ETC_DIR}/checkstyle")]
+
+    showViolations true
+}
+
+task checkstyle(type: Checkstyle) {
+    description 'Checkstyle'
+    group 'verification'
+
+    source sourceSets.main.java.srcDirs
+    include '**/*.java'
+
+    classpath = files()
+
+    reports {
+        xml {
+            enabled = true
+            setDestination(file("${REPORTS_DIR}/checkstyle.xml"))
+        }
+        html {
+            enabled = true
+            setDestination(file("${REPORTS_DIR}/checkstyle.html"))
+        }
+    }
+}
+
+/////// PMD
+apply plugin: 'pmd'
+pmd { toolVersion "5.8.1" }
+task pmd(type: Pmd) {
+    description 'PMD'
+    group 'verification'
+
+    ruleSetFiles = files("${ETC_DIR}/pmd/pmd.xml")
+
+    source = sourceSets.main.java.srcDirs
+    include '**/*.java'
+
+    reports {
+        xml {
+            enabled = true
+            setDestination(file("${REPORTS_DIR}/pmd.xml"))
+        }
+        html {
+            enabled = true
+            setDestination(file("${REPORTS_DIR}/pmd.html"))
+        }
+    }
+}
+
+/////// Findbugs
+apply plugin: 'findbugs'
+def findbugsAll = task('findbugs') {
+    description 'Findbugs with all reports'
+    group 'verification'
+}
+
+['Html', 'Xml'].each { reportType ->
+    findbugsAll.dependsOn task("findbugs${reportType}", type: FindBugs) {
+        description "Findbugs with $reportType report"
+        group 'verification'
+
+        afterEvaluate { dependsOn tasks.find { t -> t.name.endsWith 'compileJava' } }
+
+        findbugs.toolVersion = "3.0.1"
+
+        effort = "max"
+        reportLevel = "medium"
+        ignoreFailures = false
+
+        source = sourceSets.main.java.srcDirs.collect {
+            dir -> fileTree(dir: dir, include: '**/*.java').getFiles()
+        }.flatten()
+
+
+        classes = fileTree(dir: "${buildDir}/classes")
+        classpath = files()
+
+        excludeFilter = file("${ETC_DIR}/findbugs/findbugs.xml")
+
+        reports {
+            xml {
+                enabled = (reportType == "Xml")
+                setDestination(file("${REPORTS_DIR}/findbugs.xml"))
+            }
+            html {
+                enabled = (reportType == "Html")
+                setDestination(file("${REPORTS_DIR}/findbugs.html"))
+            }
+        }
+    }
+}
+
+

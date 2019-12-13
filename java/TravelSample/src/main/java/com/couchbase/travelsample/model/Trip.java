@@ -16,7 +16,9 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Date;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 public class Trip {
@@ -24,20 +26,18 @@ public class Trip {
     private final Flight outboundFlight;
     @Nonnull
     private final Flight returnFlight;
-    @Nonnull
-    private final Date departureDate;
-    @Nonnull
-    private final Date returnDate;
+    private final long departureDate;
+    private final long returnDate;
 
     public Trip(
         @Nonnull Flight outboundFlight,
         @Nonnull Flight returnFlight,
-        @Nonnull Date departureDate,
-        @Nonnull Date returnDate) {
+        @Nullable Date departureDate,
+        @Nullable Date returnDate) {
         this.outboundFlight = outboundFlight;
         this.returnFlight = returnFlight;
-        this.departureDate = departureDate;
-        this.returnDate = returnDate;
+        this.departureDate = (departureDate == null) ? 0 : departureDate.getTime();
+        this.returnDate = (returnDate == null) ? 0 : returnDate.getTime();
     }
 
     @Nonnull
@@ -47,8 +47,8 @@ public class Trip {
     public Flight getReturnFlight() { return returnFlight; }
 
     @Nonnull
-    public Date getDepartureDate() { return departureDate; }
+    public Date getDepartureDate() { return new Date(departureDate); }
 
     @Nonnull
-    public Date getReturnDate() { return returnDate; }
+    public Date getReturnDate() { return new Date(returnDate); }
 }

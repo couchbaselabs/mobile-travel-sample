@@ -18,6 +18,7 @@ package com.couchbase.travelsample.ui.view;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,24 +48,24 @@ public final class GuestView extends Page<GuestController> {
     private class SelectionListener implements ListSelectionListener {
         private final Set<Hotel> selection = new HashSet<>();
 
-        public SelectionListener() {}
+        SelectionListener() {}
 
         public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
         public void valueChanged(ListSelectionEvent e) {
-            Object src = e.getSource();
+            final Object src = e.getSource();
             if (!(src instanceof JList)) { return; }
-            JList<Hotel> hotels = ((JList<Hotel>) src);
+            final JList<Hotel> hotels = ((JList<Hotel>) src);
 
-            ListSelectionModel selectionModel = hotels.getSelectionModel();
+            final ListSelectionModel selectionModel = hotels.getSelectionModel();
 
-            boolean selectionEmpty = selectionModel.isSelectionEmpty();
+            final boolean selectionEmpty = selectionModel.isSelectionEmpty();
             setDeleteButtonEnabled(!selectionEmpty);
             selection.clear();
             if (selectionEmpty) { return; }
 
-            ListModel<Hotel> model = hotels.getModel();
-            int n = selectionModel.getMaxSelectionIndex();
+            final ListModel<Hotel> model = hotels.getModel();
+            final int n = selectionModel.getMaxSelectionIndex();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
                 if (selectionModel.isSelectedIndex(i)) { selection.add(model.getElementAt(i)); }
             }
