@@ -15,7 +15,10 @@
 //
 package com.couchbase.travelsample.ui.view.widgets;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -35,7 +38,7 @@ public class FlightCellRenderer extends JPanel implements ListCellRenderer<Fligh
 
         flightInfo = new JLabel();
         flightInfo.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
-        Font f = flightInfo.getFont();
+        final Font f = flightInfo.getFont();
         flightInfo.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
 
         details = new JLabel();
@@ -44,7 +47,7 @@ public class FlightCellRenderer extends JPanel implements ListCellRenderer<Fligh
         add(flightInfo, BorderLayout.NORTH);
         add(details, BorderLayout.SOUTH);
 
-        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 42, 47)));
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Page.COLOR_ACCENT));
     }
 
     public Component getListCellRendererComponent(

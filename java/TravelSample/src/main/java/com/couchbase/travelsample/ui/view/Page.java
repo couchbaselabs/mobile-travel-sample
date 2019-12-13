@@ -15,7 +15,8 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.awt.*;
+import java.awt.Color;
+
 import javax.annotation.Nonnull;
 import javax.swing.JPanel;
 

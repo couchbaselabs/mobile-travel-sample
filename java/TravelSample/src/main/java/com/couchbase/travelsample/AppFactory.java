@@ -16,6 +16,7 @@
 package com.couchbase.travelsample;
 
 import java.util.Set;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 

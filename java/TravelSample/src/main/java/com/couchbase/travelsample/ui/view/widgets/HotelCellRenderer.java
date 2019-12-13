@@ -15,7 +15,9 @@
 //
 package com.couchbase.travelsample.ui.view.widgets;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -41,7 +43,7 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
         add(name, BorderLayout.NORTH);
         add(location, BorderLayout.SOUTH);
 
-        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 42, 47)));
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Page.COLOR_ACCENT));
     }
 
     public Component getListCellRendererComponent(

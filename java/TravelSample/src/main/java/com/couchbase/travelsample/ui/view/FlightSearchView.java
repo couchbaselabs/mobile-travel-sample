@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -64,17 +65,17 @@ public class FlightSearchView extends Page<FlightSearchController> {
     private class SelectionListener implements ListSelectionListener {
         private Flight selection;
 
-        public SelectionListener() {}
+        SelectionListener() {}
 
         public Flight getSelection() { return selection; }
 
         public void valueChanged(ListSelectionEvent e) {
-            Object src = e.getSource();
+            final Object src = e.getSource();
             if (!(src instanceof JList)) { return; }
-            JList<Flight> flights = ((JList<Flight>) src);
+            final JList<Flight> flights = ((JList<Flight>) src);
 
-            ListSelectionModel selectionModel = flights.getSelectionModel();
-            ListModel<Flight> model = flights.getModel();
+            final ListSelectionModel selectionModel = flights.getSelectionModel();
+            final ListModel<Flight> model = flights.getModel();
 
             selection = (selectionModel.isSelectionEmpty())
                 ? null

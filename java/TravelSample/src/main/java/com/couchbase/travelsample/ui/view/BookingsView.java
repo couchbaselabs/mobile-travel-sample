@@ -15,9 +15,8 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -30,7 +29,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.couchbase.travelsample.model.Flight;
-import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.controller.BookingsController;
 import com.couchbase.travelsample.ui.view.widgets.FlightCellRenderer;
 
@@ -44,20 +42,20 @@ public final class BookingsView extends Page<BookingsController> {
     private class SelectionListener implements ListSelectionListener {
         private Flight selection;
 
-        public SelectionListener() {}
+        SelectionListener() {}
 
         public Flight getSelection() { return selection; }
 
         public void valueChanged(ListSelectionEvent e) {
-            Object src = e.getSource();
+            final Object src = e.getSource();
             if (!(src instanceof JList)) { return; }
-            JList<Flight> flights = ((JList<Flight>) src);
+            final JList<Flight> flights = ((JList<Flight>) src);
 
-            ListSelectionModel selectionModel = flights.getSelectionModel();
+            final ListSelectionModel selectionModel = flights.getSelectionModel();
 
-            boolean selectionEmpty = selectionModel.isSelectionEmpty();
+            final boolean selectionEmpty = selectionModel.isSelectionEmpty();
             setDeleteButtonEnabled(!selectionEmpty);
-            ;
+
             selection = (selectionEmpty)
                 ? null
                 : flights.getModel().getElementAt(selectionModel.getMaxSelectionIndex());

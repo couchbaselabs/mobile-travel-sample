@@ -29,11 +29,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.naming.AuthenticationException;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import com.couchbase.lite.AbstractReplicator;
 import com.couchbase.lite.BasicAuthenticator;
@@ -79,7 +82,7 @@ public final class DbManager {
         @Nullable
         private CouchbaseLiteException failure;
 
-        public ReplicationStartListener(@Nonnull Replicator replicator) { this.replicator = replicator; }
+        ReplicationStartListener(@Nonnull Replicator replicator) { this.replicator = replicator; }
 
         @Nonnull
         public CountDownLatch getLatch() { return latch; }
@@ -87,6 +90,8 @@ public final class DbManager {
         @Nullable
         public CouchbaseLiteException getFailure() { return failure; }
 
+        @SuppressWarnings("FallThrough")
+        @SuppressFBWarnings("SF_SWITCH_NO_DEFAULT")
         @Override
         public void changed(ReplicatorChange change) {
             if (!replicator.equals(change.getReplicator())) { return; }
@@ -224,7 +229,7 @@ public final class DbManager {
         config.setContinuous(true);
 
         final Replicator repl = new Replicator(config);
-        ReplicationStartListener listener = new ReplicationStartListener(repl);
+        final ReplicationStartListener listener = new ReplicationStartListener(repl);
         final ListenerToken token = repl.addChangeListener(listener);
         repl.start();
 
@@ -235,10 +240,10 @@ public final class DbManager {
 
         if (!ok) { throw new IOException("Login timeout"); }
 
-        CouchbaseLiteException e = listener.getFailure();
-        if (e == null) { return repl; }
+        final CouchbaseLiteException err = listener.getFailure();
+        if (err == null) { return repl; }
 
-        if (e.getCode() != CBLError.Code.HTTP_AUTH_REQUIRED) { throw e; }
+        if (err.getCode() != CBLError.Code.HTTP_AUTH_REQUIRED) { throw err; }
 
         throw new AuthenticationException("Authentication error");
     }
@@ -266,7 +271,7 @@ public final class DbManager {
                 final ZipEntry zipEntry = zin.getNextEntry();
                 if (zipEntry == null) { break; }
 
-                File zip = new File(destDir, zipEntry.getName());
+                final File zip = new File(destDir, zipEntry.getName());
                 if (zipEntry.isDirectory()) {
                     if (!zip.mkdirs()) { throw new IOException("Failed to unzip directory: " + zip); }
                 }
@@ -289,7 +294,7 @@ class QueryMgmt {
         final Query query;
         final ListenerToken token;
 
-        public ActiveQuery(Query query, ListenerToken token) {
+        ActiveQuery(Query query, ListenerToken token) {
             this.query = query;
             this.token = token;
         }

@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -156,7 +157,7 @@ public class Flight {
         if (this == o) { return true; }
         if (o == null || getClass() != o.getClass()) { return false; }
 
-        Flight other = (Flight) o;
+        final Flight other = (Flight) o;
         boolean eq = flight.equals(other.flight);
         if ((departDate != null) && (other.departDate != null)) { eq = eq || departDate.equals(other.departDate); }
         if ((departTime != null) && (other.departTime != null)) { eq = eq || departTime.equals(other.departTime); }

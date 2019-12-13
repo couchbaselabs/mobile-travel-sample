@@ -17,6 +17,7 @@ package com.couchbase.travelsample.ui.controller;
 
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,9 +25,9 @@ import javax.inject.Singleton;
 import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.db.LoginDao;
 import com.couchbase.travelsample.ui.Nav;
+import com.couchbase.travelsample.ui.view.BookingsView;
 import com.couchbase.travelsample.ui.view.GuestView;
 import com.couchbase.travelsample.ui.view.LoginView;
-import com.couchbase.travelsample.ui.view.BookingsView;
 
 
 @Singleton

@@ -18,6 +18,7 @@ package com.couchbase.travelsample.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -57,8 +58,8 @@ public class Nav {
     public void toPage(@Nullable String prevPageName, @Nonnull String nextPageName) {
         LOGGER.info("Nav: " + prevPageName + " => " + nextPageName);
 
-        Page<?> prevPage = (prevPageName == null) ? null : pages.get(prevPageName);
-        Page<?> page = pages.get(nextPageName);
+        final Page<?> prevPage = (prevPageName == null) ? null : pages.get(prevPageName);
+        final Page<?> page = pages.get(nextPageName);
         if (page == null) { return; }
 
         page.open(prevPage);

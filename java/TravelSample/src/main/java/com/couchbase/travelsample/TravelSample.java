@@ -23,7 +23,7 @@ import com.couchbase.travelsample.ui.Nav;
 
 public class TravelSample {
     public static void main(String[] args) {
-        AppFactory appFactory = DaggerAppFactory.create();
+        final AppFactory appFactory = DaggerAppFactory.create();
         appFactory.app().start(appFactory);
     }
 

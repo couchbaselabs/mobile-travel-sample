@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.ui.view;
 
 import java.awt.CardLayout;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.swing.JFrame;

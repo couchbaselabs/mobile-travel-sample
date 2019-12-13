@@ -22,6 +22,7 @@ import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -83,10 +84,10 @@ public class SuggestedTextField<T> extends JTextField
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getSource().equals(list)) { return; }
 
-        ListSelectionModel selectionModel = list.getSelectionModel();
+        final ListSelectionModel selectionModel = list.getSelectionModel();
         if (selectionModel.isSelectionEmpty()) { return; }
 
-        T selection = listModel.elementAt(selectionModel.getMinSelectionIndex());
+        final T selection = listModel.elementAt(selectionModel.getMinSelectionIndex());
 
         hideMenu();
 

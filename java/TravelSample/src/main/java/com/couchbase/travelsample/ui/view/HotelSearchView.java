@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -47,22 +48,22 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     private static class SelectionListener implements ListSelectionListener {
         private final Set<Hotel> selection = new HashSet<>();
 
-        public SelectionListener() {}
+        SelectionListener() {}
 
         public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
         public void valueChanged(ListSelectionEvent e) {
-            Object src = e.getSource();
+            final Object src = e.getSource();
             if (!(src instanceof JList)) { return; }
-            JList<Hotel> hotels = ((JList<Hotel>) src);
+            final JList<Hotel> hotels = ((JList<Hotel>) src);
 
-            ListSelectionModel selectionModel = hotels.getSelectionModel();
+            final ListSelectionModel selectionModel = hotels.getSelectionModel();
 
             selection.clear();
             if (selectionModel.isSelectionEmpty()) { return; }
 
-            ListModel<Hotel> model = hotels.getModel();
-            int n = selectionModel.getMaxSelectionIndex();
+            final ListModel<Hotel> model = hotels.getModel();
+            final int n = selectionModel.getMaxSelectionIndex();
             for (int i = selectionModel.getMinSelectionIndex(); i <= n; i++) {
                 if (selectionModel.isSelectedIndex(i)) { selection.add(model.getElementAt(i)); }
             }
@@ -99,7 +100,7 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
         logoutButton.addActionListener(e -> logout());
         doneButton.addActionListener(e -> done());
 
-        HotelKeyListener listener = new HotelKeyListener();
+        final HotelKeyListener listener = new HotelKeyListener();
         hotelLocation.addKeyListener(listener);
         hotelDescription.addKeyListener(listener);
 
@@ -122,7 +123,7 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     public Set<Hotel> getSelection() { return new HashSet<>(selection); }
 
     void searchHotels() {
-        String location = hotelLocation.getText();
+        final String location = hotelLocation.getText();
         if (location.isEmpty()) { return; }
         controller.searchHotels(location, hotelDescription.getText());
     }
