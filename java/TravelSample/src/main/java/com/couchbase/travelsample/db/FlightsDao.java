@@ -16,7 +16,6 @@
 package com.couchbase.travelsample.db;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -37,6 +36,7 @@ import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
+import com.couchbase.travelsample.model.BookedFlight;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Trip;
 
@@ -65,8 +65,8 @@ public class FlightsDao {
         this.exec = exec;
     }
 
-    public void getFlights(@Nonnull Consumer<List<Flight>> listener) {
-        exec.submit(this::queryFlightsAsync, listener);
+    public void getBookedFlights(@Nonnull Consumer<List<Flight>> listener) {
+        exec.submit(this::queryBookedFlightsAsync, listener);
     }
 
     public void searchAirports(@Nonnull String name, int maxResults, @Nonnull Consumer<List<String>> listener) {
@@ -77,10 +77,10 @@ public class FlightsDao {
         exec.submit(() -> bookTripAsync(trip), onSuccess, onError);
     }
 
-    public void deleteFlight(Flight flight) { exec.submit(() -> deleteFlightAsync(flight)); }
+    public void deleteBookedFlight(Flight flight) { exec.submit(() -> deleteBookedFlightAsync((BookedFlight) flight)); }
 
     @Nonnull
-    private List<Flight> queryFlightsAsync() throws CouchbaseLiteException {
+    private List<Flight> queryBookedFlightsAsync() throws CouchbaseLiteException {
         final List<Flight> flights = new ArrayList<>();
 
         final ResultSet results = QueryBuilder
@@ -91,7 +91,7 @@ public class FlightsDao {
 
         final Array flightsArray = results.allResults().get(0).getArray(0);
         final int n = flightsArray.count();
-        for (int i = 0; i < n; i++) { flights.add(Flight.fromDictionary(flightsArray.getDictionary(i))); }
+        for (int i = 0; i < n; i++) { flights.add(BookedFlight.fromDictionary(flightsArray.getDictionary(i))); }
 
         return flights;
     }
@@ -119,22 +119,39 @@ public class FlightsDao {
     }
 
     Void bookTripAsync(@Nonnull Trip trip) throws CouchbaseLiteException {
-        bookFlightAsync(trip.getOutboundFlight(), trip.getDepartureDate());
-        bookFlightAsync(trip.getReturnFlight(), trip.getReturnDate());
+        final MutableDocument userDoc = db.getUserDoc();
+        bookFlightAsync(userDoc, BookedFlight.bookFlight(trip.getOutboundFlight(), trip.getDepartureDate()));
+        bookFlightAsync(userDoc, BookedFlight.bookFlight(trip.getReturnFlight(), trip.getReturnDate()));
         return null;
     }
 
-    Void deleteFlightAsync(Flight flight) {
-        LOGGER.log(Level.INFO, "Delete Flight not implemented");
-        return null;
-    }
-
-    private void bookFlightAsync(@Nonnull Flight flight, @Nonnull Date date) throws CouchbaseLiteException {
+    Void deleteBookedFlightAsync(BookedFlight flight) throws CouchbaseLiteException {
         final MutableDocument userDoc = db.getUserDoc();
 
+        final MutableArray bookings = userDoc.getArray(PROP_FLIGHTS);
+        if (bookings == null) {
+            LOGGER.log(Level.INFO, "Attempt to delete booking when not flights are booked");
+            return null;
+        }
+
+        final int n = bookings.count();
+        for (int i = n - 1; i >= 0; i--) {
+            if (BookedFlight.equalsDict(flight, bookings.getDictionary(i))) { bookings.remove(i); }
+        }
+
+        userDoc.setArray(PROP_FLIGHTS, bookings);
+        db.getDatabase().save(userDoc);
+
+        return null;
+    }
+
+    private void bookFlightAsync(
+        @Nonnull MutableDocument userDoc,
+        @Nonnull BookedFlight flight)
+        throws CouchbaseLiteException {
         MutableArray bookings = userDoc.getArray(PROP_FLIGHTS);
         if (bookings == null) { bookings = new MutableArray(); }
-        bookings.addDictionary(Flight.toDictionary(flight));
+        bookings.addDictionary(BookedFlight.toDictionary(flight));
 
         userDoc.setArray(PROP_FLIGHTS, bookings);
         db.getDatabase().save(userDoc);

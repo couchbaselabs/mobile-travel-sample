@@ -63,7 +63,7 @@ public class Hotel {
         return doc;
     }
 
-    @Nullable
+    @Nonnull
     private final String id;
     @Nullable
     private final String name;
@@ -77,7 +77,7 @@ public class Hotel {
         this.address = address;
     }
 
-    @Nullable
+    @Nonnull
     public String getId() { return id; }
 
     @Nullable

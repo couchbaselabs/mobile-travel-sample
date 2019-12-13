@@ -120,14 +120,7 @@ public class BookmarkDao {
         final Database database = db.getDatabase();
 
         final Set<String> ids = new HashSet<>();
-        for (Hotel hotel : hotels) {
-            final String id = hotel.getId();
-            if (id == null) {
-                LOGGER.log(Level.WARNING, "Hotel has null ID in remove bookmark: " + hotel);
-                continue;
-            }
-            ids.add(id);
-        }
+        for (Hotel hotel : hotels) { ids.add(hotel.getId()); }
 
         unbookmarkIds(database, ids);
 
