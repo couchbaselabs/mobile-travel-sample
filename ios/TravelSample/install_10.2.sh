@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This downloads swift4.2 compatible version of CBL. Use with Xcode 10.2 +
+# This downloads swift5.0.1 compatible version of CBL. Use with Xcode 10.2.1, xcode 10.3
 cd Frameworks
 rm -rf iOS
 rm -rf macOS
