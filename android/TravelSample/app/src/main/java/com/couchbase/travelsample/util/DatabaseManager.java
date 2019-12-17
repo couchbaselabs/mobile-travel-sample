@@ -10,6 +10,7 @@ import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
+import com.couchbase.lite.DocumentFlag;
 import com.couchbase.lite.FullTextIndexItem;
 import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.LogFileConfiguration;
@@ -146,6 +147,11 @@ public class DatabaseManager {
         config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
         config.setAuthenticator(new BasicAuthenticator(username, password));
+        config.setPushFilter((document, flags) -> "hotel".equals(document.getString("type"))
+                || "airline".equals(document.getString("type"))
+                || "airport".equals(document.getString("type"))
+                || "route".equals(document.getString("type"))
+                || "landmark".equals(document.getString("type")));
 
         Replicator replicator = new Replicator(config);
         replicator.addChangeListener(new ReplicatorChangeListener() {
