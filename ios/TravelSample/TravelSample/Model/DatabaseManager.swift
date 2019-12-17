@@ -243,6 +243,13 @@ extension DatabaseManager {
         config.continuous =  true
         config.authenticator =  BasicAuthenticator(username: user, password: password)
         
+        // Add a push filyet to prevent docs of specific type from being pushed up
+        config.pushFilter = { (document, flags) in
+            if (document.string(forKey: "type") == "landmark" || document.string(forKey: "type") == "airline"  ||  document.string(forKey: "type") == "route" || document.string(forKey: "type") == "airport" || document.string(forKey: "type") == "hotel"){
+                return false
+            }
+            return true
+        }
 
         // Uncomment if you want to use conflict resolver : Only 2.6
         // You can override the resolve function for testing
@@ -251,9 +258,8 @@ extension DatabaseManager {
         // This should match what is specified in the sync gateway config
         // Only pull documents from this user's channel
         let userChannel = "channel.\(user)"
-       // config.channels = [userChannel]
-        config.channels = ["channelA"]
-        
+        config.channels = [userChannel]
+         
         _pushPullRepl = Replicator.init(config: config)
         
         let token = _pushPullRepl!.addDocumentReplicationListener { (replication) in
@@ -280,6 +286,8 @@ extension DatabaseManager {
                 self?.postNotificationOnReplicationState(s.activity)
             }
         })
+        
+        
         
         _pushPullRepl?.start()
 

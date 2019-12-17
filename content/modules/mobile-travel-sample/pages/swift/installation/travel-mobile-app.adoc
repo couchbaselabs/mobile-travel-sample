@@ -23,10 +23,34 @@ You will have to download the compatible version of Couchbase Lite framework
 cd /path/to/mobile-travel-sample/ios/TravelSample
 ----
 * Run the following script to download and install Couchbase Lite.
-A script is provided for different versions of Xcode and Swift.
+A script is provided to install Couchbase Lite comatible with different versions of Xcode and Swift.
 +
 [{tabs}]
 ====
+Xcode 11.1+::
++
+--
+[source,bash]
+----
+sh install_11_1.sh
+----
+--
+Xcode 11.0::
++
+--
+[source,bash]
+----
+sh install_11.sh
+----
+--
+Xcode 10.3::
++
+--
+[source,bash]
+----
+sh install_10_2.sh
+----
+--
 Xcode 10.2::
 +
 --
