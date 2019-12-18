@@ -38,6 +38,7 @@ namespace TravelSample.Core.Models
         #region Constants
 
         private const string DbName = "travel-sample";
+        // REPLACE WITH 10.0.2.2 if you are runnung on Android emulator
         private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
 
         #endregion
@@ -118,6 +119,19 @@ namespace TravelSample.Core.Models
                 Continuous = true,
                 Authenticator = new BasicAuthenticator(username, password),
                 Channels = new[] {$"channel.{username}"}
+            };
+            config.PushFilter = (document, flags) =>
+            {
+                if (document.GetString("type").Equals("hotel") ||
+                     document.GetString("type").Equals("landmark") ||
+                     document.GetString("type").Equals("airline") ||
+                     document.GetString("type").Equals("airport") ||
+                     document.GetString("type").Equals("route"))
+                {
+                    return false;
+                }
+
+                return true;
             };
 
             var repl = new Replicator(config);
