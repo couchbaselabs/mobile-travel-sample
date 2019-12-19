@@ -147,11 +147,11 @@ public class DatabaseManager {
         config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
         config.setAuthenticator(new BasicAuthenticator(username, password));
-        config.setPushFilter((document, flags) -> "hotel".equals(document.getString("type"))
+        config.setPushFilter((document, flags) -> !("hotel".equals(document.getString("type"))
                 || "airline".equals(document.getString("type"))
                 || "airport".equals(document.getString("type"))
                 || "route".equals(document.getString("type"))
-                || "landmark".equals(document.getString("type")));
+                || "landmark".equals(document.getString("type"))));
 
         Replicator replicator = new Replicator(config);
         replicator.addChangeListener(new ReplicatorChangeListener() {
