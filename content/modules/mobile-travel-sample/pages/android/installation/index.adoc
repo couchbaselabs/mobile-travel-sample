@@ -1,0 +1,2 @@
+:source-language: java
+include::{partialsdir}/installation/index.adoc[]

@@ -2,14 +2,11 @@
 :page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
 
 == Pre-requisites
-
-* Android Studio 3.0 or above https://developer.android.com[Google Developer site]
-* Android device or emulator running API level 22 or above
-* Android SDK 26
-* Android Build Tools 26
+While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*. All instructions assume this IDE.
+* IntelliJ IDEA 2019 or above https://www.jetbrains.com/idea/download/#section=mac[Jetbrains Developer site]. The *Community* version is sufficient for our purposes.
 * JDK 8
 
-*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+*Windows Users* : If you are developing on Windows, you must use a Windows 10 machine.
 Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
 
 == Travel Sample Mobile App
@@ -20,10 +17,10 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
-* Open *android/build.gradle* using Android Studio.
-* Build and run the project.
+* Open *java/TravelSample/build.gradle* using IntelliJ IDEA.
+* TBD:Build and run the project (preferrably in Debug mode)
 +
-image::https://cl.ly/1r0T100T0c22/as-build.png[]
+image::https://cl.ly/1r0T100T0c22/java-build.png[]
 * Verify that the login screen appears in the simulator.
 +
-image::https://cl.ly/0T0G2S083g41/as-login.png[,300]
+image::https://cl.ly/0T0G2S083g41/java-login.png[,300]
