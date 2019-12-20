@@ -1,0 +1,29 @@
+= Travel Mobile App
+:page-aliases: tutorials:travel-sample:develop/android,tutorials:travel-sample:develop/android/index
+
+== Pre-requisites
+
+* Android Studio 3.0 or above https://developer.android.com[Google Developer site]
+* Android device or emulator running API level 22 or above
+* Android SDK 26
+* Android Build Tools 26
+* JDK 8
+
+*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
+== Travel Sample Mobile App
+
+* Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
++
+[source,bash]
+----
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+* Open *android/TravelSample/build.gradle* using Android Studio.
+* Build and run the project.
++
+image::https://cl.ly/1r0T100T0c22/as-build.png[]
+* Verify that the login screen appears in the simulator.
++
+image::https://cl.ly/0T0G2S083g41/as-login.png[,300]

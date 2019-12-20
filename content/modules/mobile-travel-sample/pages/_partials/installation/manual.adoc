@@ -1,7 +1,6 @@
 = Manual
 
 == Pre-requisites
-
 * Visual C++ 2017 (*only Windows Users*): must install the Microsoft Visual C++ Compiler for Python Downloadable from https://www.microsoft.com/en-us/download/details.aspx?id=44266[here].
 * Python 2.7+: downloadable from https://www.python.org/downloads/[python.org].
 +
@@ -9,7 +8,7 @@
 You can follow instructions https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here] to set your PATH variable.
 * Git: downloadable from https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[git-scm.org].
 
-*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+*Windows Users* : If you are developing on Windows, use a Windows 10 machine.
 Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
 
 === Try it out
@@ -33,7 +32,7 @@ You should see the version of git installed.
 
 == Couchbase Server
 
-In this lesson, you will install and launch version 6.0.1 of Couchbase Server.
+In this lesson, you will install and launch version 6.0.1 of Couchbase Server. You can download a later version of 6.x of Couchbase server if it is available.
 
 * https://www.couchbase.com/downloads#couchbase-server[Download and install] V6.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
@@ -64,9 +63,9 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 == Sync Gateway
 
-In this section, you will install and launch version 2.6 of Sync Gateway.
+In this section, you will install and launch version 2.7 of Sync Gateway.
 
-* Install Sync Gateway 2.6 from https://www.couchbase.com/downloads[here] on your platform of choice
+* Install Sync Gateway 2.7 from https://www.couchbase.com/downloads[here] on your platform of choice
 * The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/develop/swift#/0/1/0[Travel Mobile App install]. The config file will be located in ``/path/to/mobile-travel-sample``.
 * Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
 +
@@ -112,7 +111,7 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 *Try it out*
 
 * Access this URL `http://127.0.0.1:4984` in your browser
-* Verify that you get JSON response similar to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.6"},"version":"Couchbase Sync Gateway/2.6.0(271;bf3ddf6) EE"}`
+* Verify that you get JSON response _similar_ to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}`
 
 == Python Backend
 

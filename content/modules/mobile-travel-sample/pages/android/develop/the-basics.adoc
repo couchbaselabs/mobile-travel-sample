@@ -1,0 +1,217 @@
+= The Basics
+:source-language: java
+
+== Initialization
+To get started, you must initialize Couchbase Lite with the relevant application context
+*Open the file* `DatabaseManager.java`.
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L52[DatabaseManager.java]
+
+[source,java]
+----
+  public void initCouchbaseLite(Context context) {
+      CouchbaseLite.init(context);
+      appContext = context;
+  }
+  
+----
+
+== Create a Database
+
+There is no limit to how many databases can be created or opened on the device.
+You can think of a database as a namespace for documents and several databases can be used in the same app (one database per user of the app is a common pattern). 
+
+The snippet below creates an empty database for the `guest` user in a directory named ``guest``. 
+
+*Open the file* `DatabaseManager.java`.
+We will review the `OpenGuestDatabase(Context context)`  method.
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L58[DatabaseManager.java]
+
+[source,java]
+----
+ public void OpenGuestDatabase() {
+   ...
+ }
+----
+
+We create a folder for the `guest` user database if one does not exist and specify that as the database `directory` in the `DatabaseConfiguration` object.
+
+[source,java]
+----
+  DatabaseConfiguration config = new DatabaseConfiguration();
+  config.setDirectory(String.format("%s/guest", appContext.getFilesDir()));
+
+----
+
+The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object.
+
+[source,java]
+----
+ try {
+      database = new Database("guest", config);
+  } catch (CouchbaseLiteException e) {
+      e.printStackTrace();
+  }
+----
+
+=== Try it out
+
+* Build and Run the Travel Sample Mobile App 
+* On the Login screen select the "`Proceed as Guest`" option.
+* This will log you into the app in Guest Mode.
+Signing in as Guest will create a new empty database for the "`guest`" account if one does not exist.
+* Confirm that you see the "BookmarksActivity" page.
+It will be empty the very first time.
+
+== Create and Update a Document
+
+Bookmarked hotels are persisted in a separate document with a `type` of `bookmarkedhotels`.
+
+The first time a hotel is bookmarked, the `bookmarkedhotels` document is created with the document ID of that hotel document in the `hotels` property.
+The hotel's information is persisted in a separate `hotels` type document. 
+
+Subsequently, every time a hotel is bookmarked, the process repeats.
+
+[source,json]
+----
+{
+  "_id": "hotel1",
+  "name": "San Francisco Hotel",
+  "address": "123, Park Street, San Francisco"
+}
+
+{
+  "type": "bookmarkedhotels",
+  "hotels": ["hotel1", "hotel2"]
+}
+----
+
+*Open the file* `app/src/android/java/.../hotels/HotelsPresenter.java`.
+You will review the `bookmarkHotels(Map<String, Object> hotel)` method.
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java#L110[HotelsPresenter.java]
+
+[source,java]
+----
+@Override
+public void bookmarkHotels(Map<String, Object> hotel) {
+  ...
+}
+----
+
+First, you need to get an instance of the database. 
+
+[source,java]
+----
+
+Database database = DatabaseManager.getDatabase();
+----
+
+The following snippet persists the hotel instance (``Map<String, Object>``) as a new `Document` in the database.
+This will allow us to access bookmarked hotel documents while being offline. 
+
+[source,java]
+----
+
+MutableDocument hotelDoc = new MutableDocument((String) hotel.get("id"), hotel);
+try {
+  database.save(hotelDoc);
+} catch (CouchbaseLiteException e) {
+  e.printStackTrace();
+}
+----
+
+Next you will get the document with ID `user::guest` or create one if it doesn't exist.
+The document is created with the `type` property set to `bookmarkedhotels` and a new `hotels` array to store the document IDs of the bookmarked hotels. 
+
+[source]
+----
+Document document = database.getDocument("user::guest");
+MutableDocument mutableCopy = null;
+if (document == null) {
+	HashMap<String,Object> properties = new HashMap();
+	properties.put(type, bookmarkedhotels);
+	properties.put(hotels, new ArrayList());
+	mutableCopy = new MutableDocument(user::guest, properties);
+} else {
+	mutableCopy = document.toMutable();
+}
+----
+
+Next, the selected hotel's ID is added to the `hotels` array. 
+
+[source,java]
+----
+MutableArray hotels =  mutableCopy.getArray(hotels).toMutable();
+mutableCopy.setArray(hotels,hotels.addString((String) hotel.get(id)));
+----
+
+Finally, you will save the document. 
+
+[source,java]
+----
+
+try {
+  database.save(mutableCopy);
+} catch (CouchbaseLiteException e) {
+  e.printStackTrace();
+}
+----
+
+=== Try it out
+
+* As a Guest User, tap on the "`hotels`" button.
+* In "location" text field , enter "L" as if you were starting to type "London". You will see list of hotels.
+* The list of hotels is pulled from Couchbase Server via the Travel Sample Web Services API.
+Search results will not be displayed unless there is an open connection to the Python web app and the Full-Text Search index has been created in Couchbase Server.
+* Tap on the first hotel cell to bookmark it.
+* Verify that you see the bookmarked hotel in the "BookmarksActivity" screen.
+A motivation for having separate docs for each bookmarked hotel is if they become sharable between users via the sync function.
++
+image::https://cl.ly/1t38050A1T40/android-save-doc.gif[]
+
+== Delete a Document
+
+A document can be deleted using the `delete` method.
+This operation actually creates a new `tombstoned` revision in order to propagate the deletion to other clients. 
+
+*Open the file* in ``app/src/android/java/.../bookmarks/BookmarksPresenter.java``.
+You will review the `removeBookmark(Map<String, Object> bookmark)` method. 
+
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L77[BookmarksPresenter]
+
+[source,java]
+----
+
+@Override
+public void removeBookmark(Map<String, Object> bookmark) {
+    ...
+}
+----
+
+When searching for hotels in **Guest
+    mode**, the app sends a GET request to the Python Web App which performs a Full-Text Search query on Couchbase Server.
+Then, if a hotel is bookmarked, it gets inserted in the Couchbase Lite database for offline access.
+So when the user unbookmarks a hotel, the document needs to be removed from the database.
+That's what the code below is doing. 
+
+[source,java]
+----
+
+Database database = DatabaseManager.getDatabase();
+Document document = database.getDocument((String) bookmark.get("id"));
+try {
+  database.delete(document);
+} catch (CouchbaseLiteException e) {
+  e.printStackTrace();
+}
+----
+
+In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document. 
+
+=== Try it out
+
+* Swipe left on first Hotel cell to unbookmark/remove the cell
+* Verify that you see a single hotel in the list 
++
+image::https://cl.ly/0A0D363w3R1g/android-unbookmark.gif[]
