@@ -8,44 +8,30 @@ Even if some of the content changes on the server after you create the app, the 
 Here, you will use a pre-built database that contains only airport and hotel documents.
 The code below moves the pre-built database from the bundled location to the Application Support directory. 
 
-*Open the file* ``app/src/android/java/.../util/DatabaseManager.java`` and navigate to the database constructor.
+*Open the file* ``DbManager.java`` 
+We will review the `openUserDb(@Nonnull String username, @Nonnull char[] password)` method. 
 
 This method first checks if a database file already exists for specific user.
-If it doesn't exist it loads the database from the assets directory, unzips and copies it over to a folder created for ths user.
+If it doesn't exist it loads the database from the resources directory, unzips and copies it over to a folder created for ths user.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L69[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L199[DbManager.java]
 
 [source,java]
 ----
-    public void OpenDatabaseForUser(String username) {
-        File dbFile = new File(appContext.getFilesDir()+"/"+ username, "travel-sample.cblite2");
-        DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(String.format("%s/%s", appContext.getFilesDir(),username));
-        currentUser = username;
+void openUserDb(@Nonnull String username, @Nonnull char[] password)
+    throws IOException, CouchbaseLiteException, AuthenticationException, URISyntaxException {
+        final File dbDir = new File(DB_DIR, username);
 
-        if (!dbFile.exists()) {
-            AssetManager assetManager = appContext.getAssets();
-            try {
-                File path = new File(appContext.getFilesDir()+"");
-                unzip(assetManager.open("travel-sample.cblite2.zip"),path);
-                Database.copy(new File(appContext.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
+        final DatabaseConfiguration config = new DatabaseConfiguration();
+        config.setDirectory(dbDir.getCanonicalPath());
 
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (CouchbaseLiteException e) {
-                e.printStackTrace();
-            }
-
+        if (!new File(dbDir, DB_NAME + DB_SUFFIX).exists()) {
+            Database.copy(unzipDb().getCanonicalFile(), DB_NAME, config);
         }
-        try {
-            database = new Database("travel-sample", config);
-            createFTSQueryIndex();
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
-    }
+
+        database = new Database(DB_NAME, config);
+...
+}
 ----
 
 === Try it out

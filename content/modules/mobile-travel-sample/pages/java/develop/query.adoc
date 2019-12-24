@@ -3,7 +3,7 @@
 
 == Overview
 
-Couchbase Lite 2.0 includes support for N1QL like query interface.
+Couchbase Lite 2.x includes support for N1QL like query interface.
 Database can be queried by constructing a query using a Query builder and then executing that query. 
 
 The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
@@ -23,55 +23,47 @@ The Query interface in Couchbase Lite 2.0 is poweful and includes support for th
 The travel app has many instances of querying the database.
 We will discuss a simple example here. 
 
-*Open the file* ``app/src/android/java/.../searchflight/SearchFlightPresenter.java``.
-We will review the `startsWith(String prefix, String tag)` method. 
+*Open the file* ``FlightsDao.java``.
+We will review the `searchAirportsAsync(@Nonnull String prefix, int maxResults)` method. 
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53[SearchFlightPresenter.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/TravelSample/src/main/java/com/couchbase/travelsample/db/FlightsDao.java#L100[FlightsDao.java]
 
 [source,java]
 ----
 
 @Override
-public void startsWith(String prefix, String tag) {
+private List<String> searchAirportsAsync(@Nonnull String prefix, int maxResults) throws CouchbaseLiteException {
   ...
 }
 ----
 
-The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term. 
+The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term. The query is executed using the `execute()` method.
 
 [source,java]
 ----
 
-Database database = DatabaseManager.getDatabase();
-Query searchQuery = QueryBuilder
-  .select(SelectResult.expression(Expression.property("airportname")))
-  .from(DataSource.database(database))
-  .where(
-    Expression.property("type").equalTo(Expression.string("airport"))
-      .and(Expression.property("airportname").like(Expression.string(prefix + "%")))
-);
+final String target = "%" + prefix + "%";
+final ResultSet results = QueryBuilder.select(SelectResult
+            .expression(Expression.property(PROP_AIRPORT_NAME)))
+            .from(DataSource.database(db.getDatabase()))
+            .where(Expression.property(DbManager.PROP_DOC_TYPE).equalTo(Expression.string(TYPE_AIRPORT))
+                .and(Function.lower(Expression.property(PROP_AIRPORT_NAME))
+                    .like(Function.lower(Expression.string(target))))
+                .or(Function.lower(Expression.property(PROP_FAA))
+                    .like(Function.lower(Expression.string(target)))))
+            .orderBy(Ordering.property(PROP_AIRPORT_NAME).ascending())
+            .limit(Expression.intValue(maxResults))
+            .execute();
+
 ----
 
-Next, the query is executed using the `execute()` method.
-Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a ``RecyclerView``. 
+Each row in the result will contain a single property called "airportname".  
 
 [source,java]
 ----
-
-ResultSet rows = null;
-try {
-    rows = searchQuery.execute();
-} catch (CouchbaseLiteException e) {
-    Log.e("app", "Failed to run query", e);
-    return;
-}
-
+final List<String> airports = new ArrayList<>();
 Result row;
-List<String> data = new ArrayList<>();
-while ((row = rows.next()) != null) {
-    data.add(row.getString("airportname"));
-}
-mSearchView.showAirports(data, tag);
+while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT_NAME)); }
 ----
 
 === Try it out
@@ -106,89 +98,36 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 
 We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels". 
 
-*Open the file*``app/src/android/java/.../hotes/BookmarksPresenter.java``.
-We will review the `fetchBookmarks()` method. 
+*Open the file*``BookmarkDao.java``.
+We will review the `queryBookmarksAsync()` method. 
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L32[BookmarksPresenter.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java[BookmarkDao.java]
 
 [source,java]
 ----
-
-public void fetchBookmarks() {
+List<Hotel> queryBookmarksAsync()  {
   ...
 }
 ----
+The query object uses a join expression to find all the hotel document referenced in the "hotels" array of the bookmark document. 
+[source,java]
+----
+final ResultSet results = QueryBuilder
+            .select(SelectResult.all().from("bookmark"), SelectResult.all().from("hotel"))
+            .from(DataSource.database(database).as("bookmark"))
+            .join(Join.join(DataSource.database(database).as("hotel"))
+                .on(ArrayFunction.contains(Expression.property(PROP_BOOKMARKS)
+                    .from("bookmark"), Meta.id.from("hotel"))))
+            .where(Expression.property(DbManager.PROP_DOC_TYPE).from("bookmark")
+                .equalTo(Expression.string(DbManager.TYPE_GUEST_DOC)))
+            .execute();
+----
 
-First, we instantiate two data sources which corresponds to the two sides of the join query. 
+We use the `execute()` method to get the results back 
 
 [source,java]
 ----
-DataSource bookmarkDS = DataSource.database(database).as("bookmarkDS");
-DataSource hotelsDS = DataSource.database(database).as("hotelDS");
-----
-
-Next we write the query expressions.
-The first one gets the `hotels` property on the bookmarks data source.
-The seconds get the document ID on the hotels data source. 
-
-[source,java]
-----
-Expression hotelsExpr = Expression.property("hotels").from("bookmarkDS");
-Expression hotelIdExpr = Meta.id.from("hotelDS");
-----
-
-Next, we use a function expression to find document's whose `\_id` property is in the `hotels` array.
-And build the join expression. 
-
-[source,java]
-----
-Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
-Join join = Join.join(hotelsDS).on(joinExpr);
-----
-
-Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document. 
-
-[source,java]
-----
-Expression typeExpr = Expression.property("type").from("bookmarkDS");
-
-SelectResult bookmarkAllColumns = SelectResult.all().from("bookmarkDS");
-SelectResult hotelsAllColumns = SelectResult.all().from("hotelDS");
-
-Query query = QueryBuilder
-  .select(bookmarkAllColumns, hotelsAllColumns)
-  .from(bookmarkDS)
-  .join(join)
-  .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
-----
-
-We use the `execute()` method to get the results and pass them on to the view.
-
-[source,java]
-----
-query.addChangeListener(new QueryChangeListener() {
-    @Override
-    public void changed(QueryChange change) {
-        ResultSet rows = change.getRows();
-
-        List<Map<String, Object>> data = new ArrayList<>();
-        Result row = null;
-        while((row = rows.next()) != null) {
-            Map<String, Object> properties = new HashMap<>();
-            properties.put("name", row.getDictionary("hotelDS").getString("name"));
-            properties.put("address", row.getDictionary("hotelDS").getString("address"));
-            properties.put("id", row.getDictionary("hotelDS").getString("id"));
-            data.add(properties);
-        }
-        mBookmarksView.showBookmarks(data);
-    }
-});
-
-try {
-    query.execute();
-} catch (CouchbaseLiteException e) {
-    e.printStackTrace();
-}
+for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); 
 ----
 
 === Try it out
