@@ -166,9 +166,9 @@ Both the "From" and "To" airports and flight dates are already set.
 * Use the "headshot" button (2nd from the right) to  navigate to the list of booked flights
 * Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
 +
-image::https://cl.ly/3r0X2x1M3k37/android-push.gif[]
+image::https://cl.ly/3r0X2x1M3k37/java-push.gif[]
 
-=== Try it out (Pull Replication)
+=== Try it out (Pull Replication)java
 
 * Access the Travel Sample Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
 * Make sure that the "New User" checkbox is *unchecked*
@@ -185,4 +185,4 @@ image::https://cl.ly/3r0X2x1M3k37/android-push.gif[]
   Log into the Travel Sample Mobile app as “demo” user and password as “password”
 * Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
 +
-image::https://cl.ly/2x1Q1d20303Y/android-pull.gif[]
+image::https://cl.ly/2x1Q1d20303Y/java-pull.gif[]

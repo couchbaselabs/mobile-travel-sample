@@ -37,8 +37,8 @@ void openUserDb(@Nonnull String username, @Nonnull char[] password)
 === Try it out
 
 * Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "Airplane`" button to make a flight reservation
+* Click on "FLIGHTS`" button to make a flight reservation
 * In the “From”  airport text field, enter “London”
-* Confirm that the first item in the dropdown list is "London St Pancras" (a train station!)
+* Confirm that you see a list of flights in the drop down menu.
 +
-image::https://cl.ly/3V3h151g0x19/android-prebuilt-db.gif[]
+image::https://cl.ly/3V3h151g0x19/java-prebuilt-db.gif[]
