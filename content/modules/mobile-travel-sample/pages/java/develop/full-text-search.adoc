@@ -8,7 +8,7 @@ In the Travel App, the FTS query is against local "travel-sample" documents that
 
 In order to do FTS queries, an FTS index must be created. 
 
-*Open the file*``app/src/android/java/.../util/DatabaseManager.java``.
+*Open the file*``DbManager.java``.
 We will review the `createFTSQueryIndex()` method.
 This code snippet creates an FTS index on the property named ``description``. 
 

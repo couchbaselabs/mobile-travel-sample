@@ -69,11 +69,11 @@ while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT
 === Try it out
 
 * Log into the Travel Sample Mobile app as "demo" user and password as "password" 
-* Tap the "Flights" button to make a flight reservation 
+* Click the "FLIGHTS" button to make a flight reservation 
 * In the "From" airport textfield, enter "Detroit" 
 * Verify that the first item in the drop down list is "Detroit Metro Wayne Co" 
 +
-image::https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif[]
+image::https://cl.ly/0b3q2T2t1R1J/java-simple-query.gif[]
 
 == Advanced Query
 
@@ -133,11 +133,12 @@ for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDic
 === Try it out
 
 * Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
-* Tap on "Hotels"" button 
+* Click on "ADD"" button 
 * In the "Location" text field, enter "London"
 * In the "Description" text field, enter "Pets"
 * Verify that you see the "Novotel London West" listed
-* Tap to "bookmark" the hotel
-* Verify that the Novatel hotel shows up in the list on the "BookmarksActivity" page
+* Select the entry by clicking on it
+* Click "DONE" button to bookmark
+* Verify that the Novatel hotel shows up in the list on the "Bookmarks" page
 +
-image::https://cl.ly/3r243s1K2600/android-advanced-query.gif[]
+image::https://cl.ly/3r243s1K2600/java-advanced-query.gif[]
