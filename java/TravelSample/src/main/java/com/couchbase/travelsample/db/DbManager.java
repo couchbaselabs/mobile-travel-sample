@@ -29,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -55,6 +54,7 @@ import com.couchbase.lite.ReplicatorChange;
 import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
 import com.couchbase.lite.URLEndpoint;
+import com.couchbase.travelsample.model.Hotel;
 
 
 @Singleton
@@ -70,8 +70,13 @@ public final class DbManager {
     public static final String DB_ZIP = DB_NAME + DB_SUFFIX + ".zip";
 
     public static final String GUEST_USER = "guest";
+
     public static final String PROP_DOC_TYPE = "type";
-    public static final String TYPE_GUEST_DOC = "bookmarkedhotels";
+    public static final String DOC_TYPE_HOTEL_BOOKMARKS = "bookmarkedhotels";
+    public static final String DOC_TYPE_AIRLINE = "airline";
+    public static final String DOC_TYPE_AIRPORT = "airport";
+    public static final String DOC_TYPE_ROUTE = "route";
+    public static final String DOC_TYPE_LANDMARK = "landmark";
 
     static class ReplicationStartListener implements ReplicatorChangeListener {
         @Nonnull
@@ -130,12 +135,15 @@ public final class DbManager {
         Database.log.getConsole().setLevel(LogLevel.DEBUG);
     }
 
+    // obviously, if there is ever a logged in user named "guest"
+    // this is going to fail horribly...
+    public boolean isLoggedIn() { return !GUEST_USER.equals(currentUser); }
+
     @Nonnull
     public String getCurrentUser() {
         if (currentUser == null) { throw new IllegalStateException("No user logged in"); }
         return currentUser;
     }
-
 
     @Nonnull
     public MutableDocument getGuestDoc() {
@@ -147,7 +155,7 @@ public final class DbManager {
         if (doc != null) { return doc.toMutable(); }
 
         final MutableDocument mDoc = new MutableDocument(guestId);
-        mDoc.setString(PROP_DOC_TYPE, TYPE_GUEST_DOC);
+        mDoc.setString(PROP_DOC_TYPE, DOC_TYPE_HOTEL_BOOKMARKS);
         return mDoc;
     }
 
@@ -227,11 +235,12 @@ public final class DbManager {
         config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
         config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
-        config.setPushFilter((document, flags) -> !("hotel".equals(document.getString("type"))
-                || "airline".equals(document.getString("type"))
-                || "airport".equals(document.getString("type"))
-                || "route".equals(document.getString("type"))
-                || "landmark".equals(document.getString("type"))));
+        config.setPushFilter((document, flags) ->
+            !(Hotel.DOC_TYPE.equals(document.getString(PROP_DOC_TYPE))
+                || DOC_TYPE_AIRLINE.equals(document.getString(PROP_DOC_TYPE))
+                || DOC_TYPE_AIRPORT.equals(document.getString(PROP_DOC_TYPE))
+                || DOC_TYPE_ROUTE.equals(document.getString(PROP_DOC_TYPE))
+                || DOC_TYPE_LANDMARK.equals(document.getString(PROP_DOC_TYPE))));
 
         final Replicator repl = new Replicator(config);
         final ReplicationStartListener listener = new ReplicationStartListener(repl);

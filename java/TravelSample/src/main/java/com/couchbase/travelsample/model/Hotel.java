@@ -27,6 +27,7 @@ import com.couchbase.lite.MutableDocument;
 
 
 public class Hotel {
+    public static final String DOC_TYPE = "hotel";
     public static final String PROP_ID = "id";
     public static final String PROP_NAME = "name";
     public static final String PROP_ADDRESS = "address";

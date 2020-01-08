@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -106,7 +105,8 @@ public class FlightSearchView extends Page<FlightSearchController> {
     public FlightSearchView(FlightSearchController controller) {
         super(PAGE_NAME, controller);
 
-        logoutButton.addActionListener(e -> logout());
+        registerLogoutButton(logoutButton);
+
         doneButton.addActionListener(e -> done());
 
         searchButton.addActionListener(e -> searchFlights());
@@ -126,8 +126,12 @@ public class FlightSearchView extends Page<FlightSearchController> {
         final SearchKeyListener keyListener = new SearchKeyListener();
         originAirport.addKeyListener(keyListener);
         destinationAirport.addKeyListener(keyListener);
+
+        departureDate.addPropertyChangeListener(e -> setSearchButtonEnabled());
         departureDateText = (JFormattedTextField) departureDate.getDateEditor().getUiComponent();
         departureDateText.addKeyListener(keyListener);
+
+        returnDate.addPropertyChangeListener(e -> setSearchButtonEnabled());
         returnDateText = (JFormattedTextField) returnDate.getDateEditor().getUiComponent();
         returnDateText.addKeyListener(keyListener);
 
@@ -175,11 +179,11 @@ public class FlightSearchView extends Page<FlightSearchController> {
     }
 
     void setSearchButtonEnabled() {
-        final boolean enabled = !(
-            originAirport.getText().isEmpty()
+        final boolean enabled =
+            !(originAirport.getText().isEmpty()
                 || destinationAirport.getText().isEmpty()
                 || (departureDate.getDate() == null)
-                || (returnDate).getDate() == null);
+                || (returnDate.getDate() == null));
         searchButton.setEnabled(enabled);
         searchButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
     }

@@ -16,7 +16,6 @@
 package com.couchbase.travelsample.ui.view;
 
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -73,9 +72,10 @@ public final class BookingsView extends Page<BookingsController> {
     public BookingsView(@Nonnull BookingsController controller) {
         super(PAGE_NAME, controller);
 
+        registerLogoutButton(logoutButton);
+
         final SelectionListener selectionListener = new SelectionListener();
 
-        logoutButton.addActionListener(e -> logout());
         findFlightsButton.addActionListener(e -> controller.selectFlight());
         findHotelsButton.addActionListener(e -> controller.selectHotel());
 

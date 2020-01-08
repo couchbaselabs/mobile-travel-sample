@@ -46,7 +46,7 @@ repositories {
     mavenCentral()
     maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
     maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
-    maven { url 'http://mobile.nuget.couchbase.com/maven2/cimaven/' }
+    maven { url 'http://172.23.121.218/maven2/internalmaven' }
 }
 
 dependencies {
@@ -65,7 +65,7 @@ dependencies {
 
     implementation 'com.toedter:jcalendar:1.4'
 
-    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.7.0-77'
+    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.7.0-91'
 }
 
 

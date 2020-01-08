@@ -20,7 +20,6 @@ import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -97,7 +96,8 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
 
         selectionListener = new SelectionListener();
 
-        logoutButton.addActionListener(e -> logout());
+        registerLogoutButton(logoutButton);
+
         doneButton.addActionListener(e -> done());
 
         final HotelKeyListener listener = new HotelKeyListener();

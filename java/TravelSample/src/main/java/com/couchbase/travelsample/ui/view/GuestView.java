@@ -83,9 +83,10 @@ public final class GuestView extends Page<GuestController> {
     public GuestView(GuestController controller) {
         super(PAGE_NAME, controller);
 
+        registerLogoutButton(logoutButton);
+
         final SelectionListener selectionListener = new SelectionListener();
 
-        logoutButton.addActionListener(e -> logout());
         addBookmarkButton.addActionListener(e -> selectHotel());
 
         deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(selectionListener.getSelection()));

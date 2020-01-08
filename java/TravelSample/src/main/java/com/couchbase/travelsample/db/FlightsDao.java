@@ -36,6 +36,7 @@ import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
+import com.couchbase.lite.Where;
 import com.couchbase.travelsample.model.BookedFlight;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Trip;
@@ -90,7 +91,7 @@ public class FlightsDao {
             .execute();
 
         final Array flightsArray = results.allResults().get(0).getArray(0);
-        final int n = flightsArray.count();
+        final int n = (flightsArray == null) ? 0 : flightsArray.count();
         for (int i = 0; i < n; i++) { flights.add(BookedFlight.fromDictionary(flightsArray.getDictionary(i))); }
 
         return flights;

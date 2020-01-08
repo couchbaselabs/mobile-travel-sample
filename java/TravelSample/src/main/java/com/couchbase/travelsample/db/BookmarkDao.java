@@ -87,7 +87,7 @@ public class BookmarkDao {
                 .on(ArrayFunction.contains(Expression.property(PROP_BOOKMARKS)
                     .from("bookmark"), Meta.id.from("hotel"))))
             .where(Expression.property(DbManager.PROP_DOC_TYPE).from("bookmark")
-                .equalTo(Expression.string(DbManager.TYPE_GUEST_DOC)))
+                .equalTo(Expression.string(DbManager.DOC_TYPE_HOTEL_BOOKMARKS)))
             .execute();
 
         for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
