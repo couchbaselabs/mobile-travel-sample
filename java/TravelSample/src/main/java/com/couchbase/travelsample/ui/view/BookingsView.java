@@ -39,10 +39,12 @@ public final class BookingsView extends Page<BookingsController> {
     public static final String PAGE_NAME = "BOOKINGS";
 
     private class SelectionListener implements ListSelectionListener {
+        @Nullable
         private Flight selection;
 
         SelectionListener() {}
 
+        @Nullable
         public Flight getSelection() { return selection; }
 
         public void valueChanged(ListSelectionEvent e) {

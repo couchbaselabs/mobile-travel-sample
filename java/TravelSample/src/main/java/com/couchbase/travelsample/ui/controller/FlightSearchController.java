@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -89,13 +90,15 @@ public final class FlightSearchController extends PageController {
         returningFlightsModel.clear();
     }
 
-    void displayOutboundFlights(List<Flight> flights) {
+    void displayOutboundFlights(@Nullable List<Flight> flights) {
         outboundFlightsModel.clear();
+        if (flights == null) { return; }
         for (Flight flight : flights) { outboundFlightsModel.addElement(flight); }
     }
 
-    void displayReturningFlights(List<Flight> flights) {
+    void displayReturningFlights(@Nullable List<Flight> flights) {
         returningFlightsModel.clear();
+        if (flights == null) { return; }
         for (Flight flight : flights) { returningFlightsModel.addElement(flight); }
     }
 }

@@ -53,8 +53,8 @@ public class Hotel {
     }
 
     @Nullable
-    public static Hotel fromDictionary(@Nonnull String id, @Nullable Dictionary dict) {
-        if (dict == null) { return null; }
+    public static Hotel fromDictionary(@Nullable String id, @Nullable Dictionary dict) {
+        if ((id == null) || (dict == null)) { return null; }
         return new Hotel(
             id,
             dict.getString(PROP_NAME),

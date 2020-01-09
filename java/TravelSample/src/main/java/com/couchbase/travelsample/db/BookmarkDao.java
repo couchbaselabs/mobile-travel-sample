@@ -106,7 +106,11 @@ public class BookmarkDao {
             final String id = hotel.getId();
 
             final Document hotelDoc = database.getDocument(id);
-            if (hotelDoc == null) { database.save(Hotel.toDocument(hotel)); }
+            if (hotelDoc == null) {
+                final MutableDocument newHotelDoc = Hotel.toDocument(hotel);
+                if (newHotelDoc == null) { continue; }
+                database.save(newHotelDoc);
+            }
 
             ids.add(id);
         }

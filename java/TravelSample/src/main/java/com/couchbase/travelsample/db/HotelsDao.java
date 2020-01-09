@@ -18,7 +18,6 @@ package com.couchbase.travelsample.db;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -74,6 +73,7 @@ public class HotelsDao {
 
 
         for (Result result : results.allResults()) {
+            if (result.count() < 2) { continue; }
             Hotel hotel = Hotel.fromDictionary(result.getString(0), result.getDictionary(1));
             if (hotel != null) { hotels.add(hotel); }
         }

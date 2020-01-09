@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -68,8 +69,9 @@ public final class GuestController extends PageController {
     @Override
     protected void onClose() { bookmarks.clear(); }
 
-    private void updateBookmarks(List<Hotel> hotels) {
+    private void updateBookmarks(@Nullable List<Hotel> hotels) {
         bookmarks.clear();
+        if (hotels == null) { return; }
         for (Hotel hotel : hotels) { bookmarks.addElement(hotel); }
     }
 }

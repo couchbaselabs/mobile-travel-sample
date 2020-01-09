@@ -17,8 +17,8 @@ package com.couchbase.travelsample.ui.controller;
 
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -61,13 +61,15 @@ public final class BookingsController extends PageController {
 
     public void fetchBookedFlights() { flightsDao.getBookedFlights(this::updateFlights); }
 
-    public void deleteBooking(Flight flight) {
+    public void deleteBooking(@Nullable Flight flight) {
+        if (flight == null) { return; }
         flightsDao.deleteBookedFlight(flight);
         flightsModel.removeElement(flight);
     }
 
-    void updateFlights(List<Flight> flights) {
+    void updateFlights(@Nullable List<Flight> flights) {
         flightsModel.clear();
+        if (flights == null) { return; }
         for (Flight flight : flights) { flightsModel.addElement(flight); }
     }
 }

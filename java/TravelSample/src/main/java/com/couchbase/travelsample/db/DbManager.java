@@ -241,6 +241,8 @@ public final class DbManager {
 
     private Replicator startReplication(@Nonnull String username, @Nonnull char[] password)
         throws CouchbaseLiteException, IOException, AuthenticationException, URISyntaxException {
+        if (database == null) { throw new IllegalStateException("database cannot be null for replication"); }
+
         final ReplicatorConfiguration config
             = new ReplicatorConfiguration(database, new URLEndpoint(new URI(SGW_ENDPOINT)));
         // !!! copying the password into the string is unsecure.

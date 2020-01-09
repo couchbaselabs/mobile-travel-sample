@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
@@ -73,8 +74,9 @@ public final class HotelSearchController extends PageController {
     @Override
     protected void onClose() { hotelsModel.clear(); }
 
-    private void displayHotels(@Nonnull List<Hotel> hotels) {
+    private void displayHotels(@Nullable List<Hotel> hotels) {
         hotelsModel.clear();
+        if (hotels == null) { return; }
         for (Hotel hotel : hotels) { hotelsModel.addElement(hotel); }
     }
 }

@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -36,7 +35,6 @@ import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
-import com.couchbase.lite.Where;
 import com.couchbase.travelsample.model.BookedFlight;
 import com.couchbase.travelsample.model.Flight;
 import com.couchbase.travelsample.model.Trip;
@@ -78,7 +76,9 @@ public class FlightsDao {
         exec.submit(() -> bookTripAsync(trip), onSuccess, onError);
     }
 
-    public void deleteBookedFlight(Flight flight) { exec.submit(() -> deleteBookedFlightAsync((BookedFlight) flight)); }
+    public void deleteBookedFlight(@Nonnull Flight flight) {
+        exec.submit(() -> deleteBookedFlightAsync((BookedFlight) flight));
+    }
 
     @Nonnull
     private List<Flight> queryBookedFlightsAsync() throws CouchbaseLiteException {
@@ -113,8 +113,10 @@ public class FlightsDao {
             .execute();
 
         final List<String> airports = new ArrayList<>();
-        Result row;
-        while ((row = results.next()) != null) { airports.add(row.getString(PROP_AIRPORT_NAME)); }
+        for (Result result : results.allResults()) {
+            final String airportName = result.getString(PROP_AIRPORT_NAME);
+            if (airportName != null) { airports.add(airportName); }
+        }
 
         return airports;
     }
