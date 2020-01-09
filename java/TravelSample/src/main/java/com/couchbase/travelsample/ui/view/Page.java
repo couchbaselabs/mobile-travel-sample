@@ -48,12 +48,14 @@ public abstract class Page<T extends PageController> {
         this.controller = controller;
     }
 
+    @Nonnull
     public abstract JPanel getView();
 
     protected abstract void onOpen(@Nonnull Page<?> prev);
 
     protected abstract void onClose();
 
+    @Nonnull
     public final String getName() { return name; }
 
     public final void open(@Nonnull Page<?> prev) {
@@ -73,4 +75,9 @@ public abstract class Page<T extends PageController> {
     }
 
     protected void registerLogoutButton(@Nonnull JButton logoutButton) { this.logoutButton = logoutButton; }
+
+    void setButtonEnabled(@Nonnull JButton button, boolean enabled) {
+        button.setEnabled(enabled);
+        button.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
 }

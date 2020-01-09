@@ -53,7 +53,7 @@ public final class BookingsView extends Page<BookingsController> {
             final ListSelectionModel selectionModel = flights.getSelectionModel();
 
             final boolean selectionEmpty = selectionModel.isSelectionEmpty();
-            setDeleteButtonEnabled(!selectionEmpty);
+            setButtonEnabled(deleteBookingButton, !selectionEmpty);
 
             selection = (selectionEmpty)
                 ? null
@@ -80,7 +80,7 @@ public final class BookingsView extends Page<BookingsController> {
         findHotelsButton.addActionListener(e -> controller.selectHotel());
 
         deleteBookingButton.addActionListener(e -> controller.deleteBooking(selectionListener.getSelection()));
-        setDeleteButtonEnabled(false);
+        setButtonEnabled(deleteBookingButton, false);
 
         flights.setModel(controller.getFlightsModel());
         flights.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,6 +88,7 @@ public final class BookingsView extends Page<BookingsController> {
         flights.setCellRenderer(new FlightCellRenderer());
     }
 
+    @Nonnull
     @Override
     public JPanel getView() { return panel; }
 
@@ -95,10 +96,5 @@ public final class BookingsView extends Page<BookingsController> {
     protected void onOpen(@Nullable Page<?> prevPage) { controller.fetchBookedFlights(); }
 
     @Override
-    protected void onClose() { }
-
-    void setDeleteButtonEnabled(boolean enabled) {
-        deleteBookingButton.setEnabled(enabled);
-        deleteBookingButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
-    }
+    protected void onClose() { flights.clearSelection(); }
 }

@@ -31,6 +31,7 @@ public abstract class PageController {
     @Nonnull
     private final Nav nav;
 
+    @Nonnull
     private String prevPageName;
 
     protected PageController(@Nonnull String pageName, @Nonnull Nav nav, @Nonnull DbManager localStore) {
@@ -53,9 +54,7 @@ public abstract class PageController {
         toPage(LoginView.PAGE_NAME);
     }
 
-    protected final void toPage(@Nonnull String nextPageName) {
-        nav.toPage(pageName, nextPageName);
-    }
+    protected final void toPage(@Nonnull String nextPageName) { nav.toPage(pageName, nextPageName); }
 
     protected final void back() { toPage(prevPageName); }
 }

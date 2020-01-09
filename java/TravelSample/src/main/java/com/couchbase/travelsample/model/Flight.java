@@ -16,7 +16,6 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -114,5 +113,11 @@ public class Flight {
         if (this == o) { return true; }
         if ((o == null) || (this.getClass() == o.getClass())) { return false; }
         return flight.equals(((Flight) o).flight);
+    }
+
+    @Override
+    public String toString() {
+        return "Flight[" + flight + ", " + carrier + ", " + equipment + ", $" + price
+            + ", " + origin + "@" + departTime + " => " + destination + "," + flightTime + "]";
     }
 }

@@ -102,7 +102,7 @@ public class FlightSearchView extends Page<FlightSearchController> {
     private JButton bookButton;
 
     @Inject
-    public FlightSearchView(FlightSearchController controller) {
+    public FlightSearchView(@Nonnull FlightSearchController controller) {
         super(PAGE_NAME, controller);
 
         registerLogoutButton(logoutButton);
@@ -150,49 +150,30 @@ public class FlightSearchView extends Page<FlightSearchController> {
     }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() {
+        outboundFlights.clearSelection();
+        returningFlights.clearSelection();
 
-    void searchAirports(@Nonnull String prefix, Consumer<List<String>> consumer) {
-        controller.searchAirports(prefix, 12, consumer);
-    }
+        originAirport.setText(null);
+        destinationAirport.setText(null);
 
-    void searchFlights() {
-        controller.searchFlights(
-            originAirport.getText(),
-            destinationAirport.getText(),
-            departureDate.getDate(),
-            returnDate.getDate());
-    }
-
-    void bookFlights() {
-        controller.bookTrip(
-            new Trip(
-                outboundSelectionListener.getSelection(),
-                returningSelectionListener.getSelection(),
-                departureDate.getDate(),
-                returnDate.getDate()),
-            this::onError);
-    }
-
-    void onError(@Nonnull Exception failure) {
-        JOptionPane.showMessageDialog(null, failure.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
+        departureDateText.setText(null);
+        returnDateText.setText(null);
     }
 
     void setSearchButtonEnabled() {
-        final boolean enabled =
+        setButtonEnabled(
+            searchButton,
             !(originAirport.getText().isEmpty()
                 || destinationAirport.getText().isEmpty()
                 || (departureDate.getDate() == null)
-                || (returnDate.getDate() == null));
-        searchButton.setEnabled(enabled);
-        searchButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+                || (returnDate.getDate() == null)));
     }
 
     void setBookButtonEnabled() {
-        final boolean enabled
-            = (outboundSelectionListener.getSelection() != null) && (returningSelectionListener.getSelection() != null);
-        bookButton.setEnabled(enabled);
-        bookButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+        setButtonEnabled(
+            bookButton,
+            (outboundSelectionListener.getSelection() != null) && (returningSelectionListener.getSelection() != null));
     }
 
     private void createUIComponents() {
@@ -203,12 +184,32 @@ public class FlightSearchView extends Page<FlightSearchController> {
         returnDate = new JDateChooser();
     }
 
-    void done() {
-        originAirport.setText("");
-        destinationAirport.setText("");
-        departureDateText.setText("");
-        returnDateText.setText("");
-        controller.done();
+    private void searchAirports(@Nonnull String prefix, Consumer<List<String>> consumer) {
+        controller.searchAirports(prefix, 12, consumer);
     }
+
+    private void searchFlights() {
+        controller.searchFlights(
+            originAirport.getText(),
+            destinationAirport.getText(),
+            departureDate.getDate(),
+            returnDate.getDate());
+    }
+
+    private void bookFlights() {
+        controller.bookTrip(
+            new Trip(
+                outboundSelectionListener.getSelection(),
+                returningSelectionListener.getSelection(),
+                departureDate.getDate(),
+                returnDate.getDate()),
+            this::onError);
+    }
+
+    private void onError(@Nonnull Exception failure) {
+        JOptionPane.showMessageDialog(null, failure.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void done() { controller.done(); }
 }
 

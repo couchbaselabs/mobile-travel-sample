@@ -66,7 +66,7 @@ public final class GuestController extends PageController {
     public void selectHotel() { toPage(HotelSearchView.PAGE_NAME); }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() { bookmarks.clear(); }
 
     private void updateBookmarks(List<Hotel> hotels) {
         bookmarks.clear();

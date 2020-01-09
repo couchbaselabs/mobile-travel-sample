@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,17 +42,19 @@ public final class FlightSearchController extends PageController {
     @Nonnull
     private final DefaultListModel<Flight> returningFlightsModel = new DefaultListModel<>();
 
-    private final FlightsDao flightDao;
+    @Nonnull
+    private final FlightsDao flightsDao;
+    @Nonnull
     private final TryCb tryCb;
 
     @Inject
     public FlightSearchController(
         @Nonnull Nav nav,
         @Nonnull DbManager localStore,
-        @Nonnull FlightsDao flightDao,
+        @Nonnull FlightsDao flightsDao,
         @Nonnull TryCb tryCb) {
         super(FlightSearchView.PAGE_NAME, nav, localStore);
-        this.flightDao = flightDao;
+        this.flightsDao = flightsDao;
         this.tryCb = tryCb;
     }
 
@@ -64,7 +65,7 @@ public final class FlightSearchController extends PageController {
     public DefaultListModel<Flight> getReturningFlightsModel() { return returningFlightsModel; }
 
     public void searchAirports(@Nonnull String prefix, int maxResults, @Nonnull Consumer<List<String>> listener) {
-        flightDao.searchAirports(prefix, maxResults, listener);
+        flightsDao.searchAirports(prefix, maxResults, listener);
     }
 
     public void searchFlights(
@@ -77,11 +78,16 @@ public final class FlightSearchController extends PageController {
     }
 
     public void bookTrip(@Nonnull Trip trip, @Nonnull Consumer<Exception> onError) {
-        flightDao.bookTrip(trip, (ign) -> done(), onError);
+        flightsDao.bookTrip(trip, (ign) -> done(), onError);
     }
 
+    public void done() { back(); }
+
     @Override
-    protected void onClose() { }
+    protected void onClose() {
+        outboundFlightsModel.clear();
+        returningFlightsModel.clear();
+    }
 
     void displayOutboundFlights(List<Flight> flights) {
         outboundFlightsModel.clear();
@@ -91,11 +97,5 @@ public final class FlightSearchController extends PageController {
     void displayReturningFlights(List<Flight> flights) {
         returningFlightsModel.clear();
         for (Flight flight : flights) { returningFlightsModel.addElement(flight); }
-    }
-
-    public void done() {
-        outboundFlightsModel.clear();
-        returningFlightsModel.clear();
-        back();
     }
 }

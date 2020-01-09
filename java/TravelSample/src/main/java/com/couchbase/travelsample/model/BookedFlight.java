@@ -19,7 +19,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -111,4 +110,7 @@ public class BookedFlight extends Flight {
         final BookedFlight other = (BookedFlight) o;
         return flight.equals(other.flight) && departDate.equals(other.departDate);
     }
+
+    @Override
+    public String toString() { return "Booking[@" + departDate + ": " + super.toString() + "]"; }
 }

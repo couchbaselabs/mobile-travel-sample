@@ -57,7 +57,7 @@ public final class BookingsController extends PageController {
     public void selectHotel() { toPage(HotelSearchView.PAGE_NAME); }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() { flightsModel.clear(); }
 
     public void fetchBookedFlights() { flightsDao.getBookedFlights(this::updateFlights); }
 

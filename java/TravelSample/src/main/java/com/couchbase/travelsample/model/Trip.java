@@ -16,7 +16,6 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Date;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -51,4 +50,9 @@ public class Trip {
 
     @Nonnull
     public Date getReturnDate() { return new Date(returnDate); }
+
+    @Override
+    public String toString() {
+        return "Trip[@" + departureDate + ": " + outboundFlight + ", @" + returnDate + ": " + returnFlight + "]";
+    }
 }

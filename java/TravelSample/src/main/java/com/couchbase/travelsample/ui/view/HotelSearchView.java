@@ -117,7 +117,11 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
     protected void onOpen(@Nullable Page<?> prevPage) { }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() {
+        hotels.clearSelection();
+        hotelLocation.setText(null);
+        hotelDescription.setText(null);
+    }
 
     @Override
     public Set<Hotel> getSelection() { return new HashSet<>(selection); }
@@ -130,8 +134,8 @@ public class HotelSearchView extends Page<HotelSearchController> implements Gues
 
     void done() {
         selection = selectionListener.getSelection();
-        hotelLocation.setText("");
-        hotelDescription.setText("");
+        hotelLocation.setText(null);
+        hotelDescription.setText(null);
         hotels.clearSelection();
         controller.done();
     }

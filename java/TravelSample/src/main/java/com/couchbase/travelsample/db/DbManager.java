@@ -40,12 +40,16 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import com.couchbase.lite.AbstractReplicator;
 import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CBLError;
+import com.couchbase.lite.ConsoleLogger;
 import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.FullTextIndexItem;
+import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.ListenerToken;
+import com.couchbase.lite.LogDomain;
 import com.couchbase.lite.LogLevel;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
@@ -68,6 +72,8 @@ public final class DbManager {
     public static final String DB_NAME = "travel-sample";
     public static final String DB_SUFFIX = ".cblite2";
     public static final String DB_ZIP = DB_NAME + DB_SUFFIX + ".zip";
+
+    public static final String FTS_INDEX_DESC = "descFTSIndex";
 
     public static final String GUEST_USER = "guest";
 
@@ -132,7 +138,10 @@ public final class DbManager {
         this.exec = exec;
 
         CouchbaseLite.init();
-        Database.log.getConsole().setLevel(LogLevel.DEBUG);
+
+        final ConsoleLogger logger = Database.log.getConsole();
+        logger.setLevel(LogLevel.DEBUG);
+        logger.setDomains(LogDomain.ALL_DOMAINS);
     }
 
     // obviously, if there is ever a logged in user named "guest"
@@ -216,6 +225,9 @@ public final class DbManager {
         }
 
         database = new Database(DB_NAME, config);
+        database.createIndex(
+            FTS_INDEX_DESC,
+            IndexBuilder.fullTextIndex(FullTextIndexItem.property(Hotel.PROP_DESCRIPTION)));
         replicator = startReplication(username, password);
 
         currentUser = username;

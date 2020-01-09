@@ -60,7 +60,7 @@ public final class GuestView extends Page<GuestController> {
             final ListSelectionModel selectionModel = hotels.getSelectionModel();
 
             final boolean selectionEmpty = selectionModel.isSelectionEmpty();
-            setDeleteButtonEnabled(!selectionEmpty);
+            setButtonEnabled(deleteBookmarkButton, !selectionEmpty);
             selection.clear();
             if (selectionEmpty) { return; }
 
@@ -90,7 +90,7 @@ public final class GuestView extends Page<GuestController> {
         addBookmarkButton.addActionListener(e -> selectHotel());
 
         deleteBookmarkButton.addActionListener(e -> controller.deleteBookmark(selectionListener.getSelection()));
-        setDeleteButtonEnabled(false);
+        setButtonEnabled(deleteBookmarkButton, false);
 
         bookmarks.setModel(controller.getBookmarksModel());
         bookmarks.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -110,12 +110,7 @@ public final class GuestView extends Page<GuestController> {
     }
 
     @Override
-    protected void onClose() { }
-
-    void setDeleteButtonEnabled(boolean enabled) {
-        deleteBookmarkButton.setEnabled(enabled);
-        deleteBookmarkButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
-    }
+    protected void onClose() { bookmarks.clearSelection(); }
 
     private void selectHotel() {
         bookmarks.clearSelection();

@@ -16,7 +16,6 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -31,14 +30,16 @@ public class Hotel {
     public static final String PROP_ID = "id";
     public static final String PROP_NAME = "name";
     public static final String PROP_ADDRESS = "address";
+    public static final String PROP_DESCRIPTION = "description";
 
 
     @Nonnull
     public static Hotel fromJSON(@Nonnull JSONObject json) {
         return new Hotel(
             json.getString(PROP_ID),
-            json.getString(PROP_NAME),
-            json.getString(PROP_ADDRESS));
+            (!json.has(PROP_NAME)) ? null : json.getString(PROP_NAME),
+            (!json.has(PROP_ADDRESS)) ? null : json.getString(PROP_ADDRESS),
+            (!json.has(PROP_DESCRIPTION)) ? null : json.getString(PROP_DESCRIPTION));
     }
 
     @Nullable
@@ -47,7 +48,18 @@ public class Hotel {
         return new Hotel(
             dict.getString(PROP_ID),
             dict.getString(PROP_NAME),
-            dict.getString(PROP_ADDRESS));
+            dict.getString(PROP_ADDRESS),
+            dict.getString(PROP_DESCRIPTION));
+    }
+
+    @Nullable
+    public static Hotel fromDictionary(@Nonnull String id, @Nullable Dictionary dict) {
+        if (dict == null) { return null; }
+        return new Hotel(
+            id,
+            dict.getString(PROP_NAME),
+            dict.getString(PROP_ADDRESS),
+            dict.getString(PROP_DESCRIPTION));
     }
 
     @Nullable
@@ -58,8 +70,10 @@ public class Hotel {
 
         final MutableDocument doc = new MutableDocument(id);
         doc.setString(PROP_ID, id);
+
         doc.setString(PROP_NAME, hotel.getName());
         doc.setString(PROP_ADDRESS, hotel.getAddress());
+        doc.setString(PROP_DESCRIPTION, hotel.getDescription());
 
         return doc;
     }
@@ -70,12 +84,15 @@ public class Hotel {
     private final String name;
     @Nullable
     private final String address;
+    @Nullable
+    private final String description;
 
-    Hotel(@Nonnull String id, @Nullable String name, @Nullable String address) {
+    Hotel(@Nonnull String id, @Nullable String name, @Nullable String address, @Nullable String description) {
         if ((id == null) || id.isEmpty()) { throw new IllegalStateException("Hotel has no id"); }
         this.id = id;
         this.name = name;
         this.address = address;
+        this.description = description;
     }
 
     @Nonnull
@@ -87,6 +104,9 @@ public class Hotel {
     @Nullable
     public String getAddress() { return address; }
 
+    @Nullable
+    public String getDescription() { return description; }
+
     @Override
     public int hashCode() { return Objects.hash(id); }
 
@@ -97,4 +117,7 @@ public class Hotel {
         final Hotel hotel = (Hotel) o;
         return id.equals(hotel.id);
     }
+
+    @Override
+    public String toString() { return "Hotel[" + id + "," + name + "," + address + "]"; }
 }

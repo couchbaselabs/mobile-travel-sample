@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -90,9 +89,11 @@ public class BookmarkDao {
                 .equalTo(Expression.string(DbManager.DOC_TYPE_HOTEL_BOOKMARKS)))
             .execute();
 
-        for (Result result : results) { bookmarks.add(Hotel.fromDictionary(result.getDictionary(1))); }
+        for (Result result : results) {
+            final Hotel hotel = Hotel.fromDictionary(result.getDictionary(1));
+            if (hotel != null) { bookmarks.add(hotel); }
+        }
 
-        LOGGER.log(Level.INFO, "Found bookmarks: " + bookmarks);
         return bookmarks;
     }
 
