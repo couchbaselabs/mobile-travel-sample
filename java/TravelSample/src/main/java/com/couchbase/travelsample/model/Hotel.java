@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,8 +31,10 @@ public class Hotel {
     public static final String PROP_ID = "id";
     public static final String PROP_NAME = "name";
     public static final String PROP_ADDRESS = "address";
+    public static final String PROP_CITY = "city";
+    public static final String PROP_STATE = "state";
+    public static final String PROP_COUNTRY = "country";
     public static final String PROP_DESCRIPTION = "description";
-
 
     @Nonnull
     public static Hotel fromJSON(@Nonnull JSONObject json) {

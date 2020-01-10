@@ -17,6 +17,8 @@ package com.couchbase.travelsample.ui.controller;
 
 import javax.annotation.Nonnull;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import com.couchbase.travelsample.db.DbManager;
 import com.couchbase.travelsample.ui.Nav;
 import com.couchbase.travelsample.ui.view.LoginView;
@@ -31,6 +33,7 @@ public abstract class PageController {
     @Nonnull
     private final Nav nav;
 
+    @SuppressFBWarnings("NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
     @Nonnull
     private String prevPageName;
 

@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -47,6 +48,7 @@ public class Flight {
                 (!json.has(PROP_FLIGHT_TIME)) ? 0 : json.getInt(PROP_FLIGHT_TIME),
                 (!json.has(PROP_PRICE)) ? 0F : json.getFloat(PROP_PRICE));
     }
+
 
     @Nonnull
     protected final String flight;
@@ -115,6 +117,7 @@ public class Flight {
         return flight.equals(((Flight) o).flight);
     }
 
+    @Nonnull
     @Override
     public String toString() {
         return "Flight[" + flight + ", " + carrier + ", " + equipment + ", $" + price

@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.model;
 
 import java.util.Date;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

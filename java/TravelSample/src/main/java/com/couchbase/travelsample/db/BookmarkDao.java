@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -74,7 +75,9 @@ public class BookmarkDao {
     public void removeBookmarks(@Nonnull Set<Hotel> hotels) { exec.submit(() -> removeBookmarksAsync(hotels)); }
 
     @Nonnull
-    List<Hotel> queryBookmarksAsync() throws CouchbaseLiteException {
+    private List<Hotel> queryBookmarksAsync() throws CouchbaseLiteException {
+        LOGGER.log(Level.INFO, "query bookmarks");
+
         final List<Hotel> bookmarks = new ArrayList<>();
 
         final Database database = db.getDatabase();
@@ -98,7 +101,9 @@ public class BookmarkDao {
     }
 
     @Nullable
-    Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+    private Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+        LOGGER.log(Level.INFO, "add bookmarks");
+
         final Database database = db.getDatabase();
 
         final Set<String> ids = new HashSet<>();
@@ -115,19 +120,21 @@ public class BookmarkDao {
             ids.add(id);
         }
 
-        bookmarkIds(database, ids);
+        bookmarkIds(ids);
 
         return null;
     }
 
     @Nullable
-    Void removeBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+    private Void removeBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+        LOGGER.log(Level.INFO, "remove bookmarks");
+
         final Database database = db.getDatabase();
 
         final Set<String> ids = new HashSet<>();
         for (Hotel hotel : hotels) { ids.add(hotel.getId()); }
 
-        unbookmarkIds(database, ids);
+        unbookmarkIds(ids);
 
         for (String id : ids) {
             final Document hotelDoc = database.getDocument(id);
@@ -141,7 +148,7 @@ public class BookmarkDao {
         return null;
     }
 
-    private void bookmarkIds(Database database, Set<String> ids) throws CouchbaseLiteException {
+    private void bookmarkIds(@Nonnull Set<String> ids) throws CouchbaseLiteException {
         final MutableDocument guestDoc = db.getGuestDoc();
 
         final Set<String> currentBookmarks = new HashSet<>();
@@ -159,10 +166,10 @@ public class BookmarkDao {
 
         guestDoc.setArray(PROP_BOOKMARKS, newBookmarks);
 
-        database.save(guestDoc);
+        db.getDatabase().save(guestDoc);
     }
 
-    private void unbookmarkIds(Database database, Set<String> ids) throws CouchbaseLiteException {
+    private void unbookmarkIds(@Nonnull Set<String> ids) throws CouchbaseLiteException {
         LOGGER.log(Level.INFO, "Unbookmarking: " + ids);
 
         final MutableDocument guestDoc = db.getGuestDoc();
@@ -174,6 +181,6 @@ public class BookmarkDao {
             if (ids.contains(bookmarks.getString(i))) { bookmarks.remove(i); }
         }
 
-        database.save(guestDoc);
+        db.getDatabase().save(guestDoc);
     }
 }

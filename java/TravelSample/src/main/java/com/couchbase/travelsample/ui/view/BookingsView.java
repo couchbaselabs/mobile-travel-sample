@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.ui.view;
 
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;

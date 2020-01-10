@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,6 +31,7 @@ public class BookedFlight extends Flight {
     public static final ThreadLocal<DateFormat> DATE_FORMAT
         = ThreadLocal.withInitial(() -> new SimpleDateFormat("MM/dd/yyyy"));
 
+    @Nonnull
     public static BookedFlight bookFlight(@Nonnull Flight flight, @Nonnull Date departDate) {
         return new BookedFlight(
             flight.flight,
@@ -75,12 +77,13 @@ public class BookedFlight extends Flight {
         return dict;
     }
 
-    public static boolean equalsDict(Flight flight, MutableDictionary dict) {
+    public static boolean equalsDict(@Nullable Flight flight, @Nonnull MutableDictionary dict) {
         if (!(flight instanceof BookedFlight)) { return false; }
         final BookedFlight bookedFlight = (BookedFlight) flight;
         return bookedFlight.flight.equals(dict.getString(PROP_FLIGHT))
             && bookedFlight.departDate.equals(dict.getString(PROP_DEPARTURE_DATE));
     }
+
 
     @Nonnull
     private final String departDate;
@@ -111,6 +114,7 @@ public class BookedFlight extends Flight {
         return flight.equals(other.flight) && departDate.equals(other.departDate);
     }
 
+    @Nonnull
     @Override
     public String toString() { return "Booking[@" + departDate + ": " + super.toString() + "]"; }
 }

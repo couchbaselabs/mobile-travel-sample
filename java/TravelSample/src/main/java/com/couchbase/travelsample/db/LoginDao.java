@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.naming.AuthenticationException;
 
@@ -56,11 +57,13 @@ public class LoginDao {
             onFailure);
     }
 
+    @Nullable
     private Void openAsGuestAsync() throws CouchbaseLiteException, IOException {
         db.openGuestDb();
         return null;
     }
 
+    @Nullable
     private Void openWithValidationAsync(@Nonnull String username, @Nonnull char[] password)
         throws IOException, CouchbaseLiteException, URISyntaxException, AuthenticationException {
         try { db.openUserDb(username, password); }

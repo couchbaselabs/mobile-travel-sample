@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -27,6 +28,7 @@ import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.FullTextExpression;
 import com.couchbase.lite.Meta;
+import com.couchbase.lite.Ordering;
 import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
@@ -65,16 +67,17 @@ public class HotelsDao {
             .from(DataSource.database(db.getDatabase()))
             .where(Expression.property(DbManager.PROP_DOC_TYPE).equalTo(Expression.string(Hotel.DOC_TYPE))
                 .and(FullTextExpression.index(DbManager.FTS_INDEX_DESC).match(desc)
-                    .and(Expression.property("country").like(Expression.string(loc))
-                        .or(Expression.property("city").like(Expression.string(loc)))
-                        .or(Expression.property("state").like(Expression.string(loc)))
-                        .or(Expression.property("address").like(Expression.string(loc)))))
-            ).execute();
+                    .and(Expression.property(Hotel.PROP_ADDRESS).like(Expression.string(loc))
+                        .or(Expression.property(Hotel.PROP_CITY).like(Expression.string(loc)))
+                        .or(Expression.property(Hotel.PROP_STATE).like(Expression.string(loc)))
+                        .or(Expression.property(Hotel.PROP_COUNTRY).like(Expression.string(loc))))))
+            .orderBy(Ordering.property(Hotel.PROP_NAME).ascending())
+            .execute();
 
 
         for (Result result : results.allResults()) {
             if (result.count() < 2) { continue; }
-            Hotel hotel = Hotel.fromDictionary(result.getString(0), result.getDictionary(1));
+            final Hotel hotel = Hotel.fromDictionary(result.getString(0), result.getDictionary(1));
             if (hotel != null) { hotels.add(hotel); }
         }
 

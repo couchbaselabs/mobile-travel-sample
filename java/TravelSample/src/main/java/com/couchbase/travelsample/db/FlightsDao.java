@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.couchbase.lite.Array;
@@ -29,8 +31,10 @@ import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.Function;
 import com.couchbase.lite.MutableArray;
+import com.couchbase.lite.MutableDictionary;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Ordering;
+import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Result;
 import com.couchbase.lite.ResultSet;
@@ -64,8 +68,8 @@ public class FlightsDao {
         this.exec = exec;
     }
 
-    public void getBookedFlights(@Nonnull Consumer<List<Flight>> listener) {
-        exec.submit(this::queryBookedFlightsAsync, listener);
+    public void getBookedFlights(@Nonnull String sessionId, @Nonnull Consumer<List<Flight>> bookingsListener) {
+        exec.submit(() -> queryBookedFlightsAsync(sessionId, bookingsListener));
     }
 
     public void searchAirports(@Nonnull String name, int maxResults, @Nonnull Consumer<List<String>> listener) {
@@ -80,21 +84,30 @@ public class FlightsDao {
         exec.submit(() -> deleteBookedFlightAsync((BookedFlight) flight));
     }
 
-    @Nonnull
-    private List<Flight> queryBookedFlightsAsync() throws CouchbaseLiteException {
-        final List<Flight> flights = new ArrayList<>();
-
-        final ResultSet results = QueryBuilder
+    @Nullable
+    private Void queryBookedFlightsAsync(@Nonnull String sessionId, @Nonnull Consumer<List<Flight>> listener) {
+        LOGGER.log(Level.INFO, "query booked flights");
+        final Query query = QueryBuilder
             .select(SelectResult.expression(Expression.property(PROP_FLIGHTS)))
             .from(DataSource.database(db.getDatabase()))
             .where(Expression.property(PROP_USER).equalTo(Expression.string(db.getCurrentUser())))
-            .execute();
+            .orderBy(Ordering.property(Flight.PROP_PRICE).ascending());
+
+        db.startLiveQuery(sessionId, query, change -> bookedFlightsListener(change.getResults(), listener));
+
+        return null;
+    }
+
+    private void bookedFlightsListener(@Nonnull ResultSet results, @Nonnull Consumer<List<Flight>> listener) {
+        LOGGER.log(Level.INFO, "booked flights update");
+
+        final List<Flight> flights = new ArrayList<>();
 
         final Array flightsArray = results.allResults().get(0).getArray(0);
         final int n = (flightsArray == null) ? 0 : flightsArray.count();
         for (int i = 0; i < n; i++) { flights.add(BookedFlight.fromDictionary(flightsArray.getDictionary(i))); }
 
-        return flights;
+        exec.runOnMainThread(() -> listener.accept(flights));
     }
 
     @Nonnull
@@ -121,14 +134,18 @@ public class FlightsDao {
         return airports;
     }
 
-    Void bookTripAsync(@Nonnull Trip trip) throws CouchbaseLiteException {
+    @Nullable
+    private Void bookTripAsync(@Nonnull Trip trip) throws CouchbaseLiteException {
+        LOGGER.log(Level.INFO, "booked trip: " + trip);
         final MutableDocument userDoc = db.getUserDoc();
         bookFlightAsync(userDoc, BookedFlight.bookFlight(trip.getOutboundFlight(), trip.getDepartureDate()));
         bookFlightAsync(userDoc, BookedFlight.bookFlight(trip.getReturnFlight(), trip.getReturnDate()));
         return null;
     }
 
-    Void deleteBookedFlightAsync(BookedFlight flight) throws CouchbaseLiteException {
+    @Nullable
+    private Void deleteBookedFlightAsync(@Nullable BookedFlight flight) throws CouchbaseLiteException {
+        LOGGER.log(Level.INFO, "delete booked flight: " + flight);
         final MutableDocument userDoc = db.getUserDoc();
 
         final MutableArray bookings = userDoc.getArray(PROP_FLIGHTS);
@@ -148,15 +165,18 @@ public class FlightsDao {
         return null;
     }
 
-    private void bookFlightAsync(
-        @Nonnull MutableDocument userDoc,
-        @Nonnull BookedFlight flight)
+    private void bookFlightAsync(@Nonnull MutableDocument userDoc, @Nonnull BookedFlight flight)
         throws CouchbaseLiteException {
         MutableArray bookings = userDoc.getArray(PROP_FLIGHTS);
         if (bookings == null) { bookings = new MutableArray(); }
-        bookings.addDictionary(BookedFlight.toDictionary(flight));
+
+        final MutableDictionary flightDict = BookedFlight.toDictionary(flight);
+        if (flightDict == null) { return; }
+
+        bookings.addDictionary(flightDict);
 
         userDoc.setArray(PROP_FLIGHTS, bookings);
+
         db.getDatabase().save(userDoc);
     }
 }

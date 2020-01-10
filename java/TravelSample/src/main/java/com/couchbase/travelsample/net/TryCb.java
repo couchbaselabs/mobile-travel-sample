@@ -129,6 +129,7 @@ public class TryCb {
         });
     }
 
+    @Nonnull
     private String encodePath(@Nonnull String segment) {
         if (!segment.isEmpty()) {
             try { return URLEncoder.encode(segment, "UTF-8").replace("+", "%20"); }

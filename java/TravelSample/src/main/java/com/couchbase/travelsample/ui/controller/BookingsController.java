@@ -17,6 +17,7 @@ package com.couchbase.travelsample.ui.controller;
 
 import java.util.List;
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -43,6 +44,8 @@ public final class BookingsController extends PageController {
     @Nonnull
     private final FlightsDao flightsDao;
 
+    private String sessionId;
+
     @Inject
     public BookingsController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull FlightsDao flightsDao) {
         super(BookingsView.PAGE_NAME, nav, localStore);
@@ -57,9 +60,18 @@ public final class BookingsController extends PageController {
     public void selectHotel() { toPage(HotelSearchView.PAGE_NAME); }
 
     @Override
-    protected void onClose() { flightsModel.clear(); }
+    protected void onClose() {
+        final String id = sessionId;
+        sessionId = null;
+        localStore.endSession(id);
+        flightsModel.clear();
+    }
 
-    public void fetchBookedFlights() { flightsDao.getBookedFlights(this::updateFlights); }
+    public void fetchBookedFlights() {
+        if (sessionId != null) { throw new IllegalStateException("Session already exists: " + sessionId); }
+        sessionId = localStore.startSession();
+        flightsDao.getBookedFlights(sessionId, this::updateFlights);
+    }
 
     public void deleteBooking(@Nullable Flight flight) {
         if (flight == null) { return; }
@@ -67,7 +79,8 @@ public final class BookingsController extends PageController {
         flightsModel.removeElement(flight);
     }
 
-    void updateFlights(@Nullable List<Flight> flights) {
+    private void updateFlights(@Nullable List<Flight> flights) {
+        if (sessionId == null) { return; }
         flightsModel.clear();
         if (flights == null) { return; }
         for (Flight flight : flights) { flightsModel.addElement(flight); }
