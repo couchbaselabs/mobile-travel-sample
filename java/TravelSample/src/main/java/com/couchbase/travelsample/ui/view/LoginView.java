@@ -47,7 +47,7 @@ public final class LoginView extends Page<LoginController> {
         public void keyTyped(KeyEvent e) { }
 
         public void keyReleased(KeyEvent e) {
-            setLoginButtonEnabled((!username.getText().isEmpty()) && (password.getPassword().length > 0));
+            setButtonEnabled(loginButton, (!username.getText().isEmpty()) && (password.getPassword().length > 0));
         }
     }
 
@@ -73,7 +73,7 @@ public final class LoginView extends Page<LoginController> {
         final LoginKeyListener keyListener = new LoginKeyListener();
         username.addKeyListener(keyListener);
         password.addKeyListener(keyListener);
-        setLoginButtonEnabled(false);
+        setButtonEnabled(loginButton, false);
     }
 
     @Override
@@ -83,15 +83,13 @@ public final class LoginView extends Page<LoginController> {
     protected void onOpen(@Nullable Page<?> prevPage) { }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() {
+        username.setText(null);
+        password.setText(null);
+    }
 
     private void createUIComponents() {
         logo = new JLabel(new ImageIcon(LoginView.class.getResource("images/cbtravel_logo.png")));
-    }
-
-    void setLoginButtonEnabled(boolean enabled) {
-        loginButton.setEnabled(enabled);
-        loginButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
     }
 
     void loginFail(@Nonnull Exception error, @Nonnull String username) {

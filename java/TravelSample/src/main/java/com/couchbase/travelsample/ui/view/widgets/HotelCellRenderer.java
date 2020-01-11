@@ -17,31 +17,52 @@ package com.couchbase.travelsample.ui.view.widgets;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.ui.view.Page;
 
 
+/**
+ *
+ */
 public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel> {
     private final JLabel name;
     private final JLabel location;
+    private final JTextArea description;
 
     public HotelCellRenderer() {
         super(new BorderLayout(), true);
 
         name = new JLabel();
+        name.setFont(name.getFont().deriveFont(Font.BOLD, 14f));
         name.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
         location = new JLabel();
         location.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
 
-        add(name, BorderLayout.NORTH);
-        add(location, BorderLayout.SOUTH);
+        final JPanel panel = new JPanel(new BorderLayout(), true);
+        panel.setBackground(Page.COLOR_BACKGROUND);
+
+        panel.add(name, BorderLayout.NORTH);
+        panel.add(location, BorderLayout.SOUTH);
+        add(panel, BorderLayout.WEST);
+
+        description = new JTextArea();
+        description.setPreferredSize(new Dimension(800, 50));
+        description.setEditable(false);
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+
+        description.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
+        add(description, BorderLayout.EAST);
 
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Page.COLOR_ACCENT));
     }
@@ -54,8 +75,13 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
         boolean focused) {
         name.setText(hotel.getName());
         location.setText(hotel.getAddress());
+
+        final String hotelDesc = hotel.getDescription();
+        description.setText(hotelDesc);
+
         setForeground(focused ? Page.COLOR_TEXT : Page.COLOR_UNFOCUSED);
         setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
+
         return this;
     }
 }

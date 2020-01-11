@@ -51,4 +51,9 @@ public class Trip {
 
     @Nonnull
     public Date getReturnDate() { return new Date(returnDate); }
+
+    @Override
+    public String toString() {
+        return "Trip[@" + departureDate + ": " + outboundFlight + ", @" + returnDate + ": " + returnFlight + "]";
+    }
 }

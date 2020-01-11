@@ -39,6 +39,8 @@ class DbExecutor {
     @Inject
     DbExecutor() { executor = Executors.newSingleThreadExecutor(); }
 
+    public void runOnMainThread(@Nonnull Runnable task) { SwingUtilities.invokeLater(task); }
+
     public void submit(@Nonnull ThrowingSupplier<Void> task) {
         submit(task, null, null);
     }
@@ -54,11 +56,11 @@ class DbExecutor {
         executor.submit(() -> {
             try {
                 final T v = task.get();
-                if (onComplete != null) { SwingUtilities.invokeLater(() -> onComplete.accept(v)); }
+                if (onComplete != null) { runOnMainThread(() -> onComplete.accept(v)); }
             }
             catch (Exception e) {
                 if (onError == null) { e.printStackTrace(); }
-                else { SwingUtilities.invokeLater(() -> onError.accept(e)); }
+                else { runOnMainThread(() -> onError.accept(e)); }
             }
         });
     }

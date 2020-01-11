@@ -16,6 +16,7 @@
 package com.couchbase.travelsample.ui.view;
 
 import java.util.logging.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -39,10 +40,12 @@ public final class BookingsView extends Page<BookingsController> {
     public static final String PAGE_NAME = "BOOKINGS";
 
     private class SelectionListener implements ListSelectionListener {
+        @Nullable
         private Flight selection;
 
         SelectionListener() {}
 
+        @Nullable
         public Flight getSelection() { return selection; }
 
         public void valueChanged(ListSelectionEvent e) {
@@ -53,7 +56,7 @@ public final class BookingsView extends Page<BookingsController> {
             final ListSelectionModel selectionModel = flights.getSelectionModel();
 
             final boolean selectionEmpty = selectionModel.isSelectionEmpty();
-            setDeleteButtonEnabled(!selectionEmpty);
+            setButtonEnabled(deleteBookingButton, !selectionEmpty);
 
             selection = (selectionEmpty)
                 ? null
@@ -80,7 +83,7 @@ public final class BookingsView extends Page<BookingsController> {
         findHotelsButton.addActionListener(e -> controller.selectHotel());
 
         deleteBookingButton.addActionListener(e -> controller.deleteBooking(selectionListener.getSelection()));
-        setDeleteButtonEnabled(false);
+        setButtonEnabled(deleteBookingButton, false);
 
         flights.setModel(controller.getFlightsModel());
         flights.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,6 +91,7 @@ public final class BookingsView extends Page<BookingsController> {
         flights.setCellRenderer(new FlightCellRenderer());
     }
 
+    @Nonnull
     @Override
     public JPanel getView() { return panel; }
 
@@ -95,10 +99,5 @@ public final class BookingsView extends Page<BookingsController> {
     protected void onOpen(@Nullable Page<?> prevPage) { controller.fetchBookedFlights(); }
 
     @Override
-    protected void onClose() { }
-
-    void setDeleteButtonEnabled(boolean enabled) {
-        deleteBookingButton.setEnabled(enabled);
-        deleteBookingButton.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
-    }
+    protected void onClose() { flights.clearSelection(); }
 }

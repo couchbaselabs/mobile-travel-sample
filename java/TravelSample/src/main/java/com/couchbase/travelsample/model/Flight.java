@@ -49,6 +49,7 @@ public class Flight {
                 (!json.has(PROP_PRICE)) ? 0F : json.getFloat(PROP_PRICE));
     }
 
+
     @Nonnull
     protected final String flight;
     @Nullable
@@ -114,5 +115,12 @@ public class Flight {
         if (this == o) { return true; }
         if ((o == null) || (this.getClass() == o.getClass())) { return false; }
         return flight.equals(((Flight) o).flight);
+    }
+
+    @Nonnull
+    @Override
+    public String toString() {
+        return "Flight[" + flight + ", " + carrier + ", " + equipment + ", $" + price
+            + ", " + origin + "@" + departTime + " => " + destination + "," + flightTime + "]";
     }
 }

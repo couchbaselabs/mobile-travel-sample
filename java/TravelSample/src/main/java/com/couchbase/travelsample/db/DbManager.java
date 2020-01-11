@@ -19,55 +19,52 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.naming.AuthenticationException;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import com.couchbase.lite.AbstractReplicator;
-import com.couchbase.lite.BasicAuthenticator;
-import com.couchbase.lite.CBLError;
+import com.couchbase.lite.ConsoleLogger;
 import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.FullTextIndexItem;
+import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.ListenerToken;
+import com.couchbase.lite.LogDomain;
 import com.couchbase.lite.LogLevel;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
-import com.couchbase.lite.Replicator;
-import com.couchbase.lite.ReplicatorChange;
-import com.couchbase.lite.ReplicatorChangeListener;
-import com.couchbase.lite.ReplicatorConfiguration;
-import com.couchbase.lite.URLEndpoint;
+import com.couchbase.lite.QueryChangeListener;
 import com.couchbase.travelsample.model.Hotel;
+import com.couchbase.travelsample.util.RandomString;
 
 
 @Singleton
 public final class DbManager {
     private static final Logger LOGGER = Logger.getLogger(DbManager.class.getName());
 
-    public static final String SGW_ENDPOINT = "ws://127.0.0.1:4984/travel-sample";
-    public static final int LOGIN_TIMEOUT_SEC = 30;
-
     public static final String DB_DIR = "database/";
     public static final String DB_NAME = "travel-sample";
     public static final String DB_SUFFIX = ".cblite2";
     public static final String DB_ZIP = DB_NAME + DB_SUFFIX + ".zip";
+
+    public static final String FTS_INDEX_DESC = "descFTSIndex";
 
     public static final String GUEST_USER = "guest";
 
@@ -78,61 +75,43 @@ public final class DbManager {
     public static final String DOC_TYPE_ROUTE = "route";
     public static final String DOC_TYPE_LANDMARK = "landmark";
 
-    static class ReplicationStartListener implements ReplicatorChangeListener {
-        @Nonnull
-        private final CountDownLatch latch = new CountDownLatch(1);
-        @Nonnull
-        private final Replicator replicator;
+    private static class ActiveQuery {
+        private final Query query;
+        private ListenerToken token;
 
-        @Nullable
-        private CouchbaseLiteException failure;
+        ActiveQuery(@Nonnull Query query) { this.query = query; }
 
-        ReplicationStartListener(@Nonnull Replicator replicator) { this.replicator = replicator; }
+        public void start(@Nonnull QueryChangeListener listener) { this.token = query.addChangeListener(listener); }
 
-        @Nonnull
-        public CountDownLatch getLatch() { return latch; }
-
-        @Nullable
-        public CouchbaseLiteException getFailure() { return failure; }
-
-        @SuppressWarnings("FallThrough")
-        @SuppressFBWarnings("SF_SWITCH_NO_DEFAULT")
-        @Override
-        public void changed(ReplicatorChange change) {
-            if (!replicator.equals(change.getReplicator())) { return; }
-
-            final AbstractReplicator.Status status = replicator.getStatus();
-            final AbstractReplicator.ActivityLevel state = status.getActivityLevel();
-            LOGGER.log(Level.INFO, "Replicator state: " + state.name());
-
-            switch (state) {
-                case CONNECTING:
-                    return;
-                case STOPPED:
-                case OFFLINE:
-                    failure = status.getError();
-                default:
-                    latch.countDown();
-            }
-        }
+        public void stop() { query.removeChangeListener(token); }
     }
+
+    @Nonnull
+    private static final RandomString SESSION_ID_GENERATOR = new RandomString();
+
 
     @Nonnull
     private final DbExecutor exec;
 
+    @Nonnull
+    private final Map<String, Set<ActiveQuery>> sessions = new HashMap<>();
+
     @Nullable
     private Database database;
     @Nullable
-    private Replicator replicator;
-    @Nullable
     private String currentUser;
+    @Nullable
+    private ReplicatorManager replicationManager;
 
     @Inject
     public DbManager(@Nonnull DbExecutor exec) {
         this.exec = exec;
 
         CouchbaseLite.init();
-        Database.log.getConsole().setLevel(LogLevel.DEBUG);
+
+        final ConsoleLogger logger = Database.log.getConsole();
+        logger.setLevel(LogLevel.DEBUG);
+        logger.setDomains(LogDomain.ALL_DOMAINS);
     }
 
     // obviously, if there is ever a logged in user named "guest"
@@ -140,15 +119,35 @@ public final class DbManager {
     public boolean isLoggedIn() { return !GUEST_USER.equals(currentUser); }
 
     @Nonnull
-    public String getCurrentUser() {
+    public String startSession() {
+        final String sessionId = SESSION_ID_GENERATOR.nextString(32);
+        LOGGER.log(Level.INFO, "start session: " + sessionId);
+        synchronized (sessions) { sessions.put(sessionId, new HashSet<>()); }
+        return sessionId;
+    }
+
+    public void endSession(@Nonnull String sessionId) { exec.submit(() -> endSessionAsync(sessionId)); }
+
+    public void close() { exec.submit(this::closeAsync); }
+
+    @Nonnull
+    String getCurrentUser() {
         if (currentUser == null) { throw new IllegalStateException("No user logged in"); }
         return currentUser;
     }
 
+    // This is synchronous!  Don't use it from the Swing thread!
     @Nonnull
-    public MutableDocument getGuestDoc() {
+    Database getDatabase() {
+        if (database == null) { throw new IllegalStateException("db used before open"); }
+        return database;
+    }
+
+    // This is synchronous!  Don't use it from the Swing thread!
+    @Nonnull
+    MutableDocument getGuestDoc() {
         final String guestId = getCurrentUserId();
-        LOGGER.log(Level.INFO, "id is: " + guestId);
+        LOGGER.log(Level.INFO, "guest user: " + guestId);
         if (!guestId.endsWith(GUEST_USER)) { throw new IllegalStateException("Not logged in as guest"); }
 
         final Document doc = getDatabase().getDocument(guestId);
@@ -159,46 +158,36 @@ public final class DbManager {
         return mDoc;
     }
 
+    // This is synchronous!  Don't use it from the Swing thread!
     @Nonnull
-    public MutableDocument getUserDoc() {
+    MutableDocument getUserDoc() {
         final String uId = getCurrentUserId();
         final Document doc = getDatabase().getDocument(uId);
+        LOGGER.log(Level.INFO, "authenticated user: " + uId);
         if (doc != null) { return doc.toMutable(); }
 
         LOGGER.log(Level.WARNING, "No document for user: " + currentUser);
         throw new IllegalStateException("User " + currentUser + "does not exist. Use the web app to create it");
     }
 
-    public void close() { exec.submit(this::closeAsync); }
-
     // This is synchronous!  Don't use it from the Swing thread!
-    @Nonnull
-    public Database getDatabase() {
-        if (database == null) { throw new IllegalStateException("db used before open"); }
-        return database;
-    }
-
-    @Nullable
-    Void closeAsync() throws CouchbaseLiteException {
-        if (replicator != null) {
-            replicator.stop();
-            replicator = null;
+    void startLiveQuery(@Nonnull String sessionId, @Nonnull Query query, @Nonnull QueryChangeListener listener) {
+        LOGGER.log(Level.INFO, "start query in session: " + sessionId);
+        final ActiveQuery activeQuery;
+        synchronized (sessions) {
+            final Set<ActiveQuery> session = sessions.get(sessionId);
+            if (session == null) { throw new IllegalStateException("No such session: " + sessionId); }
+            activeQuery = new ActiveQuery(query);
+            session.add(activeQuery);
         }
-
-        if (database != null) {
-            database.close();
-            database = null;
-        }
-
-        currentUser = null;
-
-        return null;
+        activeQuery.start(listener);
     }
 
     // This is synchronous!  Don't use it from the Swing thread!
     void openGuestDb() throws IOException, CouchbaseLiteException {
         final DatabaseConfiguration config = new DatabaseConfiguration();
         config.setDirectory(new File(DB_DIR, GUEST_USER).getCanonicalPath());
+        LOGGER.log(Level.INFO, "guest db: " + config.getDirectory());
         database = new Database(DB_NAME, config);
         currentUser = GUEST_USER;
     }
@@ -216,7 +205,14 @@ public final class DbManager {
         }
 
         database = new Database(DB_NAME, config);
-        replicator = startReplication(username, password);
+        database.createIndex(
+            FTS_INDEX_DESC,
+            IndexBuilder.fullTextIndex(FullTextIndexItem.property(Hotel.PROP_DESCRIPTION)));
+        LOGGER.log(Level.INFO, "user db: " + config.getDirectory());
+
+
+        replicationManager = new ReplicatorManager(database);
+        replicationManager.start(username, password);
 
         currentUser = username;
     }
@@ -227,41 +223,41 @@ public final class DbManager {
         return "user::" + currentUser;
     }
 
-    private Replicator startReplication(@Nonnull String username, @Nonnull char[] password)
-        throws CouchbaseLiteException, IOException, AuthenticationException, URISyntaxException {
-        final ReplicatorConfiguration config
-            = new ReplicatorConfiguration(database, new URLEndpoint(new URI(SGW_ENDPOINT)));
-        // !!! copying the password into the string is unsecure.
-        config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
-        config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
-        config.setContinuous(true);
-        config.setPushFilter((document, flags) ->
-            !(Hotel.DOC_TYPE.equals(document.getString(PROP_DOC_TYPE))
-                || DOC_TYPE_AIRLINE.equals(document.getString(PROP_DOC_TYPE))
-                || DOC_TYPE_AIRPORT.equals(document.getString(PROP_DOC_TYPE))
-                || DOC_TYPE_ROUTE.equals(document.getString(PROP_DOC_TYPE))
-                || DOC_TYPE_LANDMARK.equals(document.getString(PROP_DOC_TYPE))));
+    @Nullable
+    private Void closeAsync() throws CouchbaseLiteException {
+        if (replicationManager != null) {
+            replicationManager.stop();
+            replicationManager = null;
+        }
 
-        final Replicator repl = new Replicator(config);
-        final ReplicationStartListener listener = new ReplicationStartListener(repl);
-        final ListenerToken token = repl.addChangeListener(listener);
-        repl.start();
+        if (database != null) {
+            database.close();
+            database = null;
+        }
 
-        final boolean ok;
-        try {ok = listener.getLatch().await(LOGIN_TIMEOUT_SEC, TimeUnit.SECONDS); }
-        catch (InterruptedException ignore) { throw new IOException("Login interrupted"); }
-        finally { repl.removeChangeListener(token); }
+        currentUser = null;
 
-        if (!ok) { throw new IOException("Login timeout"); }
+        LOGGER.log(Level.INFO, "db closed");
 
-        final CouchbaseLiteException err = listener.getFailure();
-        if (err == null) { return repl; }
-
-        if (err.getCode() != CBLError.Code.HTTP_AUTH_REQUIRED) { throw err; }
-
-        throw new AuthenticationException("Authentication error");
+        return null;
     }
 
+    @Nullable
+    private Void endSessionAsync(@Nonnull String sessionId) {
+        LOGGER.log(Level.INFO, "end session: " + sessionId);
+        final List<ActiveQuery> queries;
+        synchronized (sessions) {
+            final Set<ActiveQuery> querySet = sessions.remove(sessionId);
+            if (querySet == null) { return null; }
+            queries = new ArrayList<>(querySet);
+        }
+
+        for (ActiveQuery activeQuery : queries) { activeQuery.stop(); }
+
+        return null;
+    }
+
+    @Nonnull
     private File unzipDb() throws IOException {
         final File tmpDir = new File(DB_DIR, "__tmp");
 
@@ -298,35 +294,5 @@ public final class DbManager {
             }
             zin.closeEntry();
         }
-    }
-}
-
-// !!! Use it or remove it
-class QueryMgmt {
-    static class ActiveQuery {
-
-        final Query query;
-        final ListenerToken token;
-
-        ActiveQuery(Query query, ListenerToken token) {
-            this.query = query;
-            this.token = token;
-        }
-    }
-
-    // Used only from the executor thread!
-    private final Set<ActiveQuery> activeQueries = new HashSet<>();
-
-    public void cancelQueries() {
-        //exec.submit(this::cancelQueriesAsync);
-    }
-
-    // Call only on the executor thread
-    void registerQuery(Query query, ListenerToken token) { activeQueries.add(new ActiveQuery(query, token)); }
-
-    @Nullable
-    private Void cancelQueriesAsync() {
-        for (ActiveQuery activeQuery : activeQueries) { activeQuery.query.removeChangeListener(activeQuery.token); }
-        return null;
     }
 }

@@ -15,7 +15,8 @@
 //
 package com.couchbase.travelsample.ui.view;
 
-import java.awt.*;
+import java.awt.Color;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.JButton;
@@ -48,12 +49,14 @@ public abstract class Page<T extends PageController> {
         this.controller = controller;
     }
 
+    @Nonnull
     public abstract JPanel getView();
 
     protected abstract void onOpen(@Nonnull Page<?> prev);
 
     protected abstract void onClose();
 
+    @Nonnull
     public final String getName() { return name; }
 
     public final void open(@Nonnull Page<?> prev) {
@@ -61,7 +64,6 @@ public abstract class Page<T extends PageController> {
         controller.setPrevPage(prev.getName());
 
         if (logoutButton != null) {
-            System.out.println("LOGGED IN: " + controller.isLoggedIn());
             logoutButton.setText(controller.isLoggedIn() ? LABEL_LOGOUT : LABEL_LOGIN);
             logoutButton.addActionListener(e -> controller.logout());
         }
@@ -73,4 +75,9 @@ public abstract class Page<T extends PageController> {
     }
 
     protected void registerLogoutButton(@Nonnull JButton logoutButton) { this.logoutButton = logoutButton; }
+
+    void setButtonEnabled(@Nonnull JButton button, boolean enabled) {
+        button.setEnabled(enabled);
+        button.setBackground(enabled ? COLOR_ACCENT : COLOR_SELECTED);
+    }
 }

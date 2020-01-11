@@ -19,11 +19,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.DefaultListModel;
 
 import com.couchbase.travelsample.db.DbManager;
+import com.couchbase.travelsample.db.HotelsDao;
 import com.couchbase.travelsample.model.Hotel;
 import com.couchbase.travelsample.net.TryCb;
 import com.couchbase.travelsample.ui.Nav;
@@ -38,33 +40,43 @@ public final class HotelSearchController extends PageController {
     @Nonnull
     private final TryCb remote;
     @Nonnull
+    private final HotelsDao hotelsDao;
+    @Nonnull
     private final DefaultListModel<Hotel> hotelsModel = new DefaultListModel<>();
 
     private String prevPage;
 
     @Inject
-    public HotelSearchController(@Nonnull Nav nav, @Nonnull DbManager localStore, @Nonnull TryCb remoteStore) {
+    public HotelSearchController(
+        @Nonnull Nav nav,
+        @Nonnull DbManager localStore,
+        @Nonnull TryCb remoteStore,
+        @Nonnull HotelsDao hotelsDao) {
         super(HotelSearchView.PAGE_NAME, nav, localStore);
         this.remote = remoteStore;
+        this.hotelsDao = hotelsDao;
     }
 
     @Nonnull
     public DefaultListModel<Hotel> getHotelModel() { return hotelsModel; }
 
     public void searchHotels(@Nonnull String hotelLocation, @Nonnull String hotelDesc) {
-        remote.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
+        if (localStore.isLoggedIn()) {
+            hotelsDao.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
+        }
+        else {
+            remote.searchHotels(hotelLocation, hotelDesc, this::displayHotels);
+        }
     }
 
-    public void done() {
-        hotelsModel.clear();
-        back();
-    }
+    public void done() { back(); }
 
     @Override
-    protected void onClose() { }
+    protected void onClose() { hotelsModel.clear(); }
 
-    private void displayHotels(@Nonnull List<Hotel> hotels) {
+    private void displayHotels(@Nullable List<Hotel> hotels) {
         hotelsModel.clear();
+        if (hotels == null) { return; }
         for (Hotel hotel : hotels) { hotelsModel.addElement(hotel); }
     }
 }
