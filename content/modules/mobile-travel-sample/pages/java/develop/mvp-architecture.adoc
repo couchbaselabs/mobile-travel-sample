@@ -4,21 +4,20 @@
 
 === The Model-View-Presenter pattern
 
-In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view. 
+In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view. The v
 
 
 image::https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png[]
 
-In the Android Studio project, the code is structured by feature.
-You can select the *Android* option in the left navigator to view the files by package. 
+In the  project, the code is structured by feature.
+In IntelliJ IDEA project navigator, your can view the project structure 
 
 
-image::https://cl.ly/1h080V1V2g2j/left-navigator.png[]
+image::https://cl.ly/1h080V1V2g2j/java-left-navigator.png[]
 
-Each package contains 3 different files: 
 
-* ``Activity``: This is where all the view logic resides. 
-* ``Presenter``: This is where all the business logic resides to fetch and persist data to a web service or the embedded Couchbase Lite database. 
-* ``Contract``: An interface that the `Presenter` and `Activity` implement. 
+* ``view``: This is where all the view logic resides. For example, the `FlightSearchController` is responsible for the view where one searches for flights.
+* ``Presenters``: Despite the name, files labelled as ``Controllers`` are actually ``Presenters``. This is where all the business logic resides to fetch and persist data to a web service or the embedded Couchbase Lite database.  Views know about the Presenters but presenter doesn't know about the view. The view just subscribes to updates to the presenter's model. Views get their presenters via Dependency Injection, as per standard MVP architecture. 
+* ``Model``: The model layer handles the interactions with Couchbase Lite and acts as the DAO layer. 
 
 Throughout this tutorial, we will walkthrough the code in the various presenters to showcase different features of the Couchbase Lite 2.0 API: ``BookmarksPresenter.java``, ``HotelsPresenter.java``, `SearchFlightPresenter.java` and ``BookingsPresenter.java``. 

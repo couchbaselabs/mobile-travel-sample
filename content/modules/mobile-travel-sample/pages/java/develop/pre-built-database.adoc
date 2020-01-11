@@ -14,23 +14,28 @@ We will review the `openUserDb(@Nonnull String username, @Nonnull char[] passwor
 This method first checks if a database file already exists for specific user.
 If it doesn't exist it loads the database from the resources directory, unzips and copies it over to a folder created for ths user.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L199[DbManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L196[DbManager.java]
 
 [source,java]
 ----
 void openUserDb(@Nonnull String username, @Nonnull char[] password)
     throws IOException, CouchbaseLiteException, AuthenticationException, URISyntaxException {
-        final File dbDir = new File(DB_DIR, username);
+    final File dbDir = new File(DB_DIR, username);
 
-        final DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(dbDir.getCanonicalPath());
+    final DatabaseConfiguration config = new DatabaseConfiguration();
+    config.setDirectory(dbDir.getCanonicalPath());
 
-        if (!new File(dbDir, DB_NAME + DB_SUFFIX).exists()) {
-            Database.copy(unzipDb().getCanonicalFile(), DB_NAME, config);
-        }
+    if (!new File(dbDir, DB_NAME + DB_SUFFIX).exists()) {
+        Database.copy(unzipDb().getCanonicalFile(), DB_NAME, config);
+    }
 
-        database = new Database(DB_NAME, config);
-...
+    database = new Database(DB_NAME, config);
+    database.createIndex(
+        FTS_INDEX_DESC,
+        IndexBuilder.fullTextIndex(FullTextIndexItem.property(Hotel.PROP_DESCRIPTION)));
+    LOGGER.log(Level.INFO, "user db: " + config.getDirectory());
+
+    ...
 }
 ----
 

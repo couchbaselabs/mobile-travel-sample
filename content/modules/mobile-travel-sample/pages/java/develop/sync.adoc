@@ -30,7 +30,7 @@ channel("channel." + username);
 
 Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
 
-Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
+Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications have the ability to read and write to the same bucket.
 It is an opt-in feature that can be enabled in the Sync Gateway configuration file.
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/convergence.png[]
@@ -83,16 +83,18 @@ The replication process can be "`continuous`" or "`one shot"`.
 * In "`Continuous`" replication mode, the changes are continually synchronized between the client and Sync Gateway.
 * In "`One shot`" mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication.
 
-Open the file ``DbManager.java``.
-We will review the method ``startReplication(@Nonnull String username, @Nonnull char[] password)``. 
+Open the file ``ReplicatorManager.java``.
+We will review the method ``void start(@Nonnull String username, @Nonnull char[] password)``. 
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L222[DbManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/jmaster/java/TravelSample/src/main/java/com/couchbase/travelsample/db/ReplicatorManager.java#L135[ReplicatorManager.java]
 
 [source,java]
 ----
-private Replicator startReplication(@Nonnull String username, @Nonnull char[] password) {
-  ...
-}
+  @Nonnull
+  void start(@Nonnull String username, @Nonnull char[] password)
+      throws CouchbaseLiteException, IOException, AuthenticationException, URISyntaxException {
+    ...
+  }
 ----
 
 First, you will configure the replication. 
@@ -104,27 +106,35 @@ The `continuous` mode is set to `true` in the Travel app.
 
 [source,java]
 ----
-final ReplicatorConfiguration config
-            = new ReplicatorConfiguration(database, new URLEndpoint(new URI(SGW_ENDPOINT)));  
-config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
-config.setContinuous(true); 
+  final ReplicatorConfiguration config
+      = new ReplicatorConfiguration(database, new URLEndpoint(new URI(SGW_ENDPOINT)));
+
+  // !!! copying the password into the string is unsecure.
+  config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
+
+  config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+  config.setContinuous(true);
 ----
 
 The Replicator is configured with relevant authentication credentials. The list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the xref:tutorials:mobile-travel-sample:{source-language}/develop/security.adoc[Access Control] section
 
 [source,java]
 ----
-config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
+  // !!! copying the password into the string is unsecure.
+  config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
+
 ----
 
 The replicator is configured with a Push filter to prevent the Travel sample documents that's bundled with the app from being pushed up.
 [source,java]
 ----
- config.setPushFilter((document, flags) -> !("hotel".equals(document.getString("type"))
-                || "airline".equals(document.getString("type"))
-                || "airport".equals(document.getString("type"))
-                || "route".equals(document.getString("type"))
-                || "landmark".equals(document.getString("type"))));
+  config.setPushFilter((document, flags) ->
+      !(Hotel.DOC_TYPE.equals(document.getString(DbManager.PROP_DOC_TYPE))
+          || DbManager.DOC_TYPE_AIRLINE.equals(document.getString(DbManager.PROP_DOC_TYPE))
+          || DbManager.DOC_TYPE_AIRPORT.equals(document.getString(DbManager.PROP_DOC_TYPE))
+          || DbManager.DOC_TYPE_ROUTE.equals(document.getString(DbManager.PROP_DOC_TYPE))
+          || DbManager.DOC_TYPE_LANDMARK.equals(document.getString(DbManager.PROP_DOC_TYPE))));
+
 ----
 
 The Replicator is initialized with the specified configuration 
@@ -140,8 +150,8 @@ Every time, there is a push or pull change, the callback is invoked.
 
 [source,java]
 ----
-final ReplicationStartListener listener = new ReplicationStartListener(repl);
-final ListenerToken token = repl.addChangeListener(listener);
+  final ReplicationStartListener listener = new ReplicationStartListener(repl);
+  final ListenerToken token = repl.addChangeListener(listener);
         
 ----
 
@@ -149,7 +159,7 @@ Replication is started
 
 [source,java]
 ----
-repl.start();
+  repl.start();
 
 ----
 

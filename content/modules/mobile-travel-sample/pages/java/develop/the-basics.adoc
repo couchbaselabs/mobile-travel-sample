@@ -4,17 +4,19 @@
 == Initialization
 To get started, you must initialize Couchbase Lite with the relevant application context
 *Open the file* `DatabaseManager.java`.
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L126[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L107[DatabaseManager.java]
 
 [source,java]
 ----
-  public DbManager(@Nonnull DbExecutor exec) {
-      this.exec = exec;
+public DbManager(@Nonnull DbExecutor exec) {
+    this.exec = exec;
 
-      CouchbaseLite.init();
-      Database.log.getConsole().setLevel(LogLevel.DEBUG);
-  }
-  
+    CouchbaseLite.init();
+
+    final ConsoleLogger logger = Database.log.getConsole();
+    logger.setLevel(LogLevel.DEBUG);
+    logger.setDomains(LogDomain.ALL_DOMAINS);
+} 
 ----
 
 == Create a Database
@@ -27,7 +29,7 @@ The snippet below creates an empty database for the `guest` user in a directory 
 *Open the file* `DatabaseManager.java`.
 We will review the `openGuestDb()`  method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L191[DatabaseManager.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/DbManager.java#L187[DatabaseManager.java]
 
 [source,java]
 ----
@@ -40,15 +42,17 @@ We create a folder for the `guest` user database if one does not exist and speci
 
 [source,java]
 ----
-    final DatabaseConfiguration config = new DatabaseConfiguration();
-    config.setDirectory(new File(DB_DIR, GUEST_USER).getCanonicalPath());
+  final DatabaseConfiguration config = new DatabaseConfiguration();
+  config.setDirectory(new File(DB_DIR, GUEST_USER).getCanonicalPath());
+
 ----
 
 The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object.
 
 [source,java]
 ----
-    database = new Database(DB_NAME, config);
+  database = new Database(DB_NAME, config);
+
 ----
 
 === Try it out
@@ -86,13 +90,13 @@ Subsequently, every time a hotel is bookmarked, the process repeats.
 *Open the file* `BookmarkDao.java`.
 You will review the `addBookmarksAsync` method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L100[BookmarkDao.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L104[BookmarkDao.java]
 
 [source,java]
 ----
 @Nullable
-  Void removeBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
-  ...
+    private Void addBookmarksAsync(@Nonnull Set<Hotel> hotels) throws CouchbaseLiteException {
+      ...
 }
 ----
 
@@ -127,12 +131,12 @@ Next you will get the document with ID `user::guest` or create one if it doesn't
 
 This is implemented in the `bookmarkIds` private method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L139[BookmarkDao.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L151[BookmarkDao.java]
 
 [source,java]
 ----
- private void bookmarkIds(Database database, Set<String> ids) throws CouchbaseLiteException {
-  
+private void bookmarkIds(@Nonnull Set<String> ids) throws CouchbaseLiteException {
+ 
   ...
 }
 ----
@@ -167,7 +171,7 @@ Finally, you will save the document.
 
 [source,java]
 ----
-  database.save(guestDoc);
+  db.getDatabase().save(guestDoc);
 ----
 
 === Try it out
@@ -190,7 +194,7 @@ This operation actually creates a new `tombstoned` revision in order to propagat
 *Open the file* `BookmarkDao.java`.
 You will review the `removeBookmarksAsync` method.
 
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L119[BookmarkDao.java]
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L129[BookmarkDao.java]
 
 [source,java]
 ----
@@ -209,21 +213,22 @@ That's what the code below is doing.
 [source,java]
 ----
 
-final Database database = db.getDatabase();
+  final Database database = db.getDatabase();
 
-final Set<String> ids = new HashSet<>();
-for (Hotel hotel : hotels) { ids.add(hotel.getId()); }
+  final Set<String> ids = new HashSet<>();
+  for (Hotel hotel : hotels) { ids.add(hotel.getId()); }
 
-unbookmarkIds(database, ids);
+  unbookmarkIds(ids);
 
-for (String id : ids) {
-  final Document hotelDoc = database.getDocument(id);
-  if (hotelDoc == null) {
-    LOGGER.log(Level.WARNING, "Hotel not found in remove bookmark: " + id);
-    continue;
+  for (String id : ids) {
+      final Document hotelDoc = database.getDocument(id);
+      if (hotelDoc == null) {
+          LOGGER.log(Level.WARNING, "Hotel not found in remove bookmark: " + id);
+          continue;
+      }
+      database.delete(hotelDoc);
   }
-  database.delete(hotelDoc);
-}
+
 ----
 
 In addition to deleting the document of type "hotel" as shown above, the unbookmarking process removes the hotel ID from the `hotels` array in the "bookmarkedhotels" document. 
