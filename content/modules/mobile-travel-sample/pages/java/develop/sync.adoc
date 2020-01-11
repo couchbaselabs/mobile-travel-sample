@@ -176,7 +176,7 @@ Both the "From" and "To" airports and flight dates are already set.
 * Use the "headshot" button (2nd from the right) to  navigate to the list of booked flights
 * Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
 +
-image::https://cl.ly/3r0X2x1M3k37/java-push.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-push.gif[]
 
 === Try it out (Pull Replication)java
 
@@ -195,4 +195,4 @@ image::https://cl.ly/3r0X2x1M3k37/java-push.gif[]
   Log into the Travel Sample Mobile app as “demo” user and password as “password”
 * Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
 +
-image::https://cl.ly/2x1Q1d20303Y/java-pull.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-pull.gif[]

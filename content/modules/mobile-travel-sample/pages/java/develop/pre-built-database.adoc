@@ -46,4 +46,4 @@ void openUserDb(@Nonnull String username, @Nonnull char[] password)
 * In the “From”  airport text field, enter “London”
 * Confirm that you see a list of flights in the drop down menu.
 +
-image::https://cl.ly/3V3h151g0x19/java-prebuilt-db.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-prebuilt-db.gif[]

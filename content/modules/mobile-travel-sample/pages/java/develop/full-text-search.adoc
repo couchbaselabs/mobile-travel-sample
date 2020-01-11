@@ -64,4 +64,4 @@ We build the query using the different expressions from above and parse the `Res
 
 
 
-image::https://cl.ly/192b1z2s3S3t/java-fts.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-fts.gif[]

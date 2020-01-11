@@ -13,7 +13,7 @@ In the  project, the code is structured by feature.
 In IntelliJ IDEA project navigator, your can view the project structure 
 
 
-image::https://cl.ly/1h080V1V2g2j/java-left-navigator.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-left-navigator.png[]
 
 
 * ``view``: This is where all the view logic resides. For example, the `FlightSearchController` is responsible for the view where one searches for flights.

@@ -76,7 +76,7 @@ for (Result result : results.allResults()) {
 * In the "From" airport textfield, enter "Detroit" 
 * Verify that the first item in the drop down list is "Detroit Metro Wayne Co" 
 +
-image::https://cl.ly/0b3q2T2t1R1J/java-simple-query.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-simple-query.gif[]
 
 == Advanced Query
 
@@ -148,4 +148,4 @@ We use the `execute()` method to get the results back
 * Click "DONE" button to bookmark
 * Verify that the Novatel hotel shows up in the list on the "Bookmarks" page
 +
-image::https://cl.ly/3r243s1K2600/java-advanced-query.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-advanced-query.gif[]
