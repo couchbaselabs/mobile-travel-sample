@@ -1,13 +1,16 @@
 package com.couchbase.travelsample.bookmarks;
 
-import com.couchbase.lite.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.couchbase.lite.ArrayFunction;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
-import com.couchbase.lite.Function;
 import com.couchbase.lite.Join;
 import com.couchbase.lite.Meta;
 import com.couchbase.lite.MutableArray;
@@ -17,14 +20,9 @@ import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.QueryChange;
 import com.couchbase.lite.QueryChangeListener;
 import com.couchbase.lite.Result;
-import com.couchbase.lite.ResultSet;
 import com.couchbase.lite.SelectResult;
 import com.couchbase.travelsample.util.DatabaseManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class BookmarksPresenter implements BookmarksContract.UserActionsListener {
 
@@ -60,11 +58,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         query.addChangeListener(new QueryChangeListener() {
             @Override
             public void changed(QueryChange change) {
-                ResultSet rows = change.getResults();
-
                 List<Map<String, Object>> data = new ArrayList<>();
-                Result row = null;
-                while((row = rows.next()) != null) {
+                for (Result row : change.getResults()) {
                     Map<String, Object> properties = new HashMap<>();
                     properties.put("name", row.getDictionary("hotelDS").getString("name"));
                     properties.put("address", row.getDictionary("hotelDS").getString("address"));
@@ -77,7 +72,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
 
         try {
             query.execute();
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
@@ -88,7 +84,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
         Document document = database.getDocument((String) bookmark.get("id"));
         try {
             database.delete(document);
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
 
@@ -102,7 +99,8 @@ public class BookmarksPresenter implements BookmarksContract.UserActionsListener
 
         try {
             database.save(guestDoc);
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }

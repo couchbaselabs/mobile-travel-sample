@@ -175,8 +175,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
         }
 
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        Result row = null;
-        while((row = rows.next()) != null) {
+        for (Result row: rows) {
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("name", row.getDictionary("travel-sample").getString("name"));
             properties.put("address", row.getDictionary("travel-sample").getString("address"));
