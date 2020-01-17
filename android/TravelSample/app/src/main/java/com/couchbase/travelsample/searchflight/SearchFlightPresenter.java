@@ -74,11 +74,8 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
             return;
         }
 
-        Result row;
         List<String> data = new ArrayList<>();
-        while ((row = rows.next()) != null) {
-            data.add(row.getString("airportname"));
-        }
+        for (Result row: rows) data.add(row.getString("airportname"));
         mSearchView.showAirports(data, tag);
     }
 
