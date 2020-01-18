@@ -176,7 +176,7 @@ Both the "From" and "To" airports and flight dates are already set.
 * Use the "headshot" button (2nd from the right) to  navigate to the list of booked flights
 * Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-push.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-push.gif[600,400]
 
 === Try it out (Pull Replication)java
 
@@ -190,9 +190,7 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 * Click on "Find Flights" button 
 * From list of flights, select the first flight listing 
 * Confirm the booking by clicking on the shopping cart icon and then the on "`Book`" button
-* {empty}
-
-  Log into the Travel Sample Mobile app as “demo” user and password as “password”
+* Log into the Travel Sample Mobile app as “demo” user and password as “password”
 * Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-pull.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-pull.gif[600,400]

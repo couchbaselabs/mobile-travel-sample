@@ -7,7 +7,7 @@
 In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view. The v
 
 
-image::https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login-label.png]
 
 In the  project, the code is structured by feature.
 In IntelliJ IDEA project navigator, your can view the project structure 

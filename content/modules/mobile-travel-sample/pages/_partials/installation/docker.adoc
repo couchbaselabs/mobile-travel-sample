@@ -75,7 +75,9 @@ Open a terminal window and run the following command.
 +
 [source,bash]
 ----
-$ docker network ls   $ docker network create -d bridge workshop
+$ docker network ls 
+$ docker network create -d bridge workshop
+
 ----
 * To run the application in a container, you will first get the docker image from Docker Cloud.
 +

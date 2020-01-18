@@ -2,8 +2,9 @@
 :page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
 
 == Pre-requisites
-While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*. All instructions assume this IDE.
-* IntelliJ IDEA 2019 or above https://www.jetbrains.com/idea/download/#section=mac[Jetbrains Developer site]. The *Community* version is sufficient for our purposes.
+While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*. All instructions in the workshop assume this IDE.
+
+* IntelliJ IDEA 2019 or above downloadable from https://www.jetbrains.com/idea/download/#section=mac[Jetbrains Developer site]. The *Community* version is sufficient for our purposes.
 * JDK 8
 
 *Windows Users* : If you are developing on Windows, you must use a Windows 10 machine.
@@ -18,9 +19,9 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 * Open *java/TravelSample/build.gradle* using IntelliJ IDEA.
-* TBD:Build and run the project (preferrably in Debug mode)
+* Build and run the project (preferrably in Debug mode)
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-build.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-build.png[600,400]
 * Verify that the login screen appears in the simulator.
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login.png[,300]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login.png[600,384]
