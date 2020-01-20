@@ -21,7 +21,7 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 * Open *java/TravelSample/build.gradle* using IntelliJ IDEA.
 * Build and run the project (preferrably in Debug mode)
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-build.png[600,400]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-build.png[800,]
 * Verify that the login screen appears in the simulator.
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login.png[600,384]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login.png[800,]

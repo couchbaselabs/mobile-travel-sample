@@ -6,7 +6,7 @@ Before diving into the document schemas, let's take a look again at the mobile a
 When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen: 
 
 
-image::https://cl.ly/1s2L2Q372d2m/android-login.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login-label.png[800,]
 
 
 * **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users. 
