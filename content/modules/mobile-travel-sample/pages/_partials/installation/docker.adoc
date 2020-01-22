@@ -101,7 +101,7 @@ Replace `localhost` in the file with `cb-server` and save.
 [source,bash]
 ----
 cd /path/to/mobile-travel-sample/
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.6.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.7.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ----
 
 **Non-Windows platform**
@@ -109,7 +109,7 @@ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %
 [source,bash]
 ----
 $ cd c:\path\to\mobile-travel-sample\
-$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.6.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.7.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ----
 
 * You can view the logs at any time by running the following command.
@@ -132,7 +132,7 @@ $ docker ps
 +
 [source,json]
 ----
-{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.6"},"version":"Couchbase Sync Gateway/2.6.0(271;bf3ddf6) EE"}
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}
 ----
 
 == Python Backend
