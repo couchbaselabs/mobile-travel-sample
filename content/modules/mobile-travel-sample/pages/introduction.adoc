@@ -3,7 +3,7 @@
 
 == Application Features
 
-We will do a code walkthrough of a sample Travel application for mobile platforms using Couchbase Mobile 2.x.
+This is a walkthrough of a Travel application for mobile platforms using Couchbase Mobile 2.x.
 The app will allow users to search for and to make flight reservations.
 Users will also be able to search for hotels based on specific criteria.
 The mobile app will use the Couchbase Lite 2.x SQL based query API with support for Full Text Search (FTS).

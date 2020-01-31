@@ -37,13 +37,13 @@ Open a new terminal window and run the following.
 +
 [source,bash]
 ----
-$ docker pull connectsv/server:6.0.1-enterprise
+$ docker pull couchbase/server-sandbox:6.5.0
 ----
 * Once the command has completed you can start the application with the following.
 +
 [source,bash]
 ----
-$ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 connectsv/server:6.0.1-enterprise
+$ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-sandbox:6.5.0
 ----
 * You can view the logs at any time by running the following command.
 +
@@ -83,7 +83,7 @@ $ docker network create -d bridge workshop
 +
 [source,bash]
 ----
-$ docker pull couchbase/sync-gateway:2.6.0-enterprise
+$ docker pull couchbase/sync-gateway:2.7.0-enterprise
 ----
 * The Sync Gateway will be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/tutorials/travel-sample/develop/swift#/0/1/0[Travel Mobile App install]. The config file is located in ``/path/to/mobile-travel-sample``.
 * Open the `sync-gateway-config-travelsample.json` file
