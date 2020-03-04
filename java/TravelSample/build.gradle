@@ -47,7 +47,7 @@ repositories {
     maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
     maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
     maven { url 'https://mobile.maven.couchbase.com/maven2/dev/' }
-    //maven { url 'http://172.23.121.218/maven2/internalmaven' }
+    //maven { url 'http://mobile.maven.couchbase.com/maven2/internalmaven' }
 }
 
 dependencies {
