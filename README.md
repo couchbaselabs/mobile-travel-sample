@@ -1,5 +1,7 @@
 The complete tutorial for this sample app is available at https://docs.couchbase.com/tutorials/mobile-travel-sample/introduction.html. Please follow the tutorial for step-by-step installation instructions
 
+*NOTE* : This version of the tutorial uses [version 1.0](https://github.com/couchbaselabs/try-cb-python/tree/5.0) of Travel Sample Python web backend 
+
 ## Overview
 This is a sample Travel application for mobile platforms that demonstrates the capabilities of the  Couchbase Mobile 2.0 data platform. The simple app will allow users to search for and make flight reservations and will also allow searches for hotels based on specific criteria. In addition, the mobile app is bundled with a pre-built Database for holding semi-static data.
 
