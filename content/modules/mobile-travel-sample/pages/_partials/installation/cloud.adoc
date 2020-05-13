@@ -10,9 +10,30 @@ At the end of this section, the following components will be launched on the clo
 * Sync Gateway
 * Travel Web Application
 
-NOTE: This instance will be available for you to use for the duration of the workshop.
+NOTE: This instance will be available for you to use for the duration of the in-classroom workshop.
 The instance will automatically be terminated after the workshop.
 Every user will have their own sand boxed instance.
+
+=== Try it out
+
+* Verify git installation
+** Run the following command from your terminal.
++
+[source,bash]
+----
+bash git --version
+----
+You should see the version of git installed.
+
+== Workshop Repo
+* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
++
+[source,bash]
+----
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+
+== Launching Cloud Instance 
 
 * Access https://selfservice-4.rightscale.com/catalog on your browser.
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.

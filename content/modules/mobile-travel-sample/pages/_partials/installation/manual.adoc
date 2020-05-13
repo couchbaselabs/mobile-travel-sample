@@ -1,19 +1,21 @@
 = Manual
 
 == Pre-requisites
+*Windows Users* : If you are developing on Windows, use a Windows 10 machine.
+Also, note that you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
 * Visual C++ 2017 (*only Windows Users*): must install the Microsoft Visual C++ Compiler for Python Downloadable from https://www.microsoft.com/en-us/download/details.aspx?id=44266[here].
-* Python 2.7+: downloadable from https://www.python.org/downloads/[python.org].
+* Python 3.4+: downloadable from https://www.python.org/downloads/[python.org]. This should come packaged with pip3
 +
 *Windows Users* : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable.
 You can follow instructions https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here] to set your PATH variable.
 * Git: downloadable from https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[git-scm.org].
 
-*Windows Users* : If you are developing on Windows, use a Windows 10 machine.
-Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
 
 === Try it out
 
-* Verify the python installation (applicable only if you decided to use the Manual install option).
+* Verify the python installation 
 ** Run the following command from your terminal.
 +
 [source,bash]
@@ -21,6 +23,15 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 bash python --version
 ----
 You should see the version of python displayed.
+
+** Confirm that pip3 is installed. pip is package management software for Python.
++
+[source,bash]
+----
+pip3
+----
+You should see the command line options.
+
 * Verify git installation
 ** Run the following command from your terminal.
 +
@@ -30,11 +41,19 @@ bash git --version
 ----
 You should see the version of git installed.
 
+== Workshop Repo
+* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
++
+[source,bash]
+----
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+
 == Couchbase Server
 
-In this lesson, you will install and launch version 6.0.1 of Couchbase Server. You can download a later version of 6.x of Couchbase server if it is available.
+In this lesson, you will install and launch version the 6.5.x version of Couchbase Server. If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the 6.5.x version. Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
 
-* https://www.couchbase.com/downloads#couchbase-server[Download and install] V6.0.1 of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
+* https://www.couchbase.com/downloads#couchbase-server[Download and install] v6.5.x of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
@@ -63,10 +82,10 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 == Sync Gateway
 
-In this section, you will install and launch version 2.7 of Sync Gateway.
+In this section, you will install and launch version 2.7.x of Sync Gateway.
 
-* Install Sync Gateway 2.7 from https://www.couchbase.com/downloads[here] on your platform of choice
-* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/develop/swift#/0/1/0[Travel Mobile App install]. The config file will be located in ``/path/to/mobile-travel-sample``.
+* Download Sync Gateway 2.7.x from https://www.couchbase.com/downloads[here] for your platform
+* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section. The config file will be located in ``/path/to/mobile-travel-sample``.
 * Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
 +
 [source,json]
@@ -87,8 +106,7 @@ $ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.
 +
 By default, the Sync Gateway service will install with _serviceconfig.json_ as the configuration file at *C:\Program%20Files\Couchbase\Sync%20Gateway\serviceconfig.json*.
 +
-The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the link:/develop/csharp#/0/1/0[Travel Mobile App
-    install].
+The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section. 
 The config file will be located in ``C:/path/to/mobile-travel-sample``.
 +
 Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket.
@@ -99,8 +117,8 @@ Open the sync-gateway-config-travelsample.json and confirm that the RBAC user cr
 "password": "password",
 ----
 +
-* Stop the Sync Gateway service (since it was launched with the default version of config file). To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
-* Replace the _serviceconfig.json_ file located at C:FilesGateway with the sync-gateway-config-travelsample.json that you downloaded.
+* Stop the Sync Gateway service (since it would be launched with the default version of config file). To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+* Replace the _serviceconfig.json_ file with the `sync-gateway-config-travelsample.json` 
 +
 [source,bash]
 ----
@@ -113,7 +131,7 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 * Access this URL `http://127.0.0.1:4984` in your browser
 * Verify that you get JSON response _similar_ to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}`
 
-== Python Backend
+== Python Travel Sample Web App
 
 We will use the Python version of the xref:python-sdk::sample-app-backend.adoc[Travel Sample].
 
@@ -122,16 +140,12 @@ We will use the Python version of the xref:python-sdk::sample-app-backend.adoc[T
 * The instructions in this section are for Windows users.
 Scroll to "Other Platforms" section for instructions for other platforms.
 +
-Install the Couchbase Python SDK Installer.
-This can be downloaded from https://pypi.org/project/couchbase/#files[Pypi] website.
-Scroll to the section which lists the relevant installers and select the installer corresponding to appropriate version of Python that you have installed on your machine.
-+
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/win_py_installer.png[]
-* Clone the 5.0 branch of Travel Sample web app repo
+
+* Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
 +
 [source,bash]
 ----
-$ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+$ git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
 ----
 * Verify the pip installation.
 If you are developing on Windows, *pip.exe* will be found in the "Scripts" sub directory under the Python installation directory.
@@ -142,14 +156,14 @@ You should see the help menu.
 +
 [source,bash]
 ----
-pip
+pip3
 ----
-* The application uses several Python libraries that need to be installed, these are listed in *requirements.txt* and can be automatically loaded using the pip command.
+* The application uses several Python libraries that need to be installed, these are listed in *requirements.txt* and can be automatically loaded using the pip3 command.
 +
 [source,bash]
 ----
 cd c:\path\to\try-cb-python
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ----
 * Update *travel.py* to reflect the username and password that you have used when installing Couchbase Server.
 This defaults to "Administrator" and "password".
@@ -164,7 +178,7 @@ PASSWORD = 'password'
 [source,bash]
 ----
 $ python travel.py
-$ Running on http://localhost:8080/ (Press CTRL+C to quit)
+$ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 ----
 +
 You may see an alert similar to one below requesting access to run the app.
@@ -172,13 +186,11 @@ Make sure you select the "Allow access" option. image:https://raw.githubusercont
 
 *Other Platforms*
 
-* *PREREQUISITE* : First, install *libcouchbase* Core C SDK used by the Python SDK.
-* Follow instructions https://developer.couchbase.com/server/other-products/release-notes-archives/c-sdk[here] to install libcouchbase on your platform of choice.
-* Clone the 5.0 branch of the Travel Sample web app repo.
+* Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
 +
 [source,bash]
 ----
-$ git clone -b 5.0 https://github.com/couchbaselabs/try-cb-python.git
+$ git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
 $ cd try-cb-python
 ----
 * We will run the Travel Web App in a Python https://virtualenv.pypa.io/en/stable/[virtual environment].
@@ -207,7 +219,7 @@ $ virtualenv .
 $ source bin/activate
 (try-cb-python) $
 ----
-* The application uses several Python libraries that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
+* The application uses several dependencies that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
 +
 [source,bash]
 ----
@@ -226,10 +238,10 @@ PASSWORD = 'password'
 [source,bash]
 ----
 $ python travel.py
-$ Running on http://localhost:8080/ (Press CTRL+C to quit)
+$ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 ----
 
 *Try it out*
 
-* Open http://localhost:8080/ in your web browser
-* Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
+* Open http://127.0.0.1:8080/ in your web browser
+* Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login-2.png[]
