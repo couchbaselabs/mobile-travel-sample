@@ -26,7 +26,7 @@ It includes the `sync function` which is a JavaScript function whose source code
 channel("channel." + username);
 ----
 
-== XAttrs
+== Shared Bucket Access
 
 Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
 
@@ -38,7 +38,7 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 Prior to 1.5, sync metadata used by the Sync Gateway for replication with mobile clients was included within the documents as part of the `_sync` property.
 In 1.5, the sync metadata is moved into the Extended Attributes or XAttrs associated with the document.
 
-This can be enabled through a configuration setting in the sync gateway config file.
+The capability can be enabled through a configuration setting in the sync gateway config file. It is to be noted that if you are using Enterprise Edition of Sync Gateway 2.7, then the "import_docs" flag is optional. Every node with "enable_shared_bucket_access" set to "true" will automatically import document mutations from the server bucket.
 
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json
 
@@ -48,7 +48,7 @@ Open the sync-gateway-config-travelsample.json file located at https://github.co
 "enable_shared_bucket_access": true
 ----
 
-You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway.
+You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway by defining an import filter function.
 In our demo, we will only be synchornizing the "user" document.
 So every other document type is ignored. 
 
@@ -74,7 +74,7 @@ Replication is the process by which clients running Couchbase Lite synchronize d
 * Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database.
 * Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database.
 
-Couchbase Mobile 2.0 introduces a brand new replication protocol which is implemented as a messaging protocol layered over WebSocket.
+Couchbase Mobile 2.x replication protocol is implemented as a messaging protocol layered over WebSocket.
 
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/replication-2-0.png[]
 
