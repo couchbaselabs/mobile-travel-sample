@@ -1,15 +1,16 @@
 = Security
 :source-language: swift
 
-== User Management
+== User Creation
 
 User is created via the Travel sample web app.
-When a user is created, a corresponding user profile document is created on Couchbase Server.
+When a user is created, a corresponding user profile document is created on Couchbase Server associated with the user. In addition, the web app automatically registers the user with the Sync Gateway via the Sync Gateway [user admin REST endpoint](https://docs.couchbase.com/sync-gateway/2.7/admin-rest-api.html#/user/post__db___user_). 
+NOTE: The Sync Gateway user corresponds to users who are authenticated to replicate with the Sync Gateway and are different from the RBAC users created on Couchbase Server.
 
 === Try it out (Web App)
 
 * Access the Travel Web App URL in the browser. This URL would be http://localhost:8080 if you installed the web app manually or via docker container. If you used the Cloud install, please access the cloud instance of the web app. 
-* Create a new user by entering "demo" as the username and "password" for the password. Make sure the "create new user" checkbox is selected. 
+* Create a new user by entering "demo" as the username and "password" for the password. Click on the "Register"  button
 * You should be logged into the web app. There should be nothing created for the user.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/web_user_signup.gif[]
@@ -18,11 +19,14 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 * Access the Couchbase Server URL in the browser. This URL would be http://localhost:8091 if you installed the server manually or via docker container. If you used the Cloud install, please access the cloud instance of the server. 
 * Log in with Administrator credentials that you set up during the installation of Couchbase Server. 
-* In the search box, enter "user::demo". 
+* Choose "Buckets" in the Navigation pane on the left.
+* In the box labelled "Document ID", enter "user::demo" (note: there are two colons).
 * You should see the user document that was created when you signed up via the web app. 
 * Confirm that the "username" that you see is "demo"
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/cb_user_auth.gif[]
+
+* Now look for a document with Id "_sync:user:demo". This is the document that is created by the Sync Gateway when you register the user
 
 == Access Control
 
@@ -42,14 +46,12 @@ The Sync Gateway configuration file determines the runtime behavior of Sync Gate
 
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json. 
 
-The `users` section defines the hardcoded list of users who are granted access. It includes the "demo" user that we created via the Travel Web App in the "User Management" section. A "tester" and "admin" user is also configured. Note that in a real world app, when a user registers via the web app, the web app would use the Sync Gateway REST API to dynamically create the user.
+The `users` section defines the hardcoded list of sync gateway users who are granted access to replicate with the Sync Gateway. Hardcoding list of users is an alternative to creating Sync Gateway users dynamically as discussed in the <<User Creation>> section.  In the config file, we have a hardcoded user named "admin" with password of "password" that is granted access to the "*" channel .
 
 [source,javascript]
 ----
 "users": {
-  "admin": {"password": "password", "admin_channels": ["*"]},
-  "demo": {"password": "password"},
-  "tester": {"password": "password"}
+  "admin": {"password": "password", "admin_channels": ["*"]}
 }
 ----
 
