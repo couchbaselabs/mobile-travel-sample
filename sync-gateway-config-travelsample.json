@@ -53,7 +53,7 @@
       "username": "admin",
       "password": "password",
       "users":{
-          "admin": {"password": "password", "admin_channels": ["*"]}}
+          "admin": {"password": "password", "admin_channels": ["*"]}
       },
      "num_index_replicas":0,
 
