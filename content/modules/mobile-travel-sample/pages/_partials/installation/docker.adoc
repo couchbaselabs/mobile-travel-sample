@@ -114,7 +114,7 @@ Replace `localhost` in the file with `cb-server` and save.
 +
 [source,json]
 ----
-"server": "http://cb-server:8091"
+"server": "couchbase://cb-server"
 ----
 * Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file.
 

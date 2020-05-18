@@ -32,7 +32,7 @@
     "travel-sample": {
       "import_docs": true,
       "bucket":"travel-sample",
-      "server": "http://cb-server:8091",
+      "server": "couchbase://localhost",
       "enable_shared_bucket_access":true,
       "delta_sync": {
         "enabled": true
