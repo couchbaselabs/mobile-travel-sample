@@ -8,7 +8,7 @@ At the end of this section, the following components will be launched on the clo
 
 * Couchbase Server
 * Sync Gateway
-* Travel Web Application
+* Travel Web Python Application (with web frontend)
 
 NOTE: This instance will be available for you to use for the duration of the in-classroom workshop.
 The instance will automatically be terminated after the workshop.
