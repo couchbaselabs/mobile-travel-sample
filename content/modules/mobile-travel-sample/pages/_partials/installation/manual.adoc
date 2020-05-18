@@ -131,15 +131,12 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 * Access this URL `http://127.0.0.1:4984` in your browser
 * Verify that you get JSON response _similar_ to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}`
 
-== Python Travel Sample Web App
-
-We will use the Python version of the xref:python-sdk::sample-app-backend.adoc[Travel Sample].
+== Python Travel Sample Web Backend
 
 *Windows Users*
 
 * The instructions in this section are for Windows users.
 Scroll to "Other Platforms" section for instructions for other platforms.
-+
 
 * Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
 +
