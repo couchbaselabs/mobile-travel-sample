@@ -241,4 +241,4 @@ $ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 *Try it out*
 
 * Open http://127.0.0.1:8080/ in your web browser
-* Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login-2.png[]
+* Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
