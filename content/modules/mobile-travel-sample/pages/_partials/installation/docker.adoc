@@ -193,4 +193,4 @@ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 * Open http://127.0.0.1:8080/ in your web browser.
 * Verify that you see the login screen of the Travel Sample Web App as shown below
 +
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login-2.png[]
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]

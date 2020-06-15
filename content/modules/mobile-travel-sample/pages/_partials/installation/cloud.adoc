@@ -97,10 +97,12 @@ let kRemoteSyncUrl = "ws://54.148.83.39::4984"
 +
 [source,bash]
 ----
-{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.5"},"version":"Couchbase Sync Gateway/2.5.0(271;bf3ddf6) EE"}
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}
 ----
 
 == Try it out (Travel App)
 
 * Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
-* Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]
+* Verify that you see the login screen of the Travel Sample Web App as shown below
++
+image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
