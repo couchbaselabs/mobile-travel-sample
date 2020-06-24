@@ -3,17 +3,17 @@
 
 == Application Features
 
-This is a step-by-step tutorial describing a Travel application for mobile platforms that supports the following capabilities
+This is a step-by-step tutorial describing a Travel application for mobile platforms that supports the following capabilities:
 
 *  Users can search and make flight reservations via the Couchbase Lite enabled mobile/desktop applications or through the Python web application. 
-** Flight reservations made  on the Couchbase Lite enabled mobile and desktop apps are available even when the app is disconnected from the server. 
-*  Flight reservations made via any of the client apps will be automatically synced over to the remaining clients through the Sync Gateway
-*  Users will also be able to do a Full text Search for hotels via Couchbase Lite enabled mobile/desktop applications or through the Python web application
+** Flight reservations made on the Couchbase Lite enabled mobile and desktop apps are available even when the app is disconnected from the server. 
+*  Flight reservations made via any of the client apps will be automatically synced over to the remaining clients through the Sync Gateway.
+*  Users will also be able to do a Full Text Search for hotels via Couchbase Lite enabled mobile/desktop applications or through the Python web application.
 
-In addition, the Couchbase Lite enabled mobile/desktop applications mobile/desktop apps support the following functionality -
+In addition, the Couchbase Lite enabled mobile/desktop applications support the following functionality:
 
 * Users can fetch listing of hotels from the Python web backend via a REST endpoint. 
-* Users can bookmark (and unbookmark) the hotels
+* Users can bookmark (and unbookmark) the hotels.
 * Bookmarked hotels stored locally and available even when the app is disconnected from the server.
 
 == Architecture Diagram
@@ -25,10 +25,10 @@ image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/maste
 It includes the following components:
 
 * Client Side
-** Couchbase Lite enabled Travel app running on mobile device or desktop. 
+** Couchbase Lite enabled Travel app running on mobile device or desktop 
 ***  Supports iOS, Android, UWP, Xamarin (iOS and Android) and Java Swing App
 
-* Backend/  Server Side
+* Backend/Server Side
 ** Couchbase Server Enterprise v6.5.x
 ** Sync Gateway Enterprise v2.7.x
-** Travel web app. The travel sample web app includes a Python based web backend integrated with Couchbase Python SDK 3.0.x as well as a vue.js based web frontend
+** Travel web app: the Travel Sample web app includes a Python based web backend integrated with Couchbase Python SDK 3.0.x as well as a vue.js based web frontend
