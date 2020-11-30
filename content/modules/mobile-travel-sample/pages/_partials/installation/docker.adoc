@@ -1,6 +1,6 @@
 = Docker (Local)
 
-== Pre-requisites
+== Prerequisites
 *Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
 Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
 
@@ -36,14 +36,16 @@ bash git --version
 ----
 You should see the version of git installed.
 
+[#repository]
 == Workshop Repo
-* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
+* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
 +
 [source,bash]
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 
+[#svr-local-dock]
 == Couchbase Server
 
 * Create a local docker network named "workshop" if one does not exist already.
@@ -87,17 +89,18 @@ $ docker ps
 * Select the "Buckets" option from the menu on the left
 * Verify that you have around 31,000 documents in your travel-sample bucket
 
+[#sgw-local-dock]
 == Sync Gateway
 
 _NOTE_ : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well.
-If not, please follow instructions link:/tutorials/travel-sample/develop/swift#/0/2/1[here] to install the server container.
+If not, please follow the instructions in <<svr-local-dock,Couchbase Server (above)>> to install the server container.
 
 * Create a local docker network named "workshop" if one does not exist already.
 Open a terminal window and run the following command.
 +
 [source,bash]
 ----
-$ docker network ls 
+$ docker network ls
 $ docker network create -d bridge workshop
 
 ----
@@ -107,7 +110,7 @@ $ docker network create -d bridge workshop
 ----
 $ docker pull couchbase/sync-gateway:2.7.3-enterprise
 ----
-* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the <<Workshop Repo>> step. The config file is located in ``/path/to/mobile-travel-sample``.
+* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the <<repository,Workshop Repo>> step. The config file is located in ``/path/to/mobile-travel-sample``.
 * Open the `sync-gateway-config-travelsample.json` file
 * For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
 Replace `localhost` in the file with `cb-server` and save.
@@ -160,7 +163,7 @@ $ docker ps
 == Python Travel Sample Web Backend
 
 _NOTE_ : If you are running the Web App in a docker container, please make sure that you have the Couchbase Server and Sync Gateway running in the same docker network as well.
-If not, please follow instructions in the <<Couchbase Server>> section to install the server container using docker and instructions in the <<Sync Gateway>> section to install sync gateway container.
+If not, please follow instructions in the <<svr-local-dock,Couchbase Server>> section to install the server container using docker and instructions in the <<sgw-local-dock,Sync Gateway>> section to install sync gateway container.
 
 * Create a local docker network named "workshop" if one does not exist already. Open a terminal window and run the following command.
 +
