@@ -54,10 +54,10 @@ Docker
 public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
 ----
 --
-Cloud::
+Cloud
 +
 --
-[source,swift]
+[source,java]
 ----
 // Replace the hostname with the IP Address of the RightScale instance.
 // The example states `54.148.83.39` but yours will be different.
@@ -70,15 +70,10 @@ public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
 
 Next, you will update the Sync Gateway endpoint.
 
-*Open the file* ``DatabaseManager.java``.
+*Open the file* `DatabaseManager.java`.
 You must update the `mSyncGatewayEndpoint` constant.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
-
-[source,java]
-----
-   public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
-----
 
 +
 [{tabs}]
@@ -99,7 +94,7 @@ Docker
     public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
-Cloud::
+Cloud
 +
 --
 [source,java]
