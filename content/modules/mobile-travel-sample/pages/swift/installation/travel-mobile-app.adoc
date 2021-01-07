@@ -112,7 +112,7 @@ Docker
 static var webUrl:String = "http://127.0.0.1:8080/"
 ----
 --
-Cloud::
+Cloud
 +
 --
 [source,swift]
@@ -132,10 +132,6 @@ Next, you will update the Sync Gateway endpoint.
 You must update the `kRemoteSyncUrl` constant.
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-[source]
-----
-let kRemoteSyncUrl = "ws://54.148.83.39::4984"
-----
 +
 [{tabs}]
 ====
@@ -155,7 +151,7 @@ Docker
 let kRemoteSyncUrl = "ws://127.0.0.1:4984"
 ----
 --
-Cloud::
+Cloud
 +
 --
 [source,swift]
