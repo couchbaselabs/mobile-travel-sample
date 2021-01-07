@@ -44,7 +44,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:3.14.4'
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.7.0'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.8.1'
 
     testImplementation 'junit:junit:4.12'
 
