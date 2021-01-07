@@ -20,10 +20,100 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
+
 * Open *android/TravelSample/build.gradle* using Android Studio.
-* Build and run the project.
+
+
+== Configure App to connect to Backend
+You will have to update the URLs specified in the app to connect to the backend
+If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
+
+=== Updating the web backend URL
+
+*Open the file* `DatabaseManager.java`.
+You must update the `mPythonWebServerEndpoint` constant which points to the Python Web Server.
+
+Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
+
++
+[{tabs}]
+====
+Manual
++
+--
+[source,java]
+----
+public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
+----
+--
+Docker
++
+--
+[source,java]
+----
+public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
+----
+--
+Cloud::
++
+--
+[source,swift]
+----
+// Replace the hostname with the IP Address of the RightScale instance.
+// The example states `54.148.83.39` but yours will be different.
+public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
+----
+====
+
+
+=== Updating the Sync Gateway URL
+
+Next, you will update the Sync Gateway endpoint.
+
+*Open the file* ``DatabaseManager.java``.
+You must update the `mSyncGatewayEndpoint` constant.
+
+Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
+
+[source,java]
+----
+   public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+----
+
++
+[{tabs}]
+====
+Manual
++
+--
+[source,java]
+----
+    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+----
+--
+Docker
++
+--
+[source,java]
+----
+    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+----
+--
+Cloud::
++
+--
+[source,java]
+----
+// Replace the hostname with the IP Address of the RightScale instance.
+// The example states `54.148.83.39` but yours will be different.
+public static String mSyncGatewayEndpoint = "ws://54.148.83.39:4984/travel-sample";
+----
+====
+
+== Try it Out
+* Build and run the project using Android emulator.
 +
 image::https://cl.ly/1r0T100T0c22/as-build.png[]
-* Verify that the login screen appears in the simulator.
+* Verify that the login screen appears in the emuator.
 +
 image::https://cl.ly/0T0G2S083g41/as-login.png[,300]
