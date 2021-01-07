@@ -78,6 +78,7 @@ sh install_10_1.sh
 --
 ====
 
+* Open the `TravelSample.xcodeproj` using Xcode
 
 == Configure App to connect to Backend
 You will have to update the URLs specified in the app to connect to the backend
@@ -87,8 +88,6 @@ If you haven't done so already, complete the steps outlined in the "Backend Inst
 
 *Open the file* ``QueryConsts.swift``.
 You must update the `webUrl` constant which points to the Python Web Server.
-Replace the hostname with the IP Address of the Rightscale instance.
-In the example above that would be `54.148.83.39` but yours will be different.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift[QueryConsts.swift]
 
@@ -131,18 +130,12 @@ Next, you will update the Sync Gateway endpoint.
 
 *Open the file* ``DatabaseManager.swift``.
 You must update the `kRemoteSyncUrl` constant.
-Replace the hostname with the IP Address of the RightScale instance.
-In the example above that would be `54.148.83.39` but yours will be different.
-
-In *DatabaseManager.swift*, update the localhost to be the IP Address of the Sync Gateway.
-In my example (from screenshot above), that would be 54.148.83.39.
+Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
 [source]
 ----
 let kRemoteSyncUrl = "ws://54.148.83.39::4984"
 ----
-ow, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
-
 +
 [{tabs}]
 ====
@@ -174,6 +167,5 @@ let kRemoteSyncUrl = "ws://54.148.83.39:4984"
 ====
 
 == Try it Out
-* Open the `TravelSample.xcodeproj` using Xcode
 * Build and run the project using simulator
 * Verify that the login screen appears in the simulator 
