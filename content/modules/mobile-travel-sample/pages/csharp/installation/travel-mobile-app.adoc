@@ -17,14 +17,97 @@ Also, note that if you choose Manual or docker installation mode, you should als
 
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
-* Confirm that the _TravelSample.core_ project is linked with version 2.5 of _Couchbase.Lite_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite Core framework under the "installed" section of the nuget package manager . -image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_lite_core.png[]
-* Confirm that the _TravelSample.UWP_ project is linked with version 2.5 of _Couchbase.Lite_ and _Couchbase.Lite.Support.UWP_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite core framework and Couchbase.Lite.Support.* support framework under the "installed" section of the nuget package manager. 
+* Confirm that the _TravelSample.core_ project is linked with latest version of _Couchbase.Lite_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite Core framework under the "installed" section of the nuget package manager . -image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_lite_core.png[]
+* Confirm that the _TravelSample.UWP_ project is linked with latest version of _Couchbase.Lite_ and _Couchbase.Lite.Support.UWP_ framework. You should see equivalent of screenshot below with the latest version of Couchbase.Lite core framework and Couchbase.Lite.Support.* support framework under the "installed" section of the nuget package manager. 
 * If you were building for Xamarin, verify that the right version of _Couchbase.Lite_ core framework and _Couchbase.Lite.Support.Android_ / _Couchbase.Lite.Support.iOS_ support framework is linked with the appropriate TravelSample.Android or TravelSample.iOS project respectively. -image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/nuget_uwp.png[]
 
 
 [[_try_it_out]]
-=== Try it out
+
 
 * Open the `TravelSample.sln` using Visual Studio 
+
+== Configure App to connect to Backend
+You will have to update the URLs specified in the app to connect to the backend
+If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
+
+=== Updating the web backend URL
+
+*Open the file* `Constants.cs` under "Util" folder
+You must update the `ServerBackendUrl` constant which points to the Python Web Server.
+
+Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
+
++
+[{tabs}]
+====
+Manual
++
+--
+[source,csharp]
+----
+public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
+----
+--
+Docker
++
+--
+[source,csharp]
+----
+public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
+----
+--
+Cloud
++
+--
+[source,csharp]
+----
+// Replace the hostname with the IP Address of the RightScale instance.
+// The example states `54.148.83.39` but yours will be different.
+public static readonly Uri ServerBackendUrl = new Uri("http://54.148.83.39:8080/api/");
+----
+====
+
+
+=== Updating the Sync Gateway URL
+
+Next, you will update the Sync Gateway endpoint.
+
+*Open the file* `LoginModel.cs` under "Models" folder
+You must update the `SyncUrl` constant.
+
+Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
+
++
+[{tabs}]
+====
+Manual
++
+--
+[source,java]
+----
+    private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
+----
+--
+Docker
++
+--
+[source,java]
+----
+    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+----
+--
+Cloud
++
+--
+[source,java]
+----
+// Replace the hostname with the IP Address of the RightScale instance.
+// The example states `54.148.83.39` but yours will be different.
+private static readonly Uri SyncUrl = new Uri("ws://54.148.83.39:4984:4984");
+----
+====
+=== Try it out
+
 * Build and run the project on your platform of choice (UWP, Xamarin iOS or Xamarin Android) 
 * Verify that the login screen appears. The screenshot below is from a UWP App. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_login.png[]
