@@ -55,33 +55,6 @@ image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/maste
 
 Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
 
-*Open the file* ``QueryConsts.swift``.
-You must update the `webUrl` constant which points to the Python Web Server.
-Replace the hostname with the IP Address of the Rightscale instance.
-In the example above that would be `54.148.83.39` but yours will be different.
-
-https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift[QueryConsts.swift]
-
-[source]
-----
-static var webUrl:String = "http://34.217.88.96:8080"
-----
-
-Next, you will update the Sync Gateway endpoint.
-
-*Open the file* ``DatabaseManager.swift``.
-You must update the `kRemoteSyncUrl` constant.
-Replace the hostname with the IP Address of the RightScale instance.
-In the example above that would be `54.148.83.39` but yours will be different.
-
-In *DatabaseManager.swift*, update the localhost to be the IP Address of the Sync Gateway.
-In my example (from screenshot above), that would be 54.148.83.39.
-
-[source]
-----
-let kRemoteSyncUrl = "ws://54.148.83.39::4984"
-----
-
 == Try it out (Couchbase Server)
 
 * Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
