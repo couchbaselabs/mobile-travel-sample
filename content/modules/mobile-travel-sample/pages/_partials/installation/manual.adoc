@@ -56,7 +56,7 @@ In this lesson, you will install and launch version the 6.5.x version of Couchba
 * https://www.couchbase.com/downloads#couchbase-server[Download and install] v6.5.x of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
+:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
 * As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
 +
 image::https://cl.ly/1o3H0t3f0d1n/cbs-services.png[,500]
@@ -64,12 +64,12 @@ image::https://cl.ly/1o3H0t3f0d1n/cbs-services.png[,500]
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/sample_bucket.png[,500]
 * Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket. +
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_rbac.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_rbac.png[,500]
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/RBAC_user.png[,500]
 * Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
 +
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_fts.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_fts.png[,500]
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/fts.png[]
 
@@ -243,4 +243,4 @@ $ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 * Open http://127.0.0.1:8080/ in your web browser
 * Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
 +
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
