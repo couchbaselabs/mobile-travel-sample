@@ -1,5 +1,6 @@
 = Travel Mobile App
 :page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
+:tabs:
 
 == Pre-requisites
 While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*. All instructions in the workshop assume this IDE.

@@ -1,4 +1,5 @@
 = Travel Mobile App
+:tabs:
 
 == Pre-requisites
 

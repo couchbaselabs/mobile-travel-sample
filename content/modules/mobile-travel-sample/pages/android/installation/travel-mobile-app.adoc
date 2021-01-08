@@ -1,5 +1,6 @@
 = Travel Mobile App
 :page-aliases: tutorials:travel-sample:develop/android,tutorials:travel-sample:develop/android/index
+:tabs:
 
 == Pre-requisites
 
