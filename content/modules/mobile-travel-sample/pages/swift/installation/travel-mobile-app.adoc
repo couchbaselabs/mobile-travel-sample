@@ -82,6 +82,7 @@ sh install_10_1.sh
 * Open the `TravelSample.xcodeproj` using Xcode
 
 == Configure App to connect to Backend
+
 You will have to update the URLs specified in the app to connect to the backend
 If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
 
@@ -94,10 +95,9 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSamp
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,swift]
@@ -105,7 +105,8 @@ Manual
 static var webUrl:String = "http://localhost:8080"
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,swift]
@@ -113,7 +114,8 @@ Docker
 static var webUrl:String = "http://127.0.0.1:8080/"
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,swift]
@@ -122,6 +124,7 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 static var webUrl:String = "http://54.148.83.39:8080/"
 ----
+--
 ====
 
 
@@ -133,10 +136,9 @@ Next, you will update the Sync Gateway endpoint.
 You must update the `kRemoteSyncUrl` constant.
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,swift]
@@ -144,7 +146,8 @@ Manual
 let kRemoteSyncUrl = "ws://localhost:4984"
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,swift]
@@ -152,7 +155,8 @@ Docker
 let kRemoteSyncUrl = "ws://127.0.0.1:4984"
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,swift]
@@ -161,8 +165,10 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 let kRemoteSyncUrl = "ws://54.148.83.39:4984"
 ----
+--
 ====
 
 == Try it Out
+
 * Build and run the project using simulator
 * Verify that the login screen appears in the simulator 

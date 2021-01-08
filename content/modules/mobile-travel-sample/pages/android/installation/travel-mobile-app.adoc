@@ -10,7 +10,7 @@
 * Android Build Tools 26
 * JDK 8
 
-*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
+*Windows Users*: If you are developing on Windows, we recommend that you use a Windows 10 machine.
 Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
 
 == Travel Sample Mobile App
@@ -26,6 +26,7 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 
 == Configure App to connect to Backend
+
 You will have to update the URLs specified in the app to connect to the backend
 If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
 
@@ -36,10 +37,10 @@ You must update the `mPythonWebServerEndpoint` constant which points to the Pyth
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,java]
@@ -47,7 +48,8 @@ Manual
 public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,java]
@@ -55,7 +57,8 @@ Docker
 public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,java]
@@ -64,6 +67,7 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
 ----
+--
 ====
 
 
@@ -76,10 +80,9 @@ You must update the `mSyncGatewayEndpoint` constant.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,java]
@@ -87,7 +90,8 @@ Manual
     public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,java]
@@ -95,7 +99,8 @@ Docker
     public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,java]
@@ -104,9 +109,11 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 public static String mSyncGatewayEndpoint = "ws://54.148.83.39:4984/travel-sample";
 ----
+--
 ====
 
 == Try it Out
+
 * Build and run the project using Android emulator.
 +
 image::https://cl.ly/1r0T100T0c22/as-build.png[]
