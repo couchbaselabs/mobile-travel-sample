@@ -179,7 +179,7 @@ $ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 ----
 +
 You may see an alert similar to one below requesting access to run the app.
-Make sure you select the "Allow access" option. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
+Make sure you select the "Allow access" option. image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
 
 *Other Platforms*
 
