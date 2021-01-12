@@ -77,7 +77,7 @@ Replication is the process by which clients running Couchbase Lite synchronize d
 
 Couchbase Mobile 2.x replication protocol is implemented as a messaging protocol layered over WebSocket.
 
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/replication-2-0.png[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/replication-2-0.png[]
 
 The replication process can be "`continuous`" or "`one shot"`.  
 
@@ -89,7 +89,7 @@ We will review the method `StartReplication(string username, string password, Da
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L103[LoginModel.cs]
 
-[source]
+[source,c#]
 ----
 
 private Replicator StartReplication(string username, string password, Database db)
@@ -99,7 +99,7 @@ private Replicator StartReplication(string username, string password, Database d
 
 First, Do some checks to confirm the validity of the user credentials 
 
-[source]
+[source,c#]
 ----
 
 if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)){
@@ -109,7 +109,7 @@ if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)){
 
 Create the URL of the Sync Gateway 
 
-[source]
+[source,c#]
 ----
 
 private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
@@ -121,7 +121,7 @@ The `ReplicatorType` in the Replicator Config specifies the type of replication.
 In the code snippet in the Travel app, it is `PushAndPull` indicating that both push and pull replication is enabled.
 The `Continuous` mode is set to `true` in the Travel app. 
 
-[source]
+[source,c#]
 ----
 
 var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
@@ -135,7 +135,7 @@ The Replicator is configured with relevant authentication credentials.
 In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/develop/csharp#/2/2/1[Access
     Control] section 
 
-[source]
+[source,c#]
 ----
 
 var config = new ReplicatorConfiguration(db, dbUrl) {
@@ -148,7 +148,7 @@ var config = new ReplicatorConfiguration(db, dbUrl) {
 The Replicator is configured to only pull from current user's channels.
 The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the link:/develop/csharp#/2/3/0[Channels/ Data Routing] section 
 
-[source]
+[source,c#]
 ----
 
 var config = new ReplicatorConfiguration(db, dbUrl) {
@@ -159,7 +159,7 @@ var config = new ReplicatorConfiguration(db, dbUrl) {
 
 The Replicator is initialized with the specified configuration 
 
-[source]
+[source,c#]
 ----
 
 var repl = new Replicator(config);
@@ -168,7 +168,7 @@ var repl = new Replicator(config);
 A change listener callback block is registered to listen for replication changes.
 Every time, there is a push or pull change, the callback is invoked. 
 
-[source]
+[source,c#]
 ----
 
 repl.AddChangeListener((sender, args) =>
@@ -182,7 +182,7 @@ repl.AddChangeListener((sender, args) =>
 
 Start the Replication 
 
-[source]
+[source,c#]
 ----
 
 repl.Start();
@@ -201,7 +201,7 @@ repl.Start();
 
 The screen recording is for UWP version of the app -
 
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_push_replication.gif[]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_push_replication.gif[]
 
 * Access the Travel Sample Python Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
 * Log into the web app as "`demo`" user with password as "`password`"
