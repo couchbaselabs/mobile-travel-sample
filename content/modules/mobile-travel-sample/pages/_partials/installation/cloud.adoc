@@ -40,20 +40,20 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 * Access https://selfservice-4.rightscale.com/catalog on your browser.
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
 +
-image::rightscale_login.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
 * From the catalog of available projects, select the **Mobile Workshop**, give it a name and then click **Launch**.
 +
-image::rightscale_selectproject.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
 * Once the instance is running, you should see the state change to "launching".
 It will take several minutes to launch.
 So be patient!
 +
-image::rightscale_launching.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_launching.png[,500]
 * Once the instance is running, You should see the state change to "running".
 There are two instances - one for "Develop" and one for "Deploy".
 We are only interested in the "Develop" option.
 +
-image::rightscale_running.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_running.png[,500]
 
 Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
 
