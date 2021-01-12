@@ -12,7 +12,7 @@ We will review the `Task<CouchbaseSession> StartSessionAsync(string username, st
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L54[LoginModel.cs]
 
-[source]
+[source,c#]
 ----
 
 public async Task<CouchbaseSession> StartSessionAsync(string username, string password) {
@@ -23,7 +23,7 @@ public async Task<CouchbaseSession> StartSessionAsync(string username, string pa
 We create a folder for the user database if one does not exist and specify that as the database `Directory` in the `DatabaseConfiguration` object.
 Note the use of the service provider to find the default directory for the platform. 
 
-[source]
+[source,c#]
 ----
 
 var options = new DatabaseConfiguration();
@@ -40,7 +40,7 @@ options.Directory = userFolder;
 
 The Couchbase Lite Database is created with specified name and `DatabaseConfiguration` object 
 
-[source]
+[source,c#]
 ----
 
 db = new Database(DbName, options);
@@ -83,7 +83,7 @@ We will review the `void ToggleBookmark(HotelListCellModel hotel)` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/HotelListModel.cs#L90[HotelListModel.cs]
 
-[source]
+[source,c#]
 ----
 
 public void ToggleBookmark(HotelListCellModel hotel) {
@@ -97,7 +97,7 @@ We will examine `queries` in a future lesson.
 
 Create document of type `bookmarkedhotels` if one does not exist. 
 
-[source]
+[source,c#]
 ----
 
 using (var document = UserSession.FetchGuestBookmarkDocument()?.ToMutable()) {
@@ -111,7 +111,7 @@ using (var document = UserSession.FetchGuestBookmarkDocument()?.ToMutable()) {
 
 Next, add the ID of the passed hotel to the current list of bookmarked hotel Ids from the `hotels` property of the `bookmarkedhotels` document, or remove it based on the current action. 
 
-[source]
+[source,c#]
 ----
 
 var bookmarked = doc.GetArray("hotels") ?? new MutableArrayObject();
@@ -135,7 +135,7 @@ Persist the hotel information as separate documents of type `hotels` (or delete 
 If so, update it with the selected hotel details.
 If not, create a new hotel document. 
 
-[source]
+[source,c#]
 ----
 
 // Add the hotel details document
@@ -164,7 +164,7 @@ The screen capture is for UWP version of the app.
 
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_basics_add_document.gif[]
-= 
+
 
 == Delete a Document
 
@@ -176,7 +176,7 @@ We will review the `public void RemoveBookmark(HotelListCellModel bookmark)` met
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/BookmarkedHotelModel.cs#L102[BookmarkedHotelModel.cs]
 
-[source]
+[source,c#]
 ----
 
 public void RemoveBookmark(HotelListCellModel bookmark) {
@@ -187,7 +187,7 @@ public void RemoveBookmark(HotelListCellModel bookmark) {
 The unbookmarking process removes the hotel Id from the "bookmarkedhotels" document and deletes the unbookmarked "hotels" document from the database.
 Note that in addition to deleting the "hotels" document, the unbookmarking process updates the "bookmarkedhotels" document by removing the the hotel Id from the `hotels` array. 
 
-[source]
+[source,c#]
 ----
 
                    
