@@ -25,10 +25,10 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 [[_try_it_out]]
 
-
 * Open the `TravelSample.sln` using Visual Studio 
 
 == Configure App to connect to Backend
+
 You will have to update the URLs specified in the app to connect to the backend
 If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
 
@@ -39,10 +39,9 @@ You must update the `ServerBackendUrl` constant which points to the Python Web S
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,csharp]
@@ -50,7 +49,8 @@ Manual
 public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,csharp]
@@ -58,7 +58,8 @@ Docker
 public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,csharp]
@@ -67,6 +68,7 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 public static readonly Uri ServerBackendUrl = new Uri("http://54.148.83.39:8080/api/");
 ----
+--
 ====
 
 
@@ -79,10 +81,9 @@ You must update the `SyncUrl` constant.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,java]
@@ -90,7 +91,8 @@ Manual
     private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,java]
@@ -98,7 +100,8 @@ Docker
     public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,java]
@@ -107,7 +110,9 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 private static readonly Uri SyncUrl = new Uri("ws://54.148.83.39:4984:4984");
 ----
+--
 ====
+
 === Try it out
 
 * Build and run the project on your platform of choice (UWP, Xamarin iOS or Xamarin Android) 

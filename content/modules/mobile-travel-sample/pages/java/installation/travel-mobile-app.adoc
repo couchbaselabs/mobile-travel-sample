@@ -36,7 +36,7 @@ Now, the URLs that you specify will vary depending on the installation option th
 +
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,java]
@@ -44,7 +44,8 @@ Manual
  public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,java]
@@ -52,7 +53,8 @@ Docker
  public static final String WEB_APP_ENDPOINT = "http://127.0.0.1:8080/api/";
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,java]
@@ -61,6 +63,7 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
  public static final String WEB_APP_ENDPOINT = "http://54.148.83.39:8080/api/";
 ----
+--
 ====
 
 
@@ -76,7 +79,7 @@ Now, the URLs that you specify will vary depending on the installation option th
 +
 [{tabs}]
 ====
-Manual
+Manual::
 +
 --
 [source,java]
@@ -84,7 +87,8 @@ Manual
 public static final String SGW_ENDPOINT = "ws://127.0.0.1:4984/travel-sample";
 ----
 --
-Docker
+
+Docker::
 +
 --
 [source,java]
@@ -92,7 +96,8 @@ Docker
 public static final String SGW_ENDPOINT = "ws://127.0.0.1:4984/travel-sample";
 ----
 --
-Cloud
+
+Cloud::
 +
 --
 [source,java]
@@ -101,6 +106,7 @@ Cloud
 // The example states `54.148.83.39` but yours will be different.
 public static final String SGW_ENDPOINT = "ws://54.148.83.39:4984/travel-sample";
 ----
+--
 ====
 
 === Try it Out
