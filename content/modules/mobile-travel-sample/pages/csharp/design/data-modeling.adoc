@@ -12,7 +12,7 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 * **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users. 
 * **Guest/ Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway. 
 
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png[] Throughout the next lessons, you will be switching between those two modes to test different functionalities.
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png[] Throughout the next lessons, you will be switching between those two modes to test different functionalities.
 It's worth noting that the data model is slightly different between those two modes.
 Let's review the data model for each one. 
 
@@ -93,8 +93,10 @@ image::https://cl.ly/0K3V1q3m3K1Z/admin-ui.png[]
 * Verify that the "callsign" property of the document is "AIRFRANS" 
 = 
 
-[[_document__id_when_sync_gateway_processes_a_document_it_adds_relevant_metadata_to_the_document._the_metadata_includes_an__id_property_that_corresponds_to_the_document_id._you_will_see_this_property_if_you_query_for_the_document_via_the_the_sync_gateway_rest_api.]]
-== Document _id When Sync Gateway processes a document, it addsrelevant metadata to the document. The metadata includes an"_id" property that corresponds to the document ID. You willsee this property if you query for the document via the the SyncGateway REST API.
+[[_document__id]]
+== Document _id 
+
+When Sync Gateway processes a document, it adds relevant metadata to the document. The metadata includes an "_id" property that corresponds to the document ID. You will see this property if you query for the document via the SyncGateway REST API.
 
 [source,json]
 ----
