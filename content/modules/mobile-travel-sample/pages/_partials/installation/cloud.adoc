@@ -40,7 +40,7 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 * Access https://selfservice-4.rightscale.com/catalog on your browser.
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
 +
-image::rightscale_login.png[,500]
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
 * From the catalog of available projects, select the **Mobile Workshop**, give it a name and then click **Launch**.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
