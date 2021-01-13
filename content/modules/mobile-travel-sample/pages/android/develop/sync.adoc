@@ -28,7 +28,7 @@ channel("channel." + username);
 
 == Shared Bucket Access
 
-Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
+Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/index.adoc[Sync Gateway installation] section.
 
 Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
 It is an opt-in feature that can be enabled in the Sync Gateway configuration file.
