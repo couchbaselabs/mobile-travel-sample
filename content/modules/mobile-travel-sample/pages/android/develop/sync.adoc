@@ -14,7 +14,7 @@ Sync Gateway uses channels to make it easy to share a database between a large n
 * Authorize users to access documents.
 * Minimize the amount of data synced down to devices. 
 
-In the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section, we walked you through the steps to launch Sync Gateway with a specific config file.
+In the xref::{source-language}/installation/index.adoc[Sync Gateway installation] section, we walked you through the steps to launch Sync Gateway with a specific config file.
 
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
 It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
