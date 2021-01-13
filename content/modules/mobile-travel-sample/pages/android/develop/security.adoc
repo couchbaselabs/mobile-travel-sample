@@ -39,7 +39,7 @@ The Couchbase Sync Gateway is an Internet-facing synchronization mechanism that 
 In this chapter, we will focus on authorization and Access Control.
 We will discuss Data Synchronization and Routing in the xref::java/develop/sync.adoc[Sync] lesson.
 
-In the xref::java/installation/overview.adoc[Installation] guide, we walked you through the steps to launch Sync Gateway with a specific config file.
+In the xref::java/installation/index.adoc[Installation] guide, we walked you through the steps to launch Sync Gateway with a specific config file.
 The Sync Gateway configuration file determines the runtime behavior of Sync Gateway. 
 
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json. 
