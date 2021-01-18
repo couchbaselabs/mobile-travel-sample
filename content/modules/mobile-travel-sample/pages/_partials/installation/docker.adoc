@@ -8,7 +8,7 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 * Docker: downloadable from https://www.docker.com/get-docker[docker.com].
 Community edition would suffice.
 +
-*Windows Users* : If you are developing on Windows, you may need to install Docker as Admin user downloadable from https://www.docker.com/get-docker[docker.com].
+*Windows Users* : If you are developing on Windows, you will likely need to install Docker as Admin user. Docker is downloadable from https://www.docker.com/get-docker[docker.com]
 The Community Edition would suffice.
 
 * Microsoft Visual Studio 2017 (*only Windows Users*)
@@ -84,8 +84,8 @@ $ docker ps
 
 === Try it out
 
-* Launch Couchbase Server
-* Log into the "Admin Console" with username as "Administrator" and password as "password"
+* Open the Couchbase Server "Admin Console" by opening "http://localhost:8091" (or "http://127.0.0.1:8091")
+* Log into the console with username as "Administrator" and password as "password"
 * Select the "Buckets" option from the menu on the left
 * Verify that you have around 31,000 documents in your travel-sample bucket
 
@@ -95,7 +95,7 @@ $ docker ps
 _NOTE_ : If you are running the Sync Gateway in a docker container, please make sure that you have the Couchbase Server running in a container as well.
 If not, please follow the instructions in <<svr-local-dock,Couchbase Server (above)>> to install the server container.
 
-* Create a local docker network named "workshop" if one does not exist already.
+* Create a local docker network named "workshop" if one does not exist already. This should not be the case if you had followed the instructions to deploy Couchbase server using docker
 Open a terminal window and run the following command.
 +
 [source,bash]
@@ -108,25 +108,26 @@ $ docker network create -d bridge workshop
 +
 [source,bash]
 ----
-$ docker pull couchbase/sync-gateway:2.7.3-enterprise
+$ docker pull couchbase/sync-gateway:2.8.0-enterprise
 ----
-* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the <<repository,Workshop Repo>> step. The config file is located in ``/path/to/mobile-travel-sample``.
-* Open the `sync-gateway-config-travelsample.json` file
+* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as part of the <<repository,Workshop Repo>> step. The config file is located in ``/path/to/mobile-travel-sample`` directory/folder.
+* Open the `sync-gateway-config-travelsample.json` file using any text editor of choice
 * For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
-Replace `localhost` in the file with `cb-server` and save.
+
+Replace `localhost` in the `sync-gateway-config-travelsample.json` file with `cb-server` and save.
 +
 [source,json]
 ----
 "server": "couchbase://cb-server"
 ----
-* Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file.
+* Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file. You must run the command below from the folder that contains the `sync-gateway-config-travelsample.json` file.
 
 **Windows**
 
 [source,bash]
 ----
 cd /path/to/mobile-travel-sample/
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.7.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.8.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ----
 
 **Non-Windows platform**
@@ -134,7 +135,7 @@ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %
 [source,bash]
 ----
 $ cd c:\path\to\mobile-travel-sample\
-$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.7.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.8.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ----
 
 * You can view the logs at any time by running the following command.
@@ -157,7 +158,7 @@ $ docker ps
 +
 [source,json]
 ----
-{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.8"},"version":"Couchbase Sync Gateway/2.8.0(271;bf3ddf6) EE"}
 ----
 
 == Python Travel Sample Web Backend

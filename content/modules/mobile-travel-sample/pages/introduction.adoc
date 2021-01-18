@@ -30,5 +30,5 @@ It includes the following components:
 
 * Backend/Server Side
 ** Couchbase Server Enterprise v6.5.x
-** Sync Gateway Enterprise v2.7.x
+** Sync Gateway Enterprise v2.8.x
 ** Travel web app: the Travel Sample web app includes a Python based web backend integrated with Couchbase Python SDK 3.0.x as well as a vue.js based web frontend
