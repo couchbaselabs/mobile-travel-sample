@@ -24,81 +24,81 @@ using Xamarin.Forms.Xaml;
 
 namespace TravelSample.Core.Pages
 {
-    /// <summary>
-    /// A page that shows a list of bookmarked hotels (guest user)
-    /// </summary>
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+	/// <summary>
+	/// A page that shows a list of bookmarked hotels (guest user)
+	/// </summary>
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class BookmarkedHotelPage : BasePage<BookmarkedHotelViewModel>
 	{
-	    #region Constructors
+		#region Constructors
 
-        /// <summary>
-        /// Default constructor (for design-time viewing)
-        /// </summary>
-	    public BookmarkedHotelPage()
-            : base(null)
-	    {
-	        InitializeComponent();
-	        BindingContext = new DesignBookmarkedHotelViewModel();
-	    }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="model">The view model to use for this page's data</param>
-	    public BookmarkedHotelPage (BookmarkedHotelViewModel model)
-            : base(model)
+		/// <summary>
+		/// Default constructor (for design-time viewing)
+		/// </summary>
+		public BookmarkedHotelPage()
+			: base(null)
 		{
-			InitializeComponent ();
-            FileImageSource icon = null;
-		    switch (Device.RuntimePlatform) {
-		        case Device.iOS:
-		            icon = new FileImageSource {
-		                File = "feature-search"
-		            };
-                    break;
-                case Device.Android:
-		            icon = new FileImageSource {
-		                File = "feature_search.png"
-		            };
-                    break;
-                case Device.UWP:
-                    icon = new FileImageSource {
-                        File = "Assets/feature.search.png"
-                    };
-                    break;
-		    }
-
-		    var hotelIcon = new ToolbarItem() {
-		        Text = "Hotels",
-		        Icon = icon,
-                Command = ViewModel.ShowHotelsCommand
-		    };
-
-		    ToolbarItems.Add(hotelIcon);
+			InitializeComponent();
+			BindingContext = new DesignBookmarkedHotelViewModel();
 		}
 
-	    #endregion
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="model">The view model to use for this page's data</param>
+		public BookmarkedHotelPage (BookmarkedHotelViewModel model)
+			: base(model)
+		{
+			InitializeComponent ();
+			FileImageSource icon = null;
+			switch (Device.RuntimePlatform) {
+				case Device.iOS:
+					icon = new FileImageSource {
+						File = "feature-search"
+					};
+					break;
+				case Device.Android:
+					icon = new FileImageSource {
+						File = "feature_search.png"
+					};
+					break;
+				case Device.UWP:
+					icon = new FileImageSource {
+						File = "Assets/feature.search.png"
+					};
+					break;
+			}
 
-	    #region Overrides
+			var hotelIcon = new ToolbarItem() {
+				Text = "Hotels",
+				Icon = icon,
+				Command = ViewModel.ShowHotelsCommand
+			};
 
-	    protected override void OnAppearing()
-        {
-            base.OnAppearing();
+			ToolbarItems.Add(hotelIcon);
+		}
 
-            ViewModel?.Refresh();
-        }
+		#endregion
 
-	    protected override void OnParentSet()
-        {
-            base.OnParentSet();
+		#region Overrides
 
-            if (Navigation.NavigationStack.Count <= 1) {
-                // HACK: Intercept navigation back to login screen
-                ViewModel.Dispose();
-            }
-        }
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
 
-	    #endregion
+			ViewModel?.Refresh();
+		}
+
+		protected override void OnParentSet()
+		{
+			base.OnParentSet();
+
+			if (Navigation.NavigationStack.Count <= 1) {
+				// HACK: Intercept navigation back to login screen
+				ViewModel.Dispose();
+			}
+		}
+
+		#endregion
 	}
 }
