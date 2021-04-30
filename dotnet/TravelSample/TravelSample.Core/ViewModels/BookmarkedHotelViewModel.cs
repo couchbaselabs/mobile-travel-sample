@@ -24,7 +24,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using TravelSample.Core.Models;
 using Xamarin.Forms;
 
@@ -70,7 +69,7 @@ namespace TravelSample.Core.ViewModels
 
         #region Public Methods
 
-        public void Refresh()
+        public async void Refresh()
         {
             // Refresh the list of hotels, because they might have changed
             // in the hotel list view (this could also be accomplished with live
@@ -83,7 +82,7 @@ namespace TravelSample.Core.ViewModels
                 }
             } catch (Exception e) {
                 Debug.WriteLine($"Failed to fetch bookmarked hotels: {e}");
-                UserDialogs.Instance.Alert($"Failed to fetch bookmarked hotels: {e.Message}", "Error");
+                await Application.Current.MainPage.DisplayAlert("ERROR", $"Failed to fetch bookmarked hotels: {e.Message}", "OK");
             }
         }
 
@@ -91,13 +90,13 @@ namespace TravelSample.Core.ViewModels
 
         #region Private Methods
 
-        private void RemoveBookmark(HotelListCellModel bookmark)
+        private async void RemoveBookmark(HotelListCellModel bookmark)
         {
             try {
                 Model.RemoveBookmark(bookmark);
             } catch (Exception e) {
                 Debug.WriteLine($"Failed to remove bookmark: {e}");
-                UserDialogs.Instance.Alert($"Failed to remove bookmark: {e.Message}", "Error");
+                await Application.Current.MainPage.DisplayAlert("ERROR", $"Failed to remove bookmark: {e.Message}", "OK");
                 return;
             }
 

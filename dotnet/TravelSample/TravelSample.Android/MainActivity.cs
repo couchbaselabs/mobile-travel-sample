@@ -18,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -40,16 +39,23 @@ namespace TravelSample.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            global::Xamarin.Forms.FormsMaterial.Init(this, bundle);
+            Xamarin.Essentials.Platform.Init(this, bundle);
             Couchbase.Lite.Support.Droid.Activate(ApplicationContext);
 
             Couchbase.Lite.DI.Service.Register<IDatabaseSeedService>(new DatabaseSeedService(ApplicationContext));
 
-      
-             UserDialogs.Init(() => (Activity)ApplicationContext);
             LoadApplication(new App());
         }
 
         #endregion
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
 

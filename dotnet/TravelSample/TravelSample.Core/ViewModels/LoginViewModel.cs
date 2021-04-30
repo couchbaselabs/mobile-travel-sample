@@ -22,7 +22,6 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using TravelSample.Core.Models;
 using Xamarin.Forms;
 
@@ -114,7 +113,7 @@ namespace TravelSample.Core.ViewModels
         private async Task LoginAsync()
         {
             if (String.IsNullOrWhiteSpace(_username) || String.IsNullOrWhiteSpace(_password)) {
-                await UserDialogs.Instance.AlertAsync("Please enter both a username and password to continue", "Error");
+                await Application.Current.MainPage.DisplayAlert("Error", "Please enter both a username and password to continue", "OK");
                 return;
             }
 
@@ -128,7 +127,7 @@ namespace TravelSample.Core.ViewModels
                 session = await Model.StartSessionAsync(username, password);
             } catch (Exception e) {
                 Debug.WriteLine($"Error creating database: {e}");
-                await UserDialogs.Instance.AlertAsync(e.Message, "Error Creating Database");
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error Creating Database, {e.Message}", "OK");
                 return;
             }
 

@@ -38,10 +38,6 @@ namespace TravelSample.iOS
         {
             // Piggy back onto Couchbase's dependency injection
             Service.Register<IDatabaseSeedService>(new DatabaseSeedService());
-
-            Couchbase.Lite.Support.iOS.Activate();
-
-         
         }
 
         #endregion
@@ -58,6 +54,7 @@ namespace TravelSample.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            global::Xamarin.Forms.FormsMaterial.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <!--<PackageTargetFallback>portable-net45+win+wpa81</PackageTargetFallback>-->
     <AssemblyName>TravelSample.Core</AssemblyName>
     <RootNamespace>TravelSample.Core</RootNamespace>
@@ -18,12 +18,11 @@
     <OutputPath>bin\Release\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
-    <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
-    <PackageReference Include="Couchbase.Lite.Enterprise" Version="2.7.0" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.1.1" />
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Couchbase.Lite.Enterprise" Version="2.8.4" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2012" />
   </ItemGroup>
 
 </Project>

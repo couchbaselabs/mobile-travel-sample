@@ -5,6 +5,7 @@
              xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
              x:Class="TravelSample.Core.Pages.HotelListPage"
              Title="Hotel Search"
+             Visual="Material"
              NavigationPage.BackButtonTitle="Back">
     <ContentPage.Content>
         <Grid>
@@ -20,8 +21,12 @@
                         HorizontalOptions="FillAndExpand"
                         Command="{Binding LookupCommand}" />
             </StackLayout>
-            <ListView Grid.Row="1" ItemsSource="{Binding HotelsList}"
-                      ItemSelected="OnItemSelected" x:Name="HotelsListView" HasUnevenRows="True">
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding HotelsList}"
+                      ItemSelected="OnItemSelected"
+                      x:Name="HotelsListView"
+                      SeparatorColor="Transparent"
+                      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
