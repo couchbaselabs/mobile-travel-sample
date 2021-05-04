@@ -3,7 +3,7 @@
 
 == Pre-requisites
 
-* Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com]. Preferable to be in VS v15.6
+* Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com].  Preferable to be in VS v16.9.4 or higher for Visual Studio 2019 or v8.9 or higher for Visual Studio for Mac (NOTE: Visual Studio for Mac does not support UWP projects)
 
 *Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
 Also, note that if you choose Manual or docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
