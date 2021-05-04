@@ -2,8 +2,9 @@
 :tabs:
 
 == Pre-requisites
+Requirements are based on which platform you are using.  For Xamarin please follow the Visual Studio, Xamarin, and Platform documentation.
 
-=== Visual Studio
+=== Visual Studio (required for Xamarin Forms csharp)
 * Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com]* 
 - Visual Studio 2019 (16.9.4 or higher)
 - Visual Studio 2019 for Mac (v8.9 or higher) - NOTE: Visual Studio for Mac does not support UWP projects
@@ -15,13 +16,16 @@ If you are developing on Windows, we recommend that you use a Windows 10 machine
 Visual Studio and Couchbase are supported on M1 processors via the Rosetta v2 translation layer.  
 
 === iOS 
-For iOS development, we recommend the latest version of XCode 11 or higher.  
+For iOS development, we recommend version of XCode 11.7 or higher.  For OS and XCode version compatibility, refer to Apple's documentation https://developer.apple.com/support/xcode/
 
-=== Android
-For Android development, we recommend you have the latest Android SDK installed.  The latest version should be available from Visual Studio.
+=== Android 
+For Andriod development, we recommend Google's IDE Android Studio and running version 4.x or higher.  For Android Studio and OS compatibility, refer to Google's documentation https://developer.android.com/studio#system-requirements-a-namerequirementsa/
 
-=== Hot Reloaded
-To use Hot Reloaded we highly recommend you target iOS v14 or Android 10 or higher.  
+=== Xamarin
+For Android development, Xamarin always recommends you have the latest Android SDK installed.  The latest version should be available from Visual Studio - https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-sdk?tabs=windows.
+
+==== Xamarin Hot Reloaded
+To use Hot Reloaded we highly recommend you target iOS v14 or Android 10 or higher.  Full documentation can be found on Microsoft's Documentation site https://docs.microsoft.com/en-us/xamarin/xamarin-forms/xaml/hot-reload  
 
 == Travel Sample Mobile App
 
