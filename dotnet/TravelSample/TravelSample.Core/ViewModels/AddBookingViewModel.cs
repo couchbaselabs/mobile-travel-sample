@@ -25,7 +25,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using Couchbase.Lite.Util;
 using TravelSample.Core.Models;
 using Xamarin.Forms;
@@ -306,7 +305,7 @@ namespace TravelSample.Core.ViewModels
 
         #region Private Methods
 
-        private void DoConfirm()
+        private async void DoConfirm()
         {
             var bookings = new Bookings();
             if (_selectedDeparture != null) {
@@ -318,7 +317,7 @@ namespace TravelSample.Core.ViewModels
             }
 
             if (bookings.Count == 0) {
-                UserDialogs.Instance.Alert("Please select at least one flight", "Error");
+                await Application.Current.MainPage.DisplayAlert("Error", "Please select at least one flight", "OK");
                 return;
             }
 
@@ -336,17 +335,17 @@ namespace TravelSample.Core.ViewModels
         private async Task SearchForFlightsAsync()
         {
             if (String.IsNullOrWhiteSpace(OriginSearch) || String.IsNullOrWhiteSpace(DestinationSearch)) {
-                UserDialogs.Instance.Alert("Invalid departure or return airport entered", "Error");
+                await Application.Current.MainPage.DisplayAlert("Error", "Invalid departure or return airport entered", "OK");
                 return;
             }
 
             if (ReturnSelected && !ValidateDate(ReturnDateSearch)) {
-                UserDialogs.Instance.Alert("Invalid return date entered", "Error");
+                await Application.Current.MainPage.DisplayAlert("Error", "Invalid return date entered", "OK");
                 return;
             } 
             
             if (!ReturnSelected && !ValidateDate(DepartureDateSearch)) {
-                UserDialogs.Instance.Alert("Invalid departure date entered", "Error");
+                await Application.Current.MainPage.DisplayAlert("Error", "Invalid departure date entered", "OK");
                 return;
             }
 
@@ -364,7 +363,7 @@ namespace TravelSample.Core.ViewModels
                         : await Model.FetchFlightsAsync(destination, source);
                 } catch (Exception e) {
                     Debug.WriteLine($"Error fetching flights: {e}");
-                    await UserDialogs.Instance.AlertAsync(e.Message, "Error fetching flights from server");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error fetching flights from server {e.Message}", "OK");
                     return;
                 }
 

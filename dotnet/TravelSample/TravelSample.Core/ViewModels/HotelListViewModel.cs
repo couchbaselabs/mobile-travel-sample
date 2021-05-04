@@ -25,7 +25,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using Couchbase.Lite.Util;
 using TravelSample.Core.Models;
 using TravelSample.Core.Util;
@@ -265,7 +264,7 @@ namespace TravelSample.Core.ViewModels
                 hotels = await Model.FetchHotelsAsync(DescriptionSearch, LocationSearch);
             } catch (Exception e) {
                 Debug.WriteLine($"Error fetching hotels: {e}");
-                await UserDialogs.Instance.AlertAsync($"Failed to fetch hotels: {e.Message}", "Error");
+                await Application.Current.MainPage.DisplayAlert($"Error", $"Failed to fetch hotels: {e.Message}", "Ok");
                 return;
             }
             
@@ -276,13 +275,13 @@ namespace TravelSample.Core.ViewModels
             }
         }
 
-        private void ToggleBookmark(HotelListCellModel hotel)
+        private async void ToggleBookmark(HotelListCellModel hotel)
         {
             try {
                 Model.ToggleBookmark(hotel);
             } catch (Exception e) {
                 Debug.WriteLine($"Error toggling bookmark: {e}");
-                UserDialogs.Instance.Alert($"Failed to toggle bookmark: {e.Message}", "Error");
+                await Application.Current.MainPage.DisplayAlert($"Error", $"Failed to toggle bookmark: {e.Message}", "OK");
                 return;
             }
 

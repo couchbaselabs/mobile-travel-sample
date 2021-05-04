@@ -5,6 +5,7 @@
              xmlns:pages="clr-namespace:TravelSample.Core.Pages;assembly=TravelSample.Core"
              xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels;assembly=TravelSample.Core"
              x:Class="TravelSample.Core.Pages.LoginPage"
+             Visual="Material"
              Title="Login">
     <ContentPage.Content>
         <Grid BackgroundColor="LightBlue">
@@ -21,9 +22,9 @@
             </StackLayout>
             <StackLayout Grid.Row="2">
                 <Button BackgroundColor="DeepSkyBlue" TextColor="White" Text="Sign In" HorizontalOptions="Center"
-                        Command="{Binding LoginCommand}" IsEnabled="{Binding LoginEnabled}" WidthRequest="160" />
+                        Command="{Binding LoginCommand}" IsEnabled="{Binding LoginEnabled}" WidthRequest="250" />
                 <Button BackgroundColor="DeepSkyBlue" TextColor="White" Text="Proceed As Guest" Margin="0,10,0,0"
-                        HorizontalOptions="Center" WidthRequest="160"
+                        HorizontalOptions="Center" WidthRequest="250"
                         Command="{Binding GuestLoginCommand}" />
             </StackLayout>
         </Grid>

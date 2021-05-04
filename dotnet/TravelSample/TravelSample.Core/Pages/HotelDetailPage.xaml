@@ -5,6 +5,7 @@
                 xmlns:viewModels="clr-namespace:TravelSample.Core.ViewModels"
                 x:Class="TravelSample.Core.Pages.HotelDetailPage"
                 Title="Hotel Details"
+                Visual="Material"
                 NavigationPage.BackButtonTitle="Back">
     <ContentPage.Content>
         <ScrollView>

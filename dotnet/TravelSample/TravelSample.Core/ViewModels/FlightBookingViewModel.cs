@@ -23,7 +23,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using Couchbase.Lite;
 using TravelSample.Core.Models;
 using Xamarin.Forms;
@@ -159,7 +158,7 @@ namespace TravelSample.Core.ViewModels
                 Model.RemoveBooking(booking);
             } catch (Exception e) {
                 Debug.WriteLine($"Error deleting booking: {e}");
-                UserDialogs.Instance.Alert($"Failed to delete booking: {e.Message}", "Error");
+                Application.Current.MainPage.DisplayAlert("Error", $"Failed to delete booking: {e.Message}", "OK");
             }
         }
 
