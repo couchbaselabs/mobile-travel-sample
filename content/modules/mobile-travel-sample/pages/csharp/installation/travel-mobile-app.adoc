@@ -3,10 +3,25 @@
 
 == Pre-requisites
 
-* Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com].  Preferable to be in VS v16.9.4 or higher for Visual Studio 2019 or v8.9 or higher for Visual Studio for Mac (NOTE: Visual Studio for Mac does not support UWP projects)
+=== Visual Studio
+* Downloadable from https://www.visualstudio.com/downloads/[visualstudio.com]* 
+- Visual Studio 2019 (16.9.4 or higher)
+- Visual Studio 2019 for Mac (v8.9 or higher) - NOTE: Visual Studio for Mac does not support UWP projects
 
-*Windows Users* : If you are developing on Windows, we recommend that you use a Windows 10 machine.
-Also, note that if you choose Manual or docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+=== Windows Users
+If you are developing on Windows, we recommend that you use a Windows 10 machine with version 1809 or higher.  Also, note that if you choose Manual or docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
+=== Mac Users with M1 Processor
+Visual Studio and Couchbase are supported on M1 processors via the Rosetta v2 translation layer.  
+
+=== iOS 
+For iOS development, we recommend the latest version of XCode 11 or higher.  
+
+=== Android
+For Android development, we recommend you have the latest Android SDK installed.  The latest version should be available from Visual Studio.
+
+=== Hot Reloaded
+To use Hot Reloaded we highly recommend you target iOS v14 or Android 10 or higher.  
 
 == Travel Sample Mobile App
 
