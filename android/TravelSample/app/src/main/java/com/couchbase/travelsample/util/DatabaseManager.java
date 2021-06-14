@@ -43,8 +43,8 @@ public class DatabaseManager {
     public  String currentUser = null;
 
     private static String dbName;
-    public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
-    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+    public static String mPythonWebServerEndpoint = "http://34.219.118.132:8080/api/";
+    public static String mSyncGatewayEndpoint = "ws://34.219.118.132:4984/travel-sample";
 
 
     protected DatabaseManager() {
@@ -53,12 +53,12 @@ public class DatabaseManager {
     public void initCouchbaseLite(Context context) {
         CouchbaseLite.init(context);
         appContext = context;
-
     }
 
     public void OpenGuestDatabase() {
         DatabaseConfiguration config = new DatabaseConfiguration();
 
+        this.enableLogging(appContext);
         config.setDirectory(String.format("%s/guest", appContext.getFilesDir()));
 
         try {
@@ -192,6 +192,7 @@ public class DatabaseManager {
     private static void enableLogging(Context context) {
         // Only in 2.5
         final File path = context.getCacheDir();
+        Database.log.getFile().setConfig(new LogFileConfiguration(path.toString()));
 
         Database.log.getFile().setConfig(new LogFileConfiguration(path.toString()));
         Database.log.getFile().setLevel(LogLevel.INFO);

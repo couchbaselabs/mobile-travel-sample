@@ -79,6 +79,8 @@ sh install_10_1.sh
 --
 ====
 
+* NOTE: If you are using Xcode12.3+, you may be impacted by an issue in Xcode while using linked frameworks. Please follow the instructions outlined link:https://docs.couchbase.com/couchbase-lite/2.8/swift/gs-install.html[here] to workaround the issue.
+
 * Open the `TravelSample.xcodeproj` using Xcode
 
 == Configure App to connect to Backend
