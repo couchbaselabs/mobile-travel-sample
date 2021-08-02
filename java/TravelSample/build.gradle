@@ -9,7 +9,7 @@ ext {
 }
 
 group = 'com.couchbase'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -43,11 +43,11 @@ task fatJar(type: Jar) {
 }
 
 repositories {
-    mavenCentral()
-    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
-    maven { url 'https://jetbrains.bintray.com/intellij-third-party-dependencies' }
+    //maven { url 'http://proget.build.couchbase.com/maven2/internalmaven' }
     maven { url 'https://mobile.maven.couchbase.com/maven2/dev/' }
-    //maven { url 'http://mobile.maven.couchbase.com/maven2/internalmaven' }
+    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
+    maven { url "https://cache-redirector.jetbrains.com/intellij-dependencies" }
+    mavenCentral()
 }
 
 dependencies {
@@ -61,12 +61,11 @@ dependencies {
 
     implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
 
-    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
+    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.8.4'
+
     implementation 'org.json:json:20180813'
 
     implementation 'com.toedter:jcalendar:1.4'
-
-    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.7.0'
 }
 
 
@@ -77,9 +76,10 @@ dependencies {
 /////// Checkstyle
 apply plugin: 'checkstyle'
 checkstyle {
-    toolVersion = "8.18"
+    toolVersion = "8.42"
+    dependencies { checkstyle "com.puppycrawl.tools:checkstyle:${toolVersion}" }
 
-    configFile file("${ETC_DIR}/checkstyle/checkstyle.xml")
+    configFile = file("${ETC_DIR}/checkstyle/checkstyle.xml")
     configProperties = ['configDir': file("${ETC_DIR}/checkstyle")]
 
     showViolations true
@@ -108,7 +108,10 @@ task checkstyle(type: Checkstyle) {
 
 /////// PMD
 apply plugin: 'pmd'
-pmd { toolVersion "5.8.1" }
+pmd {
+    toolVersion '6.26.0'
+    ruleSets = []
+}
 task pmd(type: Pmd) {
     description 'PMD'
     group 'verification'
