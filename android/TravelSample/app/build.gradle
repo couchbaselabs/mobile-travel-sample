@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.couchbase.travelsample"
@@ -29,24 +29,23 @@ android {
 repositories {
     maven { url 'https://mobile.maven.couchbase.com/maven2/dev' }
     google()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'com.google.android:flexbox:1.0.0'
-   //implementation 'com.squareup.okhttp3:okhttp:3.14.7'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.couchbase.lite:couchbase-lite-android-ee:2.8.5'
 
     testImplementation 'junit:junit:4.12'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

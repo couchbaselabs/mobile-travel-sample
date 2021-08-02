@@ -2,15 +2,22 @@ package com.couchbase.travelsample.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.provider.ContactsContract;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLite;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
-import com.couchbase.lite.DocumentFlag;
 import com.couchbase.lite.FullTextIndexItem;
 import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.LogFileConfiguration;
@@ -21,37 +28,25 @@ import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
 import com.couchbase.lite.URLEndpoint;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
  * TODO
  */
 public class DatabaseManager {
+    public static String APPLICATION_ENDPOINT = "http://34.219.118.132:8080/api/";
+    public static String SGW_ENDPOINT = "ws://34.219.118.132:4984/travel-sample";
+
     private static Database database;
     private static DatabaseManager instance = null;
     private Context appContext = null;
-    public  String currentUser = null;
 
-    private static String dbName;
-    public static String mPythonWebServerEndpoint = "http://34.219.118.132:8080/api/";
-    public static String mSyncGatewayEndpoint = "ws://34.219.118.132:4984/travel-sample";
+    private String currentUser = null;
 
+    protected DatabaseManager() { }
 
-    protected DatabaseManager() {
-
-    }
     public void initCouchbaseLite(Context context) {
         CouchbaseLite.init(context);
+        Database.log.getConsole().setLevel(LogLevel.DEBUG);
         appContext = context;
     }
 
@@ -63,40 +58,39 @@ public class DatabaseManager {
 
         try {
             database = new Database("guest", config);
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
+
     public void OpenDatabaseForUser(String username) {
-        File dbFile = new File(appContext.getFilesDir()+"/"+ username, "travel-sample.cblite2");
+        File dbFile = new File(appContext.getFilesDir() + "/" + username, "travel-sample.cblite2");
         DatabaseConfiguration config = new DatabaseConfiguration();
-        config.setDirectory(String.format("%s/%s", appContext.getFilesDir(),username));
+        config.setDirectory(String.format("%s/%s", appContext.getFilesDir(), username));
         currentUser = username;
 
         if (!dbFile.exists()) {
             AssetManager assetManager = appContext.getAssets();
             try {
-                File path = new File(appContext.getFilesDir()+"");
-                unzip(assetManager.open("travel-sample.cblite2.zip"),path);
-                Database.copy(new File(appContext.getFilesDir(),"travel-sample.cblite2"), "travel-sample", config);
-
+                File path = new File(appContext.getFilesDir() + "");
+                unzip(assetManager.open("travel-sample.cblite2.zip"), path);
+                Database.copy(new File(appContext.getFilesDir(), "travel-sample.cblite2"), "travel-sample", config);
             }
-            catch (IOException e) {
+            catch (IOException | CouchbaseLiteException e) {
                 e.printStackTrace();
             }
-            catch (CouchbaseLiteException e) {
-                e.printStackTrace();
-            }
-
         }
         try {
             database = new Database("travel-sample", config);
             createFTSQueryIndex();
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
 
+    public String getCurrentUser() { return currentUser; }
 
     public String getCurrentUserDocId() {
         return "user::" + currentUser;
@@ -105,7 +99,8 @@ public class DatabaseManager {
     private void createFTSQueryIndex() {
         try {
             database.createIndex("descFTSIndex", IndexBuilder.fullTextIndex(FullTextIndexItem.property("description")));
-        } catch (CouchbaseLiteException e) {
+        }
+        catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
     }
@@ -119,7 +114,8 @@ public class DatabaseManager {
             File newFile = new File(destination, fileName);
             if (ze.isDirectory()) {
                 newFile.mkdirs();
-            } else {
+            }
+            else {
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
@@ -138,8 +134,9 @@ public class DatabaseManager {
     public static void startPushAndPullReplicationForCurrentUser(String username, String password) {
         URI url = null;
         try {
-            url = new URI(mSyncGatewayEndpoint);
-        } catch (URISyntaxException e) {
+            url = new URI(SGW_ENDPOINT);
+        }
+        catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
@@ -148,10 +145,10 @@ public class DatabaseManager {
         config.setContinuous(true);
         config.setAuthenticator(new BasicAuthenticator(username, password));
         config.setPushFilter((document, flags) -> !("hotel".equals(document.getString("type"))
-                || "airline".equals(document.getString("type"))
-                || "airport".equals(document.getString("type"))
-                || "route".equals(document.getString("type"))
-                || "landmark".equals(document.getString("type"))));
+            || "airline".equals(document.getString("type"))
+            || "airport".equals(document.getString("type"))
+            || "route".equals(document.getString("type"))
+            || "landmark".equals(document.getString("type"))));
 
         Replicator replicator = new Replicator(config);
         replicator.addChangeListener(new ReplicatorChangeListener() {
@@ -161,9 +158,10 @@ public class DatabaseManager {
                 if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.IDLE)) {
 
                     Log.e("Replication Comp Log", "Schedular Completed");
-
                 }
-                if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.OFFLINE)) {
+                if (change.getReplicator().getStatus().getActivityLevel()
+                    .equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel()
+                    .equals(Replicator.ActivityLevel.OFFLINE)) {
                     // stopReplication();
                     Log.e("Rep schedular  Log", "ReplicationTag Stopped");
                 }
@@ -172,11 +170,10 @@ public class DatabaseManager {
         replicator.start();
     }
 
-//
+    //
     public static DatabaseManager getSharedInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
-
         }
 
         return instance;
@@ -196,6 +193,6 @@ public class DatabaseManager {
 
         Database.log.getFile().setConfig(new LogFileConfiguration(path.toString()));
         Database.log.getFile().setLevel(LogLevel.INFO);
-        Log.e("log",path.toString());
+        Log.e("log", path.toString());
     }
 }

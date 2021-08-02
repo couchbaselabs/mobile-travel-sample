@@ -36,7 +36,7 @@ public class BookingsPresenter implements BookingsContract.UserActionsListener {
     @Override
     public void fetchUserBookings() {
         Database database = DatabaseManager.getDatabase();
-        String userName = DatabaseManager.getSharedInstance().currentUser;
+        String userName = DatabaseManager.getSharedInstance().getCurrentUser();
         Query query = QueryBuilder
             .select(SelectResult.expression(Expression.property("flights")))
             .from(DataSource.database(database)).where(Expression.property("username")

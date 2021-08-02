@@ -2,11 +2,6 @@ package com.couchbase.travelsample.login;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -108,8 +103,8 @@ public class Login extends AppCompatActivity  {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
-                                DatabaseManager.mSyncGatewayEndpoint = (sgwText.getText() != null) ? sgwText.getText().toString() : "ws://localhost:4984";
-                                DatabaseManager.mPythonWebServerEndpoint = (webText.getText() != null) ? webText.getText().toString() + "/api" : "http://localhost:8080/api/";
+                                DatabaseManager.SGW_ENDPOINT = (sgwText.getText() != null) ? sgwText.getText().toString() : "ws://localhost:4984";
+                                DatabaseManager.APPLICATION_ENDPOINT = (webText.getText() != null) ? webText.getText().toString() + "/api" : "http://localhost:8080/api/";
 
                             }
                         })

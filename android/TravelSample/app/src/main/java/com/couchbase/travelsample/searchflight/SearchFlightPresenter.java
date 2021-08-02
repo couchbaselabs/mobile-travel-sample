@@ -138,7 +138,7 @@ public class SearchFlightPresenter implements SearchFlightContract.UserActionsLi
     }
 
     private class FlightFetcher {
-        private final String backendUrl = DatabaseManager.mPythonWebServerEndpoint;
+        private final String backendUrl = DatabaseManager.APPLICATION_ENDPOINT;
         private final Handler handler = new Handler();
 
         private final String origin;
