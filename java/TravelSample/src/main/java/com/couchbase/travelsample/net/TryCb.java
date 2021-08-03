@@ -39,6 +39,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.couchbase.travelsample.model.BookedFlight;
@@ -74,7 +75,10 @@ public class TryCb {
             receiver,
             json -> {
                 final List<Hotel> hotels = new ArrayList<>();
-                for (int i = 0; i < json.length(); i++) { hotels.add(Hotel.fromJSON(json.getJSONObject(i))); }
+                for (int i = 0; i < json.length(); i++) {
+                    try { hotels.add(Hotel.fromJSON(json.getJSONObject(i))); }
+                    catch (JSONException e) { LOGGER.log(Level.WARNING, "failed parsing hotel object", e); }
+                }
                 return hotels;
             });
     }
@@ -90,7 +94,10 @@ public class TryCb {
             receiver,
             json -> {
                 final List<Flight> flights = new ArrayList<>();
-                for (int i = 0; i < json.length(); i++) { flights.add(Flight.fromJSON(json.getJSONObject(i))); }
+                for (int i = 0; i < json.length(); i++) {
+                    try { flights.add(Flight.fromJSON(json.getJSONObject(i))); }
+                    catch (JSONException e) { LOGGER.log(Level.WARNING, "failed parsing flights object", e); }
+                }
                 return flights;
             });
     }
@@ -122,9 +129,9 @@ public class TryCb {
                     if (responseBody == null) { throw new IOException("Empty response"); }
 
                     final List<T> data = converter.convert(new JSONObject(responseBody.string()).getJSONArray("data"));
-
                     SwingUtilities.invokeLater(() -> receiver.accept(data));
                 }
+                catch (JSONException e) { throw new IOException("failed parsing response body", e); }
             }
         });
     }

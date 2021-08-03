@@ -20,6 +20,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -35,7 +36,7 @@ public class Flight {
     public static final String PROP_PRICE = "price";
 
     @Nullable
-    public static Flight fromJSON(@Nullable JSONObject json) {
+    public static Flight fromJSON(@Nullable JSONObject json) throws JSONException {
         return (json == null)
             ? null
             : new Flight(
@@ -46,7 +47,7 @@ public class Flight {
                 (!json.has(PROP_EQUIPMENT)) ? null : json.getString(PROP_EQUIPMENT),
                 (!json.has(PROP_DEPARTURE_TIME)) ? null : json.getString(PROP_DEPARTURE_TIME),
                 (!json.has(PROP_FLIGHT_TIME)) ? 0 : json.getInt(PROP_FLIGHT_TIME),
-                (!json.has(PROP_PRICE)) ? 0F : json.getFloat(PROP_PRICE));
+                (!json.has(PROP_PRICE)) ? 0F :  (float) json.getDouble(PROP_PRICE));
     }
 
 
