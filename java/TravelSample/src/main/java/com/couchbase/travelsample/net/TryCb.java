@@ -39,6 +39,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.couchbase.travelsample.model.BookedFlight;
@@ -56,7 +57,7 @@ public class TryCb {
 
     @FunctionalInterface
     public interface JsonArrayConverter<T> {
-        List<T> convert(@Nonnull JSONArray json);
+        List<T> convert(@Nonnull JSONArray json) throws JSONException;
     }
 
 
@@ -125,6 +126,7 @@ public class TryCb {
 
                     SwingUtilities.invokeLater(() -> receiver.accept(data));
                 }
+                catch (JSONException e) { throw new RuntimeException(e); }
             }
         });
     }

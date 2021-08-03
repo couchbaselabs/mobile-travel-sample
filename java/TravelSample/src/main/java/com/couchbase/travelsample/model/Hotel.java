@@ -20,6 +20,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.couchbase.lite.Dictionary;
@@ -37,7 +38,7 @@ public class Hotel {
     public static final String PROP_DESCRIPTION = "description";
 
     @Nonnull
-    public static Hotel fromJSON(@Nonnull JSONObject json) {
+    public static Hotel fromJSON(@Nonnull JSONObject json) throws JSONException {
         return new Hotel(
             json.getString(PROP_ID),
             (!json.has(PROP_NAME)) ? null : json.getString(PROP_NAME),
