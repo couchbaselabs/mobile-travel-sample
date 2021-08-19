@@ -23,7 +23,7 @@ You can think of a database as a namespace for documents and several databases c
 The snippet below creates an empty database for the `guest` user in a directory named ``guest``. 
 
 *Open the file* `DatabaseManager.java`.
-We will review the `OpenGuestDatabase(Context context)`  method.
+We will review the `OpenGuestDatabase`  method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L58[DatabaseManager.java]
 
