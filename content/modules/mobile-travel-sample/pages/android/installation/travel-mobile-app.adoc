@@ -34,7 +34,7 @@ If you haven't done so already, complete the steps outlined in the "Backend Inst
 === Updating the web backend URL
 
 *Open the file* `DatabaseManager.java` in util folder.
-You must update the `mPythonWebServerEndpoint` constant which points to the Python Web Server.
+You must update the `APPLICATION_ENDPOINT` constant which points to the Python Web Server.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
@@ -46,7 +46,7 @@ Manual::
 --
 [source,java]
 ----
-public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
+public static String APPLICATION_ENDPOINT = "http://10.0.2.2:8080/api/";
 ----
 --
 
@@ -55,7 +55,7 @@ Docker::
 --
 [source,java]
 ----
-public static String mPythonWebServerEndpoint = "http://10.0.2.2:8080/api/";
+public static String APPLICATION_ENDPOINT = "http://10.0.2.2:8080/api/";
 ----
 --
 
@@ -66,7 +66,7 @@ Cloud::
 ----
 // Replace the hostname with the IP Address of the RightScale instance.
 // The example states `54.148.83.39` but yours will be different.
-public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
+public static String APPLICATION_ENDPOINT = "http://54.148.83.39:8080/api/";
 ----
 --
 ====
@@ -77,7 +77,7 @@ public static String mPythonWebServerEndpoint = "http://54.148.83.39:8080/api/";
 Next, you will update the Sync Gateway endpoint.
 
 *Open the file* `DatabaseManager.java` in util folder
-You must update the `mSyncGatewayEndpoint` constant.
+You must update the `SGW_ENDPOINT` constant.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
@@ -88,7 +88,7 @@ Manual::
 --
 [source,java]
 ----
-    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
 
@@ -97,7 +97,7 @@ Docker::
 --
 [source,java]
 ----
-    public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
+    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
 ----
 --
 
@@ -108,7 +108,7 @@ Cloud::
 ----
 // Replace the hostname with the IP Address of the RightScale instance.
 // The example states `54.148.83.39` but yours will be different.
-public static String mSyncGatewayEndpoint = "ws://54.148.83.39:4984/travel-sample";
+public static String SGW_ENDPOINT = "ws://54.148.83.39:4984/travel-sample";
 ----
 --
 ====
