@@ -190,7 +190,7 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 * Enter From and Return Travel Dates
 * Click on "Search" button 
 * From list of flights, select the first flight listing by clicking on the corresponding "Add to Basket" button
-* Confirm the booking by clicking on the "Basket" tab to view the flight selections and then the on "`Buy`" button
+* Confirm the booking by clicking on the "Basket" tab to view the flight selections and then click on the "`Buy`" button
 * The "Booked" tab should show the confirmed flight reservations
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel-app-pull.gif[]
