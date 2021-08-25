@@ -38,6 +38,7 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
     private final JLabel name;
     private final JLabel location;
     private final JTextArea description;
+    final JPanel panel = new JPanel(new BorderLayout(), true);
 
     public HotelCellRenderer() {
         super(new BorderLayout(), true);
@@ -48,15 +49,15 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
         location = new JLabel();
         location.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 0));
 
-        final JPanel panel = new JPanel(new BorderLayout(), true);
         panel.setBackground(Page.COLOR_BACKGROUND);
 
         panel.add(name, BorderLayout.NORTH);
         panel.add(location, BorderLayout.SOUTH);
+        panel.setPreferredSize(new Dimension(550, 50));
         add(panel, BorderLayout.WEST);
 
         description = new JTextArea();
-        description.setPreferredSize(new Dimension(800, 50));
+        description.setPreferredSize(new Dimension(900, 50));
         description.setEditable(false);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
@@ -79,8 +80,8 @@ public class HotelCellRenderer extends JPanel implements ListCellRenderer<Hotel>
         final String hotelDesc = hotel.getDescription();
         description.setText(hotelDesc);
 
-        setForeground(focused ? Page.COLOR_TEXT : Page.COLOR_UNFOCUSED);
-        setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
+        description.setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
+        panel.setBackground(selected ? Page.COLOR_SELECTED : Page.COLOR_BACKGROUND);
 
         return this;
     }
