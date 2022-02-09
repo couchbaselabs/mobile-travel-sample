@@ -33,6 +33,8 @@ namespace TravelSample.Core.Util
         /// and creating users, etc)
         /// </summary>
         public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
+        //public static readonly Uri ServerBackendUrl = new Uri("http://10.0.2.2:8080/api/"); /* if using Android Emulator */
+
 
         /// <summary>
         /// An expression for getting the type keypath of a document
