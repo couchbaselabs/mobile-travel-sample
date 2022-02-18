@@ -1,2 +1,7 @@
 name: tutorials
 version: 'master'
+asciidoc:
+  attributes:
+    sgw-version: 3.0.0-beta02
+    cbs-version: 7.0.0
+    app-version: 2.6.5

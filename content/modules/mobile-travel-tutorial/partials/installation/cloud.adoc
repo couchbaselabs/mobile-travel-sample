@@ -28,27 +28,31 @@ You should see the version of git installed.
 
 == Workshop Repo
 
-* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
+* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
 +
 [source,bash]
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
 
-== Launching Cloud Instance 
+== Launching Cloud Instance
 
 * Access https://selfservice-4.rightscale.com/catalog on your browser.
+
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
+
 * From the catalog of available projects, select the **Mobile Travel Sample Workshop**, give it a name. By default the shutdown time is "600 minutes". Change it to suit your needs. Then click **Launch**.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
+
 * Once the instance is running, you should see the state change to "launching".
 It will take several minutes to launch.
 So be patient!
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_launching.png[,500]
+
 * Once the instance is running, You should see the state change to "running".
 There are two instances - one for "Develop" and one for "Deploy".
 We are only interested in the "Develop" option.
@@ -57,7 +61,9 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
 
+
 == Try it out (Couchbase Server)
+
 
 * Access Couchbase Server from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8091`
 * Log into the "Admin Console" with username as "Administrator" and password as "password"
@@ -67,15 +73,18 @@ Now that you have the instance up and running, you will have to edit the mobile 
 
 == Try it out (Sync Gateway)
 
+
 * Access Sync Gateway from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://52.38.236.38:4984`
 * You should see the following response.
 +
 [source,bash]
 ----
-{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.8"},"version":"Couchbase Sync Gateway/2.8.0(271;bf3ddf6) EE"}
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(300;bf3ddf6) EE"}
 ----
 
+
 == Try it out (Travel App)
+
 
 * Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
 * Verify that you see the login screen of the Travel Sample Web App as shown below
