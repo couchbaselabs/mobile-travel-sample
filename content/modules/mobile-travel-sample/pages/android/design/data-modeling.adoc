@@ -1,26 +1,33 @@
 = Data Modeling
 
+:param-module:  android
+:param-language: java
+
 == Introduction
 
+
 Before diving into the document schemas, let's take a look again at the mobile app.
-When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen: 
+When you ran the mobile app in the previous lesson, you may remember two different options were presented on the login screen:
+
+.Android Login
+image::android-login.png[]
 
 
-image::https://cl.ly/1s2L2Q372d2m/android-login.png[]
+* **Sync mode**:
+with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users.
 
+* **Guest / Non Sync mode**:
+no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchronized to the Sync Gateway.
 
-* **Sync mode**: with the user credentials provided, this user can synchronize documents with Couchbase Server and, in turn, with other users. 
-* **Guest / Non Sync mode**: no user credentials are required for this option. This is a local only mode. Documents created in the local database are not synchornized to the Sync Gateway. 
-
-image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel%20sample%20mobile.png[]
+image::travel_sample_mobile.png[]
 
 Throughout the next lessons, you will be switching between those two modes to test different functionalities.
 It's worth noting that the data model is slightly different between those two modes.
-Let's review the data model for each one. 
+Let's review the data model for each one.
 
 === Sync mode
 
-Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types: 
+Here, the application communicates with Couchbase Server (via Sync Gateway). The documents stored in the Couchbase Server bucket have the following types:
 
 * `airline`
 * `airport`
@@ -32,43 +39,61 @@ Except for the *user* document (right on the diagram below), the rest of documen
 In the demo app,
 
 * The `hotel` and `airport` documents are bundled into a prebuilt Couchbase Lite database and loaded when the app launches.
-We will discuss more about locating and using prebuilt databases in the xref::swift/develop/pre-built-database.adoc[Pre-built Database] section of the tutorial.
+We will discuss more about locating and using prebuilt databases in the
+xref:{param-module}/develop/pre-built-database.adoc[Pre-built Database]
+section of the tutorial.
+
 * The `airline`, `airport`, `hotel`and `route` documents are NOT synchronized to the mobile app.
 Instead, they are fetched by the app via the REST webservices API exposed by the Travel Sample Web backend.
 +
-image::https://cl.ly/40330Z0M1k3F/models.png[]
+.Data model diagram
+image::models.png[]
 
-=== Guest / Non Sync mode
+[[_guestnon_sync_mode]]
+=== Guest/Non Sync mode
 
 In guest mode, the mobile app creates a new database for the anonymous user.
-It is an empty database for storing the list of bookmarked hotels locally. 
+It is an empty database for storing the list of bookmarked hotels locally.
 
 It is conceivable that in a real-world application, a user of the Travel Sample Mobile app may be interested in browsing for hotels in specific locations meeting specific search criteria without having to actually sign up.
 They could bookmark these hotels and later add them to their trip reservations.
-These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings. 
+These bookmarked hotels could also be shared with other users, for instance with the user making the trip bookings.
 
-In guest mode, the Couchbase Lite database hosts the following types of documents: 
+In guest mode, the Couchbase Lite database hosts the following types of documents:
 
 * `bookmarkedhotels`
 * `hotel`
 
-image::https://cl.ly/2l0118183p11/guest-model.png[]
+
+.Guest data model
+image::guest-model.png[]
+
 
 == Document Types
 
 Unlike tables, in Couchbase, all the documents are stored in the same namespace.
 So you typically use an additional property to differentiate between each entity.
-Let`'s call it "type". image:https://cl.ly/1w2D1Z2J0p47/document-types.png[]
+Let`'s call it "type".
 
-=== Try it out
+image::document-types.gif[]
 
-* Log into the "Admin Console" of Couchbase Server with same Administrator credentials you used during installation 
-* Select the "buckets" option from menu on left 
-* Click on "Documents" under the travel-sample bucket 
-* Search for document with ID "hotel_10025" 
-* Verify that the "type" property of the document is "hotel" 
+.Try it out
+****
+. Log into the "Admin Console" of Couchbase Server with same Administrator credentials you used during installation
 
+. Select the "buckets" option from menu on left
+
+. Click on "Documents" under the travel-sample bucket
+
+. Search for document with ID "hotel_10025"
+
+. Verify that the "type" property of the document is "hotel"
+****
+
+
+[[_document_keyid]]
 == Document Key/ID
+
 
 Every document in Couchbase is associated with a unique key that must be provided by the user when the document is created.
 The key is the unique identifier of the document and can take any format.
@@ -76,28 +101,37 @@ However, it is recommended that you give it a value that provides some context a
 For instance, in the travel app data set, the document Key/ID is of the format `+{doc.type}_{alphanumeric_string}+`.
 Here `{doc.type}` provides some context of the purpose of the document and in combination with the `+{alphanumeric_string}+`, it uniquely identifies the string.
 The document Key will be listed as "`ID`" on Couchbase Server admin console.
-The key is also referred to as the Document ID. 
+The key is also referred to as the Document ID.
 
 
-image::https://cl.ly/0K3V1q3m3K1Z/admin-ui.png[]
+image::admin-ui.png[]
 
 
-=== Try it out
+.Try it out
+****
+. Log into the "Admin Console" of Couchbase Server with appropriate Administrator credentials you created during installation
 
-* Log into the "Admin Console" of Couchbase Server with appropriate Administrator credentials you created during installation 
-* Select the "buckets" option from the menu on the left 
-* Click on "Documents" under the travel-sample bucket 
-* Search for document with ID "airline_137" 
-* Verify that the "callsign" property of the document is "AIRFRANS"
+. Select the "buckets" option from the menu on the left
+
+. Click on "Documents" under the travel-sample bucket
+
+. Search for document with ID "airline_137"
+
+. Verify that the "callsign" property of the document is "AIRFRANS"
+
+****
+
 
 == Document _id
 
+
 When Sync Gateway processes a document, it adds relevant metadata to the document.
-The metadata includes an "_id" property that corresponds to the document ID.
-You will see this property if you query for the document via the Sync Gateway REST API.
+The metadata includes an `_id` property that corresponds to the document ID.
+You can see this property if you query for the document via the the SyncGateway REST API.
 
 [source,json]
 ----
+
 {
     "_id": "airline_137",
     "_rev": "1-b4e60280a1a0e3d46efad7bfd0e2068c",
@@ -111,6 +145,9 @@ You will see this property if you query for the document via the Sync Gateway RE
 }
 ----
 
-Mobile App Developers using Couchbase Lite should typically never have to directly read or write the `_id` property.
-You would query the `meta().id` field to fetch the document ID.
-We will learn more about this in the xref::java/develop/query.adoc[Query lesson].
+Mobile App Developers using Couchbase Lite should typically never have to directly read or write the _id property.
+You would query the meta().id field to fetch the document ID.
+We will learn more about this in our lesson on Queries.
+
+We will learn more about this in the
+xref:{param-module}/develop/query.adoc[Query lesson].

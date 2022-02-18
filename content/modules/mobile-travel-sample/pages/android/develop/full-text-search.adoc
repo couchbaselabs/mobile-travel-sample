@@ -1,16 +1,18 @@
 = Full Text Search
 
+
 == Full Text Search
 
-Couchbase Lite 2.0 now supports Full Text Search (FTS). FTS is accomplished using the `match` query.
-FTS matches are case-senstive.
-In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app. 
+_Couchbase Lite_ footnote:[From 2.0] supports Full Text Search (FTS).
+FTS is accomplished using the `match` query.
+FTS matches are case-insensitive.
+In the Travel App, the FTS query is against local pre-built "travel-sample" database.
 
-In order to do FTS queries, an FTS index must be created. 
+In order to do FTS queries, an FTS index must be created.
 
 *Open the file*``app/src/android/java/.../util/DatabaseManager.java``.
 We will review the `createFTSQueryIndex()` method.
-This code snippet creates an FTS index on the property named ``description``. 
+This code snippet creates an FTS index on the property named ``description``.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/util/DatabaseManager.java#L76[DatabaseManager.java]
 
@@ -26,10 +28,10 @@ private void createFTSQueryIndex() {
 }
 ----
 
-Next you will write an FTS query that uses the index. 
+Next you will write an FTS query that uses the index.
 
 *Open the file*``app/src/android/java/.../hotels/HotelsPresenter.java``.
-We will review the `queryHotels(String location, String description)` method. 
+We will review the `queryHotels(String location, String description)` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/hotels/HotelsPresenter.java[HotelsPresenter.java]
 
@@ -42,7 +44,7 @@ public void queryHotels(String location, String description) {
 }
 ----
 
-First, you get an instance of the database. 
+First, you get an instance of the database.
 
 [source,java]
 ----
@@ -53,13 +55,11 @@ Database database = DatabaseManager.getDatabase();
 Next, you will create an FTS `Expressions` using the `match()` operator.
 In this particular example, the `match` expression looks for the `desciptionStr` value in the `description` property.
 This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the ``country``,``city``,``state`` or `address` properties.
-This expression is then used in the `where` clause of the query the usual way. 
+This expression is then used in the `where` clause of the query the usual way.
 
 [source,java]
 ----
-
-Expression descExp = FullTextExpression.index("descFTSIndex").match(description) ;
-
+Expression descExp = FullTextFunction.match("descFTSIndex", description) ;
 
 Expression locationExp = Expression.property("country")
   .like(Expression.string("%" + location + "%"))
@@ -77,7 +77,7 @@ Query hotelSearchQuery = QueryBuilder
 );
 ----
 
-We build the query using the different expressions from above and transform the `ResultSet` object into a `List<Map<String, Object>>` object that is passed to the ``RecyclerView``. 
+We build the query using the different expressions from above and transform the `ResultSet` object into a `List<Map<String, Object>>` object that is passed to the ``RecyclerView``.
 
 [source,java]
 ----
@@ -101,14 +101,19 @@ while((row = rows.next()) != null) {
 mHotelView.showHotels(data);
 ----
 
-=== Try it out
+.Try it out
+****
+. Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`"
 
-* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "hotels" button 
-* In the description text field enter "`Pets. 
-* In the Location text field enter "London" 
-* Verify that you see one hotel listed named "Novotel London West" 
+. Tap on "hotels" button
 
+. In the description text field enter "`Pets.
 
+. In the Location text field enter "London"
 
+. Verify that you see one hotel listed named "Novotel London West"
+
+****
+
+.Hotel List
 image::https://cl.ly/192b1z2s3S3t/android-fts.gif[]

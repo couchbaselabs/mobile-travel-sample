@@ -18,4 +18,4 @@ a| xref:{param-module}/installation/cloud.adoc[Cloud (RightScale)]
 | In this case, you can launch and connect to an instance of the backend components running on a cloud instance.
 |===
 
-NOTE: Make sure to use the same installation option for _all_ backend components (i.e. if you selected Docker (Local), then you must use docker for all of them and so on.)
+NOTE: Make sure to use the same installation option for _all_ backend components, so if you select Docker (Local), then you must use docker for Python Travel Sample Web App, Sync Gateway and Couchbase Server.

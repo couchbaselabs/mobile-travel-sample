@@ -3,28 +3,38 @@
 
 == Overview
 
-Couchbase Lite 2.0 includes support for N1QL like query interface.
-Database can be queried by constructing a query using a Query builder and then executing that query. 
+Couchbase Lite footnote:[From 2.0] includes support for N1QL like query interface.
+Database can be queried by constructing a query using a Query builder and then executing that query.
 
-The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+The Query interface in Couchbase Lite powerful and includes support for:
 
-- Pattern Matching
-- Regex Matching
-- Math Functions
-- String Manipulation Functions
-- Aggregate Functions
-- Grouping
-- Joins (within single database)
-- Sorting
-- NilOrMissing properties
+* Pattern Matching
+
+* Regex Matching
+
+* Math Functions
+
+* String Manipulation Functions
+
+* Aggregate Functions
+
+* Grouping
+
+* Joins (within single database)
+
+* Sorting
+
+* NilOrMissing properties
+
 
 == Simple Query
 
-The travel app has many instances of querying the database.
-We will discuss a simple example here. 
 
-*Open the file* ``app/src/android/java/.../searchflight/SearchFlightPresenter.java``.
-We will review the `startsWith(String prefix, String tag)` method. 
+The travel app has many instances of querying the database.
+We will discuss a simple example here.
+
+*Open the file* `app/src/android/java/.../searchflight/SearchFlightPresenter.java`.
+We will review the `startsWith(String prefix, String tag)` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/searchflight/SearchFlightPresenter.java#L53[SearchFlightPresenter.java]
 
@@ -37,7 +47,7 @@ public void startsWith(String prefix, String tag) {
 }
 ----
 
-The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term. 
+The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term.
 
 [source,java]
 ----
@@ -53,7 +63,8 @@ Query searchQuery = QueryBuilder
 ----
 
 Next, the query is executed using the `execute()` method.
-Each row in the result will contain a single property called "airportname". The final result is passed to the `showAirports` method where the result will be displayed in a ``RecyclerView``. 
+Each row in the result will contain a single property called "airportname".
+The final result is passed to the `showAirports` method where the result will be displayed in a `RecyclerView`.
 
 [source,java]
 ----
@@ -74,21 +85,25 @@ while ((row = rows.next()) != null) {
 mSearchView.showAirports(data, tag);
 ----
 
-=== Try it out
+.Try it out
+****
+* Log into the Travel Sample Mobile app as "demo" user and password as "password"
+* Tap the "Flights" button to make a flight reservation
+* In the "From" airport textfield, enter "Detroit"
+* Verify that the first item in the drop down list is "Detroit Metro Wayne Co" -- see -- <<fig_selfromair>>
+****
 
-* Log into the Travel Sample Mobile app as "demo" user and password as "password" 
-* Tap the "Flights" button to make a flight reservation 
-* In the "From" airport textfield, enter "Detroit" 
-* Verify that the first item in the drop down list is "Detroit Metro Wayne Co" 
-+
+[#fig_selfromair]
+.Airport Selection
 image::https://cl.ly/0b3q2T2t1R1J/android-simple-query.gif[]
+
 
 == Advanced Query
 
-In this section we will discuss the JOIN query.
-JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
 
-If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels. 
+In this section we will discuss the JOIN query; intra-database joins.
+
+If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels.
 
 [source,json]
 ----
@@ -104,10 +119,10 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 }
 ----
 
-We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels". 
+We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
 
-*Open the file*``app/src/android/java/.../hotes/BookmarksPresenter.java``.
-We will review the `fetchBookmarks()` method. 
+*Open the file* `app/src/android/java/.../hotes/BookmarksPresenter.java`.
+We will review the `fetchBookmarks()` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/android/app/src/main/java/com/couchbase/travelsample/bookmarks/BookmarksPresenter.java#L32[BookmarksPresenter.java]
 
@@ -119,7 +134,7 @@ public void fetchBookmarks() {
 }
 ----
 
-First, we instantiate two data sources which corresponds to the two sides of the join query. 
+First, we instantiate two data sources which corresponds to the two sides of the join query.
 
 [source,java]
 ----
@@ -129,7 +144,7 @@ DataSource hotelsDS = DataSource.database(database).as("hotelDS");
 
 Next we write the query expressions.
 The first one gets the `hotels` property on the bookmarks data source.
-The seconds get the document ID on the hotels data source. 
+The seconds get the document ID on the hotels data source.
 
 [source,java]
 ----
@@ -138,7 +153,7 @@ Expression hotelIdExpr = Meta.id.from("hotelDS");
 ----
 
 Next, we use a function expression to find document's whose `\_id` property is in the `hotels` array.
-And build the join expression. 
+And build the join expression.
 
 [source,java]
 ----
@@ -146,7 +161,7 @@ Expression joinExpr = ArrayFunction.contains(hotelsExpr, hotelIdExpr);
 Join join = Join.join(hotelsDS).on(joinExpr);
 ----
 
-Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document. 
+Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
 
 [source,java]
 ----
@@ -191,14 +206,24 @@ try {
 }
 ----
 
-=== Try it out
+.Try it out
+****
+. Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
 
-* Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
-* Tap on "Hotels"" button 
-* In the "Location" text field, enter "London"
-* In the "Description" text field, enter "Pets"
-* Verify that you see the "Novotel London West" listed
-* Tap to "bookmark" the hotel
-* Verify that the Novatel hotel shows up in the list on the "BookmarksActivity" page
-+
-image::https://cl.ly/3r243s1K2600/android-advanced-query.gif[]
+. Tap on "Hotels"" button
+
+. In the "Location" text field, enter "London"
+
+. In the "Description" text field, enter "Pets"
+
+. Verify that you see the "Novotel London West" listed
+
+. Tap to "bookmark" the hotel
+
+. Verify that the Novatel hotel shows up in the list on the "BookmarksActivity" page -- see <<fig-android-bookmark>>
+
+****
+
+.Bookmarking
+[#fig-android-bookmark]
+image::android-advanced-query.gif[]
