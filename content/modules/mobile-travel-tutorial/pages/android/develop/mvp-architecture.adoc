@@ -1,24 +1,26 @@
 = MVP Architecture
 
-== Overview
 
-=== The Model-View-Presenter pattern
+==  The Model-View-Presenter pattern
 
-In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view. 
+In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view.
 
-
-image::https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png[]
+image::android-mvp-model.png[]
 
 In the Android Studio project, the code is structured by feature.
-You can select the *Android* option in the left navigator to view the files by package. 
+You can select the *Android* option in the left navigator to view the files by package.
 
+image::android-left-navigator.png[]
 
-image::https://cl.ly/1h080V1V2g2j/left-navigator.png[]
+Each package contains 3 different files:
 
-Each package contains 3 different files: 
+* `Activity`: This is where all the view logic resides.
+* `Presenter`: This is where all the business logic resides to fetch and persist data to a web service or the embedded Couchbase Lite database.
+* `Contract`: An interface that the `Presenter` and `Activity` implement.
 
-* ``Activity``: This is where all the view logic resides. 
-* ``Presenter``: This is where all the business logic resides to fetch and persist data to a web service or the embedded Couchbase Lite database. 
-* ``Contract``: An interface that the `Presenter` and `Activity` implement. 
+Throughout this tutorial, we will walkthrough the code in the various presenters to showcase different features of the Couchbase Lite API:
 
-Throughout this tutorial, we will walkthrough the code in the various presenters to showcase different features of the Couchbase Lite 2.0 API: ``BookmarksPresenter.java``, ``HotelsPresenter.java``, `SearchFlightPresenter.java` and ``BookingsPresenter.java``. 
+* `BookmarksPresenter.java`
+* `HotelsPresenter.java`
+* `SearchFlightPresenter.java`
+* `BookingsPresenter.java`.
