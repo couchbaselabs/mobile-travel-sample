@@ -2,15 +2,16 @@
 
 == Full Text Search
 
-Couchbase Lite 2.0  supports Full Text Search (FTS). FTS is accomplished using the `match` query.
-FTS matches are case-senstive.
-In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app. 
+Couchbase Lite footnote:[From 2.0]  supports Full Text Search (FTS).
+FTS is accomplished using the `match` query.
+FTS matches are case-sensitive.
+In the Travel App, the FTS query is against local "travel-sample" documents that is pre-built with the app.
 
-In order to do FTS queries, an FTS index must be created. 
+In order to do FTS queries, an FTS index must be created.
 
-*Open the file*``HotelsDao.java``.
+*Open the file*`HotelsDao.java`.
 We will review the `searchHotelsAsync()` method.
-This code snippet creates an FTS index on the property named ``description``. 
+This code snippet creates an FTS index on the property named `description`.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/HotelsDao.java#L59[HotelsDao.java]
 
@@ -36,13 +37,15 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSam
             .orderBy(Ordering.property(Hotel.PROP_NAME).ascending())
             .execute();
 ----
-This is a fairly involved query expression. 
-- You will create an FTS `Expressions` using the `match()` operator. In this particular example, the `match` expression looks for the `desc` value in the `description` property.
-- This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the ``country``,``city``,``state`` or `address` properties.
-- This expression is then used in the `where` clause of the query the usual way. 
+
+This is a fairly involved query expression.
+
+* You will create an FTS `Expressions` using the `match()` operator. In this particular example, the `match` expression looks for the `desc` value in the `description` property.
+* This `match` expression is logically ANDed with an `equalTo` comparison expression which looks for the `location` in the `country`,`city`,`state` or `address` properties.
+* This expression is then used in the `where` clause of the query the usual way.
 
 
-We build the query using the different expressions from above and parse the `ResultSet` object into a `List<Hotel>` object 
+We build the query using the different expressions from above and parse the `ResultSet` object into a `List<Hotel>` object
 
 [source,java]
 ----
@@ -54,14 +57,20 @@ We build the query using the different expressions from above and parse the `Res
 
 ----
 
-=== Try it out
+.Try it out
+****
+. Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`"
 
-* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "hotels" button 
-* In the description text field enter "`Pets`". 
-* In the Location text field enter "London"  (Note the search is *case sensitive*)
-* Verify that you see one hotel listed named "Novotel London West" 
+. Tap on "hotels" button
 
+. In the description text field enter "`Pets`".
 
+. In the Location text field enter "London"  (Note the search is *case sensitive*)
 
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-fts.gif[]
+. Verify that you see one hotel listed named "Novotel London West" -- see <<fig-java-hotel-list>>
+
+****
+
+[#fig-java-hotel-list]
+.Hotel List
+image::java-fts.gif[]
