@@ -301,4 +301,4 @@ $ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 
 [#fig-travsample]
 .Travel Sample Login Screen
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+image::try-cb-login-2.png[]

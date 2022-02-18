@@ -1,30 +1,42 @@
 = Query
-:source-language: java
+
+:param-module: java
+
 
 == Overview
 
-Couchbase Lite 2.x includes support for N1QL like query interface.
-Database can be queried by constructing a query using a Query builder and then executing that query. 
+Couchbase Lite includes support for a N1QL like query interface footnote:[From 2.0].
+Database can be queried by constructing a query using a Query builder and then executing that query.
 
-The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+The Query interface in Couchbase Lite is powerful and includes support for the following among others
 
-- Pattern Matching
-- Regex Matching
-- Math Functions
-- String Manipulation Functions
-- Aggregate Functions
-- Grouping
-- Joins (within single database)
-- Sorting
-- NilOrMissing properties
+* Pattern Matching
+
+* Regex Matching
+
+* Math Functions
+
+* String Manipulation Functions
+
+* Aggregate Functions
+
+* Grouping
+
+* Joins (within single database)
+
+* Sorting
+
+* NilOrMissing properties
+
 
 == Simple Query
 
-The travel app has many instances of querying the database.
-We will discuss a simple example here. 
 
-*Open the file* ``FlightsDao.java``.
-We will review the `searchAirportsAsync(@Nonnull String prefix, int maxResults)` method. 
+The travel app has many instances of querying the database.
+We will discuss a simple example here.
+
+*Open the file* `FlightsDao.java`.
+We will review the `searchAirportsAsync(@Nonnull String prefix, int maxResults)` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/FlightsDao.java#L114[FlightsDao.java]
 
@@ -36,7 +48,8 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSam
 }
 ----
 
-The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term. The query is executed using the `execute()` method.
+The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term.
+The query is executed using the `execute()` method.
 
 [source,java]
 ----
@@ -56,7 +69,7 @@ The query below *selects* the "name" property in documents *from* the database *
 
 ----
 
-Each row in the result will contain a single property called "airportname".  
+Each row in the result will contain a single property called "airportname".
 
 [source,java]
 ----
@@ -69,21 +82,25 @@ for (Result result : results.allResults()) {
 
 ----
 
-=== Try it out
+.Try it out
+****
+. Log into the Travel Sample Mobile app as "demo" user and password as "password"
 
-* Log into the Travel Sample Mobile app as "demo" user and password as "password" 
-* Click the "FLIGHTS" button to make a flight reservation 
-* In the "From" airport textfield, enter "Detroit" 
-* Verify that the first item in the drop down list is "Detroit Metro Wayne Co" 
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-simple-query.gif[]
+. Click the "FLIGHTS" button to make a flight reservation
+
+. In the "From" airport textfield, enter "Detroit"
+
+. Verify that the first item in the drop down list is "Detroit Metro Wayne Co"
+
+****
+
+image::java-simple-query.gif[]
 
 == Advanced Query
 
-In this section we will discuss the JOIN query.
-JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
+In this section we will discuss the JOIN query; intra-database joins.
 
-If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels. 
+If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels.
 
 [source,json]
 ----
@@ -99,10 +116,10 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 }
 ----
 
-We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels". 
+We will review the query that fetches documents whose `\_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
 
-*Open the file*``BookmarkDao.java``.
-We will review the `queryBookmarksAsync()` method. 
+*Open the file*`BookmarkDao.java`.
+We will review the `queryBookmarksAsync()` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSample/src/main/java/com/couchbase/travelsample/db/BookmarkDao.java#L78[BookmarkDao.java]
 
@@ -113,7 +130,7 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/java/TravelSam
     ...
   }
 ----
-The query object uses a join expression to find all the hotel document referenced in the "hotels" array of the bookmark document. 
+The query object uses a join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
 [source,java]
 ----
   final ResultSet results = QueryBuilder
@@ -127,7 +144,7 @@ The query object uses a join expression to find all the hotel document reference
       .execute();
 ----
 
-We use the `execute()` method to get the results back 
+We use the `execute()` method to get the results back
 
 [source,java]
 ----
@@ -137,15 +154,26 @@ We use the `execute()` method to get the results back
         }
 ----
 
-=== Try it out
+.Try it out
+****
+. Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
 
-* Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
-* Click on "ADD"" button 
-* In the "Location" text field, enter "London"
-* In the "Description" text field, enter "Pets"
-* Verify that you see the "Novotel London West" listed
-* Select the entry by clicking on it
-* Click "DONE" button to bookmark
-* Verify that the Novatel hotel shows up in the list on the "Bookmarks" page
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-advanced-query.gif[]
+. Click on "ADD"" button
+
+. In the "Location" text field, enter "London"
+
+. In the "Description" text field, enter "Pets"
+
+. Verify that you see the "Novotel London West" listed
+
+. Select the entry by clicking on it
+
+. Click "DONE" button to bookmark
+
+. Verify that the Novatel hotel shows up in the list on the "Bookmarks" page -- see <<fig-java-adv-query>>
+
+****
+
+.Advanced Query
+[#fig-java-adv-query]
+image::java-advanced-query.gif[]

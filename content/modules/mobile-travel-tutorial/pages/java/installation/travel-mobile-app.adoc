@@ -1,28 +1,43 @@
 = Travel Mobile App
+:page-toclevels: 2@
 :page-aliases: tutorials:travel-sample:develop/java,tutorials:travel-sample:develop/java/index
 :tabs:
 
-== Pre-requisites
-While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*. All instructions in the workshop assume this IDE.
 
-* IntelliJ IDEA 2019 or above downloadable from https://www.jetbrains.com/idea/download/#section=mac[Jetbrains Developer site]. The *Community* version is sufficient for our purposes.
+== Pre-requisites
+
+
+While you can use any IDE of your choice suited for Java development, in this tutorial we will be working with *IntelliJ IDEA*.
+All instructions in the workshop assume this IDE.
+
+* IntelliJ IDEA 2019 or above downloadable from
+https://www.jetbrains.com/idea/download/#section=mac[Jetbrains Developer site].
+The *Community* version is sufficient for our purposes.
 * JDK 8
 
-*Windows Users* : If you are developing on Windows, you must use a Windows 10 machine.
+*Windows Users*
+--
+If you are developing on Windows, you must use a Windows 10 machine.
 Also, note that if you choose the Manual or Docker installation mode, you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+--
+
 
 == Travel Sample Mobile App
 
-* Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process. 
+
+* Clone the "master" branch of the Travel Sample app from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
 +
 [source,bash]
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
+
 * Open *java/TravelSample/build.gradle* using IntelliJ IDEA.
 
 
 == Configure App to connect to Backend
+
+
 You will have to update the URLs specified in the app to connect to the backend
 If you haven't done so already, complete the steps outlined in the "Backend Installation" to install your Couchbase Server, Sync Gateway and Python web backend app.
 
@@ -33,7 +48,7 @@ You must update the `WEB_APP_ENDPOINT` constant which points to the Python Web S
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
+
 [{tabs}]
 ====
 Manual::
@@ -76,7 +91,6 @@ You must update the `SGW_ENDPOINT` constant.
 
 Now, the URLs that you specify will vary depending on the installation option that you chose for deploying your backend
 
-+
 [{tabs}]
 ====
 Manual::
@@ -109,11 +123,14 @@ public static final String SGW_ENDPOINT = "ws://54.148.83.39:4984/travel-sample"
 --
 ====
 
-=== Try it Out
 
-* Build and run the project (preferrably in Debug mode)
+.Try it Out
+****
+. Build and run the project (preferably in Debug mode)
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-build.png[800,]
-* Verify that the login screen appears in the simulator.
+
+. Verify that the login screen appears in the simulator.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/java-login.png[800,]
+****
