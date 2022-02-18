@@ -1,0 +1,4 @@
+
+
+
+:images_dir: https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/

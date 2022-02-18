@@ -72,7 +72,11 @@ Let's call it `type`.
 
 image::document-types.png[]
 
+<<<<<<< HEAD
 === Try it out
+=======
+.Try it out
+>>>>>>> DOC-9336-Net-Text-Completed
 ****
 . Log into the "Admin Console" of Couchbase Server with same Administrator credentials you used during installation
 
@@ -85,9 +89,17 @@ image::document-types.png[]
 . Verify that the "type" property of the document is "hotel"
 ****
 
+<<<<<<< HEAD
 [[_document_keyid]]
 == Document Key/ID
 
+=======
+
+[[_document_keyid]]
+== Document Key/ID
+
+
+>>>>>>> DOC-9336-Net-Text-Completed
 Every document in Couchbase is associated with a unique key that must be provided by the user when the document is created.
 The key is the unique identifier of the document and can take any format.
 However, it is recommended that you give it a value that provides some context about the contents of the document.
@@ -100,7 +112,11 @@ The key is also referred to as the Document ID.
 image::admin-ui.png[]
 
 
+<<<<<<< HEAD
 === Try it out
+=======
+.Try it out
+>>>>>>> DOC-9336-Net-Text-Completed
 
 ****
 . Log into the "Admin Console" of Couchbase Server with appropriate Administrator credentials you created during installation

@@ -1,9 +1,19 @@
 = Docker (Local)
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+=======
+ifndef::sgw-version[:sgw-version: 3.0.0]
+ifndef::cbs-version[:cbs-version: 7.0.0]
+
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 == Prerequisites
 
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 .Windows Users
 [TIP]
 --
@@ -12,12 +22,16 @@ Also, note that if you choose the Manual or Docker installation mode, you should
 --
 
 * Docker: downloadable from https://www.docker.com/get-docker[docker.com].
+=======
+* Docker: downloadable from
+https://www.docker.com/get-docker[docker.com].
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 Community edition would suffice.
 +
 *Windows Users* : If you are developing on Windows, you will likely need to install Docker as Admin user.
 
 
-* Microsoft Visual Studio 2017 (*only Windows Users*)
+* Microsoft Visual Studio 2019 (*only Windows Users*)
 
 * Git:
 Downloadable from
@@ -31,7 +45,7 @@ https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[git-scm.org].
 
 ** Run the following command from your terminal.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 bash docker -v
 ----
@@ -40,7 +54,7 @@ You should see the version of docker displayed.
 . Verify git installation
 ** Run the following command from your terminal.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 bash git --version
 ----
@@ -55,7 +69,7 @@ You should see the version of git installed.
 
 * Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
 ----
@@ -64,10 +78,11 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 [#svr-local-dock]
 == Couchbase Server
 
+
 * Create a local docker network named "workshop" if one does not exist already.
 Open a terminal window and run the following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker network ls
 docker network create -d bridge workshop
@@ -76,21 +91,37 @@ docker network create -d bridge workshop
 * To run the application in a container, you will first get the docker image from Docker Hub.
 Open a new terminal window and run the following.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 docker pull couchbase/server-sandbox:6.5.0
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+$ docker pull couchbase/server-sandbox:6.5.0
+=======
+docker pull couchbase/server-sandbox:{cbs-version}
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 ----
 
 * Once the command has completed you can start the application with the following.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-sandbox:6.5.0
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+$ docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-sandbox:6.5.0
+=======
+docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-sandbox:{cbs-version}
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 ----
 
 * You can view the logs at any time by running the following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker logs cb-server
 ----
@@ -98,23 +129,44 @@ docker logs cb-server
 * It may take a few seconds for the server to startup.
 Verify that the docker image is running with following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker ps
 ----
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 .Try it out
 ****
 
 . Open the Couchbase Server "Admin Console" by opening "http://localhost:8091" (or "http://127.0.0.1:8091")
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+=== Try it out
+=======
+.Try it out
+****
+
+. Open the Couchbase Server "Admin Console" by opening
+http://localhost:8091
+(or
+http://127.0.0.1:8091)
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 
 . Log into the console with username as "Administrator" and password as "password"
 
 . Select the "Buckets" option from the menu on the left
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 . Verify that you have around 63,000 documents in your travel-sample bucket
 
 ****
+=======
+. Verify that you have around 63,000 documents in your travel-sample bucket. +
+Note that it can take a few minutes for the travel_sample data set to load.
+
+****
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 
 
 [#sgw-local-dock]
@@ -128,7 +180,7 @@ If not, please follow the instructions in <<svr-local-dock,Couchbase Server (abo
 This should not be the case if you had followed the instructions to deploy Couchbase server using docker
 Open a terminal window and run the following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker network ls
 docker network create -d bridge workshop
@@ -137,10 +189,19 @@ docker network create -d bridge workshop
 
 * To run the application in a container, you will first get the docker image from Docker Cloud.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 docker pull couchbase/sync-gateway:3.0.0-beta02-enterprise
 
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+$ docker pull couchbase/sync-gateway:2.8.0-enterprise
+=======
+docker pull couchbase/sync-gateway:{sgw-version}-enterprise
+
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 ----
 
 * The Sync Gateway will have to be launched with the config file named
@@ -149,9 +210,21 @@ that you should have downloaded as part of the <<repository,Workshop Repo>> step
 The config file is located in the root folder of `/path/to/mobile-travel-sample`.
 
 * Open the `sync-gateway-config-travelsample.json` file using any text editor of choice
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 
 * For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
 +
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+* For the app to connect to the Couchbase Server, the address of the the server needs to be specified. Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
+
+=======
+
+* For the app to connect to the Couchbase Server, the address of the the server needs to be specified.
+Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
++
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 Replace `localhost` in the `sync-gateway-config-travelsample.json` file with `cb-server` and save.
 +
 
@@ -166,6 +239,7 @@ You must run the command below from the folder that contains the `sync-gateway-c
 [tabs]
 =====
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 Windows::
 +
 --
@@ -173,9 +247,26 @@ Windows::
 ----
 cd /path/to/mobile-travel-sample/
 docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+[source,bash]
+----
+cd /path/to/mobile-travel-sample/
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.8.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+=======
+Windows::
++
+--
+[source,bash, subs="attributes+, macros+"]
+----
+cd /path/to/mobile-travel-sample/
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 ----
 --
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 Non-Windows platform::
 +
 --
@@ -183,20 +274,38 @@ Non-Windows platform::
 ----
 cd c:\path\to\mobile-travel-sample\
 docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+**Non-Windows platform**
+
+[source,bash]
+----
+$ cd c:\path\to\mobile-travel-sample\
+$ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.8.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+=======
+Non-Windows platform::
++
+--
+[source,bash, subs="attributes+, macros+"]
+----
+cd c:\path\to\mobile-travel-sample\
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 ----
 --
 =====
 
 * You can view the logs at any time by running the following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker logs sync-gateway
 ----
 
 * Verify that the docker container named "sync-gateway" is running with the following command in the terminal window.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker ps
 ----
@@ -225,7 +334,7 @@ If not, please follow instructions in the <<svr-local-dock,Couchbase Server>> se
 * Create a local docker network named "workshop" if one does not exist already.
 Open a terminal window and run the following command.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker network ls
 docker network create -d bridge workshop
@@ -234,20 +343,20 @@ docker network create -d bridge workshop
 * To run the application in a container, you will first get the docker image from Docker Cloud.
 Open a terminal window and run the following.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker pull connectsv/try-cb-python-v2:6.5.0-server
 ----
 
 * Once the command has completed you can start the application with the following.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python-v2:6.5.0-server
 ----
 You should then see the following in the console output.
 +
-[source,bash]
+[source,bash, subs="attributes+, macros+"]
 ----
 Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 ----
@@ -258,6 +367,18 @@ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 . Verify that you see the login screen of the Travel Sample Web App as shown in <<fig-travsample>>
 ****
 
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
 [#fig-travsample]
 .Travel Sample Login Screen
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
+* Open http://127.0.0.1:8080/ in your web browser.
+* Verify that you see the login screen of the Travel Sample Web App as shown below
++
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+=======
+[#fig-travsample]
+.Travel Sample Login Screen
+image::try-cb-login-2.png[]
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
