@@ -1,29 +1,37 @@
 = Query
-:source-language: swift
+:param-language: swift
 
 == Overview
 
-Couchbase Lite 2.0 includes support for N1QL like query interface.
-Database can be queried by constructing a query using a Query builder and then executing that query. 
+Couchbase Lite footnote:[2.0+] includes support for N1QL like query interface.
+Database can be queried by constructing a query using a Query builder and then executing that query.
 
-The Query interface in Couchbase Lite 2.0 is poweful and includes support for the following among others
+The Query interface in Couchbase Lite 2.0 is powerful and includes support for the following among others
 
-- Pattern Matching
-- Regex Matching
-- Math Functions
-- String Manipulation Functions
-- Aggregate Functions
-- Grouping
-- Joins (within single database)
-- Sorting
-- NilOrMissing properties
+* Pattern Matching
+
+* Regex Matching
+
+* Math Functions
+
+* String Manipulation Functions
+
+* Aggregate Functions
+
+* Grouping
+
+* Joins (within single database)
+
+* Sorting
+
+* NilOrMissing properties
 
 === Implementation Pattern
 
 The `select` clause and `where` clause in the `Query` statement require a `CouchbaseLite.Expression` type.
 Consider the following query.
 
-[source]
+[source, {param-language}]
 ----
 let hotelSearchQuery = Query
   .select(SelectResult.expression(Meta.id),
@@ -41,18 +49,20 @@ let hotelSearchQuery = Query
 
 Often times, the same `Expression` may be required across multiple queries.
 This can quickly become tedious and difficult to maintain.
-The recommended pattern is to define constants corresponding to the Expressions and to reuse them across queries. 
+The recommended pattern is to define constants corresponding to the Expressions and to reuse them across queries.
 
-Open the https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift#L15[QueryConsts.swift] file.
-This file defines the CouchbaseLite expressions that are used in the Travel App 
+Open the
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Utilities/QueryConsts.swift#L15[QueryConsts.swift]
+file.
+This file defines the CouchbaseLite expressions that are used in the Travel App
 
-[source]
+[source, {param-language}]
 ----
 
   struct _Property {
   // Query: Property Expressions
   static let DOCID        = Meta.id
-  
+
   static let TYPE         = Expression.property("type")
   static let USERNAME     = Expression.property("username")
   static let FLIGHTS      = Expression.property("flights")
@@ -67,7 +77,7 @@ This file defines the CouchbaseLite expressions that are used in the Travel App
   static let AIRPORTNAME  = Expression.property("airportname")
   }
 
-  struct _SelectColumn {    
+  struct _SelectColumn {
       // Query: Select Results
       static let NAMERESULT         = SelectResult.expression(_Property.NAME)
       static let AIRPORTNAMERESULT  = SelectResult.expression(_Property.AIRPORTNAME)
@@ -78,17 +88,19 @@ This file defines the CouchbaseLite expressions that are used in the Travel App
   }
 ----
 
+
 == Simple Query
 
-The travel app has many instances of querying the database.
-We will discuss a simple example here. 
 
-*Open the file* ``AirportPresenter.swift``.
-We will review the `fetchAirportsMatching` method. 
+The travel app has many instances of querying the database.
+We will discuss a simple example here.
+
+*Open the file* `AirportPresenter.swift`.
+We will review the `fetchAirportsMatching` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/AirportPresenter.swift#L28[AirportPresenter.swift]
 
-[source]
+[source, {param-language}]
 ----
 func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Airports?, _ error:Error?)->Void) {
   ...
@@ -97,11 +109,11 @@ func fetchAirportsMatching( _ searchStr:String, handler:@escaping(_ airports:Air
 
 There are 3 different queries in this function body.
 The query that is ran depends on the length of the search term.
-You can ignore this specificity, in this section we will look at the 3rd query. 
+You can ignore this specificity, in this section we will look at the 3rd query.
 
-The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term. 
+The query below *selects* the "name" property in documents *from* the database *where* the *type* property is equal to *airport* and the "airportname" property is equal to the search term.
 
-[source]
+[source, {param-language}]
 ----
 searchQuery = QueryBuilder
   .select(_SelectColumn.AIRPORTNAMERESULT)
@@ -114,9 +126,9 @@ searchQuery = QueryBuilder
 
 Next, the query is executed using the `execute()` method.
 Each row in the result will contain a single property called "airportname".
-The final result is passed to the `handler` callback where the result will be displayed in a ``TableView``.
+The final result is passed to the `handler` callback where the result will be displayed in a `TableView`.
 
-[source]
+[source, {param-language}]
 ----
 if let searchQuery = searchQuery {
 var matches:Airports = []
@@ -134,21 +146,26 @@ catch {
 }
 ----
 
-=== Try it out
+.Try it out -- Simple Query
+****
+. Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`"
 
-* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "+"" button to make a flight reservation 
-* In the "`From`" airport textfield, enter "DTW"" 
-* Verify that the first item in the drop down list is "Detroit Metro Wayne Co"" 
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_simple_query.gif[]
+. Tap on "+"" button to make a flight reservation
+
+. In the "`From`" airport textfield, enter "DTW""
+
+. Verify that the first item in the drop down list is "Detroit Metro Wayne Co""
+****
+
+image::ios_simple_query.gif[]
+
 
 == Advanced Query
 
-In this section we will discuss the JOIN query.
-JOIN Queries in Couchbase Lite 2.0 are intra-database joins. 
 
-If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels. 
+In this section we will discuss the JOIN query; intra-database joins.
+
+If you recall from the Data Modeling section, the document with a *type* equal to "bookmarkedhotels" contains a *hotels* property which is an array of IDs of bookmarked hotels.
 
 [source,json]
 ----
@@ -166,21 +183,21 @@ If you recall from the Data Modeling section, the document with a *type* equal t
 
 We will review the query that fetches documents whose `_id` is included in the "hotels" property array of the document of type "bookmarkedhotels".
 
-*Open the file* ``HotelPresenter.swift``.
-We will review the `fetchBookmarkedHotels` method. 
+*Open the file* `HotelPresenter.swift`.
+We will review the `fetchBookmarkedHotels` method.
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/ios/TravelSample/TravelSample/Presenter/HotelPresenter.swift#L154[HotelPresenter.swift]
 
-[source]
+[source, {param-language}]
 ----
 func fetchBookmarkedHotels( handler:@escaping(_ hotels:Hotels?, _ error:Error?)->Void) {
     ...
 }
 ----
 
-First, we instantiate two data sources which corresponds to the two sides of the join query. 
+First, we instantiate two data sources which corresponds to the two sides of the join query.
 
-[source]
+[source, {param-language}]
 ----
 let bookmarkDS = DataSource.database(db).as("bookmarkDS")
 let hotelsDS = DataSource.database(db).as("hotelsDS")
@@ -188,26 +205,26 @@ let hotelsDS = DataSource.database(db).as("hotelsDS")
 
 Next we write the query expressions.
 The first one gets the `hotels` property on the bookmarks data source.
-The seconds get the document ID on the hotels data source. 
+The seconds get the document ID on the hotels data source.
 
-[source]
+[source, {param-language}]
 ----
 let hotelsExpr = Expression.property("hotels").from("bookmarkDS")
 let hotelIdExpr = Meta.id.from("hotelsDS")
 ----
 
 Next, we use a function expression to find document's whose `\_id` property is in the `hotels` array.
-And build the join expression. 
+And build the join expression.
 
-[source]
+[source, {param-language}]
 ----
 let joinExpr = ArrayFunction.contains(hotelsExpr, value: hotelIdExpr)
 let join = Join.join(hotelsDS).on(joinExpr);
 ----
 
-Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document. 
+Finally, the query object uses that join expression to find all the hotel document referenced in the "hotels" array of the bookmark document.
 
-[source]
+[source, {param-language}]
 ----
 let typeExpr = Expression.property("type").from("bookmarkDS")
 
@@ -220,9 +237,9 @@ let query = QueryBuilder.select(bookmarkAllColumns, hotelsAllColumns)
                 .where(typeExpr.equalTo(Expression.string("bookmarkedhotels")));
 ----
 
-And we use the `execute()` method to get the results back pass them on to the view. 
+And we use the `execute()` method to get the results back pass them on to the view.
 
-[source]
+[source, {param-language}]
 ----
 for result in try query.execute() {
   if let hotel = result.dictionary(forKey: "hotelsDS")?.toDictionary() as? Hotel{
@@ -232,15 +249,23 @@ for result in try query.execute() {
 handler(bookmarkedHotels,nil)
 ----
 
-=== Try it out
+.Try it out -- Advanced Query
+****
+. Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest"
 
-* Log into the Travel Sample Mobile app as "Guest" user by selecting "Proceed as Guest" 
-* Tap on "Hotels"" button 
-* In the "Description" text field, enter "pets" 
-* In the "Location" text field, enter "London" 
-* Verify that you see the "Novotel London West" listed 
-* Swipe left to "bookmark" the hotel 
-* Tap "Cancel" button 
-* Verify that the Novatel hotel that you bookmarked earlier shows up in the list 
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/ios_join_query.gif[]
+. Tap on "Hotels"" button
+
+. In the "Description" text field, enter "pets"
+
+. In the "Location" text field, enter "London"
+
+. Verify that you see the "Novotel London West" listed
+
+. Swipe left to "bookmark" the hotel
+
+. Tap "Cancel" button
+
+. Verify that the Novotel hotel that you bookmarked earlier shows up in the list
+****
+
+image::ios_join_query.gif[]

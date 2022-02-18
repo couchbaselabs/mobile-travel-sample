@@ -1,18 +1,18 @@
 = MVP Architecture
+:page-toclevels: 2@
 
-== Overview
 
-=== The Model-View-Presenter pattern
+== The Model-View-Presenter pattern
 
-In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view. 
+In our app, we follow the MVP pattern, separating the internal data model, from a passive view through a presenter that handles the logic of our application and acts as the conduit between the model and the view.
 
-image::https://cl.ly/073D0j3K1d1P/92ec579c7c197eb1.png[]
+image::ios-eb1.png[]
 
-==== Protocols
+=== Protocols
 
 In the Travel app, we define two sets of protocols.
 The `PresenterProtocol` protocol that must be implemented by all Presenter objects and `PresentingViewProtocol` must be implemented by the corresponding "view" objects.
-The `PresenterProtocol` and `PresentingViewProtocol` may be optionally extended to support capabilities of specific presenter/view 
+The `PresenterProtocol` and `PresentingViewProtocol` may be optionally extended to support capabilities of specific presenter/view
 
 The app defines the following PresenterProtocols that extend the `PresenterProtocol` protocol.
 
@@ -25,11 +25,11 @@ The app defines the following PresentingViewProtocols that extend the `Presentin
 
 * _BookingPresentingViewProtocol_ defines methods to be implemented by the Booking View
 
-==== Model
+=== Model
 
 The model provides and stores the internal data.
 In our travel app, for simplicity, we use standard data types of `Dictionary` and `Array` to represent the data.
-In a real application, one would use a custom object to represent the model. 
+In a real application, one would use a custom object to represent the model.
 
 The app implements the following models.
 
@@ -38,14 +38,14 @@ The app implements the following models.
 - _Airport_ which represents airport name
 - _Hotel_ which represents hotel details
 
-In addition, the `DatabaseManager.swift` is a singleton class that is used to manage the common database operations such as Database Creation/Deletion and Replication. 
+In addition, the `DatabaseManager.swift` is a singleton class that is used to manage the common database operations such as Database Creation/Deletion and Replication.
 
-==== View
+=== View
 
 In the Travel app, the `UIView` and the `UIViewController` classes represent the "view" in MVP.
 It handles user input and forwards requests to the Presenter.
 It updates the UI based on response from the Presenter.
-The view object holds a weak reference to the corresponding Presenter object that implements the corresponding ``PresenterProtocol``. 
+The view object holds a weak reference to the corresponding Presenter object that implements the corresponding ``PresenterProtocol``.
 
 The app implements the following ViewControllers.
 
@@ -59,7 +59,7 @@ The app implements the following ViewControllers.
 
 In addition, there are custom UITableViewCells.
 
-==== Presenter
+=== Presenter
 
 The Presenter acts as the intermediary between the View and the Model.
 It holds a weak reference to the corresponding view object that implements appropriate `PresentingViewProtocol`.
@@ -71,4 +71,4 @@ The app implements the following Presenters.
 - _AirportPresenter_ which implements the `AirportPresenterProtocol`
 - _HotelPresenter_ which implements the `HotelPresenterProtocol`
 
-In addition, there are some simple custom UI widgets like custom UITableViewCells 
+In addition, there are some simple custom UI widgets like custom UITableViewCells
