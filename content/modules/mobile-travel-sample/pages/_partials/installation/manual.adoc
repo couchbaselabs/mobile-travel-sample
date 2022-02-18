@@ -56,6 +56,7 @@ In this lesson, you will install and launch version the 6.5.x version of Couchba
 * https://www.couchbase.com/downloads#couchbase-server[Download and install] v6.5.x of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
 :https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
 * As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
 +
@@ -67,6 +68,25 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_rbac.png[,500]
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/RBAC_user.png[,500]
+=======
+image::createadminuser.png[]
+
+* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
++
+image::cbs-services.png[]
+
+* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
++
+image::sample_bucket.png[]
+
+* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket.
+You can do this from the "Security" menu.
+These credentials will be used by the Sync Gateway to access the documents in this bucket. +
+image::add_rbac.png[]
++
+image::RBAC_user.png[]
+
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
 * Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/add_fts.png[,500]
@@ -181,7 +201,15 @@ $ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 You may see an alert similar to one below requesting access to run the app.
 Make sure you select the "Allow access" option. image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
 
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
 *Other Platforms*
+=======
+Make sure you select the "Allow access" option.
+
+image::python_run_1.png[]
+
+=== Other Platforms
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
 
 * Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
 +
@@ -240,7 +268,14 @@ $ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 
 *Try it out*
 
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
 * Open http://127.0.0.1:8080/ in your web browser
 * Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
 +
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+=======
+
+[#fig-travsample]
+.Travel Sample Login Screen
+image::try-cb-login-2.png[]
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc

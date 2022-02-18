@@ -1,46 +1,87 @@
 = Security
+:page-toclevels: 2@
+
+:param-module: csharp
+:param-language: {param-module}
+
+:fnuwp: footnote:uwp[The screen capture is for UWP version of the app.]
+:fnref_uwp: footnote:uwp[]
+
 
 == User Creation
 
+
 User is created via the Travel sample web app.
-When a user is created, a corresponding user profile document is created on Couchbase Server associated with the user. In addition, the web app automatically registers the user with the Sync Gateway via the Sync Gateway [user admin REST endpoint](https://docs.couchbase.com/sync-gateway/2.7/admin-rest-api.html#/user/post__db___user_). 
+When a user is created, a corresponding user profile document is created on Couchbase Server associated with the user.
+In addition, the web app automatically registers the user with the Sync Gateway via the Sync Gateway
+xref:sync-gateway:rest-api-admin.adoc#/user/post__db___user_[user admin REST endpoint]
+
 NOTE: The Sync Gateway user corresponds to users who are authenticated to replicate with the Sync Gateway and are different from the RBAC users created on Couchbase Server.
 
-=== Try it out (Web App)
+.Try it out (Web App)
+****
+. Access the Travel Web App URL in the browser.
+This URL would be
+http://localhost:8080
+if you installed the web app manually or via docker container.
+If you used the Cloud install, please access the cloud instance of the web app.
 
-* Access the Travel Web App URL in the browser. This URL would be http://localhost:8080 if you installed the web app manually or via docker container. If you used the Cloud install, please access the cloud instance of the web app. 
-* Create a new user by entering "demo" as the username and "password" for the password. Click on the "Register"  button
-* You should be logged into the web app. There should be nothing created for the user.
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/web_user_signup.gif[]
+. Create a new user by entering "demo" as the username and "password" for the password.
+Click on the "Register"  button
 
-=== Try it out (Couchbase Server)
+. You should be logged into the web app.
+There should be nothing created for the user.
+****
 
-* Access the Couchbase Server URL in the browser. This URL would be http://localhost:8091 if you installed the server manually or via docker container. If you used the Cloud install, please access the cloud instance of the server. 
-* Log in with Administrator credentials that you set up during the installation of Couchbase Server. 
-* Choose "Buckets" in the Navigation pane on the left.
-* In the box labelled "Document ID", enter "user::demo" (note: there are two colons).
-* You should see the user document that was created when you signed up via the web app. 
-* Confirm that the "username" that you see is "demo"
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/cb_user_auth.gif[]
+image::web_user_signup.gif[]
 
-* Now look for a document with Id "_sync:user:demo". This is the document that is created by the Sync Gateway when you register the user
+
+.Try it out (Couchbase Server)
+****
+
+. Access the Couchbase Server URL in the browser.
+This URL would be
+http://localhost:8091
+if you installed the server manually or via docker container.
+If you used the Cloud install, please access the cloud instance of the server.
+
+. Log in with Administrator credentials that you set up during the installation of Couchbase Server.
+
+. Choose "Buckets" in the Navigation pane on the left.
+
+. In the box labelled "Document ID", enter "user::demo" (note: there are two colons) -- see: <<fit-net-getuser>>
+
+. You should see the user document that was created when you signed up via the web app.
+
+. Confirm that the "username" that you see is "demo"
+
+. Now look for a document with Id "_sync:user:demo".
+This is the document that is created by the Sync Gateway when you register the user
+****
+
+[#fit-net-getuser]
+.Retrieve User Data
+image::cb_user_auth.gif[]
 
 
 == Access Control
 
+
 In this lesson you`'ll be introduced to Sync Gateway, our secure web gateway.
-The Couchbase Sync Gateway is an Internet-facing synchronization mechanism that exposes a web interface which provides - Data Synchronization and Routing - Authorization and Access Control 
+Sync Gateway is an Internet-facing synchronization mechanism that exposes a web interface which provides - Data Synchronization and Routing - Authorization and Access Control
 
 In this chapter, we will focus on Authorization and Access Control.
-We will discuss Data Synchronization and Routing in the link:/develop/csharp#/2/3/0[Sync] chapter. 
+We will discuss Data Synchronization and Routing in the
+xref:{param-module}/develop/sync.adoc[Sync] chapter.
 
 In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
-The Sync Gateway configuration file determines the runtime behavior of Sync Gateway. 
+The Sync Gateway configuration file determines the runtime behavior of Sync Gateway.
 
-Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json. 
-The `users` section defines the hardcoded list of sync gateway users who are granted access to replicate with the Sync Gateway. Hardcoding list of users is an alternative to creating Sync Gateway users dynamically as discussed in the <<User Creation>> section.  In the config file, we have a hardcoded user named "admin" with password of "password" that is granted access to the "*" channel .
+Open the sync-gateway-config-travelsample.json file located at
+https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
+The `users` section defines the hardcoded list of sync gateway users who are granted access to replicate with the Sync Gateway.
+Hardcoding list of users is an alternative to creating Sync Gateway users dynamically as discussed in the <<User Creation>> section.
+In the config file, we have a hardcoded user named "admin" with password of "password" that is granted access to the "*" channel .
 
 [source,javascript]
 ----
@@ -49,7 +90,13 @@ The `users` section defines the hardcoded list of sync gateway users who are gra
 }
 ----
 
-* The `sync function` in the config file is a JavaScript function which implements the access control logic. The `access` method is used to grant the current user access to specific channel. We will discuss channels in detail in the link:/develop/csharp#/2/3/0["Sync"] section. For now, it is sufficient to note that documents are associated with channel(s). So access to a document is controlled by controlling the access rights to a channel. 
+* The `sync function` in the config file is a JavaScript function which implements the access control logic.
+The `access` method is used to grant the current user access to specific channel.
+We will discuss channels in detail in the
+xref:{param-module}/develop/sync.adoc[Sync]
+section.
+For now, it is sufficient to note that documents are associated with channel(s).
+So access to a document is controlled by controlling the access rights to a channel.
 
 
 [source,javascript]
@@ -62,9 +109,10 @@ The `users` section defines the hardcoded list of sync gateway users who are gra
 }
 ----
 
-=== Try it out
-
-* Run the following command in your terminal. If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway. 
+.Try it out
+****
+. Run the following command in your terminal.
+If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway.
 +
 
 [source,bash]
@@ -72,8 +120,10 @@ The `users` section defines the hardcoded list of sync gateway users who are gra
 
 curl -X GET http://localhost:4984/travel-sample/
 ----
-* Confirm that you see an "Unauthorized" error from the server 
-* Run the following command in yout terminal. The `authorization` header is base64 encoded value of "demo:password". If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway. 
+. Confirm that you see an "Unauthorized" error from the server
+. Run the following command in your terminal.
+The `authorization` header is base64 encoded value of "demo:password".
+If you did a cloud based install, please replace `localhost` in the command below with the IP Address of the cloud instance of the Sync Gateway.
 +
 
 [source,bash]
@@ -81,4 +131,5 @@ curl -X GET http://localhost:4984/travel-sample/
 
 curl -X GET http://localhost:4984/travel-sample/ -H 'authorization: Basic ZGVtbzpwYXNzd29yZA=='
 ----
-* Confirm that you see the details of the "travel-sample" database and "state" is "online" 
+. Confirm that you see the details of the "travel-sample" database and "state" is "online"
+****

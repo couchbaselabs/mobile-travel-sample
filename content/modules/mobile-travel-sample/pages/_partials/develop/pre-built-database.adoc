@@ -1,23 +1,21 @@
 = Pre-built database
 
-
 == Starting with Prebuilt Database
-
 
 In this section, you will learn how to bundle a pre-built Couchbase Lite database in an application.
 It can be a lot more efficient to bundle static or semi-static content database in your application and install it on the first launch.
 Even if some of the content changes on the server after you create the app, the app's first pull replication will bring the database up to date.
 Here, you will use a pre-built database that contains only airport and hotel documents.
-The code below moves the pre-built database from the bundled location to the platform default directory defined by Couchbase.
+The code below moves the pre-built database from the bundled location to the platform default directory defined by Couchbase. 
 
-*Open the file*``LoginModel.cs`` and navigate to the `StartSessionAsync` method.
+*Open the file*``LoginModel.cs`` and navigate to the `StartSessionAsync` method. 
 
 This method first checks if a database file already exists.
-If it doesn't exist it loads the database according to the logic for the platform (UWP from the Assets folder, iOS from the main bundle, Android from Assets)
+If it doesn't exist it loads the database according to the logic for the platform (UWP from the Assets folder, iOS from the main bundle, Android from Assets) 
 
 https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelSample/TravelSample.Core/Models/LoginModel.cs#L54[DatabaseManager.csharp]
 
-[source, {param-language}]
+[source]
 ----
 
  if (!Database.Exists(DbName, userFolder)) {
@@ -30,21 +28,16 @@ https://github.com/couchbaselabs/mobile-travel-sample/blob/master/dotnet/TravelS
 }
 ----
 
-.Try it out
-****
+=== Try it out
 
-. Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`"
+* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
+* Tap on "+`" button to make a flight reservation 
+* In the "`From`" airport textfield, enter "`San`" 
+* Confirm that the first item in the dropdown list of "San Diego Intl" 
 
-. Tap on "+`" button to make a flight reservation
+** Note ** that this is not currently functioning in Xamarin iOS since the custom drop down view has not been implemented 
 
-. In the "`From`" airport textfield, enter "`San`"
+The screen recording is for UWP app. 
 
-. Confirm that the first item in the dropdown list of "San Diego Intl"
-+
-NOTE: This is not currently functioning in Xamarin iOS since the custom drop down view has not been implemented
-****
 
-The screen recording is for UWP app.
-
-.Flight Dropdown List
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_prebuilt.gif[]
