@@ -221,7 +221,8 @@ extension HotelPresenter {
 
         var descExp:ExpressionProtocol?
         if let descriptionStr = descriptionStr , descriptionStr != ""{
-            descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
+            descExp = FullTextFunction.match(indexName: "descFTSIndex", query: descriptionStr)
+//            descExp = FullTextExpression.index("descFTSIndex").match(descriptionStr)
         }
         
         
