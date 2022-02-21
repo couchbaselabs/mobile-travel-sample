@@ -40,6 +40,7 @@ namespace TravelSample.Core.Models
         private const string DbName = "travel-sample";
         // REPLACE WITH 10.0.2.2 if you are runnung on Android emulator
         private static readonly Uri SyncUrl = new Uri("ws://localhost:4984");
+        //private static readonly Uri SyncUrl = new Uri("ws://10.0.2.2:4984"); /* If using Android emulator */
 
         #endregion
 
@@ -122,13 +123,15 @@ namespace TravelSample.Core.Models
             };
             config.PushFilter = (document, flags) =>
             {
-                if (document.GetString("type").Equals("hotel") ||
-                     document.GetString("type").Equals("landmark") ||
-                     document.GetString("type").Equals("airline") ||
-                     document.GetString("type").Equals("airport") ||
-                     document.GetString("type").Equals("route"))
-                {
-                    return false;
+                if (document.Contains("type")) { /* avoids null exception if document has no type property (eg: user::demo document) */
+                    if (document.GetString("type").Equals("hotel") ||
+                         document.GetString("type").Equals("landmark") ||
+                         document.GetString("type").Equals("airline") ||
+                         document.GetString("type").Equals("airport") ||
+                         document.GetString("type").Equals("route"))
+                    {
+                        return false;
+                    }
                 }
 
                 return true;

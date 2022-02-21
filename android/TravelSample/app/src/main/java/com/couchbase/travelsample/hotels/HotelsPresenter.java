@@ -10,6 +10,7 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Expression;
 import com.couchbase.lite.FullTextExpression;
+import com.couchbase.lite.FullTextFunction;
 import com.couchbase.lite.MutableArray;
 import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Query;
@@ -149,7 +150,7 @@ public class HotelsPresenter implements HotelsContract.UserActionsListener {
     public void queryHotels(String location, String description) {
         Database database = DatabaseManager.getDatabase();
 
-        Expression descExp = FullTextExpression.index("descFTSIndex").match(description) ;
+        Expression descExp = FullTextFunction.match("descFTSIndex", description) ;
         Expression locationExp = Expression.property("country")
             .like(Expression.string("%" + location + "%"))
             .or(Expression.property("city").like(Expression.string("%" + location + "%")))
