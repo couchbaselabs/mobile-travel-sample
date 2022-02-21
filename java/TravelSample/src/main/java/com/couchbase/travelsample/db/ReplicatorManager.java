@@ -27,19 +27,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.naming.AuthenticationException;
 
+import com.couchbase.lite.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import com.couchbase.lite.AbstractReplicator;
-import com.couchbase.lite.BasicAuthenticator;
-import com.couchbase.lite.CBLError;
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.ListenerToken;
-import com.couchbase.lite.Replicator;
-import com.couchbase.lite.ReplicatorChange;
-import com.couchbase.lite.ReplicatorChangeListener;
-import com.couchbase.lite.ReplicatorConfiguration;
-import com.couchbase.lite.URLEndpoint;
 import com.couchbase.travelsample.model.Hotel;
 
 
@@ -61,7 +51,7 @@ public class ReplicatorManager {
         protected ReplicatorListener(@Nonnull Replicator replicator) { this.replicator = replicator; }
 
         protected abstract boolean checkState(
-            @Nonnull AbstractReplicator.ActivityLevel state,
+            @Nonnull ReplicatorActivityLevel state,
             @Nonnull CouchbaseLiteException err);
 
         @Nonnull
@@ -74,8 +64,8 @@ public class ReplicatorManager {
         public void changed(@Nonnull ReplicatorChange change) {
             if (!replicator.equals(change.getReplicator())) { return; }
 
-            final AbstractReplicator.Status status = replicator.getStatus();
-            final AbstractReplicator.ActivityLevel state = status.getActivityLevel();
+            final ReplicatorStatus status = replicator.getStatus();
+            final ReplicatorActivityLevel state = status.getActivityLevel();
             LOGGER.log(Level.INFO, "Replicator state: " + state.name());
             if (checkState(state, status.getError())) { latch.countDown(); }
         }
@@ -88,7 +78,7 @@ public class ReplicatorManager {
         @SuppressFBWarnings("SF_SWITCH_NO_DEFAULT")
         @Override
         protected boolean checkState(
-            @Nonnull AbstractReplicator.ActivityLevel state,
+            @Nonnull ReplicatorActivityLevel state,
             @Nonnull CouchbaseLiteException err) {
             switch (state) {
                 case CONNECTING:
@@ -109,7 +99,7 @@ public class ReplicatorManager {
         @SuppressFBWarnings("SF_SWITCH_NO_DEFAULT")
         @Override
         protected boolean checkState(
-            @Nonnull AbstractReplicator.ActivityLevel state,
+            @Nonnull ReplicatorActivityLevel state,
             @Nonnull CouchbaseLiteException err) {
             switch (state) {
                 case CONNECTING:
@@ -140,9 +130,9 @@ public class ReplicatorManager {
             = new ReplicatorConfiguration(database, new URLEndpoint(new URI(SGW_ENDPOINT)));
 
         // !!! copying the password into the string is unsecure.
-        config.setAuthenticator(new BasicAuthenticator(username, new String(password)));
+        config.setAuthenticator(new BasicAuthenticator(username, password));
 
-        config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+        config.setType(ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
 
         config.setPushFilter((document, flags) ->
@@ -181,8 +171,8 @@ public class ReplicatorManager {
 
         CouchbaseLiteException err = null;
         for (int i = 0; i < 3; i++) {
-            final AbstractReplicator.Status status = repl.getStatus();
-            if (status.getActivityLevel() == AbstractReplicator.ActivityLevel.STOPPED) {
+            final ReplicatorStatus status = repl.getStatus();
+            if (status.getActivityLevel() == ReplicatorActivityLevel.STOPPED) {
                 LOGGER.log(Level.INFO, "replicator stopped: " + repl);
                 return;
             }
