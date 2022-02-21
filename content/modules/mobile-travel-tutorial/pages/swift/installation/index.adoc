@@ -1,0 +1,2 @@
+:param-language: swift
+include::{partialsdir}/installation/index.adoc[]

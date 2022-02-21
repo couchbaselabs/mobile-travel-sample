@@ -1,0 +1,357 @@
+= Manual
+
+
+== Pre-requisites
+
+
+*Windows Users* : If you are developing on Windows, use a Windows 10 machine.
+Also, note that you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
+
+* Visual {cpp} 2017 (*only Windows Users*):
+Install the Microsoft Visual {cpp} Compiler for Python Downloadable from
+https://www.microsoft.com/en-us/download/details.aspx?id=44266[here].
+
+* Python 3.4+: downloadable from
+https://www.python.org/downloads/[python.org].
+This should come packaged with pip3
++
+
+*Windows Users* : If you are developing on Windows, make sure that Python is included in your system's PATH environment variable.
+You can follow instructions
+https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here]
+to set your PATH variable.
+
+* Git: downloadable from
+https://git-scm.com/book/en/v2/Getting-Started-Installing-Git[git-scm.org].
+
+
+.Try it out
+****
+
+. Verify the python installation
+
+** Run the following command from your terminal.
++
+[source,bash]
+----
+bash python --version
+----
+You should see the version of python displayed.
+
+** Confirm that pip3 is installed.
+pip is package management software for Python.
++
+[source,bash]
+----
+pip3
+----
+You should see the command line options.
+
+. Verify git installation
+** Run the following command from your terminal.
++
+[source,bash]
+----
+bash git --version
+----
+You should see the version of git installed.
+****
+
+
+== Workshop Repo
+
+
+* Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
++
+[source,bash]
+----
+git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sample.git
+----
+
+
+== Couchbase Server
+
+
+In this lesson, you will install and launch version 7.0.0 of Couchbase Server.
+If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the 7.0.0 version.
+Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
+
+* https://www.couchbase.com/downloads#couchbase-server[Download and install] v7.0.x of Couchbase Server.
+Follow the instructions specified in the appropriate platform specific xref:server:install:install-intro.adoc[install guide] to install the same.
+
+* On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
++
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+image::createadminuser.png[]
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
++
+image::cbs-services.png[]
+* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
++
+image::sample_bucket.png[]
+* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket. +
+image::add_rbac.png[]
++
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+image::RBAC_user.png[]
+=======
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/RBAC_user.png[,500]
+=======
+image::createadminuser.png[]
+
+* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
++
+image::cbs-services.png[]
+
+* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
++
+image::sample_bucket.png[]
+
+* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket.
+You can do this from the "Security" menu.
+These credentials will be used by the Sync Gateway to access the documents in this bucket. +
+image::add_rbac.png[]
++
+image::RBAC_user.png[]
+
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+* Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
++
+image::add_fts.png[]
++
+image::fts.png[]
+
+.Try it out
+****
+. Launch Couchbase Server (if not already runnning)
+. Log into the "Admin Console" (`http://localhost:8091`) with appropriate Administrator credentials you created during installation
+. Select the "Buckets" option from the menu on the left
+. Verify that you have around 63,000 documents in your travel-sample bucket
+****
+
+
+== Sync Gateway
+
+
+In this section, you will install and launch version 3.0.0 of Sync Gateway.
+
+* Download Sync Gateway 3.0.0 from
+https://www.couchbase.com/downloads[here]
+for your platform
+
+* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
+The config file will be located in `/path/to/mobile-travel-sample`.
+
+* Open the `sync-gateway-config-travelsample.json` and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
++
+[source,json]
+----
+"username": "admin",
+"password": "password",
+----
+
+* Launch the Sync Gateway.
++
+*macOS*
++
+[source,bash]
+----
+$ cd /path/to/couchbase-sync-gateway/bin
+$ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+----
+*Windows*
++
+By default, the Sync Gateway service will install with _serviceconfig.json_ as the configuration file at *C:\Program%20Files\Couchbase\Sync%20Gateway\serviceconfig.json*.
++
+The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
+The config file will be located in ``C:/path/to/mobile-travel-sample``.
++
+Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket.
++
+[source,json]
+----
+"username": "admin",
+"password": "password",
+----
++
+* Stop the Sync Gateway service (since it would be launched with the default version of config file).
+To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+* Replace the _serviceconfig.json_ file with the `sync-gateway-config-travelsample.json`
++
+[source,bash]
+----
+copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
+----
+* Start the Sync Gateway service with the new version of _serviceconfig.json_ file.
+To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
+
+.Try it out
+****
+. Access this URL `http://127.0.0.1:4984` in your browser
+. Verify that you get JSON response _similar_ to one below
+`{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(460;26daced) EE"}`
+****
+
+
+== Python Travel Sample Web Backend
+
+
+=== Windows Users
+
+* The instructions in this section are for Windows users.
+Scroll to "Other Platforms" section for instructions for other platforms.
+
+* Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
++
+[source,bash]
+----
+$ git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
+----
+* Verify the pip installation.
+If you are developing on Windows, *pip.exe* will be found in the "Scripts" sub directory under the Python installation directory.
+Add the path to the "Scripts" folder to the system's PATH environment variable.
+You can follow instructions https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here] to set your PATH variable.
+Verify that pip is recognized by typing the following in the cmd terminal.
+You should see the help menu.
++
+[source,bash]
+----
+pip3
+----
+
+* The application uses several Python libraries that need to be installed, these are listed in *requirements.txt* and can be automatically loaded using the pip3 command.
++
+[source,bash]
+----
+cd c:\path\to\try-cb-python
+pip3 install -r requirements.txt
+----
+
+* Update *travel.py* to reflect the username and password that you have used when installing Couchbase Server.
+This defaults to "Administrator" and "password".
++
+[source,python]
+----
+DEFAULT_USER = "Administrator"
+PASSWORD = 'password'
+----
+
+* Now launch the Travel Web App
++
+[source,bash]
+----
+$ python travel.py
+$ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+----
++
+You may see an alert similar to one below requesting access to run the app.
+
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+Make sure you select the "Allow access" option.
+
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
+
+=== Other Platforms
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+*Other Platforms*
+=======
+Make sure you select the "Allow access" option.
+
+image::python_run_1.png[]
+
+=== Other Platforms
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+
+* Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
++
+[source,bash]
+----
+git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
+cd try-cb-python
+----
+
+* We will run the Travel Web App in a Python
+https://virtualenv.pypa.io/en/stable/[virtual environment].
+First, check if `virtualenv` is installed on your system.
++
+[source,bash]
+----
+$ virtualenv --version
+----
+
+* If `virtualenv` is not installed , you can use `apt-get` or `pip` to install it.
++
+[source,bash]
+----
+$ sudo pip install virtualenv
+----
+
+* Specify the folder for your virtual environment.
++
+[source,bash]
+----
+$ virtualenv .
+----
+
+* Activate your environment. You should see a prompt as shown below.
++
+[source,bash]
+----
+$ source bin/activate
+(try-cb-python) $
+----
+
+* The application uses several dependencies that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
++
+[source,bash]
+----
+pip install -r requirements.txt
+----
+
+* Update *travel.py* to reflect the username and password that you have used when installing Couchbase Server.
+This defaults to "Administrator" and "password".
++
+[source,python]
+----
+DEFAULT_USER = "Administrator"
+PASSWORD = 'password'
+----
+
+* Now launch the Travel Web App
++
+[source,bash]
+----
+$ python travel.py
+$ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+----
+
+.Try it out
+****
+. Open http://127.0.0.1:8080/ in your web browser
+. Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
+****
+
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+=======
+<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+* Open http://127.0.0.1:8080/ in your web browser
+* Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
++
+image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+=======
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
+
+[#fig-travsample]
+.Travel Sample Login Screen
+image::try-cb-login-2.png[]
+<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+=======
+>>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
+>>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
