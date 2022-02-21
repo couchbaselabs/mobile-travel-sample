@@ -24,6 +24,7 @@
     <JavaOptions />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ReleaseVersion>3.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,19 +52,22 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms">
-      <Version>5.0.0.2012</Version>
+      <Version>5.0.0.2337</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise">
-      <Version>2.8.4</Version>
+      <Version>3.0.0-beta02</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise.Support.Android">
-      <Version>2.8.4</Version>
+      <Version>3.0.0-beta02</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.6.1</Version>
+      <Version>1.7.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.Visual.Material">
-      <Version>5.0.0.2012</Version>
+      <Version>5.0.0.2337</Version>
+    </PackageReference>
+    <PackageReference Include="SimpleInjector">
+      <Version>5.3.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
