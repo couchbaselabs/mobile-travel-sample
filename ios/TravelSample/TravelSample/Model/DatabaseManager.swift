@@ -81,7 +81,7 @@ extension DatabaseManager {
     
     func openOrCreateDatabaseForGuest( handler:(_ error:Error?)->Void) {
         do {
-            let options = DatabaseConfiguration()
+            var options = DatabaseConfiguration()
             guard let defaultDBPath = _applicationSupportDirectory else {
                 fatalError("Could not open Application Support Directory for app!")
             }
@@ -110,7 +110,7 @@ extension DatabaseManager {
     
     func openOrCreateDatabaseForUser(_ user:String, password:String, handler:(_ error:Error?)->Void) {
         do {
-            let options = DatabaseConfiguration()
+            var options = DatabaseConfiguration()
             guard let defaultDBPath = _applicationSupportDirectory else {
                 fatalError("Could not open Application Support Directory for app!")
             }
@@ -237,7 +237,7 @@ extension DatabaseManager {
         
         let dbUrl = remoteUrl.appendingPathComponent(kDBName)
        
-        let config = ReplicatorConfiguration.init(database: db, target: URLEndpoint.init(url:dbUrl))
+        var config = ReplicatorConfiguration.init(database: db, target: URLEndpoint.init(url:dbUrl))
     
         config.replicatorType = .pushAndPull
         config.continuous =  true
