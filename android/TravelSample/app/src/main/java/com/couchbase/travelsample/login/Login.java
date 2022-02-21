@@ -103,7 +103,8 @@ public class Login extends AppCompatActivity  {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
-                                DatabaseManager.SGW_ENDPOINT = (sgwText.getText() != null) ? sgwText.getText().toString() : "ws://localhost:4984";
+//                                DatabaseManager.SGW_ENDPOINT = (sgwText.getText() != null) ? sgwText.getText().toString() : "ws://localhost:4984";
+                                DatabaseManager.SGW_ENDPOINT = (sgwText.getText() != null) ? sgwText.getText().toString() : "ws://10.0.2.2:4984/";
                                 DatabaseManager.APPLICATION_ENDPOINT = (webText.getText() != null) ? webText.getText().toString() + "/api" : "http://localhost:8080/api/";
 
                             }
