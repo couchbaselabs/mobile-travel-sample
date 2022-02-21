@@ -23,9 +23,11 @@ import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.LogFileConfiguration;
 import com.couchbase.lite.LogLevel;
 import com.couchbase.lite.Replicator;
+import com.couchbase.lite.ReplicatorActivityLevel;
 import com.couchbase.lite.ReplicatorChange;
 import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
+import com.couchbase.lite.ReplicatorType;
 import com.couchbase.lite.URLEndpoint;
 
 
@@ -33,8 +35,9 @@ import com.couchbase.lite.URLEndpoint;
  * TODO
  */
 public class DatabaseManager {
-    public static String APPLICATION_ENDPOINT = "http://34.219.118.132:8080/api/";
-    public static String SGW_ENDPOINT = "ws://34.219.118.132:4984/travel-sample";
+  // Use 10.0.2.2 if using Emulator(s)
+    public static String APPLICATION_ENDPOINT = "http://10.0.2.2:8080/api/";
+    public static String SGW_ENDPOINT = "ws://10.0.2.2:4984/travel-sample";
 
     private static Database database;
     private static DatabaseManager instance = null;
@@ -141,9 +144,9 @@ public class DatabaseManager {
         }
 
         ReplicatorConfiguration config = new ReplicatorConfiguration(database, new URLEndpoint(url));
-        config.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH_AND_PULL);
+        config.setType(ReplicatorType.PUSH_AND_PULL);
         config.setContinuous(true);
-        config.setAuthenticator(new BasicAuthenticator(username, password));
+        config.setAuthenticator(new BasicAuthenticator(username, password.toCharArray()));
         config.setPushFilter((document, flags) -> !("hotel".equals(document.getString("type"))
             || "airline".equals(document.getString("type"))
             || "airport".equals(document.getString("type"))
@@ -155,13 +158,13 @@ public class DatabaseManager {
             @Override
             public void changed(ReplicatorChange change) {
 
-                if (change.getReplicator().getStatus().getActivityLevel().equals(Replicator.ActivityLevel.IDLE)) {
+                if (change.getReplicator().getStatus().getActivityLevel().equals(ReplicatorActivityLevel.IDLE)) {
 
                     Log.e("Replication Comp Log", "Schedular Completed");
                 }
                 if (change.getReplicator().getStatus().getActivityLevel()
-                    .equals(Replicator.ActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel()
-                    .equals(Replicator.ActivityLevel.OFFLINE)) {
+                    .equals(ReplicatorActivityLevel.STOPPED) || change.getReplicator().getStatus().getActivityLevel()
+                    .equals(ReplicatorActivityLevel.OFFLINE)) {
                     // stopReplication();
                     Log.e("Rep schedular  Log", "ReplicationTag Stopped");
                 }
