@@ -260,4 +260,8 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E27B5DA-7096-4EA2-85EF-ED360E52BEE1}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		description = Upgraded tutorial to work with Couchbase Mobile 3.0
+		version = 3.0
+	EndGlobalSection
 EndGlobal
