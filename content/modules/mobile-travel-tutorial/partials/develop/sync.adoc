@@ -4,18 +4,18 @@
 == Channels/Data Routing
 
 In the lesson on link:/csharp#/2/2/1[Access Control] we discussed how the Couchbase Sync Gateway supports Authorization and Access Control functions.
-In this lesson we discuss how it can be used for Data Synchronization and Routing. 
+In this lesson we discuss how it can be used for Data Synchronization and Routing.
 
-A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact. 
+A Sync Gateway configuration file determines the runtime behavior of Sync Gateway, including server configuration and the database or set of databases with which a Sync Gateway instance can interact.
 
-* Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to 
-* Partition the data set 
-* Authorize users to access documents. 
-* Minimize the amount of data synced down to devices. 
+* Sync Gateway uses channels to make it easy to share a database between a large number of users and control access to the database. Conceptually, a channel could be viewed as a tag. Every document in the database belongs to a set of channels, and a user is granted appropriate access a set of channels. A channel is used to
+* Partition the data set
+* Authorize users to access documents.
+* Minimize the amount of data synced down to devices.
 
 In the "Installation" guide, we walked you through the steps to launch Sync Gateway with a specific config file.
 Open the sync-gateway-config-travelsample.json file located at https://github.com/couchbaselabs/mobile-travel-sample/blob/master/sync-gateway-config-travelsample.json.
-It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. 
+It includes the `sync function` which is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file.
 
 [source,javascript]
 ----
@@ -26,7 +26,7 @@ channel("channel." + username);
 
 == Shared Bucket Access
 
-Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{source-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
+Before you begin this lesson, confirm that you have Sync Gateway up and running by following the instructions in the xref::{param-language}/installation/sync-gateway-2.0.adoc[Sync Gateway installation] section.
 
 Starting with Sync Gateway 1.5 and Couchbase Server 5.0, mobile and server/web applications now have the ability to read and write to the same bucket.
 It is an opt-in feature that can be enabled in the Sync Gateway configuration file.
@@ -49,7 +49,7 @@ Open the sync-gateway-config-travelsample.json file located at https://github.co
 You can specify the Couchbase Server documents that need to be imported and processed by the Sync Gateway by defining an import filter function.
 
 In our demo, we will only be synchornizing the "user" document.
-So every other document type is ignored. 
+So every other document type is ignored.
 
 [source,javascript]
 ----
@@ -62,7 +62,7 @@ function(doc) {
    }
   if (doc.type == "landmark" || doc.type == "hotel" || doc.type == "airport" || doc.type =="airline" || doc.type == "route") {
     return false;
-  } 
+  }
 
   return true;
 } `
@@ -70,16 +70,16 @@ function(doc) {
 
 == Replication
 
-Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server) database. 
+Replication is the process by which clients running Couchbase Lite synchronize database changes with the remote (server) database.
 
-* Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database 
-* Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database 
+* Pull Replication is the process by which clients running Couchbase Lite download database changes from the remote (server) source database to the local target database
+* Push Replication is the process by which clients running Couchbase Lite upload database changes from the local source database to the remote (server) target database
 
 Couchbase Mobile 2.x replication protocol is implemented as a messaging protocol layered over WebSocket.
 
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/replication-2-0.png[]
 
-The replication process can be "`continuous`" or "`one shot"`.  
+The replication process can be "`continuous`" or "`one shot"`.
 
 * In "`Continuous`" replication mode, the changes are continually synchronized between the client and Sync Gateway in real time.
 * In "`One shot`" mode, the changes are synchronized once and the connection between the client and server disconnects. When any future changes need to be pushed up or pulled down, the client must start a new replication.
@@ -97,7 +97,7 @@ private Replicator StartReplication(string username, string password, Database d
 }
 ----
 
-First, Do some checks to confirm the validity of the user credentials 
+First, Do some checks to confirm the validity of the user credentials
 
 [source]
 ----
@@ -107,7 +107,7 @@ if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password)){
 }
 ----
 
-Create the URL of the Sync Gateway 
+Create the URL of the Sync Gateway
 
 [source]
 ----
@@ -119,7 +119,7 @@ var dbUrl = new Uri(SyncUrl, DbName);
 The `ReplicatorConfiguration` is initialized with the local database and URL of the target DB on Sync Gateway.
 The `ReplicatorType` in the Replicator Config specifies the type of replication.
 In the code snippet in the Travel app, it is `PushAndPull` indicating that both push and pull replication is enabled.
-The `Continuous` mode is set to `true` in the Travel app. 
+The `Continuous` mode is set to `true` in the Travel app.
 
 [source]
 ----
@@ -133,7 +133,7 @@ var config = new ReplicatorConfiguration(db, new URLEndpoint(dbUrl)) {
 
 The Replicator is configured with relevant authentication credentials.
 In the Travel app, the list of users that are permitted access is configured in the Sync Gateway configuration file as discussed in the link:/develop/csharp#/2/2/1[Access
-    Control] section 
+    Control] section
 
 [source]
 ----
@@ -146,7 +146,7 @@ var config = new ReplicatorConfiguration(db, dbUrl) {
 ----
 
 The Replicator is configured to only pull from current user's channels.
-The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the link:/develop/csharp#/2/3/0[Channels/ Data Routing] section 
+The list of channels that the user has access to is defined in the Sync Gateway configuration file as discussed in the link:/develop/csharp#/2/3/0[Channels/ Data Routing] section
 
 [source]
 ----
@@ -157,7 +157,7 @@ var config = new ReplicatorConfiguration(db, dbUrl) {
 };
 ----
 
-The Replicator is initialized with the specified configuration 
+The Replicator is initialized with the specified configuration
 
 [source]
 ----
@@ -166,7 +166,7 @@ var repl = new Replicator(config);
 ----
 
 A change listener callback block is registered to listen for replication changes.
-Every time, there is a push or pull change, the callback is invoked. 
+Every time, there is a push or pull change, the callback is invoked.
 
 [source]
 ----
@@ -180,7 +180,7 @@ repl.AddChangeListener((sender, args) =>
 });
 ----
 
-Start the Replication 
+Start the Replication
 
 [source]
 ----
@@ -190,35 +190,35 @@ repl.Start();
 
 === Try it out (Push Replication)
 
-* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`" 
-* Tap on "+" button to make a flight reservation 
-* Leave the default airport in the "`From`" field 
-* Leave the default airport in the "To" field 
-* Enter From and/or Return Dates 
-* Tap "lookup" button 
-* From list of flights, select the first flight listing 
-* Select "`Confirm Booking`" 
+* Log into the Travel Sample Mobile app as "`demo`" user and password as "`password`"
+* Tap on "+" button to make a flight reservation
+* Leave the default airport in the "`From`" field
+* Leave the default airport in the "To" field
+* Enter From and/or Return Dates
+* Tap "lookup" button
+* From list of flights, select the first flight listing
+* Select "`Confirm Booking`"
 
 The screen recording is for UWP version of the app -
 
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/uwp_push_replication.gif[]
 
-* Access the Travel Sample Python Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
+* Access the Travel Sample Python Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app.
 * Log into the web app as "`demo`" user with password as "`password`"
 * Use the "Booked" tab to  navigate to the list of booked flights
-* Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app 
+* Confirm that you see the flight that you reserved via the mobile app in your list of flights in the web app
 
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel-app-push.gif[]
 
 
 === Try it out (Pull Replication)
-* Access the Travel Sample Python Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app. 
+* Access the Travel Sample Python Web app. The URL would be http://localhost:8080. If you did cloud based install, please replace `localhost` in the URL with the IP Address of the cloud instance of the web app.
 * Log into the web app as "`demo`" user with password as "`password`"
-* Make a flight reservation by clicking the "Flights" tab 
+* Make a flight reservation by clicking the "Flights" tab
 * Enter “From” airport as "Seattle" and select the airport from drop down menu.
 * Enter “To” airport as "San Francisco" and select the airport from drop down menu.
 * Enter From and Return Travel Dates
-* Click on "Search" button 
+* Click on "Search" button
 * From list of flights, select the first flight listing by clicking on the corresponding "Add to Basket" button
 * Confirm the booking by clicking on the "Basket" tab to view the flight selections and then click on the "`Buy`" button
 * The "Booked" tab should show the confirmed flight reservations
@@ -226,4 +226,4 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/travel-app-pull.gif[]
 
 * If you are not already logged into the mobile app, Log into the Travel Sample Mobile app as “demo” user and password as “password”
-* Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app 
+* Confirm that you see the flight that you reserved via the web app in your list of flights in the mobile app

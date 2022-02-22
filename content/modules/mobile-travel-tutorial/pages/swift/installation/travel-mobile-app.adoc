@@ -38,7 +38,7 @@ sh install_13.sh
 +
 NOTE: If you choose to use Xcode12.3+, you may be impacted by an issue in Xcode while using linked frameworks.
 Please follow the instructions outlined
-xref:2.8@couchbase-lite:swift:gs-install.html[here] to workaround the issue.
+xref:2.8@couchbase-lite:swift:gs-install.adoc[here] to workaround the issue.
 
 * Open the `TravelSample.xcodeproj` using Xcode
 

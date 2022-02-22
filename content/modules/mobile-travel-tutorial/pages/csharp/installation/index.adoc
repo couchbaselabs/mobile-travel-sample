@@ -1,2 +1,4 @@
 :source-language: csharp
+:param-language: csharp
+:param-module: {param-language}
 include::{partialsdir}/installation/index.adoc[]

@@ -1,5 +1,5 @@
 = Cloud (RightScale)
-:imagesdir: ../../../../../assets/images
+// :imagesdir: ../../../../../assets/images
 
 NOTE: The RightScale cloud environment is only available for in-classroom run workshops.
 
@@ -41,23 +41,23 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 * Log in with `workshop@couchbase.com` and `cbworkshop123` as the password.
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_login.png[,500]
+image::rightscale_login.png[]
 
 * From the catalog of available projects, select the **Mobile Travel Sample Workshop**, give it a name. By default the shutdown time is "600 minutes". Change it to suit your needs. Then click **Launch**.
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_selectproject.png[,500]
+image::rightscale_selectproject.png[]
 
 * Once the instance is running, you should see the state change to "launching".
 It will take several minutes to launch.
 So be patient!
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_launching.png[,500]
+image::rightscale_launching.png[]
 
 * Once the instance is running, You should see the state change to "running".
 There are two instances - one for "Develop" and one for "Deploy".
 We are only interested in the "Develop" option.
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/rightscale_running.png[,500]
+image::rightscale_running.png[]
 
 Now that you have the instance up and running, you will have to edit the mobile app so it points to the newly deployed Python Web Server and Sync Gateway.
 
@@ -89,4 +89,4 @@ Now that you have the instance up and running, you will have to edit the mobile 
 * Access Travel Web App from the URL listed in the Deploy instance. In my example (from screenshot above), that would be `http://54.148.83.39:8080`
 * Verify that you see the login screen of the Travel Sample Web App as shown below
 +
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
+image::try-cb-login-2.png[]
