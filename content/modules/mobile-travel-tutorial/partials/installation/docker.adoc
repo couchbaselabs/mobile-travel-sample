@@ -192,7 +192,7 @@ docker network create -d bridge workshop
 [source,bash, subs="attributes+, macros+"]
 ----
 <<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/docker.adoc
-docker pull couchbase/sync-gateway:3.0.0-beta02-enterprise
+docker pull couchbase/sync-gateway:3.0.0-enterprise
 
 =======
 <<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
@@ -246,7 +246,7 @@ Windows::
 [source,bash]
 ----
 cd /path/to/mobile-travel-sample/
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 =======
 <<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 [source,bash]
@@ -273,7 +273,7 @@ Non-Windows platform::
 [source,bash]
 ----
 cd c:\path\to\mobile-travel-sample\
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 =======
 <<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/docker.adoc
 **Non-Windows platform**
