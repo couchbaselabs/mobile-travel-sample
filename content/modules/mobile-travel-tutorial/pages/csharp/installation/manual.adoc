@@ -1,1 +1,3 @@
+:param-language: csharp
+:param-module: {param-language}
 include::{partialsdir}/installation/manual.adoc[]

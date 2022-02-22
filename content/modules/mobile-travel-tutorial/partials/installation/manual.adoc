@@ -81,26 +81,6 @@ Follow the instructions specified in the appropriate platform specific xref:serv
 
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
-<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
-image::createadminuser.png[]
-=======
-<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
-:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
->>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
-* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
-+
-image::cbs-services.png[]
-* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
-+
-image::sample_bucket.png[]
-* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket. +
-image::add_rbac.png[]
-+
-<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
-image::RBAC_user.png[]
-=======
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/RBAC_user.png[,500]
-=======
 image::createadminuser.png[]
 
 * As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
@@ -110,16 +90,15 @@ image::cbs-services.png[]
 * Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
 +
 image::sample_bucket.png[]
-
-* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket.
-You can do this from the "Security" menu.
-These credentials will be used by the Sync Gateway to access the documents in this bucket. +
-image::add_rbac.png[]
+* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
 +
+
+image::add_rbac.png[]
+
++
+
 image::RBAC_user.png[]
 
->>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
->>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
 * Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
 +
 image::add_fts.png[]
@@ -212,10 +191,16 @@ Scroll to "Other Platforms" section for instructions for other platforms.
 ----
 $ git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
 ----
-* Verify the pip installation.
+
+* Verify the pip installation. +
 If you are developing on Windows, *pip.exe* will be found in the "Scripts" sub directory under the Python installation directory.
++
 Add the path to the "Scripts" folder to the system's PATH environment variable.
-You can follow instructions https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here] to set your PATH variable.
++
+You can follow instructions
+https://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/[here]
+to set your PATH variable.
++
 Verify that pip is recognized by typing the following in the cmd terminal.
 You should see the help menu.
 +
@@ -250,24 +235,12 @@ $ Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 ----
 +
 You may see an alert similar to one below requesting access to run the app.
-
-<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
++
 Make sure you select the "Allow access" option.
-
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/python_run_1.png[]
-
-=== Other Platforms
-=======
-<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
-*Other Platforms*
-=======
-Make sure you select the "Allow access" option.
-
++
 image::python_run_1.png[]
 
 === Other Platforms
->>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
->>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
 
 * Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
 +
@@ -338,20 +311,6 @@ $ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
 . Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
 ****
 
-<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
-=======
-<<<<<<< HEAD:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
-* Open http://127.0.0.1:8080/ in your web browser
-* Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
-+
-image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try-cb-login-2.png[]
-=======
->>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
-
 [#fig-travsample]
 .Travel Sample Login Screen
 image::try-cb-login-2.png[]
-<<<<<<< HEAD:content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
-=======
->>>>>>> 11ef389 (DOC-9336-NET -- Upgrade 3.0 CBM 3.0/CBS 7.0):content/modules/mobile-travel-tutorial/partials/installation/manual.adoc
->>>>>>> DOC-9336-Net-Text-Completed:content/modules/mobile-travel-sample/pages/_partials/installation/manual.adoc
