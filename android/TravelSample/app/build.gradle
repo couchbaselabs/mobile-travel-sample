@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.0-beta02'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.0'
 
     testImplementation 'junit:junit:4.12'
 
