@@ -55,10 +55,10 @@
       <Version>5.0.0.2337</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise">
-      <Version>3.0.0-beta02</Version>
+      <Version>3.0.0</Version>
     </PackageReference>
     <PackageReference Include="Couchbase.Lite.Enterprise.Support.Android">
-      <Version>3.0.0-beta02</Version>
+      <Version>3.0.0</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
       <Version>1.7.1</Version>
