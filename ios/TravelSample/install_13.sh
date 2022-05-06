@@ -1,4 +1,4 @@
-l#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # This downloads swift5.1.x compatible version of CBL. Use with Xcode 12+
 cd Frameworks

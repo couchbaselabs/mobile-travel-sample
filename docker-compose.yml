@@ -1,14 +1,30 @@
-try-cb-python:
-    image: jamiltz/try-cb-python 
-    ports:
-        - 8080:8080
-    container_name: try_cb_python
+version: "3"
 
-sync-gateway:
-    image: connectsv/sync-gateway-internal:1.5.0-community 
+services:
+  try-cb-python:
+    image: connectsv/try-cb-python-v2:6.5.0-server
     ports:
-        - "4984-4985:4984-4985"
+      - 8080:8080
+    depends_on:
+      cb-server:
+        condition: service_healthy
+
+  cb-server:
+    image: couchbase/server-sandbox:7.0.0
+    ports:
+      - "8091-8094:8091-8094"
+      - 11210:11210
+    healthcheck:
+      test: "curl -u Administrator:password --fail http://localhost:8091/pools/default/buckets/travel-sample || exit 1"
+      retries: 5
+
+  sync-gateway:
+    image: couchbase/sync-gateway:3.0.0-enterprise
     command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+    ports:
+      - 4984:4984
     volumes:
-        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
-    container_name: sync_gateway
+      - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+    depends_on:
+      cb-server:
+        condition: service_healthy

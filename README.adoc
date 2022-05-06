@@ -1,4 +1,4 @@
-The complete tutorial  is available at https://docs.couchbase.com/tutorials/mobile-travel-sample/introduction.html. Please follow the tutorial for step-by-step installation instructions. 
+The complete tutorial is available at https://docs.couchbase.com/tutorials/mobile-travel-tutorial/introduction.html. Please follow the tutorial for step-by-step installation instructions. 
 
 ## Overview
 This is a step-by-step tutorial describing a Travel application for mobile platforms that supports the following capabilities
@@ -66,9 +66,9 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 == Couchbase Server
 
-In this lesson, you will install and launch version the 6.5.x version of Couchbase Server. If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the 6.5.x version. Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
+In this lesson, you will install and launch version the 7.0.x version of Couchbase Server. If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the 7.0.x version. Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
 
-* https://www.couchbase.com/downloads#couchbase-server[Download and install] v6.5.x of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/6.0/install/install-intro.html[install guide] to install the same.
+* https://www.couchbase.com/downloads#couchbase-server[Download and install] v7.0.x of Couchbase Server. Follow the instructions specified in the appropriate platform specific https://docs.couchbase.com/server/7.0/install/install-intro.html[install guide] to install the same.
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
 +
 image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/createadminuser.png[,500]
@@ -97,9 +97,9 @@ image::https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/mast
 
 == Sync Gateway
 
-In this section, you will install and launch version 2.7.x of Sync Gateway.
+In this section, you will install and launch version 3.0.x of Sync Gateway.
 
-* Download Sync Gateway 2.7.x from https://www.couchbase.com/downloads[here] for your platform
+* Download Sync Gateway 3.0.x from https://www.couchbase.com/downloads[here] for your platform
 * The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section. The config file will be located in ``/path/to/mobile-travel-sample``.
 * Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
 +
@@ -144,7 +144,7 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 *Try it out*
 
 * Access this URL `http://127.0.0.1:4984` in your browser
-* Verify that you get JSON response _similar_ to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.7"},"version":"Couchbase Sync Gateway/2.7.0(271;bf3ddf6) EE"}`
+* Verify that you get JSON response _similar_ to one below `json   {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(460;26daced) EE"}`
 
 == Python Travel Sample Web Backend
 
