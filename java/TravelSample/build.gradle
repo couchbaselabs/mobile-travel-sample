@@ -61,7 +61,7 @@ dependencies {
 
     implementation "com.jetbrains.intellij.java:java-gui-forms-rt:${INTELLIJ_GUI_VERSION}"
 
-    implementation 'com.couchbase.lite:couchbase-lite-java-ee:2.8.4'
+    implementation 'com.couchbase.lite:couchbase-lite-java-ee:3.0.0'
 
     implementation 'org.json:json:20180813'
 
