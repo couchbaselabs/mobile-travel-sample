@@ -71,12 +71,47 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 == Couchbase Server
 
+In this lesson, you will install and launch Couchbase Server.
 
-In this lesson, you will install and launch version 7.0.0 of Couchbase Server.
-If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the 7.0.0 version.
+If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with a certain version.
 Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
 
-* https://www.couchbase.com/downloads#couchbase-server[Download and install] v7.0.x of Couchbase Server.
+=== M1 Users
+
+Couchbase Server 7.1.1
+
+* https://www.couchbase.com/downloads[Download and install] v7.1.1 of Couchbase Server.
+Follow the instructions specified in the appropriate platform specific xref:server:install:install-intro.adoc[install guide] to install the same.
+
+* On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
++
+image::createadminuser-v7-1.png[]
+
+* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
++
+image::cbs-services.png[]
+
+* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
++
+image::sample_bucket-v7-1.png[]
+
+* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
++
+image::add_rbac-v7-1.png[]
++
+image::RBAC_user-v7-1.png[]
+
+* Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
++
+image::add_fts.png[]
++
+image::fts.png[]
+
+=== Other Platforms
+
+Couchbase Server 7.0.0
+
+* https://www.couchbase.com/downloads[Download and install] v7.0.x of Couchbase Server.
 Follow the instructions specified in the appropriate platform specific xref:server:install:install-intro.adoc[install guide] to install the same.
 
 * On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
@@ -90,13 +125,11 @@ image::cbs-services.png[]
 * Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
 +
 image::sample_bucket.png[]
+
 * Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
 +
-
 image::add_rbac.png[]
-
 +
-
 image::RBAC_user.png[]
 
 * Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
@@ -116,17 +149,16 @@ image::fts.png[]
 
 == Sync Gateway
 
+In this section, you will install and launch version 3.0.3 of Sync Gateway.
 
-In this section, you will install and launch version 3.0.0 of Sync Gateway.
-
-* Download Sync Gateway 3.0.0 from
+* Download Sync Gateway 3.0.3 from
 https://www.couchbase.com/downloads[here]
 for your platform
 
-* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
+* The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample-manual.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
 The config file will be located in `/path/to/mobile-travel-sample`.
 
-* Open the `sync-gateway-config-travelsample.json` and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
+* Open the `sync-gateway-config-travelsample-manual.json` and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket
 +
 [source,json]
 ----
@@ -141,16 +173,16 @@ The config file will be located in `/path/to/mobile-travel-sample`.
 [source,bash]
 ----
 $ cd /path/to/couchbase-sync-gateway/bin
-$ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample.json
+$ ./sync_gateway /path/to/mobile-travel-sample/sync-gateway-config-travelsample-manual.json
 ----
 *Windows*
 +
 By default, the Sync Gateway service will install with _serviceconfig.json_ as the configuration file at *C:\Program%20Files\Couchbase\Sync%20Gateway\serviceconfig.json*.
 +
-The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
+The Sync Gateway will have to be launched with the config file named `sync-gateway-config-travelsample-manual.json` that you should have downloaded as per the instructions in the <<Workshop Repo>> section.
 The config file will be located in ``C:/path/to/mobile-travel-sample``.
 +
-Open the sync-gateway-config-travelsample.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket.
+Open the sync-gateway-config-travelsample-manual.json and confirm that the RBAC user credentials configured on the Couchbase Server are used by Sync Gateway for accessing the bucket.
 +
 [source,json]
 ----
@@ -160,11 +192,11 @@ Open the sync-gateway-config-travelsample.json and confirm that the RBAC user cr
 +
 * Stop the Sync Gateway service (since it would be launched with the default version of config file).
 To stop the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
-* Replace the _serviceconfig.json_ file with the `sync-gateway-config-travelsample.json`
+* Replace the _serviceconfig.json_ file with the `sync-gateway-config-travelsample-manual.json`
 +
 [source,bash]
 ----
-copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
+copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample-manual.json "C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json"
 ----
 * Start the Sync Gateway service with the new version of _serviceconfig.json_ file.
 To start the service, you can use the Services application (Control Panel --> Admin Tools --> Services).
@@ -239,6 +271,82 @@ You may see an alert similar to one below requesting access to run the app.
 Make sure you select the "Allow access" option.
 +
 image::python_run_1.png[]
+
+=== M1 Users
+
+* Clone the `mobile-travel-sample-m1` branch of Travel Sample Python web app repo
++
+[source,bash]
+----
+git clone -b mobile-travel-sample-m1  https://github.com/couchbaselabs/try-cb-python.git
+cd try-cb-python
+----
+
+* We will run the Travel Web App in a Python3
+https://virtualenv.pypa.io/en/stable/[virtual environment].
+First, check if `virtualenv` is installed on your system.
++
+[source,bash]
+----
+$ virtualenv --version
+----
+
+* If `virtualenv` is not installed , you can use `pip3` to install it.
++
+[source,bash]
+----
+$ pip3 install virtualenv
+----
+
+* Specify the folder for your virtual environment.
++
+[source,bash]
+----
+$ virtualenv .
+----
+
+* Activate your environment. You should see a prompt as shown below.
++
+[source,bash]
+----
+$ source bin/activate
+(try-cb-python) $
+----
+
+* The application uses several dependencies that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
++
+[source,bash]
+----
+pip3 install -r requirements.txt
+----
+
+* Update *travel.py* to reflect the username and password that you have used when installing Couchbase Server.
+This defaults to "Administrator" and "password".
++
+[source,python]
+----
+DEFAULT_USER = "Administrator"
+PASSWORD = 'password'
+----
+
+* Now launch the Travel Web App
++
+[source,bash]
+----
+$ python travel.py
+$ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+----
+
+.Try it out
+****
+. Open http://127.0.0.1:8080/ in your web browser
+. Verify that you see the login screen of the Travel Sample Web App similar to the screenshot shown below
+****
+
+[#fig-travsample]
+.Travel Sample Login Screen
+image::try-cb-login-2.png[]
+
 
 === Other Platforms
 
