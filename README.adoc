@@ -1,4 +1,4 @@
-The complete tutorial  is available at https://docs.couchbase.com/tutorials/mobile-travel-sample/introduction.html. Please follow the tutorial for step-by-step installation instructions. 
+The complete tutorial  is available at https://docs.couchbase.com/tutorials/mobile-travel-tutorial/introduction.html. Please follow the tutorial for step-by-step installation instructions. 
 
 ## Overview
 This is a step-by-step tutorial describing a Travel application for mobile platforms that supports the following capabilities
