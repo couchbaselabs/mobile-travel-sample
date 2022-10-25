@@ -71,10 +71,11 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 == Couchbase Server
 
-In this lesson, you will install and launch Couchbase Server.
+In this lesson, you will install and launch v7.0.x of Couchbase Server.
 
-If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with a certain version.
-Note that the actual UI may vary slightly depending on the version of Couchbase server that you have installed.
+*M1 Users:* Install and launch v7.1.1 or later
+
+If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the version that is specified in instructions below.
 
 === M1 Users
 
