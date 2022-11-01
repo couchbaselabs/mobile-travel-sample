@@ -1,8 +1,6 @@
 = Manual
 
-
 == Pre-requisites
-
 
 *Windows Users* : If you are developing on Windows, use a Windows 10 machine.
 Also, note that you should also have *administrative privileges on the Windows box* so you can authorize the installation and running of the required executables.
@@ -57,9 +55,7 @@ bash git --version
 You should see the version of git installed.
 ****
 
-
 == Workshop Repo
-
 
 * Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
 +
@@ -71,13 +67,13 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 == Couchbase Server
 
-In this lesson, you will install and launch v7.0.x of Couchbase Server.
+In this lesson, you will install and launch v7.1.x of Couchbase Server.
 
-*M1 Users:* Install and launch v7.1.1 or later
+Screenshots below apply to Couchbase Server 7.1.1 and there will be some variation with CBS 7.0.x. However, equivalent functionality is available in 7.0.x.
+
+*Apple M1 Users:* Install and launch v7.1.1 or later
 
 If there is a later version available, you can download it as well bearing in mind that the instructions have been validated with the version that is specified in instructions below.
-
-=== M1 Users
 
 Couchbase Server 7.1.1
 
@@ -108,37 +104,6 @@ image::add_fts.png[]
 +
 image::fts.png[]
 
-=== Other Platforms
-
-Couchbase Server 7.0.0
-
-* https://www.couchbase.com/downloads[Download and install] v7.0.x of Couchbase Server.
-Follow the instructions specified in the appropriate platform specific xref:server:install:install-intro.adoc[install guide] to install the same.
-
-* On the setup wizard, create an Administrator account with the user _Administrator_ and password as __password__.
-+
-image::createadminuser.png[]
-
-* As you follow the download instructions and setup wizard, make sure you keep all the services (data, query, and index) selected.
-+
-image::cbs-services.png[]
-
-* Install the sample bucket named _travel-sample_ because it contains the data used in this tutorial. You can add the bucket from the "Sample Buckets" tab in the "Settings" menu in the admin console.
-+
-image::sample_bucket.png[]
-
-* Create an RBAC user named *admin* with password *password* and *Application Access* to the travel-sample bucket. You can do this from the "Security" menu. These credentials will be used by the Sync Gateway to access the documents in this bucket.
-+
-image::add_rbac.png[]
-+
-image::RBAC_user.png[]
-
-* Create a Full text search index on travel-sample bucket called 'hotels'. You can do this from the "Search" menu. Just go with default index settings.
-+
-image::add_fts.png[]
-+
-image::fts.png[]
-
 .Try it out
 ****
 . Launch Couchbase Server (if not already runnning)
@@ -146,7 +111,6 @@ image::fts.png[]
 . Select the "Buckets" option from the menu on the left
 . Verify that you have around 63,000 documents in your travel-sample bucket
 ****
-
 
 == Sync Gateway
 
