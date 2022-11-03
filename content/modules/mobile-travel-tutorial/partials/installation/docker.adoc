@@ -1,7 +1,7 @@
 = Docker (Local)
 
-ifndef::sgw-version[:sgw-version: 3.0.0]
-ifndef::cbs-version[:cbs-version: 7.0.0]
+ifndef::sgw-version[:sgw-version: 3.0.3]
+ifndef::cbs-version[:cbs-version: 7.1.1]
 
 
 == Prerequisites
@@ -80,18 +80,40 @@ docker network create -d bridge workshop
 
 * To run the application in a container, you will first get the docker image from Docker Hub.
 Open a new terminal window and run the following.
+[tabs]
+=====
+Apple M1::
++
+[source,bash, subs="attributes+, macros+"]
+----
+docker pull couchbase/server-arm:{cbs-version}
+----
+Others::
 +
 [source,bash, subs="attributes+, macros+"]
 ----
 docker pull couchbase/server-sandbox:{cbs-version}
 ----
+=====
 
 * Once the command has completed you can start the application with the following.
+
+[tabs]
+=====
+Apple M1::
++
+[source,bash, subs="attributes+, macros+"]
+----
+docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-arm:{cbs-version}
+----
+Others::
 +
 [source,bash, subs="attributes+, macros+"]
 ----
 docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-sandbox:{cbs-version}
 ----
+=====
+
 
 * You can view the logs at any time by running the following command.
 +
@@ -155,16 +177,14 @@ docker pull couchbase/sync-gateway:{sgw-version}-enterprise
 ----
 
 * The Sync Gateway will have to be launched with the config file named
-`sync-gateway-config-travelsample.json`
+`sync-gateway-config-travelsample-docker.json`
 that you should have downloaded as part of the <<repository,Workshop Repo>> step.
 The config file is located in the root folder of `/path/to/mobile-travel-sample`.
 
-* Open the `sync-gateway-config-travelsample.json` file using any text editor of choice
+* Open the `sync-gateway-config-travelsample-docker.json` file using any text editor of choice
 
 * For the app to connect to the Couchbase Server, the address of the the server needs to be specified.
 Note that when you launched the Couchbase Server docker container, you gave it the `name` of "cb-server".
-+
-Replace `localhost` in the `sync-gateway-config-travelsample.json` file with `cb-server` and save.
 +
 
 [source,json]
@@ -172,8 +192,8 @@ Replace `localhost` in the `sync-gateway-config-travelsample.json` file with `cb
 "server": "couchbase://cb-server"
 ----
 
-* Launch the Sync Gateway with the `sync-gateway-config-travelsample.json` file.
-You must run the command below from the folder that contains the `sync-gateway-config-travelsample.json` file.
+* Launch the Sync Gateway with the `sync-gateway-config-travelsample-docker.json` file.
+You must run the command below from the folder that contains the `sync-gateway-config-travelsample-docker.json` file.
 
 [tabs]
 =====
@@ -184,7 +204,7 @@ Windows::
 [source,bash, subs="attributes+, macros+"]
 ----
 cd /path/to/mobile-travel-sample/
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4986:4984-4986 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-travelsample-docker.json:/etc/sync_gateway/config.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/config.json
 ----
 --
 
@@ -195,7 +215,7 @@ Non-Windows platform::
 ----
 
 cd c:\path\to\mobile-travel-sample\
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4986:4984-4986 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-travelsample-docker.json:/etc/sync_gateway/config.json couchbase/sync-gateway:{sgw-version}-enterprise -adminInterface :4985 /etc/sync_gateway/config.json
 
 ----
 --
@@ -250,14 +270,21 @@ Open a terminal window and run the following.
 +
 [source,bash, subs="attributes+, macros+"]
 ----
-docker pull connectsv/try-cb-python-v2:6.5.0-server
+docker pull connectsv/try-cb-python-v3:7.1.1-server
 ----
 
 * Once the command has completed you can start the application with the following.
 +
 [source,bash, subs="attributes+, macros+"]
 ----
-docker run -it -p 8080:8080 --network workshop connectsv/try-cb-python-v2:6.5.0-server
+docker run -dip 8080:8080 --network workshop --name cb-backend-py connectsv/try-cb-python-v3:7.1.1-server
+----
+
+* You can view the logs at any time by running the following command.
++
+[source,bash, subs="attributes+, macros+"]
+----
+docker logs cb-backend-py
 ----
 You should then see the following in the console output.
 +
@@ -266,6 +293,12 @@ You should then see the following in the console output.
 Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
 ----
 
+* Verify that the docker container named "cb-backend-py" is running with the following command in the terminal window.
++
+[source,bash, subs="attributes+, macros+"]
+----
+docker ps
+----
 .Try it out
 ****
 . Open
