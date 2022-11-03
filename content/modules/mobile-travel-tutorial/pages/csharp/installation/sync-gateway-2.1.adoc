@@ -84,11 +84,3 @@ You would need administrator privileges for this image:https://raw.githubusercon
 {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.1"},"version":"Couchbase Sync Gateway/2.1.0(775;9cc29c5)"}
 ----
 = 
-
-== Cloud
-
-*NOTE:* The RightScale cloud environment is only available for in-classroom run workshops. 
-
-If you chose Cloud in the <<_/0/2/2,previous
-    step>> then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running.
-You can move on to the <<_/1/0/0,next chapter>> to learn about the data modeling requirements of the app. 

@@ -7,11 +7,10 @@ If you already have a running instance of the Python Travel Sample Web App, Sync
 
 There are three options available to install those components.
 
-[cols="1,1,1"]
+[cols="1,1"]
 |===
 a| xref:{param-module}/installation/manual.adoc[Manual]
 a| xref:{param-module}/installation/docker.adoc[Docker (Local)]
-a| xref:{param-module}/installation/cloud.adoc[Cloud (RightScale)]
 
 | Here, you would download and install the components on your local machine.
 | In this case, you would install all the backend components in separate docker containers on your local machine.
