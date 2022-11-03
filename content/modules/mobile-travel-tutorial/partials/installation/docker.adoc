@@ -1,7 +1,8 @@
 = Docker (Local)
 
 ifndef::sgw-version[:sgw-version: 3.0.3]
-ifndef::cbs-version[:cbs-version: 7.1.1]
+ifndef::cbs-version[:cbs-version: 7.0.0]
+ifndef::cbs-version-m1[:cbs-version-m1: 7.1.1]
 
 
 == Prerequisites
@@ -58,6 +59,7 @@ You should see the version of git installed.
 
 
 * Clone the "master" branch of the workshop source from GitHub. We are doing a shallow pull with `depth` as 1 to speed the cloning process.
+
 +
 [source,bash, subs="attributes+"]
 ----
@@ -86,7 +88,7 @@ Apple M1::
 +
 [source,bash, subs="attributes+, macros+"]
 ----
-docker pull couchbase/server-arm:{cbs-version}
+docker pull couchbase/server-arm:{cbs-version-m1}
 ----
 Others::
 +
@@ -104,7 +106,7 @@ Apple M1::
 +
 [source,bash, subs="attributes+, macros+"]
 ----
-docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-arm:{cbs-version}
+docker run -d --name cb-server --network workshop -p 8091-8094:8091-8094 -p 11210:11210 couchbase/server-arm:{cbs-version-m1}
 ----
 Others::
 +
