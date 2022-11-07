@@ -145,7 +145,9 @@ $ copy c:/path/to/mobile-travel-sample/sync-gateway-config-travelsample.json "C:
 
 == Python Travel Sample Web Backend
 
-=== Apple M1 Users:
+=== Clone repository
+
+==== Apple M1 Users:
 
 * Clone the `mobile-travel-sample-m1` branch of Travel Sample Python web app repo
 +
@@ -165,7 +167,9 @@ git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try
 cd try-cb-python
 ----
 
-*Windows Users Only*
+=== Install Python
+
+==== Windows Users Only
 
 * Verify the pip installation. +
 If you are developing on Windows, *pip.exe* will be found in the "Scripts" sub directory under the Python installation directory.
@@ -184,7 +188,7 @@ You should see the help menu.
 pip3
 ----
 
-*Others*
+==== Others
 
 * We will run the Travel Web App in a Python
 https://virtualenv.pypa.io/en/stable/[virtual environment].
@@ -217,11 +221,12 @@ $ source bin/activate
 (try-cb-python) $
 ----
 
+=== Install dependencies & run app
+
 The application uses several Python libraries that need to be installed, these are listed in *requirements.txt* and can be automatically loaded using the pip3 command.
 
 [source,bash]
 ----
-cd c:\path\to\try-cb-python
 pip3 install -r requirements.txt
 ----
 
@@ -246,73 +251,6 @@ You may see an alert similar to one below requesting access to run the app.
 +
 Make sure you select the "Allow access" option.
 +
-
-=== Other Platforms
-
-* Clone the `mobile-travel-sample-tutorial` branch of Travel Sample Python web app repo
-+
-[source,bash]
-----
-git clone -b mobile-travel-sample-tutorial  https://github.com/couchbaselabs/try-cb-python.git
-cd try-cb-python
-----
-
-* We will run the Travel Web App in a Python
-https://virtualenv.pypa.io/en/stable/[virtual environment].
-First, check if `virtualenv` is installed on your system.
-+
-[source,bash]
-----
-$ virtualenv --version
-----
-
-* If `virtualenv` is not installed , you can use `apt-get` or `pip3` to install it.
-+
-[source,bash]
-----
-$ sudo pip3 install virtualenv
-----
-
-* Specify the folder for your virtual environment.
-+
-[source,bash]
-----
-$ virtualenv .
-----
-
-* Activate your environment. You should see a prompt as shown below.
-+
-[source,bash]
-----
-$ source bin/activate
-(try-cb-python) $
-----
-
-=== Install dependencies
-
-* The application uses several dependencies that need to be installed, this are listed in requirements.txt and can be automatically loaded using the pip command
-+
-[source,bash]
-----
-pip3 install -r requirements.txt
-----
-
-* Update *travel.py* to reflect the username and password that you have used when installing Couchbase Server.
-This defaults to "Administrator" and "password".
-+
-[source,python]
-----
-DEFAULT_USER = "Administrator"
-PASSWORD = 'password'
-----
-
-* Now launch the Travel Web App
-+
-[source,bash]
-----
-$ python travel.py
-$ Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
-----
 
 .Try it out
 ****
