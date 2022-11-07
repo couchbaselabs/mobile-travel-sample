@@ -68,7 +68,7 @@ git clone -b master --depth 1 https://github.com/couchbaselabs/mobile-travel-sam
 
 In this lesson, you will install and launch v7.1.x of Couchbase Server.
 
-Screenshots below apply to Couchbase Server 7.1.1 and there will be some variation with CBS 7.0.x. However, equivalent functionality is available in 7.0.x.
+Screenshots below apply to Couchbase Server 7.1.1 and there will be some variation with CBS 7.0.x. However, equivalent functionality is available in earlier versions of server. Refer to documentation for compatible server versions.
 
 *Apple M1 Users:* Install and launch v7.1.1 or later
 
