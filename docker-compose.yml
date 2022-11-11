@@ -1,14 +1,14 @@
 try-cb-python:
-    image: jamiltz/try-cb-python 
+    image: connectsv/try-cb-python:7.1.1-server
     ports:
         - 8080:8080
-    container_name: try_cb_python
+    container_name: cb-backend-py
 
 sync-gateway:
-    image: connectsv/sync-gateway-internal:1.5.0-community 
+    image: couchbase/sync-gateway:3.0.4-enterprise
     ports:
-        - "4984-4985:4984-4985"
-    command: -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+        - "4984-4986:4984-4986"
+    command: -adminInterface :4985 /etc/sync_gateway/config.json
     volumes:
-        - ${PWD}/sync-gateway-config-travelsample.json:/etc/sync_gateway/sync_gateway.json
+        - ${PWD}/sync-gateway-config-travelsample-docker.json:/etc/sync_gateway/config.json
     container_name: sync_gateway

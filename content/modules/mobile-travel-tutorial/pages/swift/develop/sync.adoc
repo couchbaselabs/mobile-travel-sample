@@ -233,7 +233,7 @@ _pushPullRepl?.start()
 
 . Enter "`To`" airport as DTW and select the airport from drop down menu
 
-. Enter From and Return Dates
+. Enter From (01/20/2020) and Return (02/20/2020) Dates
 
 . Tap "lookup" button
 
@@ -276,11 +276,11 @@ If you did cloud based install, please replace `localhost` in the URL with the I
 
 . Make a flight reservation by clicking the "Flights" tab
 
-. Enter “From” airport as "Seattle" and select the airport from drop down menu.
+. Enter “From” airport as "Seattle Tacoma Intl" and select the airport from drop down menu.
 
-. Enter “To” airport as "San Francisco" and select the airport from drop down menu.
+. Enter “To” airport as "San Francisco Intl" and select the airport from drop down menu.
 
-. Enter From and Return Travel Dates
+. Enter From (20/01/2020) and Return (20/02/2020) Travel Dates
 
 . Click on "Search" button
 
