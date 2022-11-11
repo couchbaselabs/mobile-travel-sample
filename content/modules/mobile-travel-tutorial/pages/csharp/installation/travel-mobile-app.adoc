@@ -113,17 +113,6 @@ Docker::
 public static readonly Uri ServerBackendUrl = new Uri("http://localhost:8080/api/");
 ----
 --
-
-Cloud::
-+
---
-[source,csharp]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-public static readonly Uri ServerBackendUrl = new Uri("http://54.148.83.39:8080/api/");
-----
---
 ====
 
 
@@ -153,17 +142,6 @@ Docker::
 [source,java]
 ----
 public static String mSyncGatewayEndpoint = "ws://10.0.2.2:4984/travel-sample";
-----
---
-
-Cloud::
-+
---
-[source,java]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-private static readonly Uri SyncUrl = new Uri("ws://54.148.83.39:4984:4984");
 ----
 --
 ====

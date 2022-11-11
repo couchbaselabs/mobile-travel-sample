@@ -15,8 +15,6 @@ if you selected Docker (Local), then you must use docker for all of them and so 
 
 * **Manual**: Here, you would download and install the components on your local machine. 
 * **Docker (Local)**: In this case, you would install all the server components in separate docker containers on your local machine. 
-* **Cloud (Rightscale)**: In this case, you can launch and connect to an instance of the server components running on a cloud instance. 
-= 
 
 == Pre-requisites
 

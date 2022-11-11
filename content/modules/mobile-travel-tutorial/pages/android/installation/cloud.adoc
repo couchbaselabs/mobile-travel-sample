@@ -1,3 +1,0 @@
-:param-language: java
-:param-module: android
-include::{partialsdir}/installation/cloud.adoc[]

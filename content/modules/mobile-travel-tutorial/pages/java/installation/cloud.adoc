@@ -1,3 +1,0 @@
-:param-language: java
-:param-module: {param-language}
-include::{partialsdir}/installation/cloud.adoc[]

@@ -165,11 +165,3 @@ If not, please follow instructions link:/develop/csharp#/0/2/1[here] to install 
 You should then see the following in the console output. 
 
 `bash   Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)` ## Try it out - Open http://localhost:8080/ in your web browser - Verify that you see the login screen of the Travel Sample Web App as shown below image:https://raw.githubusercontent.com/couchbaselabs/mobile-travel-sample/master/content/assets/try_cb_login.png[]= 
-
-== Cloud
-
-*NOTE:* The RightScale cloud environment is only available for in-classroom run workshops. 
-
-If you chose Cloud in the <<_/0/2/2,previous
-    step>> then all the components (Sync Gateway, Couchbase Server and the Python Web App) are already installed and running.
-You can move on to the <<_/1/0/0,next chapter>> to learn about the data modeling requirements of the app. 

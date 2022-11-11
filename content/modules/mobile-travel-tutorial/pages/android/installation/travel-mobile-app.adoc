@@ -61,17 +61,6 @@ Docker::
 public static String APPLICATION_ENDPOINT = "http://10.0.2.2:8080/api/";
 ----
 --
-
-Cloud::
-+
---
-[source,java]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-public static String APPLICATION_ENDPOINT = "http://54.148.83.39:8080/api/";
-----
---
 ====
 
 
@@ -104,16 +93,6 @@ Docker::
 ----
 --
 
-Cloud::
-+
---
-[source,java]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-public static String SGW_ENDPOINT = "ws://54.148.83.39:4984/travel-sample";
-----
---
 ====
 
 .Try it Out

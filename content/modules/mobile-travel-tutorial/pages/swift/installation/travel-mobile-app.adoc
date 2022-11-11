@@ -77,17 +77,6 @@ Docker::
 static var webUrl:String = "http://127.0.0.1:8080/"
 ----
 --
-
-Cloud::
-+
---
-[source,swift]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-static var webUrl:String = "http://54.148.83.39:8080/"
-----
---
 ====
 
 
@@ -116,17 +105,6 @@ Docker::
 [source,swift]
 ----
 let kRemoteSyncUrl = "ws://127.0.0.1:4984"
-----
---
-
-Cloud::
-+
---
-[source,swift]
-----
-// Replace the hostname with the IP Address of the RightScale instance.
-// The example states `54.148.83.39` but yours will be different.
-let kRemoteSyncUrl = "ws://54.148.83.39:4984"
 ----
 --
 ====
