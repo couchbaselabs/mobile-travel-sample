@@ -1,56 +1,56 @@
 {
-    "interface": ":4984",
-    "log": [ "*" ],
-    "logging": {
-        "log_file_path": "/var/tmp/sglogs",
-        "console": {
-            "log_level": "debug",
-            "log_keys": [ "*" ]
-        },
-        "error": {
-            "enabled": true,
-            "rotation": {
-                "max_size": 20,
-                "max_age": 180
-            }
-        },
-        "warn": {
-            "enabled": true,
-            "rotation": {
-                "max_size": 20,
-                "max_age": 90
-            }
-        },
-        "info": {
-            "enabled": false
-        },
-        "debug": {
-            "enabled": false
-        }
+  "interface": ":4984",
+  "log": ["*"],
+  "logging": {
+    "log_file_path": "/var/tmp/sglogs",
+    "console": {
+      "log_level": "debug",
+      "log_keys": ["*"]
     },
-    "disable_persistent_config": true,
-    "server_tls_skip_verify": true,
-    "databases": {
-        "travel-sample": {
-            "import_docs": true,
-            "bucket": "travel-sample",
-            "server": "couchbases://cb-server",
-            "enable_shared_bucket_access": true,
-            "delta_sync": {
-                "enabled": true
-            },
-            "username": "Administrator",
-            "password": "password",
-            "users": {
-                "admin": {"password": "password","admin_channels": [ "*" ] },
-                "demo": {
-                    "password": "password",
-                    "admin_channels": [ "*" ]
-                },
-                "priya": { "password": "password" }
-            },
-            "num_index_replicas": 0,
-	"import_filter": `
+    "error": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 180
+      }
+    },
+    "warn": {
+      "enabled": true,
+      "rotation": {
+        "max_size": 20,
+        "max_age": 90
+      }
+    },
+    "info": {
+      "enabled": false
+    },
+    "debug": {
+      "enabled": false
+    }
+  },
+  "disable_persistent_config": true,
+  "server_tls_skip_verify": true,
+  "databases": {
+    "travel-sample": {
+      "import_docs": true,
+      "bucket": "travel-sample",
+      "server": "couchbases://localhost",
+      "enable_shared_bucket_access": true,
+      "delta_sync": {
+        "enabled": true
+      },
+      "username": "Administrator",
+      "password": "password",
+      "users": {
+        "admin": { "password": "password", "admin_channels": ["*"] },
+        "demo": {
+          "password": "password",
+          "admin_channels": ["*"]
+        },
+        "priya": { "password": "password" }
+      },
+      "num_index_replicas": 0,
+      "import_filter": `
         		function(doc) {
           	/* Just ignore all the static travel-sample files */
            	if (doc._deleted == true ) {
@@ -61,7 +61,7 @@
            	}
           	return true;
         		}`,
-            "sync": `
+      "sync": `
 function sync(doc, oldDoc) {
   /* sanity check */
   // check if document was removed from server or via SDK
@@ -149,6 +149,6 @@ function sync(doc, oldDoc) {
     }
   }
 }`
-        }
     }
+  }
 }
