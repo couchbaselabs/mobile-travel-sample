@@ -10,7 +10,7 @@
 User is created via the Travel sample web app.
 When a user is created, a corresponding user profile document is created on Couchbase Server associated with the user.
 In addition, the web app automatically registers the user with the Sync Gateway via the Sync Gateway
-xref:sync-gateway:rest-api-admin.adoc#/user/post__db___user_[admin RestAPI] endpoint.
+xref:sync-gateway::rest-api-admin.adoc[admin RestAPI] endpoint.
 
 NOTE: The Sync Gateway user corresponds to users who are authenticated to replicate with the Sync Gateway and are different from the RBAC users created on Couchbase Server.
 
